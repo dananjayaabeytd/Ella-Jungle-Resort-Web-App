@@ -7,4 +7,12 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  theme: {
+    extend: {
+      scale: {
+        'up-110': '1.1',
+      },
+    },
+  },
+
 }
