@@ -9,7 +9,7 @@ function ResidenceHome() {
         <Subheader
             Title="Room Types"
           />
-        <div class="my-4 flex justify-between mx-40">
+        <div class="my-4 flex justify-between mx-40 mb-28">
           
         <RoomCard
           imageUrl="https://www.ellajungleresort.lk/wp-content/uploads/2019/06/Eco-Jungle-Chalet.jpg"
