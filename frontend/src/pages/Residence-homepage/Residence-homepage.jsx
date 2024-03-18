@@ -1,6 +1,7 @@
 import BackgroundText from "./residence-home-component/BackgroundText";
 import RoomCard from "./residence-home-component/RoomCard";
 import Subheader from "./residence-home-component/subHeader";
+import image1 from '../../../src/assets/G.jpg';
 
 function ResidenceHome() {
     return (
@@ -12,7 +13,7 @@ function ResidenceHome() {
         <div class="my-4 flex justify-between mx-40 mb-28">
           
         <RoomCard
-          imageUrl="https://www.ellajungleresort.lk/wp-content/uploads/2019/06/Eco-Jungle-Chalet.jpg"
+          imageUrl={image1}
           Title="Eco Jungle Chalet"
           Description="There are 16 spacious chalets, featuring a private balcony with a view of the rushing river, are perfect for honeymooners or couples looking to escape the hustle and bustle of the city lights for a romantic getaway. Include private bathroom, solid timber flooring and full-length glass walls with draping. Wake up to the sound of the rushing river as the morning light trickles through your 4-poster bed which is draped with mosquito netting."
         />

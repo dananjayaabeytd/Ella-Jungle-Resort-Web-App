@@ -1,6 +1,5 @@
 import React from 'react'
 
-
  function BackgroundText() {
   return (
     <div className="relative bg-cover bg-center h-screen" style={{ backgroundImage: "url('https://www.ellajungleresort.lk/wp-content/uploads/2019/06/home_004.jpg')" }}>
