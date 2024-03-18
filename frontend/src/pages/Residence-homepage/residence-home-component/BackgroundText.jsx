@@ -9,7 +9,7 @@ import React from 'react'
           <h1 className="text-5xl font-bold mb-4 font-mono ">Luxury in the middle of the jungle</h1>
           <p className="text-lg justify-normal">Immerse yourself in nature's embrace at our jungle hotel, where luxury meets the wild. Wake up to the sounds of exotic birds and lush greenery outside your window. </p>
           <button
-      onClick="#"
+      onClick={() => window.location.href = '/residenceBooking'}
       className="text-1xl mt-20 rounded-full bg-white bg-opacity-30 text-cyan-500 font-bold py-2 px-4 hover:bg-opacity-70 hover:text-black transition duration-300 ease-in-out"
     >Book Now !
     </button>
