@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-//Defining room schema
+//Defining room schemass
 const roomSchema = new mongoose.Schema({
 
     roomName: {
