@@ -9,6 +9,7 @@ import HomePage from "./pages/home/home.page";
 import ResidenceHome from './pages/Residence-homepage/Residence-homepage';
 import Residencebooking from './pages/Residence-booking-page/residencebooking';
 import AddRooms from './pages/Room-management/AddRooms';
+import RoomPage from './pages/Room-management/RoomPage';
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: '/AddRoom',
         element: <AddRooms/>
+      },
+      {
+        path: '/RoomPage',
+        element: <RoomPage/>
       }
     ],
   },
