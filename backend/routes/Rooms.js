@@ -40,21 +40,41 @@ router.get('/rooms/:id', async (req, res) => {
 // Route to update a room by ID
 router.patch('/rooms/:id', async (req, res) => {
   try {
-    const allowedUpdates = ['roomName', 'roomType', 'maxCount', 'image', 'description', 'price'];
+    const allowedUpdates = ['roomName', 'roomType', 'maxCount', 'description', 'price'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+    
     if (!isValidOperation) {
       return res.status(400).send({ error: 'Invalid updates' });
     }
-    const room = await Room.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+
+    const filteredUpdates = {};
+    updates.forEach((update) => {
+      if (allowedUpdates.includes(update)) {
+        filteredUpdates[update] = req.body[update];
+      }
+    });
+
+    const room = await Room.findByIdAndUpdate(req.params.id, filteredUpdates, { new: true, runValidators: true });
+    
     if (!room) {
       return res.status(404).send({ error: 'Room not found' });
     }
+    
     res.status(200).send(room);
   } catch (error) {
-    res.status(400).send(error);
+    console.error('Error updating room:', error);
+
+    if (error.name === 'ValidationError') {
+        return res.status(400).send({ error: error.message });
+    } else if (error.name === 'CastError') {
+        return res.status(400).send({ error: 'Invalid room ID' });
+    }
+
+    res.status(500).send({ error: 'An error occurred while updating the room' });
   }
 });
+
 
 // Route to delete a room by ID
 router.delete('/rooms/:id', async (req, res) => {

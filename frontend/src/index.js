@@ -10,6 +10,8 @@ import ResidenceHome from './pages/Residence-homepage/Residence-homepage';
 import Residencebooking from './pages/Residence-booking-page/residencebooking';
 import AddRooms from './pages/Room-management/AddRooms';
 import RoomPage from './pages/Room-management/RoomPage';
+import UpdateRoomForm from './pages/Room-management/UpdateRoom';
+
 
 const router = createBrowserRouter([
   {
@@ -42,7 +44,12 @@ const router = createBrowserRouter([
       {
         path: '/RoomPage',
         element: <RoomPage/>
+      },
+      {
+        path: '/UpdateRoom/:id',
+        element: <UpdateRoomForm/>
       }
+     
     ],
   },
 ]);
