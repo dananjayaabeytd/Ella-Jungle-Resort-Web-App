@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom'; 
 
 function ReservationForm() {
+    const { id } = useParams();
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
@@ -27,6 +29,10 @@ function ReservationForm() {
         <div className="rounded-lg overflow-hidden p-6 bg-green-200 my-10 mx-60">
             <h2 className="text-5xl font-bold mb-4 text-center pt-5 pb-10 font-sans">Book your room</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+                    <label className="block mb-1">Room ID:</label>
+                    <input type="text" name="RoomID" value={id} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required readOnly />
+                </div>
                 <div>
                     <label className="block mb-1">Full Name:</label>
                     <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
@@ -38,15 +44,6 @@ function ReservationForm() {
                 <div>
                     <label className="block mb-1">Contact Number:</label>
                     <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
-                </div>
-                <div>
-                    <label className="block mb-1">Room Type:</label>
-                    <select name="roomType" value={formData.roomType} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required>
-                        <option value="">Select Room Type</option>
-                        <option value="Eco Jungle Chalet">Eco Jungle Chalet</option>
-                        <option value="Eco Jungle Cottage">Eco Jungle Cottage</option>
-                        <option value="Eco Jungle Cabin">Eco Jungle Cabin</option>
-                    </select>
                 </div>
                 <div className="flex space-x-4">
                     <div>

@@ -11,6 +11,8 @@ import Residencebooking from './pages/Residence-booking-page/residencebooking';
 import AddRooms from './pages/Room-management/AddRooms';
 import RoomPage from './pages/Room-management/RoomPage';
 import UpdateRoomForm from './pages/Room-management/UpdateRoom';
+import AvailableRooms from './pages/Residence-booking-page/Residence-booking-components/AvailableRooms';
+import ReservationForm from './pages/Residence-booking-page/Residence-booking-components/Bookingform';
 
 
 const router = createBrowserRouter([
@@ -48,6 +50,14 @@ const router = createBrowserRouter([
       {
         path: '/UpdateRoom/:id',
         element: <UpdateRoomForm/>
+      },
+      {
+        path: '/Available',
+        element: <AvailableRooms/>
+      },
+      {
+        path: '/Booking/:id',
+        element: <ReservationForm/>
       }
      
     ],
