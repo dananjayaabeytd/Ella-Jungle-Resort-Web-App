@@ -58,7 +58,7 @@ const RoomPage = () => {
                 <td className="border px-4 py-2">{room.maxCount}</td>
                 <td className="border px-4 py-2">${room.price}</td>
                 <td className="border px-4 py-2">
-                  <button onClick={() => window.location.href = `/UpdateRoom/${room._id}`} className="bg-green-500 hover:bg-black text-white font-bold py-2 px-4 rounded mr-2">
+                  <button onClick={() => window.location.href = `/UpdateRoom/${room._id}`} className="bg-green-500 hover:bg-black text-white font-bold py-2 px-4 rounded mr-2 mb-5">
                     Update
                   </button>
                   <button onClick={() => handleDelete(room._id)} className="bg-red-500 hover:bg-black text-white font-bold py-2 px-4 rounded">

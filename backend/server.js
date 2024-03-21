@@ -6,12 +6,14 @@ const port = 5000;
 
 const DB_URL = "mongodb+srv://it22076052:Test123@cluster.n6buyt3.mongodb.net/Residence?retryWrites=true&w=majority&appName=Cluster";
 const roomRoutes = require('./routes/Rooms');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
 
 // Using routes
 app.use('/residence', roomRoutes);
+app.use('/reservation', reservationRoutes);
 
 // Database connection
 mongoose.connect(DB_URL)
