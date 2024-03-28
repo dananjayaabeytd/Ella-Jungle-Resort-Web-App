@@ -1,7 +1,17 @@
+import AddForm from "./pages/AddActivity/AddForm";
+import MyNavbar from "./components/shared/Navigation";
+import Footer from "./components/shared/Footer";
+import ViewActivity from "./pages/AllActivity/ViewActivity";
+
 export default function App() {
   return (
-    <h1 className="text-2xl font-bold underline">
-      Hello world!
-    </h1>
+
+      <div>
+
+        <MyNavbar/>
+        <ViewActivity/>
+        <Footer/>
+
+      </div>
   )
 }

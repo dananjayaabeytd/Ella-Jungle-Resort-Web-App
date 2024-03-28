@@ -1,11 +1,8 @@
-import Addform from "../AddActivityForm";
-import UpdateActivity from "../UpdateActivity";
 
 function HomePage() {
   return (
     <div>
-      <Addform></Addform>
-      <UpdateActivity></UpdateActivity>
+      <h1 class="text-4xl text-red-600 font-bold">This is Home Page</h1>
     </div>
   );
 }

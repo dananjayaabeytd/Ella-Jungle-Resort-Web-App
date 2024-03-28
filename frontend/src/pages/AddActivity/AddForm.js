@@ -1,10 +1,12 @@
-import * as React from "react";
+import React from "react";
 
-function Addform() {
 
-  return (
+export default function AddForm(){
 
-    <div className="flex items-center justify-center min-h-screen " >
+
+    return(
+
+        <div className="flex items-center justify-center min-h-screen " >
 
         <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-[60px] py-14 px-11 text-xl font-extrabold text-black">
 
@@ -42,7 +44,5 @@ function Addform() {
         </div>
     </div>
 
-);
+    );
 }
-
-export default Addform;
