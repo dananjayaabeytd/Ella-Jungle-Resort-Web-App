@@ -27,9 +27,7 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
 
-const AgencyRouter = require('./routes/agencys');
-app.use('/AgencyList', AgencyRouter);
 
+const AgencyNewRequestRouter = require('./routes/agencyNewRequests'); 
+app.use('/', AgencyNewRequestRouter); 
 
-const AgencyRequestRouter = require('./routes/agencyRequests');
-app.use('/AgencyNewRequest', AgencyRequestRouter);

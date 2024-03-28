@@ -54,6 +54,14 @@ const AgencyRequestSchema = new Schema({
     RequestDescription: {
         type: String,
         required: true
+    },
+    ClientId: {
+        type: String,
+        required: true
+    },
+    AgencyId: {
+        type: String,
+        required: true
     }
     
 });
