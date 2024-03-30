@@ -1,3 +1,4 @@
+
 import AddForm from "./pages/AddActivity/AddForm";
 import MyNavbar from "./components/shared/Navigation";
 import Footer from "./components/shared/Footer";
@@ -12,7 +13,7 @@ export default function App() {
           <MyNavbar/>
               <Routes>
               <Route path="/add" element={<AddForm/>}/>
-              <Route path="/update" element={<UpdateForm/>}/>
+              <Route path="/update/:id" element={<UpdateForm/>}/>
               <Route path="/" element={<ViewActivity/>}/>
               </Routes>
              

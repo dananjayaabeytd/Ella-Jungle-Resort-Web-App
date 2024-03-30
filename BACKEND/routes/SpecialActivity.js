@@ -6,7 +6,7 @@ let SpecialActivity = require("../models/SpecialActivity");
 
 router.route("/add").post((req,res)=>{
     const name=req.body.name;
-    const image=req.body.image;
+    
     const description = req.body.description;
     const price =Number(req.body.price);
 
@@ -46,7 +46,7 @@ router.route("/update/:id").put(async(req,res)=>{
     let userId = req.params.id;
     
     //fetching the newly updated data in destructive format
-    const{name,image,description,price}=req.body;
+    const{name,description,price}=req.body;
 
     //creating an object to update the data
     const updateSpecialActivity={
@@ -54,20 +54,21 @@ router.route("/update/:id").put(async(req,res)=>{
         
         description,
         price
-    }
+    };
     
 
     //to check whether an activity exists related to a specific id
-    const update = await SpecialActivity.findByIdAndUpdate(userId,updateSpecialActivity)
-    .then(()=>{
-        res.status(200).send({status:"Special Activity updated"})
-    }).catch((err)=>{
+    try {
+        const updatedActivity = await SpecialActivity.findByIdAndUpdate(userId, updateSpecialActivity, { new: true });
+        if (!updatedActivity) {
+            return res.status(404).send({ status: "Special Activity not found" });
+        }
+        res.status(200).send({ status: "Special Activity updated", updatedActivity });
+    } catch (err) {
         console.log(err);
-        res.status(500).send({status:"Error with updating data",error:err.message});
-    })
-
-})
-
+        res.status(500).send({ status: "Error with updating data", error: err.message });
+    }
+});
 
 
 //to delete a user
@@ -89,14 +90,17 @@ router.route("/delete/:id").delete(async(req,res)=>{
 router.route("/get/:id").get(async(req,res)=>{
     let userId = req.params.id;
 
-    const user = await SpecialActivity.findById(userId)
-    .then((SpecialActivity)=>{
-        res.status(200).send({status:"Special Activity fetched",SpecialActivity})
-    }).catch(()=>{
+    try {
+        const specialActivity = await SpecialActivity.findById(userId);
+        if (!specialActivity) {
+            return res.status(404).send({ status: "Special Activity not found" });
+        }
+        res.status(200).send({ status: "Special Activity fetched", specialActivity });
+    } catch (err) {
         console.log(err.message);
-        res.status(500).send({status:"Error with get activity", error: err.message});
-    })
-})
+        res.status(500).send({ status: "Error with get activity", error: err.message });
+    }
+});
 
 
 module.exports = router;

@@ -1,5 +1,9 @@
+
 import React ,{useState} from "react";
 import axios from "axios";
+
+ //this will load the components related only for a specific page
+ import {useNavigate} from "react-router-dom"; 
 
 export default function AddForm(){
 
@@ -8,6 +12,7 @@ export default function AddForm(){
    
     const[description,setDescription] = useState("");
     const [price,setPrice] = useState("");
+    const navigate=useNavigate();
 
 
     function sendData(e) {
@@ -20,6 +25,7 @@ export default function AddForm(){
         axios.post("http://localhost:8080/SpecialActivity/add", newSpecialActivity)
             .then(() => {
                 alert("Special Activity Added");
+                navigate("/");
             })
             .catch((err) => {
                 alert(err);
@@ -36,7 +42,7 @@ export default function AddForm(){
     return (
         <div className="flex items-center justify-center min-h-screen">
 
-            <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-[60px] py-14 px-11 text-xl font-extrabold text-black">
+            <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-xl py-14 px-11 text-xl font-extrabold text-black">
 
                 <form className="flex flex-col w-full" onSubmit={sendData}>
 
