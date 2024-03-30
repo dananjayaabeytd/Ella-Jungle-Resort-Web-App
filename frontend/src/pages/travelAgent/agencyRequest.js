@@ -1,12 +1,8 @@
-import React, { useState } from "react";
-import AgencyDetailsProfile from "../../components/travelAgent/agencyDetailsProfile";
+import React from "react";
 
-function AgencySendRequest() {
-  return (
-    <div>
-      <AgencyDetailsProfile />
-
-      <div className="container my-10 flex flex-col mx-auto bg-green-500 border border-black bg-opacity-20 max-w-[1000px] rounded-lg">
+function AgencyRequest() {
+  return(
+    <div className="container my-10 flex flex-col mx-auto bg-green-500 border border-black bg-opacity-20 max-w-[1000px] rounded-lg">
         <div className="mt-3 text-2xl text-center">
           <h1>Request new reservation</h1>
         </div>
@@ -21,6 +17,7 @@ function AgencySendRequest() {
                     type="date"
                     id="arrivalDate"
                     className="ml-[92px] rounded-lg"
+                    placeholder=""
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -134,14 +131,13 @@ function AgencySendRequest() {
                 id="spRequest"
                 className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold"
               >
-                Send Request
+                Accept Request
               </button>
             </div>
           </form>
         </div>
       </div>
-    </div>
   );
 }
 
-export default AgencySendRequest;
+export default AgencyRequest;

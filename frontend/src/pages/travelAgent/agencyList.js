@@ -2,9 +2,6 @@ import React from "react";
 import AgencyDetailsSimple from "../../components/travelAgent/agencyDetailsSimple";
 import AgencySearch from "../../components/travelAgent/agencySearch";
 
-
-
-
 function AgencyList() {
   return (
     <div>
@@ -26,13 +23,12 @@ function AgencyList() {
           <AgencyDetailsSimple />
           <AgencyDetailsSimple />
         </div>
-        
+
         <div className="flex-1 mr-20">
           <AgencySearch />
         </div>
       </div>
     </div>
-
   );
 }
 
