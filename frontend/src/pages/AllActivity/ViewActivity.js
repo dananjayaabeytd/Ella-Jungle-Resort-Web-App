@@ -20,14 +20,16 @@ export default function ViewActivity() {
     }, []);
 
     const handleDelete = (id) => {
-        axios.delete("http://localhost:8080/SpecialActivity/delete/" + id)
-        .then(res => {
-            console.log(res);
-            window.location.reload();
-        })
-        .catch((err) => {
-            alert(err.message);
-        });
+        if (window.confirm("Are you sure you want to delete this special activity?")) {
+            axios.delete("http://localhost:8080/SpecialActivity/delete/" + id)
+            .then(res => {
+                console.log(res);
+                window.location.reload();
+            })
+            .catch((err) => {
+                alert(err.message);
+            });
+        }
     }
 
     return (
