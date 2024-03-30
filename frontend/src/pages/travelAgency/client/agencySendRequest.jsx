@@ -1,7 +1,67 @@
-import React from "react";
-import AgencyDetailsProfile from "../../components/travelAgent/agencyDetailsProfile";
+import React, { useState } from "react";
+import axios from "axios";
+import AgencyDetailsProfile from "../../../components/travelAgent/agencyDetailsProfile";
 
 function AgencySendRequest() {
+  const [formData, setFormData] = useState({
+    ArrivalDate: "",
+    DepartureDate: "",
+    NoOfDays: "",
+    NoOfNights: "",
+    NoOfAdults: "",
+    NoOfChildren: "",
+    NoOfSingleRooms: "",
+    NoOfDoubleRooms: "",
+    NoOfTripleRooms: "",
+    RequestDescription: "",
+    ClientId: "123", // Set the client ID
+    AgencyId: "456", // Set the agency ID
+    Status: "true", // Set the status to false
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Prevent the default form submission behavior
+
+    const currentDate = new Date().toISOString(); // Get the current date
+
+    const updatedFormData = {
+      // Include the current date in the formData
+      ...formData,
+      SentDate: currentDate,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:3005/AgencyNewRequest",
+        updatedFormData
+      );
+      alert("Data successfully sent to the database.");
+
+      // Clear the form after successful submission (optional)
+      setFormData({
+        ArrivalDate: "",
+        DepartureDate: "",
+        NoOfDays: "",
+        NoOfNights: "",
+        NoOfAdults: "",
+        NoOfChildren: "",
+        NoOfSingleRooms: "",
+        NoOfDoubleRooms: "",
+        NoOfTripleRooms: "",
+        RequestDescription: "",
+        ClientId: "",
+        AgencyId: "",
+        Status: "",
+      });
+    } catch (error) {
+      console.error("Error:", error); // Log any errors
+    }
+  };
+
   return (
     <div>
       <AgencyDetailsProfile />
@@ -12,7 +72,7 @@ function AgencySendRequest() {
         </div>
 
         <div className="flex mx-auto mt-10">
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className="flex items-start form-group">
               <div className="flex flex-col mx-20 text-xl">
                 <div className="flex items-start mb-2 ">
@@ -20,7 +80,10 @@ function AgencySendRequest() {
                   <input
                     type="date"
                     id="arrivalDate"
+                    name="ArrivalDate"
+                    value={formData.ArrivalDate}
                     className="ml-[92px] rounded-lg"
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -29,6 +92,9 @@ function AgencySendRequest() {
                     type="date"
                     className="ml-[59px] rounded-lg "
                     id="departureDate"
+                    name="DepartureDate"
+                    value={formData.DepartureDate}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -36,7 +102,10 @@ function AgencySendRequest() {
                   <input
                     type="number"
                     className="ml-[51px] w-20 rounded-lg"
-                    id="noOfdays"
+                    id="noOfDays"
+                    name="NoOfDays"
+                    value={formData.NoOfDays}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -45,6 +114,9 @@ function AgencySendRequest() {
                     type="number"
                     className="ml-[35px] w-20 rounded-lg"
                     id="noOfNights"
+                    name="NoOfNights"
+                    value={formData.NoOfNights}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -53,6 +125,9 @@ function AgencySendRequest() {
                     type="number"
                     className="ml-[37px] w-20 rounded-lg"
                     id="noOfAdults"
+                    name="NoOfAdults"
+                    value={formData.NoOfAdults}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -60,7 +135,10 @@ function AgencySendRequest() {
                   <input
                     type="number"
                     className="w-20 ml-[20px] rounded-lg"
-                    id="noOfChuldren"
+                    id="noOfChildren"
+                    name="NoOfChildren"
+                    value={formData.NoOfChildren}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
@@ -73,6 +151,9 @@ function AgencySendRequest() {
                     type="number"
                     className="ml-[75px] w-20 rounded-lg"
                     id="singleBed"
+                    name="NoOfSingleRooms"
+                    value={formData.NoOfSingleRooms}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-1">
@@ -81,6 +162,9 @@ function AgencySendRequest() {
                     type="number"
                     className="ml-[65px] w-20 rounded-lg"
                     id="doubleBed"
+                    name="NoOfDoubleRooms"
+                    value={formData.NoOfDoubleRooms}
+                    onChange={handleChange}
                   />
                 </div>
                 <div className="flex items-start mb-1">
@@ -89,52 +173,34 @@ function AgencySendRequest() {
                     type="number"
                     className="ml-[80px] w-20 rounded-lg"
                     id="tripleBed"
-                  />
-                </div>
-                <div className="flex mt-2 ml-20">Meal</div>
-                <div className="flex items-start mb-1">
-                  <label>Breakfast</label>
-                  <input
-                    type="number"
-                    className="ml-[88px] w-20 rounded-lg"
-                    id="Breakfast"
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Lunch</label>
-                  <input
-                    type="number"
-                    className="ml-[116px] w-20 rounded-lg"
-                    id="lunch"
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Dinner</label>
-                  <input
-                    type="number"
-                    className="w-20 ml-[110px] rounded-lg"
-                    id="Dinner"
+                    name="NoOfTripleRooms"
+                    value={formData.NoOfTripleRooms}
+                    onChange={handleChange}
                   />
                 </div>
               </div>
             </div>
             <div className="flex flex-col mx-20 mb-10">
               <div>
-                <label className="text-xl">Sepcial Requests:</label>
+                <label className="text-xl">Special Requests:</label>
               </div>
               <div>
-                <input
-                  type="text"
+                <textarea
                   className="w-[750px] max-h-[100px] h-[100px] rounded-lg"
+                  name="RequestDescription"
+                  value={formData.RequestDescription}
+                  onChange={handleChange}
                 />
               </div>
             </div>
             <div>
               <button
                 id="spRequest"
-                className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold"
+                className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+                type="submit"
               >
                 Send Request
+                <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
               </button>
             </div>
           </form>

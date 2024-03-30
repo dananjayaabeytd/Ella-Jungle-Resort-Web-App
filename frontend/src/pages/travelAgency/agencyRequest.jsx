@@ -88,31 +88,6 @@ function AgencyRequest() {
                     id="tripleBed"
                   />
                 </div>
-                <div className="flex mt-2 ml-20">Meal</div>
-                <div className="flex items-start mb-1">
-                  <label>Breakfast</label>
-                  <input
-                    type="number"
-                    className="ml-[88px] w-20 rounded-lg"
-                    id="Breakfast"
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Lunch</label>
-                  <input
-                    type="number"
-                    className="ml-[116px] w-20 rounded-lg"
-                    id="lunch"
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Dinner</label>
-                  <input
-                    type="number"
-                    className="w-20 ml-[110px] rounded-lg"
-                    id="Dinner"
-                  />
-                </div>
               </div>
             </div>
             <div className="flex flex-col mx-20 mb-10">

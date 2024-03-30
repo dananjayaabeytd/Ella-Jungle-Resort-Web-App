@@ -1,6 +1,6 @@
 import React from "react";
-import AgencyDetailsSimple from "../../components/travelAgent/agencyDetailsSimple";
-import AgencySearch from "../../components/travelAgent/agencySearch";
+import AgencyDetailsSimple from "../../../components/travelAgent/agencyDetailsSimple";
+import AgencySearch from "../../../components/travelAgent/agencySearch";
 
 function AgencyList() {
   return (

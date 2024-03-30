@@ -39,18 +39,6 @@ const AgencyRequestSchema = new Schema({
         type: Number,
         required: true
     },
-    MealTypeBreakfast: {
-        type: String,
-        required: true
-    },
-    MealTypeLunch: {
-        type: String,
-        required: true
-    },
-    MealTypeDinner: {
-        type: String,
-        required: true
-    },
     RequestDescription: {
         type: String,
         required: true
@@ -62,6 +50,14 @@ const AgencyRequestSchema = new Schema({
     AgencyId: {
         type: String,
         required: true
+    },
+    SentDate: {
+        type: Date,
+        required: true
+    },
+    Status: {
+        type: Boolean,
+        required: false
     }
     
 });
