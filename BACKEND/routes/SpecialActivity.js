@@ -3,6 +3,7 @@ const router = require("express").Router();
 let SpecialActivity = require("../models/SpecialActivity");
 
 
+
 router.route("/add").post((req,res)=>{
     const name=req.body.name;
     const image=req.body.image;
@@ -11,7 +12,7 @@ router.route("/add").post((req,res)=>{
 
     const newSpecialActivity = new SpecialActivity({
         name,
-        image,
+       
         description,
         price
     })
@@ -26,10 +27,12 @@ router.route("/add").post((req,res)=>{
 
 })
 
+
+
 //to view all the values added
 router.route("/").get((req,res)=>{
     SpecialActivity.find().then((SpecialActivity)=>{
-        res.json(pecialActivity)
+        res.json(SpecialActivity)
     }).catch((err)=>{
         console.log(err)
     })
@@ -48,7 +51,7 @@ router.route("/update/:id").put(async(req,res)=>{
     //creating an object to update the data
     const updateSpecialActivity={
         name,
-        image,
+        
         description,
         price
     }
