@@ -1,5 +1,5 @@
 import React from 'react';
-import { BookingCard } from './cards'; 
+import { BookingCard } from './cards'; // Import your BookingCard component
 
 export function BookingCardsContainer() {
   return (

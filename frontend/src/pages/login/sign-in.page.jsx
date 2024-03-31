@@ -8,7 +8,7 @@ function SignInPage() {
       className='flex items-center justify-center h-[1100px] mt-[-400px] '
       style={{ backgroundImage: `url(${back})`, backgroundSize: 'cover' }}
     >
-      <Outlet/>
+      <Outlet />
     </div>
   );
 }

@@ -1,5 +1,7 @@
+import { Navigation } from 'lucide-react';
 import Hero from './components/Hero';
 import Heromid from './components/Heromid';
+import { BookingCard } from './components/cards';
 import { BookingCardsContainer } from './components/Cardpack';
 import { FAQsection } from './components/FAQ';
 import topleft from '../../assets/topleft.png'
