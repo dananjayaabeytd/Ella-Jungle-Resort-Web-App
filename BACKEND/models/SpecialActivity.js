@@ -11,7 +11,10 @@ const specialActivitiesSchema = new Schema({
         required:true
     },
 
-  
+    image:{
+        type:String,
+        required:true
+    },
 
     description:{
         type:String,

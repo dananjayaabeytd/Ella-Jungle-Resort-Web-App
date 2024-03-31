@@ -12,7 +12,7 @@ router.route("/add").post((req,res)=>{
 
     const newSpecialActivity = new SpecialActivity({
         name,
-       
+       //image,
         description,
         price
     })
@@ -46,12 +46,12 @@ router.route("/update/:id").put(async(req,res)=>{
     let userId = req.params.id;
     
     //fetching the newly updated data in destructive format
-    const{name,description,price}=req.body;
+    const{name,/*image,*/description,price}=req.body;
 
     //creating an object to update the data
     const updateSpecialActivity={
         name,
-        
+        //image,
         description,
         price
     };

@@ -8,7 +8,7 @@ function UpdateForm() {
      const{id} = useParams();
      
      const [name,setName]= useState("");
-   
+    //const [image,setImage]= useState("");
      const[description,setDescription] = useState("");
      const [price,setPrice] = useState("");
      const navigate= useNavigate();
@@ -22,6 +22,7 @@ function UpdateForm() {
       .then((res)=>{
        
           setName(res.data.specialActivity.name);
+          //setImage(res.data.specialActivity.image);
           setDescription(res.data.specialActivity.description);
           setPrice(res.data.specialActivity.price);
 
@@ -41,7 +42,7 @@ function UpdateForm() {
 
       //creates an object with the current state values
       const updatedSpecialActivity={
-          name,description,price
+          name,/*image*/description,price
       
   };  
    

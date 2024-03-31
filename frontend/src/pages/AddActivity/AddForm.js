@@ -9,7 +9,7 @@ export default function AddForm(){
 
 
     const [name,setName]= useState("");
-   
+   //const [image,setImage]= useState("");
     const[description,setDescription] = useState("");
     const [price,setPrice] = useState("");
     const navigate=useNavigate();
@@ -19,6 +19,7 @@ export default function AddForm(){
         e.preventDefault();
         const newSpecialActivity = {
             name,
+            //image,
             description,
             price
         };
