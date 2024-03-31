@@ -27,16 +27,8 @@ const AgencyRequestSchema = new Schema({
         type: Number,
         required: true
     },
-    NoOfSingleRooms: {
-        type: Number,
-        required: true
-    },
-    NoOfDoubleRooms: {
-        type: Number,
-        required: true
-    },
-    NoOfTripleRooms: {
-        type: Number,
+    RoomType: {
+        type: String,
         required: true
     },
     RequestDescription: {

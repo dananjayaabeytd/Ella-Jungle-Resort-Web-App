@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 
-function AgencySentRequest({ id, NoOfSingleRooms, NoOfDoubleRooms, NoOfTripleRooms, NoOfAdults, NoOfChildren, sentDate }) {
+function AgencySentRequest({ id, RoomType, NoOfAdults, NoOfChildren, sentDate }) {
   
   const [formattedSentDate, setFormattedSentDate] = useState("");
   
@@ -20,8 +20,7 @@ function AgencySentRequest({ id, NoOfSingleRooms, NoOfDoubleRooms, NoOfTripleRoo
     };
     setFormattedSentDate(formattedDate());
   }, [sentDate]);
-  
-    const NoOfRooms = NoOfSingleRooms + NoOfDoubleRooms + NoOfTripleRooms;
+    
     const NoOfPersons = NoOfAdults + NoOfChildren;
 
     const handleUpdateClick = (id) => {
@@ -40,7 +39,7 @@ function AgencySentRequest({ id, NoOfSingleRooms, NoOfDoubleRooms, NoOfTripleRoo
         <div className="flex ">
           <div className="flex text-sm ml-[-800px] min-w-[650px] max-w-[500px]">
             {/* max 60 chars */}
-            <p className="flex text-gray-600">No of Rooms: {NoOfRooms}</p>
+            <p className="flex text-gray-600">Room Type : {RoomType}</p>
             <p className="flex ml-10 text-gray-600">
               No of Persons: {NoOfPersons}
             </p>

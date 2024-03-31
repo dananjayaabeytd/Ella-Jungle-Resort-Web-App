@@ -28,18 +28,14 @@ function AgencySentRequestList(){
           <div className="container px-[10px] flex-col flex">
             {acceptedRequests.map((request) => {
               console.log("Request ID:", request.id);
-              console.log("NoOfSingleRooms:", request.NoOfSingleRooms);
-              console.log("NoOfDoubleRooms:", request.NoOfDoubleRooms);
-              console.log("NoOfTripleRooms:", request.NoOfTripleRooms);
+              console.log("RoomType:", request.RoomType);
               console.log("NoOfAdults:", request.NoOfAdults);
               console.log("NoOfChildren:", request.NoOfChildren);
               console.log("SentDate:", request.SentDate);
               return (
                 <AgencySentRequest
                   id={request.id}
-                  NoOfSingleRooms={request.NoOfSingleRooms}
-                  NoOfDoubleRooms={request.NoOfDoubleRooms}
-                  NoOfTripleRooms={request.NoOfTripleRooms}
+                  RoomType={request.RoomType}
                   NoOfAdults={request.NoOfAdults}
                   NoOfChildren={request.NoOfChildren}
                   sentDate={request.SentDate}
@@ -54,18 +50,14 @@ function AgencySentRequestList(){
           <div className="container px-[10px] flex-col flex">
             {rejectedRequests.map((request) => {
               console.log("Request ID:", request.id);
-              console.log("NoOfSingleRooms:", request.NoOfSingleRooms);
-              console.log("NoOfDoubleRooms:", request.NoOfDoubleRooms);
-              console.log("NoOfTripleRooms:", request.NoOfTripleRooms);
+              console.log("RoomType:", request.RoomType);
               console.log("NoOfAdults:", request.NoOfAdults);
               console.log("NoOfChildren:", request.NoOfChildren);
               console.log("SentDate:", request.SentDate);
               return (
                 <AgencySentRequest
                   id={request.id}
-                  NoOfSingleRooms={request.NoOfSingleRooms}
-                  NoOfDoubleRooms={request.NoOfDoubleRooms}
-                  NoOfTripleRooms={request.NoOfTripleRooms}
+                  RoomType={request.RoomType}
                   NoOfAdults={request.NoOfAdults}
                   NoOfChildren={request.NoOfChildren}
                   sentDate={request.SentDate}

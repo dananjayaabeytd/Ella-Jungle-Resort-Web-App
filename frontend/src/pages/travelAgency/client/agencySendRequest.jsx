@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
-
-
 
 function AgencySendRequest() {
   const [formData, setFormData] = useState({
@@ -12,9 +11,7 @@ function AgencySendRequest() {
     NoOfNights: "",
     NoOfAdults: "",
     NoOfChildren: "",
-    NoOfSingleRooms: "",
-    NoOfDoubleRooms: "",
-    NoOfTripleRooms: "",
+    RoomType: "",
     RequestDescription: "",
     ClientId: "123", // Set the client ID
     AgencyId: "456", // Set the agency ID
@@ -22,8 +19,10 @@ function AgencySendRequest() {
   });
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
   };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
@@ -41,7 +40,17 @@ function AgencySendRequest() {
         "http://localhost:3005/AgencyNewRequest",
         updatedFormData
       );
-      alert("Data successfully sent to the database.");
+      Swal.fire({
+        icon: "success",
+        title: "Your work has been saved",
+        showConfirmButton: false,
+        timer: 1500,
+        
+      }).then(() => {
+        window.location.reload(); // Reload the component after showing the success message
+      });
+      
+      console.log("Success:", response.data); // Log the response
 
       // Clear the form after successful submission (optional)
       setFormData({
@@ -51,9 +60,7 @@ function AgencySendRequest() {
         NoOfNights: "",
         NoOfAdults: "",
         NoOfChildren: "",
-        NoOfSingleRooms: "",
-        NoOfDoubleRooms: "",
-        NoOfTripleRooms: "",
+        RoomType: "",
         RequestDescription: "",
         ClientId: "",
         AgencyId: "",
@@ -61,6 +68,13 @@ function AgencySendRequest() {
       });
     } catch (error) {
       console.error("Error:", error); // Log any errors
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+      }).then(() => {
+        window.location.reload(); // Reload the component after showing the success message
+      });
     }
   };
 
@@ -146,39 +160,21 @@ function AgencySendRequest() {
               </div>
 
               <div className="flex flex-col mx-20 mt-[-5px] text-xl">
-                <div className="flex ml-20">Room</div>
-                <div className="flex items-start mb-1 ">
-                  <label>Single Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[75px] w-20 rounded-lg"
-                    id="singleBed"
-                    name="NoOfSingleRooms"
-                    value={formData.NoOfSingleRooms}
+                <div className="flex ml-20">Room Type</div>
+                <div className="relative inline-flex hs-dropdown">
+                  <select
+                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                    aria-labelledby="hs-dropdown-default"
                     onChange={handleChange}
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Double Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[65px] w-20 rounded-lg"
-                    id="doubleBed"
-                    name="NoOfDoubleRooms"
-                    value={formData.NoOfDoubleRooms}
-                    onChange={handleChange}
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Triple Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[80px] w-20 rounded-lg"
-                    id="tripleBed"
-                    name="NoOfTripleRooms"
-                    value={formData.NoOfTripleRooms}
-                    onChange={handleChange}
-                  />
+                    name="RoomType"
+                  >
+                    <option value="" disabled selected>
+                      Select Room Type
+                    </option>
+                    <option value="chalet">Eco Jungle Chalet</option>
+                    <option value="cottage">Eco Jungle Cottage</option>
+                    <option value="cabin">Eco Jungle Cabin</option>
+                  </select>
                 </div>
               </div>
             </div>

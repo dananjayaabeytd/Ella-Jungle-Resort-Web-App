@@ -8,9 +8,7 @@ Router.route("/AgencyNewRequest").post((req, res) => {
   const NoOfNights = Number(req.body.NoOfNights);
   const NoOfAdults = Number(req.body.NoOfAdults);
   const NoOfChildren = Number(req.body.NoOfChildren);
-  const NoOfSingleRooms = Number(req.body.NoOfSingleRooms);
-  const NoOfDoubleRooms = Number(req.body.NoOfDoubleRooms);
-  const NoOfTripleRooms = Number(req.body.NoOfTripleRooms);
+  const RoomType = req.body.RoomType;
   const RequestDescription = req.body.RequestDescription;
   const ClientId = req.body.ClientId;
   const AgencyId = req.body.AgencyId;
@@ -24,9 +22,7 @@ Router.route("/AgencyNewRequest").post((req, res) => {
     NoOfNights,
     NoOfAdults,
     NoOfChildren,
-    NoOfSingleRooms,
-    NoOfDoubleRooms,
-    NoOfTripleRooms,
+    RoomType,
     RequestDescription,
     ClientId,
     AgencyId,
@@ -59,9 +55,7 @@ Router.route("/ClientNewRequest").get((req, res) => {
           NoOfNights: request.NoOfNights,
           NoOfAdults: request.NoOfAdults,
           NoOfChildren: request.NoOfChildren,
-          NoOfSingleRooms: request.NoOfSingleRooms,
-          NoOfDoubleRooms: request.NoOfDoubleRooms,
-          NoOfTripleRooms: request.NoOfTripleRooms,
+          RoomType: request.RoomType,
           RequestDescription: request.RequestDescription,
           ClientId: request.ClientId,
           AgencyId: request.AgencyId,
@@ -110,9 +104,7 @@ Router.route("/UpdateRequest/:id").put(async (req, res) => {
     NoOfNights,
     NoOfAdults,
     NoOfChildren,
-    NoOfSingleRooms,
-    NoOfDoubleRooms,
-    NoOfTripleRooms,
+    RoomType,
     RequestDescription,
     SentDate,
     Status,
@@ -126,9 +118,7 @@ Router.route("/UpdateRequest/:id").put(async (req, res) => {
     NoOfNights,
     NoOfAdults,
     NoOfChildren,
-    NoOfSingleRooms,
-    NoOfDoubleRooms,
-    NoOfTripleRooms,
+    RoomType,
     RequestDescription,
     SentDate,
     Status,

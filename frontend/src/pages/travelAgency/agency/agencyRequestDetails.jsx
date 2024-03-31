@@ -12,9 +12,7 @@ function AgencyRequestDetails() {
     NoOfNights: "",
     NoOfAdults: "",
     NoOfChildren: "",
-    NoOfSingleRooms: "",
-    NoOfDoubleRooms: "",
-    NoOfTripleRooms: "",
+    RoomType: "",
     RequestDescription: "",
     SentDate: "",
     Status: "",
@@ -33,9 +31,7 @@ function AgencyRequestDetails() {
           NoOfNights,
           NoOfAdults,
           NoOfChildren,
-          NoOfSingleRooms,
-          NoOfDoubleRooms,
-          NoOfTripleRooms,
+          RoomType,
           RequestDescription,
           SentDate,
           Status,
@@ -47,9 +43,7 @@ function AgencyRequestDetails() {
           NoOfNights,
           NoOfAdults,
           NoOfChildren,
-          NoOfSingleRooms,
-          NoOfDoubleRooms,
-          NoOfTripleRooms,
+          RoomType,
           RequestDescription,
           SentDate,
           Status,
@@ -75,7 +69,7 @@ function AgencyRequestDetails() {
         Swal.fire({
           icon: "success",
           title: "Request Accepted!",
-          showConfirmButton: true
+          showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
             window.location.href = "/AgencyRequestList";
@@ -86,8 +80,6 @@ function AgencyRequestDetails() {
       console.error("Error accepting request:", error);
     }
   };
-  
-  
 
   return (
     <div>
@@ -179,39 +171,19 @@ function AgencyRequestDetails() {
               </div>
 
               <div className="flex flex-col mx-20 mt-[-5px] text-xl">
-                <div className="flex ml-20">Room</div>
-                <div className="flex items-start mb-1 ">
-                  <label>Single Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[56px] w-20 rounded-lg"
-                    id="singleBed"
-                    name="NoOfSingleRooms"
-                    value={requestData.NoOfSingleRooms}
+                <div className="flex ml-20">Room Type</div>
+                <div className="relative inline-flex hs-dropdown">
+                  <select
+                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                    aria-labelledby="hs-dropdown-default"
+                    value={requestData.RoomType}
                     readOnly
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Double Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[45px] w-20 rounded-lg"
-                    id="doubleBed"
-                    name="NoOfDoubleRooms"
-                    value={requestData.NoOfDoubleRooms}
-                    readOnly
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Triple Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[60px] w-20 rounded-lg"
-                    id="tripleBed"
-                    name="NoOfTripleRooms"
-                    value={requestData.NoOfTripleRooms}
-                    readOnly
-                  />
+                  >
+                    <option value="" disabled> Select Room Type</option>
+                    <option value="chalet" disabled>Eco Jungle Chalet</option>
+                    <option value="cottage" disabled>Eco Jungle Cottage</option>
+                    <option value="cabin" disabled>Eco Jungle Cabin</option>
+                  </select>
                 </div>
               </div>
             </div>

@@ -12,9 +12,7 @@ function AgencySentRequestDetails() {
     NoOfNights: "",
     NoOfAdults: "",
     NoOfChildren: "",
-    NoOfSingleRooms: "",
-    NoOfDoubleRooms: "",
-    NoOfTripleRooms: "",
+    RoomType: "",
     RequestDescription: "",
     SentDate: "",
     Status: "",
@@ -33,9 +31,7 @@ function AgencySentRequestDetails() {
           NoOfNights,
           NoOfAdults,
           NoOfChildren,
-          NoOfSingleRooms,
-          NoOfDoubleRooms,
-          NoOfTripleRooms,
+          RoomType,
           RequestDescription,
           SentDate,
           Status,
@@ -47,9 +43,7 @@ function AgencySentRequestDetails() {
           NoOfNights,
           NoOfAdults,
           NoOfChildren,
-          NoOfSingleRooms,
-          NoOfDoubleRooms,
-          NoOfTripleRooms,
+          RoomType,
           RequestDescription,
           SentDate,
           Status,
@@ -89,7 +83,6 @@ function AgencySentRequestDetails() {
       }
     });
   };
-  
 
   const handleDeleteRequest = () => {
     Swal.fire({
@@ -99,7 +92,7 @@ function AgencySentRequestDetails() {
       showCancelButton: true,
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
-      confirmButtonText: "Yes, delete it!"
+      confirmButtonText: "Yes, delete it!",
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
@@ -107,7 +100,7 @@ function AgencySentRequestDetails() {
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
-            icon: "success"
+            icon: "success",
           });
           window.location.href = "/AgencySentRequestList";
         } catch (error) {
@@ -237,54 +230,26 @@ function AgencySentRequestDetails() {
               </div>
 
               <div className="flex flex-col mx-20 mt-[-5px] text-xl">
-                <div className="flex ml-20">Room</div>
-                <div className="flex items-start mb-1 ">
-                  <label>Single Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[56px] w-20 rounded-lg"
-                    id="singleBed"
-                    name="NoOfSingleRooms"
-                    value={requestData.NoOfSingleRooms}
+                <div className="flex ml-20">Room Type</div>
+                <div className="relative inline-flex hs-dropdown">
+                  <select
+                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                    aria-labelledby="hs-dropdown-default"
+                    value={requestData.RoomType}
                     onChange={(e) =>
                       setRequestData({
                         ...requestData,
-                        NoOfSingleRooms: e.target.value,
+                        RoomType: e.target.value,
                       })
                     }
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Double Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[45px] w-20 rounded-lg"
-                    id="doubleBed"
-                    name="NoOfDoubleRooms"
-                    value={requestData.NoOfDoubleRooms}
-                    onChange={(e) =>
-                      setRequestData({
-                        ...requestData,
-                        NoOfDoubleRooms: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="flex items-start mb-1">
-                  <label>Triple Bed</label>
-                  <input
-                    type="number"
-                    className="ml-[60px] w-20 rounded-lg"
-                    id="tripleBed"
-                    name="NoOfTripleRooms"
-                    value={requestData.NoOfTripleRooms}
-                    onChange={(e) =>
-                      setRequestData({
-                        ...requestData,
-                        NoOfTripleRooms: e.target.value,
-                      })
-                    }
-                  />
+                  >
+                    <option value="" disabled>
+                      Select Room Type
+                    </option>
+                    <option value="chalet">Eco Jungle Chalet</option>
+                    <option value="cottage">Eco Jungle Cottage</option>
+                    <option value="cabin">Eco Jungle Cabin</option>
+                  </select>
                 </div>
               </div>
             </div>
