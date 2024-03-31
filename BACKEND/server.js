@@ -27,6 +27,6 @@ mongoose.connect(URL).then(() => {
 const eventRouter = require("./routes/events");
 
 app.use ("/event", eventRouter);
-//Here when URL is searched as http://Localhost:8070/event, the 'events.js' filein routes folder is executed
+//Here when URL is searched as http://Localhost:8070/event, the 'events.js' file in routes folder is executed
 
 
