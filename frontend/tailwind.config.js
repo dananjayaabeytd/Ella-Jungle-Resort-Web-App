@@ -4,7 +4,18 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        'theme-green': '#75BA6F',
+      },
+
+      fontFamily: {
+        inika: ['Inika', 'serif'],
+        mclaren: ['McLaren', 'cursive'],
+        lexend: ['Lexend', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }
+
