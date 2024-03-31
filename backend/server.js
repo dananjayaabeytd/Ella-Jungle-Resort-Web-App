@@ -1,5 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors');
+
 
 const app = express();
 const port = 5000;
@@ -10,6 +12,9 @@ const reservationRoutes = require('./routes/reservationRoutes');
 
 // Middleware
 app.use(express.json()); // Parse JSON bodies
+app.use('/uploads', express.static('uploads'));
+ // Serve static files
+app.use(cors()); // Enable CORS
 
 // Using routes
 app.use('/residence', roomRoutes);

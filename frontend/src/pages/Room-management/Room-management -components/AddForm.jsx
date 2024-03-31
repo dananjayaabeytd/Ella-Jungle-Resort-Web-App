@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Roomform = () => {
   const [roomDetails, setRoomDetails] = useState({
     roomName: '',
     roomType: '',
     maxCount: '',
-    picture: '',
     description: '',
     price: ''
   });
+
+  const [selectedFile, setSelectedFile] = useState(null); // Single file state
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,20 +21,45 @@ const Roomform = () => {
     }));
   };
 
+  const navigate = useNavigate(); // Access navigate object for redirection
+
+  const handlefileChange = (e) => {
+    setSelectedFile(e.target.files[0]); // Store the single selected file
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/residence/rooms', roomDetails);
-      console.log('Room added successfully');
-      // Reset form fields
+      const formData = new FormData();
+      formData.append('image', selectedFile);
+  
+      const imageResponse = await axios.post('/residence/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+  
+      const imagePath = imageResponse.data.filename;
+      console.log('Image uploaded successfully:', imagePath);
+  
+      const roomDetailsWithImage = {
+        ...roomDetails,
+        image: imagePath
+      };
+  
+      const roomResponse = await axios.post('/residence/rooms', roomDetailsWithImage);
+      console.log('Room added successfully:', roomResponse.data);
+  
       setRoomDetails({
         roomName: '',
         roomType: '',
         maxCount: '',
-        picture: '',
         description: '',
         price: ''
       });
+
+      navigate('/roomPage'); // Replace '/roomPAge' with your actual room details page path
+
     } catch (error) {
       console.error('Error adding room:', error);
     }
@@ -56,8 +83,8 @@ const Roomform = () => {
             <input type="number" id="maxCount" name="maxCount" value={roomDetails.maxCount} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
           </div>
           <div className="mb-6">
-            <label htmlFor="picture" className="block text-sm font-medium text-gray-700">Picture URL</label>
-            <input type="text" id="picture" name="picture" value={roomDetails.picture} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
+            <label htmlFor="image" className="block text-sm font-medium text-gray-700">Picture URL</label>
+            <input type="file" id="image" name="image"  onChange={handlefileChange}  className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
           </div>
           <div className="mb-6">
             <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>
@@ -67,7 +94,7 @@ const Roomform = () => {
             <label htmlFor="price" className="block text-sm font-medium text-gray-700">Price</label>
             <input type="text" id="price" name="price" value={roomDetails.price} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
           </div>
-          <button type="submit" className="bg-green-700 hover:bg-black text-white font-semibold py-2 px-4 rounded transition-colors ease-in-out duration-300" onClick={() => window.location.href = '/RoomPage'}>Add Room</button>
+          <button type="submit" className="bg-green-700 hover:bg-black text-white font-semibold py-2 px-4 rounded transition-colors ease-in-out duration-300" >Add Room</button>
         </form>
       </div>
     </div>
