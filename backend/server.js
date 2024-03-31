@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const app = express();
 const port = 5000;
 
-const DB_URL = "mongodb+srv://it22076052:Test123@cluster.n6buyt3.mongodb.net/Residence?retryWrites=true&w=majority&appName=Cluster";
+const DB_URL = "mongodb+srv://itp:itp@ellajungleresort.zklxh1j.mongodb.net/ellajungleresort?retryWrites=true&w=majority&appName=EllaJungleResort";
 const roomRoutes = require('./routes/Rooms');
 const reservationRoutes = require('./routes/reservationRoutes');
 

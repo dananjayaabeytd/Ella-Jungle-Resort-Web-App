@@ -4,26 +4,43 @@ import axios from 'axios';
 
 function ReservationForm() {
     const { id } = useParams();
-    const [formData, setFormData] = useState({
+    const [reservationDetails, setreservationDetails] = useState({
+        roomID:'',
         fullName: '',
         email: '',
         contactNumber: '',
-        roomType: '',
-        checkInDate: '',
-        checkOutDate: ''
+        checkIn: '',
+        checkOut: ''
     });
 
     const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
+        const { name, value } = e.target;
+        setreservationDetails(prevState => ({
+          ...prevState,
+          [name]: value
+        }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle form submission here
-        console.log(formData);
+        try {
+            const formData = { ...reservationDetails, roomID: id };
+            await axios.post('/reservation/booking', formData);
+            console.log('Reservation added succefully');
+            //reset form fields
+            setreservationDetails({
+                roomID:'',
+                fullName: '',
+                email: '',
+                contactNumber: '',
+                checkIn: '',
+                checkOut: ''
+            });
+
+        } catch (error) {
+            console.error('Error adding data',error);
+        }
+        
     };
 
     return (
@@ -32,28 +49,28 @@ function ReservationForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
             <div>
                     <label className="block mb-1">Room ID:</label>
-                    <input type="text" name="RoomID" value={id} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required readOnly />
+                    <input type="text" name="roomID" value={id} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required readOnly />
                 </div>
                 <div>
                     <label className="block mb-1">Full Name:</label>
-                    <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
+                    <input type="text" name="fullName" value={reservationDetails.fullName} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
                 </div>
                 <div>
                     <label className="block mb-1">Email:</label>
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
+                    <input type="email" name="email" value={reservationDetails.email} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
                 </div>
                 <div>
                     <label className="block mb-1">Contact Number:</label>
-                    <input type="text" name="contactNumber" value={formData.contactNumber} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
+                    <input type="text" name="contactNumber" value={reservationDetails.contactNumber} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
                 </div>
                 <div className="flex space-x-4">
                     <div>
                         <label className="block mb-1">Check-in Date:</label>
-                        <input type="date" name="checkInDate" value={formData.checkInDate} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
+                        <input type="date" name="checkIn" value={reservationDetails.checkIn} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
                     </div>
                     <div>
                         <label className="block mb-1">Check-out Date:</label>
-                        <input type="date" name="checkOutDate" value={formData.checkOutDate} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
+                        <input type="date" name="checkOut" value={reservationDetails.checkOut} onChange={handleChange} className="border border-gray-400 p-2 w-full rounded" required />
                     </div>
                 </div>
                 <div>
