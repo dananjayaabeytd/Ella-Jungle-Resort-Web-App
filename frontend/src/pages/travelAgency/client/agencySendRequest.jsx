@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
-import AgencyDetailsProfile from "../../../components/travelAgent/agencyDetailsProfile";
+import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
+
+
 
 function AgencySendRequest() {
   const [formData, setFormData] = useState({
@@ -16,7 +18,7 @@ function AgencySendRequest() {
     RequestDescription: "",
     ClientId: "123", // Set the client ID
     AgencyId: "456", // Set the agency ID
-    Status: "true", // Set the status to false
+    Status: "false", // Set the status to false
   });
 
   const handleChange = (e) => {

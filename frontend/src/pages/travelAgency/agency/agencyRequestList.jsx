@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import AgencyNewRequest from "../../../components/travelAgent/agencyNewRequest";
+import AgencyNewRequest from "../../../components/travelAgency/agency/agencyNewRequest";
 
 function AgencyRequestList() {
   const [requests, setRequests] = useState([]);
@@ -16,8 +16,8 @@ function AgencyRequestList() {
       });
   }, []);
 
-  const newRequests = requests.filter((request) => request.Status);
-  const oldRequests = requests.filter((request) => !request.Status);
+  const newRequests = requests.filter((request) => !request.Status);
+  const oldRequests = requests.filter((request) => request.Status);
   return (
     <div>
       <div className="container mx-auto flex w-[1000px] border-black border flex-col">

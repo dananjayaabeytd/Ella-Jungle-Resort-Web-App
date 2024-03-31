@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-function AgencyRequestDetails() {
+function AgencySentRequestDetails() {
   const { id } = useParams();
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
@@ -62,32 +62,61 @@ function AgencyRequestDetails() {
     fetchData();
   }, [id]);
 
-  const handleAcceptRequest = async () => {
-    try {
-      const updatedRequest = await axios.put(
-        `http://localhost:3005/UpdateRequest/${id}`,
-        {
-          ...requestData,
-          Status: true,
+  const handleUpdateRequest = async () => {
+    Swal.fire({
+      title: "Do you want to save the changes?",
+      showDenyButton: true,
+      confirmButtonText: "Save",
+      confirmButtonColor: "rgb(38, 219, 104)",
+      denyButtonColor: "#3085d6",
+      denyButtonText: `Don't save`,
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.put(`http://localhost:3005/UpdateRequest/${id}`, {
+            ...requestData,
+            Status: false, // Update the status to false
+          });
+          Swal.fire("Saved!", "", "success").then(() => {
+            window.location.href = "/AgencySentRequestList";
+          });
+        } catch (error) {
+          console.error("Error updating request:", error);
+          alert("Error updating request");
         }
-      );
-      if (updatedRequest.data.message === "Request Updated") {
-        Swal.fire({
-          icon: "success",
-          title: "Request Accepted!",
-          showConfirmButton: true
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = "/AgencyRequestList";
-          }
-        });
+      } else if (result.isDenied) {
+        Swal.fire("Changes are not saved", "", "info");
       }
-    } catch (error) {
-      console.error("Error accepting request:", error);
-    }
+    });
   };
   
-  
+
+  const handleDeleteRequest = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!"
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`http://localhost:3005/DeleteRequest/${id}`);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success"
+          });
+          window.location.href = "/AgencySentRequestList";
+        } catch (error) {
+          console.error("Error deleting request:", error);
+          alert("Error deleting request");
+        }
+      }
+    });
+  };
 
   return (
     <div>
@@ -101,13 +130,12 @@ function AgencyRequestDetails() {
             <div className="flex items-start form-group">
               <div className="flex flex-col mx-20 text-xl">
                 <div className="flex items-start mb-2 ">
-                  <label>Client Name</label>
+                  <label>Agency Name</label>
                   <input
                     type="text"
                     id="arrivalDate"
                     name="ArrivalDate"
                     className="ml-[92px] rounded-lg"
-                    readOnly
                   />
                 </div>
                 <div className="flex items-start mb-2 ">
@@ -117,8 +145,13 @@ function AgencyRequestDetails() {
                     id="arrivalDate"
                     name="ArrivalDate"
                     className="ml-[92px] rounded-lg"
-                    readOnly
                     value={requestData.ArrivalDate}
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        ArrivalDate: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -129,7 +162,12 @@ function AgencyRequestDetails() {
                     id="departureDate"
                     name="DepartureDate"
                     value={requestData.DepartureDate}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        DepartureDate: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -140,7 +178,12 @@ function AgencyRequestDetails() {
                     id="noOfDays"
                     name="NoOfDays"
                     value={requestData.NoOfDays}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfDays: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -151,7 +194,12 @@ function AgencyRequestDetails() {
                     id="noOfNights"
                     name="NoOfNights"
                     value={requestData.NoOfNights}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfNights: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -162,7 +210,12 @@ function AgencyRequestDetails() {
                     id="noOfAdults"
                     name="NoOfAdults"
                     value={requestData.NoOfAdults}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfAdults: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-2">
@@ -173,7 +226,12 @@ function AgencyRequestDetails() {
                     id="noOfChildren"
                     name="NoOfChildren"
                     value={requestData.NoOfChildren}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfChildren: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -188,7 +246,12 @@ function AgencyRequestDetails() {
                     id="singleBed"
                     name="NoOfSingleRooms"
                     value={requestData.NoOfSingleRooms}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfSingleRooms: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-1">
@@ -199,7 +262,12 @@ function AgencyRequestDetails() {
                     id="doubleBed"
                     name="NoOfDoubleRooms"
                     value={requestData.NoOfDoubleRooms}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfDoubleRooms: e.target.value,
+                      })
+                    }
                   />
                 </div>
                 <div className="flex items-start mb-1">
@@ -210,7 +278,12 @@ function AgencyRequestDetails() {
                     id="tripleBed"
                     name="NoOfTripleRooms"
                     value={requestData.NoOfTripleRooms}
-                    readOnly
+                    onChange={(e) =>
+                      setRequestData({
+                        ...requestData,
+                        NoOfTripleRooms: e.target.value,
+                      })
+                    }
                   />
                 </div>
               </div>
@@ -225,7 +298,12 @@ function AgencyRequestDetails() {
                   name="RequestDescription"
                   id="RequestDescription"
                   value={requestData.RequestDescription}
-                  readOnly
+                  onChange={(e) =>
+                    setRequestData({
+                      ...requestData,
+                      RequestDescription: e.target.value,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -234,9 +312,18 @@ function AgencyRequestDetails() {
                 id="spRequest"
                 className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
                 type="button" // Change type to button to prevent form submission
-                onClick={handleAcceptRequest}
+                onClick={handleUpdateRequest}
               >
-                Accept Request
+                Update Request
+                <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+              </button>
+              <button
+                id="spRequest"
+                className="mx-20 mb-10 w-[200px] h-10 bg-red-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-red-500 hover:to-red-400 hover:ring-2 hover:ring-offset-2 hover:ring-red-400 transition-all ease-out duration-300"
+                type="button" // Change type to button to prevent form submission
+                onClick={handleDeleteRequest}
+              >
+                Delete Request
                 <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
               </button>
             </div>
@@ -247,4 +334,4 @@ function AgencyRequestDetails() {
   );
 }
 
-export default AgencyRequestDetails;
+export default AgencySentRequestDetails;

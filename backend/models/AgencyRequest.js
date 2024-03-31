@@ -11,7 +11,7 @@ const AgencyRequestSchema = new Schema({
         type: String,
         required: false
     },
-    NoOfDays: {
+    NoOfDays: { 
         type: Number,
         required: true
     },

@@ -1,7 +1,7 @@
 import React from "react";
-import AgencyDetailsProfile from "../../../components/travelAgent/agencyDetailsProfile";
-import AgencyRequestPackage from "../../../components/travelAgent/agencyRequestPackage";
-import AgencyPackageCard from "../../../components/travelAgent/agencyPackageCard";
+import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
+import AgencyRequestPackage from "../../../components/travelAgency/client/agencyRequestPackage";
+import AgencyPackageCard from "../../../components/travelAgency/client/agencyPackageCard";
 
 function AgencyDetails() {
   return (

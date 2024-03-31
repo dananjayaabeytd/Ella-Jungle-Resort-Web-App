@@ -18,7 +18,7 @@ const AgencySchema = new Schema({
     },
     AgencyAddress: {
         type: String,
-        required: true  
+        required: true
     },
     AgencyTelephone: {
         type: String,
