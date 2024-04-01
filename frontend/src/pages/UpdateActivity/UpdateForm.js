@@ -8,43 +8,53 @@ function UpdateForm() {
      const{id} = useParams();
      
      const [name,setName]= useState("");
-    //const [image,setImage]= useState("");
+     //const [image,setImage]= useState("");
      const[description,setDescription] = useState("");
      const [price,setPrice] = useState("");
      const navigate= useNavigate();
 
 
+
     //useEffect hook to fetch the details of the specific SpecialActivity with the given id
     useEffect(()=>{
         
+
+
       //to send GET requests to the backend
       axios.get(`http://localhost:8080/SpecialActivity/get/${id}`)
       .then((res)=>{
        
+
+
           setName(res.data.specialActivity.name);
           //setImage(res.data.specialActivity.image);
           setDescription(res.data.specialActivity.description);
           setPrice(res.data.specialActivity.price);
+
+
 
       }).catch((err)=>{
           //alert(err.message);
           console.error(err.message);
       })
   
-         },[id])
+    },[id])
 
 
-        //this function is called when the form is submitted for updating student info
+    //this function is called when the form is submitted for updating student info
     const handleUpdate=(e) =>{
-      //prevents the default form submission behavior
+
+    //prevents the default form submission behavior
       e.preventDefault();
 
 
-      //creates an object with the current state values
-      const updatedSpecialActivity={
+    //creates an object with the current state values
+    const updatedSpecialActivity={
           name,/*image*/description,price
       
   };  
+
+
    
    //sends a PUT request to the backend with the updated student data
    axios.put(`http://localhost:8080/SpecialActivity/update/${id}`, updatedSpecialActivity)
@@ -53,6 +63,7 @@ function UpdateForm() {
      //console.log(res.data.status);
      navigate("/");
    })
+
    .catch((err) => {
      //alert(err.message);
      console.error(err.message);
@@ -68,6 +79,8 @@ return (
       <form className="flex flex-col w-full" onSubmit={handleUpdate}>
         <h2 className="self-center text-3xl text-white mb-8">Update</h2>
 
+
+
         <label htmlFor="name" className="mt-4 text-white">Name</label>
         <input
           type="text"
@@ -77,6 +90,8 @@ return (
           onChange={(e) => setName(e.target.value)}
         />
 
+
+
         <label htmlFor="description" className="mt-8 text-white">Description</label>
         <textarea
           id="description"
@@ -84,6 +99,8 @@ return (
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         ></textarea>
+
+
 
         <label htmlFor="price" className="mt-8 text-white">Price</label>
         <input
@@ -94,17 +111,25 @@ return (
           onChange={(e) => setPrice(e.target.value)}
         />
 
+
+
         <button
           type="submit"
-          className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-lg text-white font-semibold hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-        >
+          className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-lg text-white font-semibold
+           hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+
           Update
+
         </button>
+
+
       </form>
     </div>
   </div>
 );
 
 }
+
+
 
 export default UpdateForm;

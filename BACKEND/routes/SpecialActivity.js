@@ -1,31 +1,71 @@
 //import router functions in express package
 const router = require("express").Router();
 let SpecialActivity = require("../models/SpecialActivity");
+const multer = require("multer");
+const path = require("path");
 
 
 
-router.route("/add").post((req,res)=>{
-    const name=req.body.name;
-    
-    const description = req.body.description;
-    const price =Number(req.body.price);
-
-    const newSpecialActivity = new SpecialActivity({
-        name,
-       //image,
-        description,
-        price
-    })
+// Multer configuration
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "../frontend/src/assets/"); // Set destination folder
+    },
+    filename: function (req, file, cb) {
+      // Set filename to current timestamp + original file extension
+      cb(null, `${Date.now()}_${file.originalname}`);
+    },
+  });
 
 
-     //send the values of the above properties to the db
-     newSpecialActivity.save().then(()=>{
-        res.json("Special Activity added")
-    }).catch((err)=>{
-        console.log(err);
-    })
 
-})
+// Multer instance
+const upload = multer({ storage: storage }).single('image');
+
+
+
+// Route to add a new special activity
+router.post("/add", (req, res) => {
+    // Use Multer middleware to handle file upload
+    upload(req, res, async (err) => {
+      if (err instanceof multer.MulterError) {
+        // Multer error occurred
+        console.error("Multer error:", err);
+        return res.status(500).send("An error occurred during file upload.");
+      } else if (err) {
+        // Unknown error occurred
+        console.error("Unknown error:", err);
+        return res.status(500).send("An unknown error occurred.");
+      }
+  
+
+
+      // File upload successful, continue with adding the activity
+      const { name, description, price } = req.body;
+      const image = req.file ? req.file.filename : ""; // If no file uploaded, set empty string
+  
+
+
+      try {
+        const newSpecialActivity = new SpecialActivity({
+          name,
+          image,
+          description,
+          price,
+        });
+
+        await newSpecialActivity.save();
+        console.log("Special Activity added:", newSpecialActivity);
+        res.status(201).json({ message: "Special Activity added", specialActivity: newSpecialActivity });
+
+
+      } catch (error) {
+        console.error("Error adding special activity:", error);
+        res.status(400).json({ error: "Error adding special activity" });
+      }
+    });
+});
+
 
 
 
@@ -39,6 +79,9 @@ router.route("/").get((req,res)=>{
 })
 
 
+
+
+
 //to update values
 router.route("/update/:id").put(async(req,res)=>{
 
@@ -46,16 +89,19 @@ router.route("/update/:id").put(async(req,res)=>{
     let userId = req.params.id;
     
     //fetching the newly updated data in destructive format
-    const{name,/*image,*/description,price}=req.body;
+    const{name,image,description,price}=req.body;
 
     //creating an object to update the data
     const updateSpecialActivity={
         name,
-        //image,
+        image,
         description,
         price
     };
     
+
+
+
 
     //to check whether an activity exists related to a specific id
     try {
@@ -64,11 +110,17 @@ router.route("/update/:id").put(async(req,res)=>{
             return res.status(404).send({ status: "Special Activity not found" });
         }
         res.status(200).send({ status: "Special Activity updated", updatedActivity });
+
+
     } catch (err) {
         console.log(err);
         res.status(500).send({ status: "Error with updating data", error: err.message });
     }
+
 });
+
+
+
 
 
 //to delete a user
@@ -101,6 +153,8 @@ router.route("/get/:id").get(async(req,res)=>{
         res.status(500).send({ status: "Error with get activity", error: err.message });
     }
 });
+
+
 
 
 module.exports = router;

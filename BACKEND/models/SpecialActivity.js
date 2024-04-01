@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+
+
+
+
 //create an object
 const specialActivitiesSchema = new Schema({
     //properties of special activities
@@ -26,6 +30,9 @@ const specialActivitiesSchema = new Schema({
         required:true
     }
 })
+
+
+
 
 //send the above properties to the db
 const SpecialActivity = mongoose.model("special_activities",specialActivitiesSchema);

@@ -6,6 +6,7 @@ import UpdateForm from "./pages/UpdateActivity/UpdateForm";
 import ViewActivity from "./pages/AllActivity/ViewActivity";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 
+
 export default function App() {
   return (
       <Router>
@@ -15,6 +16,7 @@ export default function App() {
               <Route path="/add" element={<AddForm/>}/>
               <Route path="/update/:id" element={<UpdateForm/>}/>
               <Route path="/" element={<ViewActivity/>}/>
+              
               </Routes>
              
                 

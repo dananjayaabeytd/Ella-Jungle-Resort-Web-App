@@ -6,14 +6,19 @@ const app = express();
 require("dotenv").config();
 
 
+
 //define the port
 const PORT = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(bodyParser.json());
 
+
+
 //get the db link
 const URL = process.env.MONGODB_URL;
+
+
 
 
 //mongodb configuration
@@ -26,6 +31,10 @@ mongoose.connect(URL,{
 }
 );
 
+
+
+
+
 //open the db connection we created
 const connection = mongoose.connection;
 connection.once("open",()=>{
@@ -33,10 +42,16 @@ connection.once("open",()=>{
 });
 
 
-//import students.js file to access students.js router file
+
+
+
+
+//import SpecialActivity.js file to access students.js router file
 const specialActivityRouter = require("./routes/SpecialActivity.js");
 
+
 app.use("/SpecialActivity",specialActivityRouter);
+
 
 
 //load our app in the port
