@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const userRoutes = require('./routes/userRoutes.js');
 const agencyRoutes = require('./routes/agencyRoutes.js')
+const feedbackRoutes = require('./routes/feedbackRoutes.js')
 
 const port = process.env.PORT || 5000;
 connectDB();
@@ -23,6 +24,7 @@ app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/agencies', agencyRoutes);
+app.use("/api/feedbacks",feedbackRoutes); //ishara feedbackRoutes
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
