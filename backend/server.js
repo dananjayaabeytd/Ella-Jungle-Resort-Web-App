@@ -31,3 +31,5 @@ app.listen(PORT, () => {
 const AgencyNewRequestRouter = require('./routes/agencyNewRequests'); 
 app.use('/', AgencyNewRequestRouter); 
 
+const AgencyRouter = require('./routes/agencyRoutes');
+app.use('/', AgencyRouter);

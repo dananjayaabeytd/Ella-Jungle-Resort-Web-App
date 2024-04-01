@@ -1,7 +1,26 @@
 import React from "react";
 import StarRating from "./agencyStarRating";
 
-function AgencyDetailsSimple() {
+function AgencyDetailsSimple({
+  agencyId,
+  agencyName,
+  businessRegistrationNumber,
+  address,
+  mobile,
+  businessMail,
+  rating,
+  clientId,
+}) {
+
+  console.log("Agency ID:", agencyId);
+  console.log("clientId:", clientId);
+  
+  
+  
+  const handleDetailsClick = (agencyId, clientId) => {
+    window.location.href = `/AgencyDetails/${agencyId}/${clientId}`;
+  };
+
   return (
     <div className="container flex flex-col mx-5 border-t border-[#4CAF50] max-w-[780px] border-b">
       <div className="flex items-start mx-5 mt-5 ">
@@ -13,23 +32,26 @@ function AgencyDetailsSimple() {
 
         <div className="flex flex-col items-start">
           <h1 className="self-start mb-5 ml-5 text-4xl font-semibold">
-            Agency Name
+            {agencyName}
           </h1>
           <div className="flex pl-5 text-xl">
             <div>
               <p className="pb-2">Reg No:</p>
-              <p className="pb-2">Licence No:</p>
+              <p className="pb-2">Address:</p>
               <p className="pb-2">Telephone:</p>
               <p className="pb-2">Email:</p>
               <StarRating />
             </div>
 
             <div className="ml-10">
-              <p className="pb-2">SLTDA/SQA/TA/02230</p>
-              <p className="pb-2">TA/2023/0256</p>
-              <p className="pb-2">+94 123456789</p>
-              <p className="pb-2">agecyemailaddress@mail.com</p>
-              <button class="justify-center px-10 py-0.5 mt-4 mb-5 ml-20 text-xl text-white bg-green-500 rounded-3xl max-md:px-5">
+              <p className="pb-2">{businessRegistrationNumber}</p>
+              <p className="pb-2">{address}</p>
+              <p className="pb-2">{mobile}</p>
+              <p className="pb-2">{businessMail}</p>
+              <button
+                class="justify-center px-10 py-0.5 mt-4 mb-5 ml-20 text-xl text-white bg-green-500 rounded-3xl max-md:px-5"
+                onClick={() => handleDetailsClick(agencyId, clientId)}
+              >
                 More Details
               </button>
             </div>

@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import AgencyDetailsSimple from "../../../components/travelAgency/client/agencyDetailsSimple";
 import AgencySearch from "../../../components/travelAgency/client/agencySearch";
 
 function AgencyList() {
+  const { clientId } = useParams();
+
+  const [agencies, setAgencies] = useState([]);
+
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3005/getAllAgencies"
+        );
+        setAgencies(response.data);
+      } catch (error) {
+        console.error("Error fetching agencies:", error);
+      }
+    };
+
+    fetchAgencies();
+  }, []);
+
   return (
     <div>
       <div className="relative">
@@ -18,10 +39,29 @@ function AgencyList() {
 
       <div className="flex mt-5 ml-10">
         <div className="container flex-col justify-center mx-auto ">
-          <AgencyDetailsSimple />
-          <AgencyDetailsSimple />
-          <AgencyDetailsSimple />
-          <AgencyDetailsSimple />
+          {agencies.map((agency) => {
+            console.log("Agency ID:", agency.id);
+            console.log("Agency Name:", agency.agencyName);
+            console.log("Agency Address:", agency.address);
+            console.log("Agency Mobile:", agency.mobile);
+            console.log("Agency Business Mail:", agency.businessMail);
+            console.log("Agency Fax:", agency.fax);
+            console.log("Agency Rating:", agency.rating);
+            console.log("Client ID", clientId);
+
+            return (
+              <AgencyDetailsSimple
+                agencyId={agency.id}
+                agencyName={agency.agencyName}
+                businessRegistrationNumber={agency.businessRegistrationNumber}
+                address={agency.address}
+                mobile={agency.mobile}
+                businessMail={agency.businessMail}
+                rating={agency.rating}
+                clientId={clientId} // Pass clientId here
+              />
+            );
+          })}
         </div>
 
         <div className="flex-1 mr-20">

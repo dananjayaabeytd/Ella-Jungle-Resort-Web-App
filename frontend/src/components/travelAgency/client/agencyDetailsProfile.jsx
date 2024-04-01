@@ -1,11 +1,44 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import StarRating from "./agencyStarRating";
+import axios from "axios";
 
 function AgencyDetailsProfile() {
+  const { agencyId } = useParams();
+
+  const [agencyData, setAgencyData] = useState({
+    agencyName: "",
+    address: "",
+    img: "",
+    mobile: "",
+    businessRegistrationNumber: "",
+    representerMail: "",
+    businessMail: "",
+    fax: "",
+    taxIdNumber: "",
+    description: "",
+    websiteLink: "",
+    rating: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await axios.get(`http://localhost:3005/getAgency/${agencyId}`);
+        const { data } = result; // Extract data from the result object
+        // Assuming result.data contains all the necessary data
+        setAgencyData(data); // Set the agencyData state with the received data
+      } catch (error) {
+        console.error("Error fetching agency data:", error);
+      }
+    };
+    fetchData();
+  }, [agencyId]);
+
   return (
     <div className="container flex flex-col min-h-[350px] mx-20 mt-3">
       <h1 className="self-start mt-3 mb-5 ml-3 text-4xl font-semibold">
-        Agency Name
+        {agencyData.agencyName}
       </h1>
       <div className="flex items-start">
         <img
@@ -21,25 +54,25 @@ function AgencyDetailsProfile() {
               <p className="pb-4">Address:</p>
               <p className="pb-4">Telephone:</p>
               <p className="pb-4">Email:</p>
+              <p className="pb-4">Fax:</p>
               <StarRating />
             </div>
             <div className="ml-10">
-              <p className="pb-4">SLTDA/SQA/TA/02230</p>
-              <p className="pb-4">TA/2023/0256</p>
-              <p className="pb-4">23/C, Galle Road, Colombo</p>
-              <p className="pb-4">+94 123456789</p>
-              <p className="pb-4">agecyemailaddress@mail.com</p>
+              <p className="pb-4"></p>
+              <p className="pb-4">{agencyData.businessRegistrationNumber}</p>
+              <p className="pb-4"> {agencyData.address}</p>
+              <p className="pb-4">{agencyData.mobile}</p>
+              <p className="pb-4">{agencyData.businessMail}</p>
+              <p className="pb-4">{agencyData.fax}</p>
             </div>
           </div>
           <div className="flex pl-5 mt-5 max-w-[700px]">
-            <p>
-              Curate your Sri Lankan adventure with our Ella Jungle resort
-              promotions. Escape for a short break to explore the island’s
-              highlights,or leisurely sample all its wonders.
-            </p>
+            <p>{agencyData.description}</p>
           </div>
           <div className="flex gap-5 mt-5 ml-5">
-            <a href="facebook.com">
+            <a
+              href="{ agencyData.websiteLink}"
+            >
               <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/e554f3583ab683cda87bc919720bac4db0578a18c5a864f04c398686f5e83077?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
                 alt="facebook"

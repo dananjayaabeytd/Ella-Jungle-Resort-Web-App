@@ -1,9 +1,13 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
 
 function AgencySendRequest() {
+  
+  const {agencyId, clientId} = useParams();
+  
   const [formData, setFormData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
@@ -13,8 +17,8 @@ function AgencySendRequest() {
     NoOfChildren: "",
     RoomType: "",
     RequestDescription: "",
-    ClientId: "123", // Set the client ID
-    AgencyId: "456", // Set the agency ID
+    ClientId: clientId, // Set the client ID
+    AgencyId: agencyId, // Set the agency ID
     Status: "false", // Set the status to false
   });
 
@@ -62,8 +66,8 @@ function AgencySendRequest() {
         NoOfChildren: "",
         RoomType: "",
         RequestDescription: "",
-        ClientId: "",
-        AgencyId: "",
+        ClientId: clientId,
+        AgencyId: agencyId,
         Status: "",
       });
     } catch (error) {
@@ -80,7 +84,7 @@ function AgencySendRequest() {
 
   return (
     <div>
-      <AgencyDetailsProfile />
+      <AgencyDetailsProfile/>
 
       <div className="container my-10 flex flex-col mx-auto bg-green-500 border border-black bg-opacity-20 max-w-[1000px] rounded-lg">
         <div className="mt-3 text-2xl text-center">
