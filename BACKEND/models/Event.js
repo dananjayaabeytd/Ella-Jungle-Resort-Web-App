@@ -22,7 +22,18 @@ const eventSchema = new Schema({
         type: String,
         required: true
     },
-    
+
+    decorationPreferences: {
+        minimalistChecked: {
+          type: Boolean,
+          default: false,
+        },
+        elegantChecked: {
+          type: Boolean,
+          default: false,
+        }
+    },
+
     eventImage: {
         type: String, // Store the filename or image URL
         required: true

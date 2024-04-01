@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import christmas1 from '../assets/christmas1.jpg';
 
-//import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
 
 function EventList() {
@@ -22,14 +22,6 @@ function EventList() {
     getEvents();
   }, []);
 
-
-
-  const handleUpdateClick = (eventId) => {
-    // Navigate to the UpdateEvent component with the event ID as a URL parameter
-    window.location = `/update/${eventId}`;
-  };
-
-  
 
   const handleDeleteClick = async (eventId) => {
     try {
@@ -70,7 +62,7 @@ function EventList() {
 
       
   
-      <div className="grid grid-cols-2 gap-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2">
+      <div className="grid grid-cols-2 gap-16 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
     <div className="container shadow-md rounded-md overflow-hidden w-full max-h-80">
       <img className="product-image w-full h-full object-fill" src={`http://localhost:8070/Images/${event.eventImage}`} alt="Event Image"
       />
@@ -92,10 +84,14 @@ function EventList() {
             </div>
   
             <div className="mt-4 flex justify-center items-center">
-              
-              <button className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl" onClick={() => handleUpdateClick(event._id)}>
-                Update
-              </button>
+
+
+              {/* Using Link component for View button */}
+              <Link 
+                to={`/update/${event._id}`} 
+                className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl">
+                        Update
+              </Link>
 
               <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
                 View

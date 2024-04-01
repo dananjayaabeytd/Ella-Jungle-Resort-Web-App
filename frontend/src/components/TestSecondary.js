@@ -5,19 +5,21 @@ import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 
-export default function UpdateEvent() {
+export default function TestSecondary() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [updatedEventName, setUpdatedEventName] = useState("");
-  const [updatedEventCategory, setUpdatedEventCategory] = useState("");
-  const [updatedEventDate, setUpdatedEventDate] = useState("");
-  const [updatedEventDescription, setUpdatedEventDescription] = useState("");
+  const [selectedPreferences, setSelectedPreferences] = useState([]);
   const [file, setFile] = useState(null);
-  const [minimalistChecked, setMinimalistChecked] = useState(false);
-  const [elegantChecked, setElegantChecked] = useState(false);
 
   const navigate = useNavigate();
 
   const { eventId } = useParams(); // Get the eventId from URL params
+
+  // Assuming decorationPrices structure is the same from your AddEvent component
+  const decorationPrices = {
+    minimalist: 50,
+    elegant: 100,
+  };
 
   useEffect(() => {
     // Fetch event data based on eventId when the component mounts
@@ -28,11 +30,14 @@ export default function UpdateEvent() {
         console.log("Fetched Event Details Successfully");
         console.log(response.data.event);
 
-       // Extract preferences and update state
-       const preferences = response.data.event.decorationPreferences;
-       setMinimalistChecked(preferences.minimalistChecked || false);
-       setElegantChecked(preferences.elegantChecked || false);
-       
+        
+      // Extract preferences marked as true and update state
+      const preferences = response.data.event.decorationPreferences;
+      const activePreferences = Object.entries(preferences)
+        .filter(([key, value]) => value) // Filter out preferences that are true
+        .map(([key]) => key); // Extract the preference keys
+      setSelectedPreferences(activePreferences);
+        
       } catch (error) {
         console.error("Error fetching event data:", error.message);
         alert("Error fetching event data. Please try again.");
@@ -42,34 +47,50 @@ export default function UpdateEvent() {
     getEventDetails();
   }, [eventId]);
 
+
+  // Function to calculate total cost
+  const calculateTotalCost = () => {
+    let cost = 0;
+    selectedPreferences.forEach((preference) => {
+      cost += decorationPrices[preference];
+    });
+    return cost;
+  };
+
+
+
+// Function to handle checkbox changes
+  const handleCheckboxChange = (preference) => {
+    const updatedPreferences = [...selectedPreferences];
+    if (updatedPreferences.includes(preference)) {
+      updatedPreferences.splice(updatedPreferences.indexOf(preference), 1);
+    } else {
+      updatedPreferences.push(preference);
+    }
+    setSelectedPreferences(updatedPreferences);
+  };
+
+
+
   useEffect(() => {
     if (selectedEvent) {
       setUpdatedEventName(selectedEvent.eventName || "");
-      setUpdatedEventCategory(selectedEvent.eventCategory || "");
-      setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
-      setUpdatedEventDescription(selectedEvent.eventDescription || "");
-      // Extract preferences and update state
-      const preferences = selectedEvent.decorationPreferences;
-      setMinimalistChecked(preferences.minimalistChecked || false);
-      setElegantChecked(preferences.elegantChecked || false);
-
     }
   }, [selectedEvent]);
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
+
     const formData = new FormData();
+
     formData.append("eventName", updatedEventName);
-    formData.append("eventCategory", updatedEventCategory);
-    formData.append("eventDate", updatedEventDate);
-    formData.append("eventDescription", updatedEventDescription);
     formData.append("file", file);
 
-    
-    // Append the decorationPreferences object with minimalistChecked and elegantChecked
-    formData.append("decorationPreferences.minimalistChecked", minimalistChecked ? "true" : "false");
-    formData.append("decorationPreferences.elegantChecked", elegantChecked ? "true" : "false");
 
+    // Append selected preferences to formData
+    selectedPreferences.forEach((preference) => {
+        formData.append(`decorationPreferences.${preference}`, "true");
+      });
 
     try {
       await axios.put(`http://localhost:8070/event/update/${eventId}`, formData, {
@@ -128,88 +149,25 @@ export default function UpdateEvent() {
               />
             </div>
 
-            {/* Event Category */}
-            <div className="ml-30 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="eventCategory">Event Category</label>
-              <select
-                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                placeholder="Select Category"
-                name="eventCategory"
-                id="eventCategory"
-                value={updatedEventCategory}
-                onChange={(e) => setUpdatedEventCategory(e.target.value)}
-              >
-                <option value="" disabled>Select Category</option>
-                <option value="Wedding">Wedding</option>
-                <option value="Birthday">Birthday</option>
-                <option value="Christmas">Christmas</option>
-                <option value="Halloween">Halloween</option>
-                <option value="NewYear">New Year</option>
-                <option value="Other">Other</option>
-              </select>
-            </div>
-
-            {/* Event Date */}
-            <div className="ml-30 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
-              <input
-                type="date"
-                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                id="eventDate"
-                name="eventDate"
-                value={updatedEventDate}
-                onChange={(e) => setUpdatedEventDate(e.target.value)}
-              />
-            </div>
-
-            {/* Event Description */}
-            <div className="ml-30 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
-              <textarea
-                className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-                cols="50"
-                rows="8"
-                placeholder="Enter Description"
-                name="eventDescription"
-                value={updatedEventDescription}
-                onChange={(e) => setUpdatedEventDescription(e.target.value)}
-              ></textarea>
-            </div>
-
-
-            
             {/* Decoration Preferences */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800">Decoration Preferences:</label>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  id="minimalist"
-                  name="minimalist"
-                  checked={minimalistChecked}
-                  onChange={(e) => setMinimalistChecked(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-green-600"
-                />
-                <label htmlFor="minimalist" className="ml-2 text-green-800">
-                  Minimalist
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  id="elegant"
-                  name="elegant"
-                  checked={elegantChecked}
-                  onChange={(e) => setElegantChecked(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-green-600"
-                />
-                <label htmlFor="elegant" className="ml-2 text-green-800">
-                  Elegant
-                </label>
-              </div>
+              {Object.entries(decorationPrices).map(([preference, price]) => (
+                <div key={preference} className="form-check">
+                  <input
+                    type="checkbox"
+                    id={preference}
+                    name={preference}
+                    checked={selectedPreferences.includes(preference)}
+                    onChange={() => handleCheckboxChange(preference)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={preference} className="ml-2 text-green-800">
+                    {preference.charAt(0).toUpperCase() + preference.slice(1)} (${price})
+                  </label>
+                </div>
+              ))}
             </div>
-
-
 
 
             {/* Image Upload */}

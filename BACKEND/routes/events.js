@@ -20,6 +20,10 @@ const upload = multer({ storage: storage });
 router.route("/add").post(upload.single("file"), async (req, res) => {
   const { eventName, eventCategory, eventDate, eventDescription } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
+  const decorationPreferences = {
+    minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
+    elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
+  };
 
   try {
     const newEvent = new Event({
@@ -27,6 +31,7 @@ router.route("/add").post(upload.single("file"), async (req, res) => {
       eventCategory,
       eventDate,
       eventDescription,
+      decorationPreferences,
       eventImage,
     });
 
@@ -37,6 +42,10 @@ router.route("/add").post(upload.single("file"), async (req, res) => {
     res.status(500).send({ status: "Error with adding event", error: error.message });
   }
 });
+
+
+
+
 
 // Get all events
 router.route("/").get(async (req, res) => {
@@ -50,11 +59,26 @@ router.route("/").get(async (req, res) => {
 });
 
 
+
+
+
+
 // Update event
 router.route("/update/:id").put(upload.single("file"), async (req, res) => {
   let eventId = req.params.id;
   const { eventName, eventCategory, eventDate, eventDescription } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
+  
+//   // Assuming decorationPreferences come in as an array of "true" values with keys as the preference names
+//   const preferences = Object.keys(decorationPreferences).filter(key => decorationPreferences[key] === "true");
+
+  // Assuming decorationPreferences come in as an array of "true" values with keys as the preference names
+  //const { decorationPreferences } = req.body;
+  const decorationPreferences = {
+    minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
+    elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
+  };
+
 
   try {
     const updateEvent = {
@@ -62,7 +86,11 @@ router.route("/update/:id").put(upload.single("file"), async (req, res) => {
       eventCategory,
       eventDate,
       eventDescription,
+      //decorationPreferences: preferences, // Update this part based on your actual data structure
+      //decorationPreferences: decorationPreferences || [], // If no preferences provided, default to empty array
+      decorationPreferences,
       eventImage,
+      
     };
 
     const updatedEvent = await Event.findByIdAndUpdate(eventId, updateEvent, { new: true });
@@ -72,6 +100,12 @@ router.route("/update/:id").put(upload.single("file"), async (req, res) => {
     res.status(500).send({ status: "Error with updating event", error: error.message });
   }
 });
+
+
+
+
+
+
 
 // Delete event
 router.route("/delete/:id").delete(async (req, res) => {
@@ -85,6 +119,8 @@ router.route("/delete/:id").delete(async (req, res) => {
     res.status(500).send({ status: "Error in deleting Event", error: error.message });
   }
 });
+
+
 
 // Get one event by ID
 router.route("/get/:id").get(async (req, res) => {

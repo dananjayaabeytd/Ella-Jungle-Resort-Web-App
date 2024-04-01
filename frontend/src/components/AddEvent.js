@@ -11,10 +11,13 @@ function AddEvent() {
   const [eventName, setEventName] = useState("");
   const [eventCategory, setEventCategory] = useState("");
   const [eventDate, setEventDate] = useState("");
-  const [eventDescription, setEventDescription] = useState("");
+  const [eventDescription, setEventDescription] = useState("");  
+  const [minimalistChecked, setMinimalistChecked] = useState(false);
+  const [elegantChecked, setElegantChecked] = useState(false);
   const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
+
 
   function sendData(e) {
     e.preventDefault();
@@ -26,6 +29,9 @@ function AddEvent() {
     formData.append("eventDate", eventDate);
     formData.append("eventDescription", eventDescription);
     formData.append("file", file);
+    // Append the decorationPreferences object with minimalistChecked and elegantChecked
+    formData.append("decorationPreferences.minimalistChecked", minimalistChecked ? "true" : "false");
+    formData.append("decorationPreferences.elegantChecked", elegantChecked ? "true" : "false");
 
     axios
       .post("http://localhost:8070/event/add", formData, {
@@ -39,6 +45,8 @@ function AddEvent() {
         setEventCategory("");
         setEventDate("");
         setEventDescription("");
+        setMinimalistChecked(false);
+        setElegantChecked(false);
         setFile(null);
         navigate("/");
       })
@@ -77,13 +85,8 @@ function AddEvent() {
       <div className="ml-30 text-base font-semibold mt-5">
         <label className="block font-bold text-xl text-green-800" htmlFor="eventName">Event Name</label>
         <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-          type="text"
-          placeholder="Enter Name"
-          name="eventName"
-          value={eventName}
-          onChange={(e) => {
-            setEventName(e.target.value);
-          }}
+          type="text" placeholder="Enter Name" name="eventName" value={eventName}
+          onChange={(e) => setEventName(e.target.value)}
         />
       </div>
 
@@ -96,9 +99,7 @@ function AddEvent() {
           name="eventCategory"
           id="eventCategory"
           value={eventCategory}
-          onChange={(e) => {
-            setEventCategory(e.target.value);
-          }}
+          onChange={(e) => setEventCategory(e.target.value)}
         >
           <option value="" disabled>Select Category</option>
           <option value="Wedding">Wedding</option>
@@ -109,17 +110,13 @@ function AddEvent() {
         </select>
       </div>
 
+
       {/* Event Date */}
       <div className="ml-30 text-base font-semibold mt-5">
         <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
         <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-          type="date"
-          placeholder="Event Date"
-          name="eventDate"
-          value={eventDate}
-          onChange={(e) => {
-            setEventDate(e.target.value);
-          }}
+          type="date" placeholder="Event Date" name="eventDate" value={eventDate}
+          onChange={(e) =>  setEventDate(e.target.value)}
         />
       </div>
 
@@ -142,46 +139,45 @@ function AddEvent() {
       <div className="ml-30 text-base font-semibold mt-5">
         <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
         <textarea className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-          cols="50"
-          rows="8"
-          placeholder="Enter Description"
-          name="eventDescription"
-          required
-          value={eventDescription}
-          onChange={(e) => {
-            setEventDescription(e.target.value);
-          }}
+          cols="50" rows="8" placeholder="Enter Description" name="eventDescription" required value={eventDescription}
+          onChange={(e) => setEventDescription(e.target.value)}
         ></textarea>
       </div>
 
-      {/* Business Name */}
-      {/*
-      <div className="form-group">
-        <label className="block font-bold text-xl text-green-800" htmlFor="Business_Name">Business Name</label>
-        <input
-          type="text"
-          className="form-control w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-          placeholder="Enter Store Name"
-          name="Business_Name"
-          readOnly
+      
+            {/* Decoration Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Decoration Preferences:</label>
+              <div className="form-check">
+                <input type="checkbox" id="minimalist" name="minimalist" checked={minimalistChecked}
+                  onChange={(e) => setMinimalistChecked(e.target.checked)}
+                  className="form-checkbox h-5 w-5 text-green-600" 
+                />
+                <label htmlFor="minimalist" className="ml-2 text-green-800">
+                  Minimalist
+                </label>
+              </div>
+              <div className="form-check">
+                <input type="checkbox" id="elegant" name="elegant" checked={elegantChecked} 
+                  onChange={(e) => setElegantChecked(e.target.checked)}
+                  className="form-checkbox h-5 w-5 text-green-600"
+                />
+                <label htmlFor="elegant" className="ml-2 text-green-800">
+                  Elegant
+                </label>
+              </div>
+            </div>
+
+
+      <div className="ml-30 text-base font-semibold mt-5">
+        <label className="block font-bold text-xl text-green-800" htmlFor="file">
+          Event Image
+        </label>
+        <input type="file" id="file" name="file" accept="image/*" 
+        onChange={(e) => setFile(e.target.files[0])} 
+        className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
         />
       </div>
-    */}
-
-
-<div className="ml-30 text-base font-semibold mt-5">
-  <label className="block font-bold text-xl text-green-800" htmlFor="file">
-    Event Image
-  </label>
-  <input
-    type="file"
-    id="file"
-    name="file"
-    accept="image/*"
-    onChange={(e) => setFile(e.target.files[0])}
-    className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
-  />
-</div>
 
 
       <center>
