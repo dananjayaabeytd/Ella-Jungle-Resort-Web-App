@@ -24,7 +24,7 @@ app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/agencies', agencyRoutes);
-app.use("/api/feedbacks",feedbackRoutes); //ishara feedbackRoutes
+app.use('/api/feedbacks',feedbackRoutes); //ishara feedbackRoutes
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
