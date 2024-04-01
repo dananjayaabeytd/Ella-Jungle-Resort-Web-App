@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import christmas1 from '../assets/christmas1.jpg';
 
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
+//import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
 
 function EventList() {
@@ -72,7 +72,7 @@ function EventList() {
   
       <div className="grid grid-cols-2 gap-16 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-2">
     <div className="container shadow-md rounded-md overflow-hidden w-full max-h-80">
-      <img className="product-image w-full h-full object-fill" src={christmas1} alt="Event Image"
+      <img className="product-image w-full h-full object-fill" src={`http://localhost:8070/Images/${event.eventImage}`} alt="Event Image"
       />
     </div>
         <div className="px-0 py-4">
@@ -92,16 +92,16 @@ function EventList() {
             </div>
   
             <div className="mt-4 flex justify-center items-center">
-              <button className="text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl">
-                View
-              </button>
-
               
-              <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl" onClick={() => handleUpdateClick(event._id)}>
+              <button className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl" onClick={() => handleUpdateClick(event._id)}>
                 Update
               </button>
 
-              <button className="ml-5 bg-red-700 text-white text-lg px-4 py-1 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" onClick={() => handleDeleteClick(event._id)}>
+              <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
+                View
+              </button>
+
+              <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" onClick={() => handleDeleteClick(event._id)}>
                 Delete
               </button>
             </div>

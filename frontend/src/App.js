@@ -5,11 +5,11 @@ import EventList from "./components/EventList"
 import TestPage from "./components/TestPage"
 import UpdateEvent from "./components/UpdateEvent"
 
+
 export default function App() {
   return (
     <Router>
       <div>
-        
         <Routes>
           <Route path="/" exact element={<EventList/>}/>
           <Route path="/add" exact element={<AddEvent/>}/>

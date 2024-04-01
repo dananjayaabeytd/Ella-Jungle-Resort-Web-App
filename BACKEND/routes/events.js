@@ -1,96 +1,105 @@
+const router = require("express").Router();
+const multer = require("multer");
+const path = require("path");
+const Event = require("../models/Event");
 
-const router = require ("express").Router();
-let Event = require("../models/Event")      //Using Event model in Models folder
+// Configure storage for multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/Images"); // Ensure this directory exists or multer will throw an error
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+  },
+});
 
-router.route("/add").post((req,res) => {
-    const { eventName, eventCategory, eventDate, eventDescription } = req.body;
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
 
-    // Convert the eventDate to a Date object
+// Add an event with image
+router.route("/add").post(upload.single("file"), async (req, res) => {
+  const { eventName, eventCategory, eventDate, eventDescription } = req.body;
+  const eventImage = req.file ? req.file.filename : ""; // Check if file exists
+
+  try {
     const newEvent = new Event({
-        eventName,
-        eventCategory,
-        eventDate: new Date(eventDate),
-        eventDescription
+      eventName,
+      eventCategory,
+      eventDate,
+      eventDescription,
+      eventImage,
     });
 
-    newEvent.save().then(() => {      //If Successful
-        res.json("Event Added")       //A response in json format to the frontend
-    }).catch((err) => {
-        console.log(err);               //If Unsuccessful
-    })
-})
+    const savedEvent = await newEvent.save();
+    res.json({ status: "Event Added", event: savedEvent });
+  } catch (error) {
+    console.error("Error adding event:", error.message);
+    res.status(500).send({ status: "Error with adding event", error: error.message });
+  }
+});
+
+// Get all events
+router.route("/").get(async (req, res) => {
+  try {
+    const events = await Event.find();
+    res.json(events);
+  } catch (error) {
+    console.error("Error fetching events:", error.message);
+    res.status(500).send({ status: "Error with fetching events", error: error.message });
+  }
+});
 
 
+// Update event
+router.route("/update/:id").put(upload.single("file"), async (req, res) => {
+  let eventId = req.params.id;
+  const { eventName, eventCategory, eventDate, eventDescription } = req.body;
+  const eventImage = req.file ? req.file.filename : ""; // Check if file exists
 
-//If you run this URL - http://localhost:8070/event, the body of this below function is executed
-router.route("/").get((req,res) => {
-    Event.find().then((events) => {
-        res.json(events)
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).send({status:"Error with adding event", error:err.message});
-    })
-})
-
-
-
-
-/*Updating details of an event*/
-//When http://Localhost:8070/student/update/5fdeu38rsfk is run, 5fdeu38rsfk user is updated
-//':id' colon id is says "Fetch whatever comes after the slash as the studentID". Colon is a must
-router.route("/update/:id").put(async(req,res) => {         //Always an Asynchronous message wait for a promise. This increases functionality
-    let userId = req.params.id;
-
-    const {eventName, eventCategory, eventDate, eventDescription} = req.body;
-
-    //Create 'update object'
+  try {
     const updateEvent = {
-        eventName,
-        eventCategory,
-        eventDate,
-        eventDescription
+      eventName,
+      eventCategory,
+      eventDate,
+      eventDescription,
+      eventImage,
+    };
+
+    const updatedEvent = await Event.findByIdAndUpdate(eventId, updateEvent, { new: true });
+    res.status(200).send({ status: "Event Updated", event: updatedEvent });
+  } catch (error) {
+    console.error("Error updating event:", error.message);
+    res.status(500).send({ status: "Error with updating event", error: error.message });
+  }
+});
+
+// Delete event
+router.route("/delete/:id").delete(async (req, res) => {
+  let eventId = req.params.id;
+
+  try {
+    await Event.findByIdAndDelete(eventId);
+    res.status(200).send({ status: "Event Deleted" });
+  } catch (error) {
+    console.error("Error deleting event:", error.message);
+    res.status(500).send({ status: "Error in deleting Event", error: error.message });
+  }
+});
+
+// Get one event by ID
+router.route("/get/:id").get(async (req, res) => {
+  let eventId = req.params.id;
+
+  try {
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).send({ status: "Event not found" });
     }
-
-    //If you didn't use the ID as Primary Key, you can use findOneAndUpdate, here.
-    //Await helps to halt the function until the promise from async is received
-    const update = await Event.findByIdAndUpdate(userId, updateEvent)       //Pass the update object as parameter
-    .then(() => {
-        res.status(200).send({status:"Event Updated"});                      //Success error code:200
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).send({status:"Error with updating event", error:err.message});        //Server error code:500
-    })
-})
-
-
-
-
-/*Deleting an event*/
-router.route("/delete/:id").delete(async(req,res) => {
-    let eventId = req.params.id;
-
-    await Event.findByIdAndDelete(eventId)
-    .then(() => {
-        res.status(200).send({status:"Event Deleted"});
-    }).catch((err) => {
-        console.log(err.message);
-        res.status(500).send({status:"Error in deleting Event", error:err.message});
-    })
-})
-
-
-
-
-/*Getting details of one event */
-router.route("/get/:id").get(async(req,res) => {
-    let eventId = req.params.id;
-    const event = await Event.findById(eventId)
-    .then((event)=> {
-        res.status(200).send({status: "Event Fetched", event});
-    }).catch((err) => {
-        console.log(err.message);
-        res.status(500).send({status: "Error with get Event", error: err.message});
-    })
-})
+    res.status(200).send({ status: "Event Fetched", event });
+  } catch (error) {
+    console.error("Error fetching event:", error.message);
+    res.status(500).send({ status: "Error with get Event", error: error.message });
+  }
+});
 
 module.exports = router;

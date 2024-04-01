@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 
 export default function UpdateEvent() {
-  const [selectedEvent, setSelectedEvent] = useState("");
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [updatedEventName, setUpdatedEventName] = useState("");
+  const [updatedEventCategory, setUpdatedEventCategory] = useState("");
+  const [updatedEventDate, setUpdatedEventDate] = useState("");
+  const [updatedEventDescription, setUpdatedEventDescription] = useState("");
+  const [file, setFile] = useState(null);
 
   const { eventId } = useParams(); // Get the eventId from URL params
 
@@ -16,7 +20,7 @@ export default function UpdateEvent() {
         const response = await axios.get(`http://localhost:8070/event/get/${eventId}`);
         setSelectedEvent(response.data.event);
         console.log("Fetched Event Details Successfully");
-        console.log(response.data.event)
+        console.log(response.data.event);
       } catch (error) {
         console.error("Error fetching event data:", error.message);
         alert("Error fetching event data. Please try again.");
@@ -26,39 +30,33 @@ export default function UpdateEvent() {
     getEventDetails();
   }, [eventId]);
 
-  const [updatedEventName, setUpdatedEventName] = useState("");
-  const [updatedEventCategory, setUpdatedEventCategory] = useState("");
-  const [updatedEventDate, setUpdatedEventDate] = useState("");
-  const [updatedEventDescription, setUpdatedEventDescription] = useState("");
-
- 
-  console.log("UpdatedName: "+updatedEventName);
-
-  // Update the updatedEventName, updatedEventCategory, updatedEventDate, updatedEventDescription
-  // when selectedEvent changes
   useEffect(() => {
     if (selectedEvent) {
       setUpdatedEventName(selectedEvent.eventName || "");
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
-      setUpdatedEventDate(selectedEvent.eventDate || "");
+      setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
     }
   }, [selectedEvent]);
 
-  console.log("SelectedEvent: "+selectedEvent);
-  console.log("SelectedEventName: "+selectedEvent.eventName);
-
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
+    const formData = new FormData();
+    formData.append("eventName", updatedEventName);
+    formData.append("eventCategory", updatedEventCategory);
+    formData.append("eventDate", updatedEventDate);
+    formData.append("eventDescription", updatedEventDescription);
+    formData.append("file", file);
+
     try {
-      await axios.put(`http://localhost:8070/event/update/${eventId}`, {
-        eventName: updatedEventName,
-        eventCategory: updatedEventCategory,
-        eventDate: updatedEventDate,
-        eventDescription: updatedEventDescription,
+      await axios.put(`http://localhost:8070/event/update/${eventId}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       alert("Event details updated successfully!");
+      window.location.href = '/'; // Redirect to home page after successful update
     } catch (error) {
       console.error("Error updating event details:", error.message);
       alert("Error updating event details. Please try again.");
@@ -91,7 +89,7 @@ export default function UpdateEvent() {
             </span>
           </div>
 
-          <form className="mt-3" onSubmit={handleUpdate}>
+          <form className="mt-3" encType="multipart/form-data" onSubmit={handleUpdate}>
 
             {/* Event Name */}
             <div className="ml-30 text-base font-semibold mt-5">
@@ -154,8 +152,22 @@ export default function UpdateEvent() {
               ></textarea>
             </div>
 
+            {/* Image Upload */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="file">
+                Event Image
+              </label>
+              <input
+                type="file"
+                id="file"
+                name="file"
+                accept="image/*"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
+            </div>
+
             <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit" onClick={() => window.location.href = '/'}>
+              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit">
                 Update Event
               </button>
               <button className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button" onClick={() => window.location.href = '/'}>

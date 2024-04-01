@@ -12,36 +12,40 @@ function AddEvent() {
   const [eventCategory, setEventCategory] = useState("");
   const [eventDate, setEventDate] = useState("");
   const [eventDescription, setEventDescription] = useState("");
-
+  const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
 
-  function sendData(e){
-      //alert("Inserted");
-      e.preventDefault();
+  function sendData(e) {
+    e.preventDefault();
 
+    const formData = new FormData();
 
-      const newEvent = {
-        eventName, 
-        eventCategory, 
-        eventDate, 
-        eventDescription
-      }
+    formData.append("eventName", eventName);
+    formData.append("eventCategory", eventCategory);
+    formData.append("eventDate", eventDate);
+    formData.append("eventDescription", eventDescription);
+    formData.append("file", file);
 
-      axios.post("http://localhost:8070/event/add", newEvent)
-      .then(() => {
-          alert("Event Added");
-          setEventName("");        //Resetting inout fields
-          setEventCategory("");
-          setEventDate("");
-          setEventDescription("");
-
-          navigate('/');
-      }).catch((err) => {
-          alert(err);
+    axios
+      .post("http://localhost:8070/event/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
+      .then(() => {
+        alert("Event Added");
+        setEventName("");
+        setEventCategory("");
+        setEventDate("");
+        setEventDescription("");
+        setFile(null);
+        navigate("/");
+      })
+      .catch((err) => {
+        alert(err);
+      });
   }
-
 
   
   return (
@@ -165,19 +169,20 @@ function AddEvent() {
     */}
 
 
-      {/* Image */}
-      {/*
-      <div className="form-group">
-        <label className="block font-bold text-xl text-green-800" htmlFor="Image_URL">Image</label>
-        <input
-          type="file"
-          id="Image_URL"
-          name="Image_URL"
-          accept="image/*"
-          required
-        />
-      </div>
-      */}
+<div className="ml-30 text-base font-semibold mt-5">
+  <label className="block font-bold text-xl text-green-800" htmlFor="file">
+    Event Image
+  </label>
+  <input
+    type="file"
+    id="file"
+    name="file"
+    accept="image/*"
+    onChange={(e) => setFile(e.target.files[0])}
+    className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
+  />
+</div>
+
 
       <center>
         <br />

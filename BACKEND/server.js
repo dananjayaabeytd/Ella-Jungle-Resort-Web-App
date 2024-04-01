@@ -5,6 +5,7 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const app = express();
 require("dotenv").config();
+app.use(express.static('public'))
 
 const PORT = process.env.PORT || 8070;
 
@@ -22,11 +23,11 @@ mongoose.connect(URL).then(() => {
         console.error("MongoDB Connection Error:", error);
     });
     
-
     
 const eventRouter = require("./routes/events");
-
 app.use ("/event", eventRouter);
 //Here when URL is searched as http://Localhost:8070/event, the 'events.js' file in routes folder is executed
+
+
 
 
