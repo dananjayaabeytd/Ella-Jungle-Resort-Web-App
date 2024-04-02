@@ -18,6 +18,8 @@ import UpdateAgency from './pages/allagencies/components/UpdateAgency';
 import Dashboard from './pages/useradmin/Dashboard';
 import AddFeedback from './pages/feedback/components/AddFeedback';
 import AllFeedback from './pages/feedback/components/AllFeedback';
+import AllFaq from './pages/faq/components/AllFaq';
+import AddFaq from './pages/faq/components/AddFaq';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -83,6 +85,14 @@ const router = createBrowserRouter([
       {
         path: '/addfeedback',
         element: <AddFeedback />,
+      },
+      {
+        path: '/faq',
+        element: <AllFaq />,
+      },
+      {
+        path: '/addfaq',
+        element: <AddFaq />,
       }
 
     ],
