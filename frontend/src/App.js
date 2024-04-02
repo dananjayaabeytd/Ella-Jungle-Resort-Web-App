@@ -16,7 +16,7 @@ export default function App() {
         <Routes>
           <Route path="/" exact element={<EventList/>}/>
           <Route path="/add" exact element={<TestPage/>}/>
-          <Route path="/update/:eventId" exact element={<UpdateEvent/>}/>
+          <Route path="/update/:eventId" exact element={<TestSecondary/>}/>
           <Route path="/addOption" exact element={<AddOption/>}/>
           <Route path="/allOptions" exact element={<OptionList/>}/>
         </Routes>

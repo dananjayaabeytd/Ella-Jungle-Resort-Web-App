@@ -24,12 +24,8 @@ const eventSchema = new Schema({
         required: true
     },
 
-
-    selectedOptions: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Option', // Reference to the Option model
-      }],
-      
+    selectedOptions: [String], // Save as an array of strings
+  
     eventImage: {
         type: String, // Store the filename or image URL
         required: true
@@ -40,6 +36,11 @@ const Event = mongoose.model("Event", eventSchema);
 
 module.exports = Event;
 
+
+// selectedOptions: [{
+//     type: Schema.Types.ObjectId,
+//     ref: Option, // Reference to the Option model
+//   }],
 
 
 // decorationPreferences: {

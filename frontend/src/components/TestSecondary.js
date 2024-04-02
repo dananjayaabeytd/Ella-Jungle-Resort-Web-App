@@ -8,18 +8,49 @@ import bggreen from '../assets/bggreen.jpg'; // Import the image
 export default function TestSecondary() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [updatedEventName, setUpdatedEventName] = useState("");
-  const [selectedPreferences, setSelectedPreferences] = useState([]);
+  const [updatedEventCategory, setUpdatedEventCategory] = useState("");
+  const [updatedEventDate, setUpdatedEventDate] = useState("");
+  const [updatedEventDescription, setUpdatedEventDescription] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
 
   const { eventId } = useParams(); // Get the eventId from URL params
+  const [allOptions, setAllOptions] = useState([]);
+  
+  useEffect(() => {
+    
+    // Fetch all options when the component mounts
+    function getOptions() {
+      axios.get("http://localhost:8070/option/allOptions")
+        .then((res) => {
+          setAllOptions(res.data);
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+    getOptions();
+  }, []);
 
-  // Assuming decorationPrices structure is the same from your AddEvent component
-  const decorationPrices = {
-    minimalist: 50,
-    elegant: 100,
-  };
+
+  function handleOptionChange(optionId, checked) {
+    if (checked) {
+      setSelectedOptions(prevSelectedOptions => [...prevSelectedOptions, optionId]);
+      
+    } else {
+      setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
+    }
+  }
+
+
+  
+  useEffect(() => {
+    console.log(selectedOptions);
+  }, [selectedOptions]);
+  
+
 
   useEffect(() => {
     // Fetch event data based on eventId when the component mounts
@@ -28,16 +59,12 @@ export default function TestSecondary() {
         const response = await axios.get(`http://localhost:8070/event/get/${eventId}`);
         setSelectedEvent(response.data.event);
         console.log("Fetched Event Details Successfully");
-        console.log(response.data.event);
 
-        
-      // Extract preferences marked as true and update state
-      const preferences = response.data.event.decorationPreferences;
-      const activePreferences = Object.entries(preferences)
-        .filter(([key, value]) => value) // Filter out preferences that are true
-        .map(([key]) => key); // Extract the preference keys
-      setSelectedPreferences(activePreferences);
-        
+
+        const eventSelectedOptions = response.data.event.selectedOptions || [];
+        setSelectedOptions(eventSelectedOptions.map(id => id.toString())); // Ensuring IDs are strings for comparison
+
+       
       } catch (error) {
         console.error("Error fetching event data:", error.message);
         alert("Error fetching event data. Please try again.");
@@ -47,50 +74,30 @@ export default function TestSecondary() {
     getEventDetails();
   }, [eventId]);
 
-
-  // Function to calculate total cost
-  const calculateTotalCost = () => {
-    let cost = 0;
-    selectedPreferences.forEach((preference) => {
-      cost += decorationPrices[preference];
-    });
-    return cost;
-  };
-
-
-
-// Function to handle checkbox changes
-  const handleCheckboxChange = (preference) => {
-    const updatedPreferences = [...selectedPreferences];
-    if (updatedPreferences.includes(preference)) {
-      updatedPreferences.splice(updatedPreferences.indexOf(preference), 1);
-    } else {
-      updatedPreferences.push(preference);
-    }
-    setSelectedPreferences(updatedPreferences);
-  };
-
-
-
   useEffect(() => {
     if (selectedEvent) {
       setUpdatedEventName(selectedEvent.eventName || "");
+      setUpdatedEventCategory(selectedEvent.eventCategory || "");
+      setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
+      setUpdatedEventDescription(selectedEvent.eventDescription || "");
+      setSelectedOptions(selectedEvent.selectedOptions || [].map(id => id.toString()));
     }
   }, [selectedEvent]);
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
-
     const formData = new FormData();
-
     formData.append("eventName", updatedEventName);
+    formData.append("eventCategory", updatedEventCategory);
+    formData.append("eventDate", updatedEventDate);
+    formData.append("eventDescription", updatedEventDescription);
     formData.append("file", file);
 
-
-    // Append selected preferences to formData
-    selectedPreferences.forEach((preference) => {
-        formData.append(`decorationPreferences.${preference}`, "true");
-      });
+    
+  // Append selected option IDs
+  selectedOptions.forEach((optionId) => {
+    formData.append("selectedOptions[]", optionId);
+  });
 
     try {
       await axios.put(`http://localhost:8070/event/update/${eventId}`, formData, {
@@ -101,7 +108,6 @@ export default function TestSecondary() {
 
       alert("Event details updated successfully!");
       navigate("/");
-      //window.location.href = '/'; // Redirect to home page after successful update
     } catch (error) {
       console.error("Error updating event details:", error.message);
       alert("Error updating event details. Please try again.");
@@ -149,25 +155,98 @@ export default function TestSecondary() {
               />
             </div>
 
+            {/* Event Category */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="eventCategory">Event Category</label>
+              <select
+                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                placeholder="Select Category"
+                name="eventCategory"
+                id="eventCategory"
+                value={updatedEventCategory}
+                onChange={(e) => setUpdatedEventCategory(e.target.value)}
+              >
+                <option value="" disabled>Select Category</option>
+                <option value="Wedding">Wedding</option>
+                <option value="Birthday">Birthday</option>
+                <option value="Christmas">Christmas</option>
+                <option value="Halloween">Halloween</option>
+                <option value="NewYear">New Year</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            {/* Event Date */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
+              <input
+                type="date"
+                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                id="eventDate"
+                name="eventDate"
+                value={updatedEventDate}
+                onChange={(e) => setUpdatedEventDate(e.target.value)}
+              />
+            </div>
+
+            {/* Event Description */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
+              <textarea
+                className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
+                cols="50"
+                rows="8"
+                placeholder="Enter Description"
+                name="eventDescription"
+                value={updatedEventDescription}
+                onChange={(e) => setUpdatedEventDescription(e.target.value)}
+              ></textarea>
+            </div>
+
+
+
             {/* Decoration Preferences */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800">Decoration Preferences:</label>
-              {Object.entries(decorationPrices).map(([preference, price]) => (
-                <div key={preference} className="form-check">
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Decoration").map((option) => (
+                <div key={option._id} className="form-check">
                   <input
                     type="checkbox"
-                    id={preference}
-                    name={preference}
-                    checked={selectedPreferences.includes(preference)}
-                    onChange={() => handleCheckboxChange(preference)}
-                    className="form-checkbox h-5 w-5 text-green-600"
+                    id={option._id}
+                    name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600" 
                   />
-                  <label htmlFor={preference} className="ml-2 text-green-800">
-                    {preference.charAt(0).toUpperCase() + preference.slice(1)} (${price})
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName}
                   </label>
                 </div>
               ))}
             </div>
+
+            {/* Entertainment Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Entertainment Preferences:</label>
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Entertainment").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input
+                    type="checkbox"
+                    id={option._id}
+                    name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600" 
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+
+
 
 
             {/* Image Upload */}

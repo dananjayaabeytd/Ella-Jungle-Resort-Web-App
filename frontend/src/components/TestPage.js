@@ -28,15 +28,31 @@ function TestPage() {
     getOptions();
   }, []);
 
+  // function handleOptionChange(optionId, checked) {
+  //   console.log(selectedOptions)
+  //   // Update selectedOptions based on checkbox change
+  //   if (checked) {
+  //     setSelectedOptions([...selectedOptions, optionId]);
+  //   } else {
+  //     setSelectedOptions(selectedOptions.filter(id => id !== optionId));
+  //   }
+  // }
   function handleOptionChange(optionId, checked) {
-    console.log(selectedOptions)
-    // Update selectedOptions based on checkbox change
     if (checked) {
-      setSelectedOptions([...selectedOptions, optionId]);
+      setSelectedOptions(prevSelectedOptions => [...prevSelectedOptions, optionId]);
+      
     } else {
-      setSelectedOptions(selectedOptions.filter(id => id !== optionId));
+      setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
     }
   }
+  
+
+  useEffect(() => {
+    console.log(selectedOptions);
+  }, [selectedOptions]);
+  
+
+
 
   // Function to handle form submission
   function sendData(e) {
@@ -48,10 +64,12 @@ function TestPage() {
     formData.append("eventDescription", eventDescription);
     formData.append("file", file);
 
-    // Append selected option IDs
-    selectedOptions.forEach((optionId) => {
-      formData.append("selectedOptions[]", optionId);
-    });
+ 
+  // Append selected option IDs
+  selectedOptions.forEach((optionId) => {
+    formData.append("selectedOptions[]", optionId);
+  });
+
 
     axios.post("http://localhost:8070/event/add", formData, {
         headers: {
@@ -196,6 +214,9 @@ function TestPage() {
                 </div>
               ))}
             </div>
+
+
+
 
             {/* Event Image */}
             <div className="ml-30 text-base font-semibold mt-5">
