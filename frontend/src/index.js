@@ -16,6 +16,8 @@ import AgencyList from './pages/allagencies/AgencyList';
 import AgencyProfile from './pages/allagencies/AgencyProfile';
 import UpdateAgency from './pages/allagencies/components/UpdateAgency';
 import Dashboard from './pages/useradmin/Dashboard';
+import AddFeedback from './pages/feedback/components/AddFeedback';
+import AllFeedback from './pages/feedback/components/AllFeedback';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -73,6 +75,14 @@ const router = createBrowserRouter([
       {
         path: '/admindashboard',
         element: <Dashboard />,
+      },
+      {
+        path: '/feedback',
+        element: <AllFeedback />,
+      },
+      {
+        path: '/addfeedback',
+        element: <AddFeedback />,
       }
 
     ],
