@@ -21,7 +21,6 @@ export default function UpdateEvent() {
   const [allOptions, setAllOptions] = useState([]);
   
   useEffect(() => {
-    
     // Fetch all options when the component mounts
     function getOptions() {
       axios.get("http://localhost:8070/option/allOptions")
@@ -69,6 +68,8 @@ export default function UpdateEvent() {
 
     getEventDetails();
   }, [eventId]);
+
+  
 
   useEffect(() => {
     if (selectedEvent) {
@@ -169,12 +170,8 @@ export default function UpdateEvent() {
             {/* Event Name */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventName">Event Name</label>
-              <input
-                type="text"
+              <input type="text" id="eventName" name="eventName" value={updatedEventName}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                id="eventName"
-                name="eventName"
-                value={updatedEventName}
                 onChange={(e) => setUpdatedEventName(e.target.value)}
               />
             </div>
@@ -182,12 +179,8 @@ export default function UpdateEvent() {
             {/* Event Category */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventCategory">Event Category</label>
-              <select
+              <select placeholder="Select Category" name="eventCategory" id="eventCategory" value={updatedEventCategory}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                placeholder="Select Category"
-                name="eventCategory"
-                id="eventCategory"
-                value={updatedEventCategory}
                 onChange={(e) => setUpdatedEventCategory(e.target.value)}
               >
                 <option value="" disabled>Select Category</option>
@@ -203,12 +196,8 @@ export default function UpdateEvent() {
             {/* Event Date */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
-              <input
-                type="date"
+              <input type="date" id="eventDate" name="eventDate" value={updatedEventDate}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                id="eventDate"
-                name="eventDate"
-                value={updatedEventDate}
                 onChange={(e) => setUpdatedEventDate(e.target.value)}
               />
             </div>
@@ -216,13 +205,9 @@ export default function UpdateEvent() {
             {/* Event Description */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
-              <textarea
-                className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-                cols="50"
-                rows="8"
-                placeholder="Enter Description"
-                name="eventDescription"
+              <textarea cols="50" rows="8" placeholder="Enter Description" name="eventDescription"
                 value={updatedEventDescription}
+                className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
                 onChange={(e) => setUpdatedEventDescription(e.target.value)}
               ></textarea>
             </div>
@@ -234,11 +219,7 @@ export default function UpdateEvent() {
               <label className="block font-bold text-xl text-green-800">Decoration Preferences:</label>
               {allOptions && allOptions.filter((option) => option.optionCategory === "Decoration").map((option) => (
                 <div key={option._id} className="form-check">
-                  <input
-                    type="checkbox"
-                    id={option._id}
-                    name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
+                  <input type="checkbox" id={option._id} name={option.optionName} checked={selectedOptions.includes(option._id)}
                     onChange={(e) => handleOptionChange(option._id, e.target.checked)}
                     className="form-checkbox h-5 w-5 text-green-600" 
                   />
@@ -248,35 +229,90 @@ export default function UpdateEvent() {
                 </div>
               ))}
             </div>
+
+            {/* Catering Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Catering Preferences:</label>
+
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Catering").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input type="checkbox" id={option._id} name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName} - {option.optionPrice} LKR
+                  </label>
+                </div>
+              ))}
+            </div>
+
+
 
             {/* Entertainment Preferences */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800">Entertainment Preferences:</label>
+
               {allOptions && allOptions.filter((option) => option.optionCategory === "Entertainment").map((option) => (
                 <div key={option._id} className="form-check">
-                  <input
-                    type="checkbox"
-                    id={option._id}
-                    name={option.optionName}
+                  <input type="checkbox" id={option._id} name={option.optionName}
                     checked={selectedOptions.includes(option._id)}
                     onChange={(e) => handleOptionChange(option._id, e.target.checked)}
-                    className="form-checkbox h-5 w-5 text-green-600" 
+                    className="form-checkbox h-5 w-5 text-green-600"
                   />
                   <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} - {option.optionPrice}  LKR
+                    {option.optionName} - {option.optionPrice} LKR
                   </label>
                 </div>
               ))}
             </div>
 
+
+            
+            {/* Parking Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Parking Preferences:</label>
+
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Parking").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input type="checkbox" id={option._id} name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName} - {option.optionPrice} LKR
+                  </label>
+                </div>
+              ))}
+            </div>
+
+
+            
+            {/* Photography Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Photography Preferences:</label>
+
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Photography").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input type="checkbox" id={option._id} name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName} - {option.optionPrice} LKR
+                  </label>
+                </div>
+              ))}
+            </div>
 
 
             {/* Display total cost */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
-              
             </div>
-
 
 
 
@@ -296,13 +332,9 @@ export default function UpdateEvent() {
             </div>
 
             <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit">
-                Update Event
-              </button>
+              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Update Event </button>
 
-              <Link className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"  to={`/`} >
-                Cancel
-              </Link>
+              <Link to={`/`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
             </div>
           </form>
         </div>
