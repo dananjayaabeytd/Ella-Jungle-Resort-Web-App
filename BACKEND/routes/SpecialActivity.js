@@ -155,7 +155,7 @@ router.route("/get/:id").get(async(req,res)=>{
 });
 
 
-//to view all the values added
+//to view all the activities added in home page for guests
 router.route("/home").get((req,res)=>{
   SpecialActivity.find().then((SpecialActivity)=>{
       res.json(SpecialActivity)
@@ -163,6 +163,22 @@ router.route("/home").get((req,res)=>{
       console.log(err)
   })
 })
+
+//to retreive data of a one activity for reservation
+router.route("/apply/:id").get(async(req,res)=>{
+  let userId = req.params.id;
+
+  try {
+      const specialActivity = await SpecialActivity.findById(userId);
+      if (!specialActivity) {
+          return res.status(404).send({ status: "Special Activity not found" });
+      }
+      res.status(200).send({ status: "Special Activity fetched", specialActivity });
+  } catch (err) {
+      console.log(err.message);
+      res.status(500).send({ status: "Error with get activity", error: err.message });
+  }
+});
 
 
 

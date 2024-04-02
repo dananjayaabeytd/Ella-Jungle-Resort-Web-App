@@ -4,7 +4,7 @@ let Reservation = require("../models/ActivityReservation");
 
 
 
-router.route("/apply").post((req,res)=>{
+router.route("/confirmapply").post((req,res)=>{
 
     const {activityID,guestID,activityName} = req.body;
 

@@ -6,6 +6,7 @@ import UpdateForm from "./pages/UpdateActivity/UpdateForm";
 import ViewActivity from "./pages/AllActivity/ViewActivity";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import HomeActivity from "./pages/HomeActivity/HomeActivity";
+import ReservationActivity from "./pages/ReservationActivity/ReservationActivity";
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
               <Route path="/update/:id" element={<UpdateForm/>}/>
               <Route path="/" element={<ViewActivity/>}/>
               <Route path="/home" element ={<HomeActivity/>}/>
+              <Route path="/apply/:id" element={<ReservationActivity/>}/>
               
               </Routes>
              

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { Link } from 'react-router-dom';
 
 // TopBackground component
 function TopBackground() {
@@ -91,30 +91,24 @@ export default function HomeActivity() {
                 <br /> <br />
 
 
-
                 <div className="container flex flex-wrap justify-center items-start">
-
                     {filteredActivities.map((SpecialActivity, index) => (
-                        <div key={SpecialActivity._id} className="bg-green-600 shadow-lg rounded-lg p-6 mb-6 w-96 mx-3 text-white">
-
-
-                            {SpecialActivity.image && (
-                                <img src={require(`../../assets/${SpecialActivity.image}`)} alt={SpecialActivity.name} className="mb-4 " />
-                            )}
-
-                            <p className="text-2xl font-bold mb-2 ">
-                                <span className="font-bold"></span> {SpecialActivity.name}
-                            </p>
-
-                            <p className="text-lg font-normal mb-2">
-                                <span className="font-normal">Price Per Person (LKR):</span> {parseFloat(SpecialActivity.price).toFixed(2)}
-                            </p>
-                        </div>
-                        // Display only 3 activities per row
+                        <Link key={SpecialActivity._id} to={`/apply/${SpecialActivity._id}`}>
+                            <div className="bg-green-600 shadow-lg rounded-lg p-6 mb-6 w-96 mx-3 text-white">
+                                {SpecialActivity.image && (
+                                    <img src={require(`../../assets/${SpecialActivity.image}`)} alt={SpecialActivity.name} className="mb-4 " />
+                                )}
+                                <p className="text-2xl font-bold mb-2 ">
+                                    <span className="font-bold"></span> {SpecialActivity.name}
+                                </p>
+                                <p className="text-lg font-normal mb-2">
+                                    <span className="font-normal">Price Per Person (LKR):</span> {parseFloat(SpecialActivity.price).toFixed(2)}
+                                </p>
+                            </div>
+                        </Link>
                     ))}
                 </div>
             </div>
         </div>
     );
-
 }
