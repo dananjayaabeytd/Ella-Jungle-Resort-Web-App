@@ -3,32 +3,56 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AgencyPackagesSchema = new Schema({
-  PackageName: {
+  packageName: {
     type: String,
     required: true,
   },
-  PackageImage: {
+  packageImage: {
     type: String,
     required: true,
   },
-  RoomId: {
+  roomId: {
     type: String,
     required: true,
   },
-  SActivityId: {
+  activityId: {
     type: String,
     required: true,
   },
-  SpaId: {
+  transportId: {
     type: String,
     required: true,
   },
-  PackageDescription: {
+  spaId: {
     type: String,
     required: true,
   },
-  Price: {
+  fullDays: {
     type: Number,
     required: true,
   },
+  packageDescription: {
+    type: String,
+    required: true,
+  },
+  commission: {
+    type: Number,
+    required: true,
+  },
+  discount: {
+    type: Number,
+    required: true,
+  },
+  price: {
+    type: Number,
+    required: true,
+  },
+  agencyId: {
+    type: String,
+    required: true,
+  },
 });
+
+const AgencyPackages = mongoose.model("AgencyPackages", AgencyPackagesSchema);
+
+module.exports = AgencyPackages;

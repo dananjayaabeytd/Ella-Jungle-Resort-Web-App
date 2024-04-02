@@ -28,8 +28,26 @@ app.listen(PORT, () => {
 });
 
 
-const AgencyNewRequestRouter = require('./routes/agencyRequestRoutes'); 
-app.use('/', AgencyNewRequestRouter); 
+const AgencyRequestRouter = require('./routes/agencyRequestRoutes'); 
+app.use('/', AgencyRequestRouter); 
 
 const AgencyRouter = require('./routes/agencyRoutes');
 app.use('/', AgencyRouter);
+
+const RoomRouter = require('./routes/Rooms');
+app.use('/', RoomRouter);
+
+const ReservationRouter = require('./routes/reservationRoutes');
+app.use('/', ReservationRouter);
+
+const TransportRouter = require('./routes/transportRoutes');
+app.use('/', TransportRouter);
+
+const SpecialActivityRouter = require('./routes/SpecialActivity');
+app.use('/', SpecialActivityRouter);
+
+const ActivityReservationRouter = require('./routes/activityReservationRoutes');
+app.use('/', ActivityReservationRouter);
+
+const AgencyPackagesRouter = require('./routes/agencyPackagesRoutes');
+app.use('/', AgencyPackagesRouter);
