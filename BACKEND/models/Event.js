@@ -25,6 +25,12 @@ const eventSchema = new Schema({
     },
 
     selectedOptions: [String], // Save as an array of strings
+
+    totalCost: {
+        type: Number,
+        required: true
+    },
+
   
     eventImage: {
         type: String, // Store the filename or image URL

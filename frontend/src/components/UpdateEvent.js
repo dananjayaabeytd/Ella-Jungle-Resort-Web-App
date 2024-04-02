@@ -12,6 +12,7 @@ export default function UpdateEvent() {
   const [updatedEventDate, setUpdatedEventDate] = useState("");
   const [updatedEventDescription, setUpdatedEventDescription] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [totalCost, setTotalCost] = useState(0); // Total cost state
   const [file, setFile] = useState(null);
 
   const navigate = useNavigate();
@@ -45,11 +46,6 @@ export default function UpdateEvent() {
   }
 
 
-  
-  useEffect(() => {
-    console.log(selectedOptions);
-  }, [selectedOptions]);
-  
 
 
   useEffect(() => {
@@ -80,9 +76,36 @@ export default function UpdateEvent() {
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
+      setTotalCost(selectedEvent.totalCost || 0);
       setSelectedOptions(selectedEvent.selectedOptions || [].map(id => id.toString()));
     }
   }, [selectedEvent]);
+
+
+  
+  
+  // Function to calculate total cost
+  const calculateTotalCost = () => {
+    let cost = 0;
+    selectedOptions.forEach((optionId) => {
+      const selectedOption = allOptions.find(option => option._id === optionId);
+      if (selectedOption) {
+        cost += selectedOption.optionPrice;
+      }
+    });
+    return cost;
+  };
+
+
+  
+  // Calculate total cost whenever selected options change
+  useEffect(() => {
+    const cost = calculateTotalCost();
+    setTotalCost(cost);
+  }, [selectedOptions, allOptions]);
+
+
+
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -91,6 +114,7 @@ export default function UpdateEvent() {
     formData.append("eventCategory", updatedEventCategory);
     formData.append("eventDate", updatedEventDate);
     formData.append("eventDescription", updatedEventDescription);
+    formData.append("totalCost", totalCost);
     formData.append("file", file);
 
     
@@ -219,7 +243,7 @@ export default function UpdateEvent() {
                     className="form-checkbox h-5 w-5 text-green-600" 
                   />
                   <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName}
+                    {option.optionName} - {option.optionPrice}  LKR
                   </label>
                 </div>
               ))}
@@ -239,12 +263,19 @@ export default function UpdateEvent() {
                     className="form-checkbox h-5 w-5 text-green-600" 
                   />
                   <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName}
+                    {option.optionName} - {option.optionPrice}  LKR
                   </label>
                 </div>
               ))}
             </div>
 
+
+
+            {/* Display total cost */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
+              
+            </div>
 
 
 

@@ -20,7 +20,7 @@ const upload = multer({ storage: storage });
 
 // Add an event with image
 router.route("/add").post(upload.single("file"), async (req, res) => {
-  const { eventName, eventCategory, eventDate, eventDescription } = req.body;
+  const { eventName, eventCategory, eventDate, eventDescription, totalCost } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
 
     // Convert selectedOptions to an array of ObjectIds
@@ -36,9 +36,9 @@ router.route("/add").post(upload.single("file"), async (req, res) => {
       eventCategory,
       eventDate,
       eventDescription,
-      //decorationPreferences,
       selectedOptions,
-      eventImage,
+      totalCost,
+      eventImage
     });
 
     const savedEvent = await newEvent.save();
@@ -72,7 +72,7 @@ router.route("/").get(async (req, res) => {
 // Update event
 router.route("/update/:id").put(upload.single("file"), async (req, res) => {
   let eventId = req.params.id;
-  const { eventName, eventCategory, eventDate, eventDescription } = req.body;
+  const { eventName, eventCategory, eventDate, eventDescription, totalCost } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
   
     // Convert selectedOptions to an array of ObjectIds
@@ -87,7 +87,8 @@ router.route("/update/:id").put(upload.single("file"), async (req, res) => {
       eventDate,
       eventDescription,
       selectedOptions,
-      eventImage,
+      totalCost,
+      eventImage
       
     };
 
