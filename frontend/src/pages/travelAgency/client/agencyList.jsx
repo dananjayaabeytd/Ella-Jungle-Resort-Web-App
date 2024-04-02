@@ -5,7 +5,7 @@ import AgencyDetailsSimple from "../../../components/travelAgency/client/agencyD
 import AgencySearch from "../../../components/travelAgency/client/agencySearch";
 
 function AgencyList() {
-  const { clientId } = useParams();
+  const { userId } = useParams();
 
   const [agencies, setAgencies] = useState([]);
 
@@ -47,7 +47,7 @@ function AgencyList() {
             console.log("Agency Business Mail:", agency.businessMail);
             console.log("Agency Fax:", agency.fax);
             console.log("Agency Rating:", agency.rating);
-            console.log("Client ID", clientId);
+            console.log("Client ID", userId);
 
             return (
               <AgencyDetailsSimple
@@ -58,7 +58,7 @@ function AgencyList() {
                 mobile={agency.mobile}
                 businessMail={agency.businessMail}
                 rating={agency.rating}
-                clientId={clientId} // Pass clientId here
+                userId={userId} // Pass userId here
               />
             );
           })}

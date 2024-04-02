@@ -19,6 +19,7 @@ function AgencyDetailsProfile() {
     description: "",
     websiteLink: "",
     rating: "",
+    agentId: "",
   });
 
   useEffect(() => {

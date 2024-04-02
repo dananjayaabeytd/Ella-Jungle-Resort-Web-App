@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
-function AgencyNewRequest({ key, id, arrivalDate, departureDate, sentDate }) {
+function AgencyNewRequest({ requestId, arrivalDate, departureDate, sentDate, userId}) {
+  
   const formattedSentDate = () => {
     const date = new Date(sentDate);
     const year = date.getFullYear();
@@ -14,28 +15,14 @@ function AgencyNewRequest({ key, id, arrivalDate, departureDate, sentDate }) {
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
-  const [allRequest, setRequest] = useState([]);
 
-  useEffect(() => {
-    function getRequests() {
-      axios.get("http://localhost:3005/ClientNewRequest/")
-      .then((res) => {
-        getRequests(res.data);
-      }).catch((err) => {
-        alert(err.message);
-      });
-    }
-
-    getRequests();
-  }, []);
-
-  const handleUpdateClick = (id) => {
+  const handleUpdateClick = (requestId) => {
     // Navigate to the UpdateEvent component with the event ID as a URL parameter
-    window.location = `/AgencyRequestDetails/${id}`;
+    window.location = `/AgencyRequestDetails/${requestId}`;
   };
   return (
     
-    <div onClick={() => handleUpdateClick(id)}>
+    <div onClick={() => handleUpdateClick(requestId)}>
       <div className="flex gap-5 justify-between py-2.5 shadow-md bg-white bg-opacity-0  max-md:flex-wrap">
         <div className="flex ml-5">
           <h2 className="text-sm font-bold leading-5 text-neutral-800">

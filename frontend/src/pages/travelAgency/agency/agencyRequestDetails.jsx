@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 function AgencyRequestDetails() {
-  const { id } = useParams();
+  const { requestId } = useParams();
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
@@ -14,6 +14,8 @@ function AgencyRequestDetails() {
     NoOfChildren: "",
     RoomType: "",
     RequestDescription: "",
+    UserId: "",
+    AgencyId: "",
     SentDate: "",
     Status: "",
   });
@@ -21,9 +23,7 @@ function AgencyRequestDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(
-          `http://localhost:3005/ClientRequest/${id}`
-        );
+        const result = await axios.get( `http://localhost:3005/getRequestId/${requestId}` );
         const {
           ArrivalDate,
           DepartureDate,
@@ -33,6 +33,8 @@ function AgencyRequestDetails() {
           NoOfChildren,
           RoomType,
           RequestDescription,
+          UserId,
+          AgencyId,
           SentDate,
           Status,
         } = result.data.clientRequest;
@@ -45,6 +47,8 @@ function AgencyRequestDetails() {
           NoOfChildren,
           RoomType,
           RequestDescription,
+          UserId,
+          AgencyId,
           SentDate,
           Status,
         });
@@ -54,14 +58,18 @@ function AgencyRequestDetails() {
     };
 
     fetchData();
-  }, [id]);
+  }, [requestId]);
+
+  console.log("AgencyId:", requestData.AgencyId);
 
   const handleAcceptRequest = async () => {
     try {
       const updatedRequest = await axios.put(
-        `http://localhost:3005/UpdateRequest/${id}`,
+        `http://localhost:3005/UpdateRequest/${requestId}`,
         {
           ...requestData,
+          UserId: requestData.UserId,
+          AgencyId: requestData.AgencyId,
           Status: true,
         }
       );
@@ -72,7 +80,7 @@ function AgencyRequestDetails() {
           showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = "/AgencyRequestList";
+            window.location = `/AgencyRequestList/${requestData.AgencyId}`;
           }
         });
       }
@@ -80,6 +88,7 @@ function AgencyRequestDetails() {
       console.error("Error accepting request:", error);
     }
   };
+  
 
   return (
     <div>
@@ -201,17 +210,19 @@ function AgencyRequestDetails() {
                 />
               </div>
             </div>
-            <div>
-              <button
-                id="spRequest"
-                className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
-                type="button" // Change type to button to prevent form submission
-                onClick={handleAcceptRequest}
-              >
-                Accept Request
-                <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
-              </button>
-            </div>
+            {requestData.Status === false && ( // Only render button for new requests
+              <div>
+                <button
+                  id="spRequest"
+                  className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+                  type="button" // Change type to button to prevent form submission
+                  onClick={handleAcceptRequest}
+                >
+                  Accept Request
+                  <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>

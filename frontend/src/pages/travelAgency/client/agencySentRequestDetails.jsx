@@ -4,7 +4,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 function AgencySentRequestDetails() {
-  const { id } = useParams();
+  const { requestId } = useParams();
+  const [agencyName, setAgencyName] = useState("");
+
+
+  const currentDate = new Date().toISOString();
+
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
@@ -14,6 +19,8 @@ function AgencySentRequestDetails() {
     NoOfChildren: "",
     RoomType: "",
     RequestDescription: "",
+    UserId: "",
+    AgencyId: "",
     SentDate: "",
     Status: "",
   });
@@ -22,7 +29,7 @@ function AgencySentRequestDetails() {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3005/ClientRequest/${id}`
+          `http://localhost:3005/getRequest/${requestId}`
         );
         const {
           ArrivalDate,
@@ -33,6 +40,8 @@ function AgencySentRequestDetails() {
           NoOfChildren,
           RoomType,
           RequestDescription,
+          UserId,
+          AgencyId,
           SentDate,
           Status,
         } = result.data.clientRequest;
@@ -45,16 +54,23 @@ function AgencySentRequestDetails() {
           NoOfChildren,
           RoomType,
           RequestDescription,
+          UserId,
+          AgencyId,
           SentDate,
           Status,
-        });
+        });// Fetch agency details using AgencyId
+        const agencyResult = await axios.get(
+          `http://localhost:3005/getAgency/${AgencyId}`
+        );
+        const { agencyName } = agencyResult.data; // Assuming the response contains the agencyName
+        setAgencyName(agencyName);
       } catch (error) {
         console.error("Error fetching request data:", error);
       }
     };
 
     fetchData();
-  }, [id]);
+  }, [requestId]);
 
   const handleUpdateRequest = async () => {
     Swal.fire({
@@ -67,12 +83,17 @@ function AgencySentRequestDetails() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.put(`http://localhost:3005/UpdateRequest/${id}`, {
+          await axios.put(`http://localhost:3005/UpdateRequest/${requestId}`, {
             ...requestData,
-            Status: false, // Update the status to false
+
+            UserId: requestData.UserId,
+            AgencyId: requestData.AgencyId,
+            SentDate: currentDate,
+            Status: false,
+            
           });
           Swal.fire("Saved!", "", "success").then(() => {
-            window.location.href = "/AgencySentRequestList";
+            window.location = `/AgencySentRequestList/${requestData.UserId}`;
           });
         } catch (error) {
           console.error("Error updating request:", error);
@@ -96,13 +117,13 @@ function AgencySentRequestDetails() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:3005/DeleteRequest/${id}`);
+          await axios.delete(`http://localhost:3005/DeleteRequest/${requestId}`);
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
             icon: "success",
           });
-          window.location.href = "/AgencySentRequestList";
+          window.location = `/AgencySentRequestList/${requestData.UserId}`;
         } catch (error) {
           console.error("Error deleting request:", error);
           alert("Error deleting request");
@@ -129,6 +150,8 @@ function AgencySentRequestDetails() {
                     id="arrivalDate"
                     name="ArrivalDate"
                     className="ml-[92px] rounded-lg"
+                    value={agencyName}
+                    readOnly
                   />
                 </div>
                 <div className="flex items-start mb-2 ">

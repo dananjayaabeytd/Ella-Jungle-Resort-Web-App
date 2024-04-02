@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 
-function AgencySentRequest({ id, RoomType, NoOfAdults, NoOfChildren, sentDate }) {
+function AgencySentRequest({ requestId, RoomType, NoOfAdults, NoOfChildren, sentDate }) {
   
   const [formattedSentDate, setFormattedSentDate] = useState("");
   
@@ -23,13 +23,13 @@ function AgencySentRequest({ id, RoomType, NoOfAdults, NoOfChildren, sentDate })
     
     const NoOfPersons = NoOfAdults + NoOfChildren;
 
-    const handleUpdateClick = (id) => {
-      window.location = `/AgencySentRequestDetails/${id}`;
+    const handleUpdateClick = (requestId) => {
+      window.location = `/AgencySentRequestDetails/${requestId}`;
     };
   
   return (
     <div>
-      <div onClick={() => handleUpdateClick(id)}>
+      <div onClick={() => handleUpdateClick(requestId)}>
       <div className="flex gap-5 justify-between py-2.5 shadow-md bg-white bg-opacity-0  max-md:flex-wrap">
         <div className="flex ml-5">
           <h2 className="text-sm font-bold leading-5 text-neutral-800">

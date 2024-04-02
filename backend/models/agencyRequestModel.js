@@ -35,7 +35,7 @@ const AgencyRequestSchema = new Schema({
         type: String,
         required: true
     },
-    ClientId: {
+    UserId: {
         type: String,
         required: true
     },

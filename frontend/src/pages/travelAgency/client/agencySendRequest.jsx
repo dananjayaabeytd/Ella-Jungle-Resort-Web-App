@@ -6,18 +6,20 @@ import AgencyDetailsProfile from "../../../components/travelAgency/client/agency
 
 function AgencySendRequest() {
   
-  const {agencyId, clientId} = useParams();
+  
+  const { userId, agencyId } = useParams();
+  console.log("User ID:", userId);
   
   const [formData, setFormData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
     NoOfDays: "",
-    NoOfNights: "",
+    NoOfNights: "", // Initialize the form data       
     NoOfAdults: "",
     NoOfChildren: "",
     RoomType: "",
     RequestDescription: "",
-    ClientId: clientId, // Set the client ID
+    UserId: userId, // Set the client ID
     AgencyId: agencyId, // Set the agency ID
     Status: "false", // Set the status to false
   });
@@ -66,7 +68,7 @@ function AgencySendRequest() {
         NoOfChildren: "",
         RoomType: "",
         RequestDescription: "",
-        ClientId: clientId,
+        userId: userId,
         AgencyId: agencyId,
         Status: "",
       });

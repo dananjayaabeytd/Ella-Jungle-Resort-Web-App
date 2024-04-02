@@ -48,6 +48,10 @@ const AgencySchema = new Schema({
         type: String,
         required: false
     },
+    AgentId: {
+        type: String,
+        required: true
+    },
 });
 
 const Agency = mongoose.model('Agency', AgencySchema);

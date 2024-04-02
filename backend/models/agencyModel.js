@@ -48,6 +48,10 @@ const agencySchema = new mongoose.Schema({
   rating: {
     type: Number,
     required: true
+  },
+  agentId: {
+    type: String,
+    required: true
   }
 });
 

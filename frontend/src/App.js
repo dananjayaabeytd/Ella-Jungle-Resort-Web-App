@@ -14,13 +14,13 @@ export default function App() {
     <Router>
       <div>
         <Routes>
-          <Route path="/AgencySendRequest/:agencyId/:clientId" element={<AgencySendRequest />} />
-          <Route path="/AgencyList/:clientId" element={<AgencyList />} />
-          <Route path="/AgencyDetails/:agencyId/:clientId" element={<AgencyDetails />} />
-          <Route path="/AgencyRequestList" element={<AgencyRequestList />} />
-          <Route path="/AgencyRequestDetails/:id" element={<AgencyRequestDetails />} />
-          <Route path="/AgencySentRequestList" element={<AgencySentRequestList />} />
-          <Route path="/AgencySentRequestDetails/:id" element={<AgencySentRequestDetails />} />
+          <Route path="/AgencySendRequest/:userId/:agencyId" element={<AgencySendRequest />} />
+          <Route path="/AgencyList/:userId" element={<AgencyList />} />
+          <Route path="/AgencyDetails/:userId/:agencyId" element={<AgencyDetails />} />
+          <Route path="/AgencyRequestList/:agencyId" element={<AgencyRequestList />} />
+          <Route path="/AgencyRequestDetails/:requestId" element={<AgencyRequestDetails />} />
+          <Route path="/AgencySentRequestList/:userId" element={<AgencySentRequestList />} />
+          <Route path="/AgencySentRequestDetails/:requestId" element={<AgencySentRequestDetails />} />
         </Routes>
       </div>
     </Router>

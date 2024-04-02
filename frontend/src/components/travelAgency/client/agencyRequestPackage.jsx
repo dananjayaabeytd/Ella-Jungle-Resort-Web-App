@@ -2,7 +2,9 @@ import React from "react";
 import { useParams } from "react-router-dom";
 
 function AgencyRequestPackage() {
-  const { agencyId, clientId } = useParams();
+  const { userId, agencyId  } = useParams();
+
+  console.log("User ID:", userId);
 
   return (
     <div className="mr-[50px] mt-[100px]">
@@ -12,7 +14,7 @@ function AgencyRequestPackage() {
           <button
             className="flex justify-center px-5 py-3 mt-4 text-center text-white bg-green-500 rounded-2xl"
             onClick={() => {
-              window.location.href = `/AgencySendRequest/${agencyId}/${clientId}`;
+              window.location.href = `/AgencySendRequest/${userId}/${agencyId}`;
             }}
           >
             Send a Request

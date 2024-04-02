@@ -17,6 +17,7 @@ router.post("/add", async (req, res) => {
       description,
       websiteLink,
       rating,
+      agentId,
     } = req.body;
 
     const newAgency = new Agency({
@@ -32,6 +33,7 @@ router.post("/add", async (req, res) => {
       description,
       websiteLink,
       rating,
+      agentId,
     });
 
     await newAgency.save();
@@ -61,6 +63,7 @@ router.route("/getAllAgencies").get((req, res) => {
           description: agency.description,
           websiteLink: agency.websiteLink,
           rating: agency.rating,
+          agentId: agency.agentId,
         }))
       );
     })
