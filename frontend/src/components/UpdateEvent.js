@@ -11,13 +11,46 @@ export default function UpdateEvent() {
   const [updatedEventCategory, setUpdatedEventCategory] = useState("");
   const [updatedEventDate, setUpdatedEventDate] = useState("");
   const [updatedEventDescription, setUpdatedEventDescription] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const [file, setFile] = useState(null);
-  const [minimalistChecked, setMinimalistChecked] = useState(false);
-  const [elegantChecked, setElegantChecked] = useState(false);
 
   const navigate = useNavigate();
 
   const { eventId } = useParams(); // Get the eventId from URL params
+  const [allOptions, setAllOptions] = useState([]);
+  
+  useEffect(() => {
+    
+    // Fetch all options when the component mounts
+    function getOptions() {
+      axios.get("http://localhost:8070/option/allOptions")
+        .then((res) => {
+          setAllOptions(res.data);
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    }
+    getOptions();
+  }, []);
+
+
+  function handleOptionChange(optionId, checked) {
+    if (checked) {
+      setSelectedOptions(prevSelectedOptions => [...prevSelectedOptions, optionId]);
+      
+    } else {
+      setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
+    }
+  }
+
+
+  
+  useEffect(() => {
+    console.log(selectedOptions);
+  }, [selectedOptions]);
+  
+
 
   useEffect(() => {
     // Fetch event data based on eventId when the component mounts
@@ -26,12 +59,11 @@ export default function UpdateEvent() {
         const response = await axios.get(`http://localhost:8070/event/get/${eventId}`);
         setSelectedEvent(response.data.event);
         console.log("Fetched Event Details Successfully");
-        console.log(response.data.event);
 
-       // Extract preferences and update state
-       const preferences = response.data.event.decorationPreferences;
-       setMinimalistChecked(preferences.minimalistChecked || false);
-       setElegantChecked(preferences.elegantChecked || false);
+
+        const eventSelectedOptions = response.data.event.selectedOptions || [];
+        setSelectedOptions(eventSelectedOptions.map(id => id.toString())); // Ensuring IDs are strings for comparison
+
        
       } catch (error) {
         console.error("Error fetching event data:", error.message);
@@ -48,11 +80,7 @@ export default function UpdateEvent() {
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
-      // Extract preferences and update state
-      const preferences = selectedEvent.decorationPreferences;
-      setMinimalistChecked(preferences.minimalistChecked || false);
-      setElegantChecked(preferences.elegantChecked || false);
-
+      setSelectedOptions(selectedEvent.selectedOptions || [].map(id => id.toString()));
     }
   }, [selectedEvent]);
 
@@ -66,10 +94,10 @@ export default function UpdateEvent() {
     formData.append("file", file);
 
     
-    // Append the decorationPreferences object with minimalistChecked and elegantChecked
-    formData.append("decorationPreferences.minimalistChecked", minimalistChecked ? "true" : "false");
-    formData.append("decorationPreferences.elegantChecked", elegantChecked ? "true" : "false");
-
+  // Append selected option IDs
+  selectedOptions.forEach((optionId) => {
+    formData.append("selectedOptions[]", optionId);
+  });
 
     try {
       await axios.put(`http://localhost:8070/event/update/${eventId}`, formData, {
@@ -80,7 +108,6 @@ export default function UpdateEvent() {
 
       alert("Event details updated successfully!");
       navigate("/");
-      //window.location.href = '/'; // Redirect to home page after successful update
     } catch (error) {
       console.error("Error updating event details:", error.message);
       alert("Error updating event details. Please try again.");
@@ -177,37 +204,47 @@ export default function UpdateEvent() {
             </div>
 
 
-            
+
             {/* Decoration Preferences */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800">Decoration Preferences:</label>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  id="minimalist"
-                  name="minimalist"
-                  checked={minimalistChecked}
-                  onChange={(e) => setMinimalistChecked(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-green-600"
-                />
-                <label htmlFor="minimalist" className="ml-2 text-green-800">
-                  Minimalist
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  type="checkbox"
-                  id="elegant"
-                  name="elegant"
-                  checked={elegantChecked}
-                  onChange={(e) => setElegantChecked(e.target.checked)}
-                  className="form-checkbox h-5 w-5 text-green-600"
-                />
-                <label htmlFor="elegant" className="ml-2 text-green-800">
-                  Elegant
-                </label>
-              </div>
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Decoration").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input
+                    type="checkbox"
+                    id={option._id}
+                    name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600" 
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName}
+                  </label>
+                </div>
+              ))}
             </div>
+
+            {/* Entertainment Preferences */}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800">Entertainment Preferences:</label>
+              {allOptions && allOptions.filter((option) => option.optionCategory === "Entertainment").map((option) => (
+                <div key={option._id} className="form-check">
+                  <input
+                    type="checkbox"
+                    id={option._id}
+                    name={option.optionName}
+                    checked={selectedOptions.includes(option._id)}
+                    onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+                    className="form-checkbox h-5 w-5 text-green-600" 
+                  />
+                  <label htmlFor={option._id} className="ml-2 text-green-800">
+                    {option.optionName}
+                  </label>
+                </div>
+              ))}
+            </div>
+
 
 
 

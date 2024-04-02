@@ -15,8 +15,8 @@ export default function App() {
       <div>
         <Routes>
           <Route path="/" exact element={<EventList/>}/>
-          <Route path="/add" exact element={<TestPage/>}/>
-          <Route path="/update/:eventId" exact element={<TestSecondary/>}/>
+          <Route path="/add" exact element={<AddEvent/>}/>
+          <Route path="/update/:eventId" exact element={<UpdateEvent/>}/>
           <Route path="/addOption" exact element={<AddOption/>}/>
           <Route path="/allOptions" exact element={<OptionList/>}/>
         </Routes>
