@@ -65,7 +65,7 @@ export function FAQsection() {
         </Accordion>
       ))}
       <div className="text-center mt-6">
-        <Link to="/faq" className="text-green-600 font-bold hover:text-green-800">View More</Link>
+        <Link to="/faq" className="text-green-600 font-bold hover:text-green-800">View More FAQs</Link>
       </div>
     </div>
   );
