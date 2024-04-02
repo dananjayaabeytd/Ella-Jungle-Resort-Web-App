@@ -7,6 +7,7 @@ require("dotenv").config();
 
 
 
+
 //define the port
 const PORT = process.env.PORT || 8080;
 
@@ -48,13 +49,18 @@ connection.once("open",()=>{
 
 //import SpecialActivity.js file to access students.js router file
 const specialActivityRouter = require("./routes/SpecialActivity.js");
+const reservationRouter = require("./routes/ReservationRoutes.js");
 
 
 app.use("/SpecialActivity",specialActivityRouter);
+app.use("/ActivityReservation",reservationRouter);
+
+
+
 
 
 
 //load our app in the port
 app.listen(PORT,()=>{
-    console.log(`Server is up & running on port $(PORT)`);
+    console.log(`Server is up & running on port ${PORT}`);
 })

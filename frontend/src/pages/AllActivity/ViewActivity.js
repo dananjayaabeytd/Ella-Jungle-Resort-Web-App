@@ -88,8 +88,8 @@ export default function ViewActivity() {
                         
                         
                         <p className="text-lg font-semibold mb-2">Name: {SpecialActivity.name}</p>
-                        <p className="text-sm mb-2">Description: {SpecialActivity.description}</p>
-                        <p className="text-sm mb-2">Price: {SpecialActivity.price}</p>
+                        <p className="text-sm font-semibold mb-2">Description: {SpecialActivity.description}</p>
+                        <p className="text-sm font-semibold mb-2">Price: {SpecialActivity.price}</p>
                        
                        
                        
