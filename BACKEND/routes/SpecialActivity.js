@@ -155,6 +155,16 @@ router.route("/get/:id").get(async(req,res)=>{
 });
 
 
+//to view all the values added
+router.route("/home").get((req,res)=>{
+  SpecialActivity.find().then((SpecialActivity)=>{
+      res.json(SpecialActivity)
+  }).catch((err)=>{
+      console.log(err)
+  })
+})
+
+
 
 
 module.exports = router;

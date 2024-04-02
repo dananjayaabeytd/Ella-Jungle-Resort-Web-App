@@ -60,32 +60,32 @@ const AddForm = () => {
           <h2 className="self-center text-3xl text-white mb-8">Add a Special Activity</h2>
 
           <div>
-            <label htmlFor="image" className="mt-4">Image</label><br/>
+            <label htmlFor="image" className="mt-4">Image</label><br />
             <input type="file" id="image" accept="image/*" onChange={handleFileChange} required />
           </div>
-         
-          <br/>
+
+          <br />
 
           <div>
-            <label htmlFor="name" className="mt-4">Name</label><br/>
-            <input type="text" id="name" className="mt-2 rounded-3xl bg-zinc-300 h-[47px] font-normal px-20 py-1 text-sm"
-             value={name} onChange={(e) => setName(e.target.value)} required />
+            <label htmlFor="name" className="mt-4">Name</label><br />
+            <input type="text" id="name" className="mt-2 rounded-3xl bg-zinc-300 h-[47px] font-normal px-5 py-1 text-sm w-full"
+              value={name} onChange={(e) => setName(e.target.value)} required />
           </div>
 
-          <br/>
+          <br />
 
           <div>
             <label htmlFor="description" className="mt-8">Description</label>
             <textarea id="description" className="mt-3 max-w-full h-20 rounded-3xl bg-zinc-300 w-[509px] font-normal px-5 py-1 text-sm"
-             value={description} onChange={(e) => setDescription(e.target.value)} required />
+              value={description} onChange={(e) => setDescription(e.target.value)} required />
           </div>
 
-          <br/>
+          <br />
 
           <div>
-            <label htmlFor="price" className="mt-8">Price Per Person (Rs.)</label><br/>
-            <input type="number" id="price" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1" 
-            value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
+            <label htmlFor="price" className="mt-8">Price Per Person (LKR)</label><br />
+            <input type="number" id="price" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1"
+              value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
           </div>
 
 

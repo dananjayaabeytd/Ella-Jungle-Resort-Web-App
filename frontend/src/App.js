@@ -5,6 +5,7 @@ import Footer from "./components/shared/Footer";
 import UpdateForm from "./pages/UpdateActivity/UpdateForm";
 import ViewActivity from "./pages/AllActivity/ViewActivity";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
+import HomeActivity from "./pages/HomeActivity/HomeActivity";
 
 
 export default function App() {
@@ -16,6 +17,7 @@ export default function App() {
               <Route path="/add" element={<AddForm/>}/>
               <Route path="/update/:id" element={<UpdateForm/>}/>
               <Route path="/" element={<ViewActivity/>}/>
+              <Route path="/home" element ={<HomeActivity/>}/>
               
               </Routes>
              
