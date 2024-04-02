@@ -74,4 +74,45 @@ router.route("/deletefaq/:id").delete((req, res) => {
         });
 });
 
+// Add Reply
+router.route("/addreply/:id").put((req, res) => {
+    const faqId = req.params.id;
+    const { reply } = req.body;
+
+    FAQ.findByIdAndUpdate(faqId, { $push: { replies: reply } })
+        .then(() => {
+            res.status(200).json({ status: "Reply added." });
+        })
+        .catch((err) => {
+            console.log(err);
+            res.status(400).json("Error: " + err);
+        });
+});
+
+
+// Delete Reply
+router.route("/deletereply/:id").put((req, res) => {
+    const faqId = req.params.id;
+    const { index } = req.body;
+
+    FAQ.findById(faqId)
+        .then((faq) => {
+            if (!faq) {
+                return res.status(404).json({ message: "FAQ not found" });
+            }
+            // Remove the reply at the specified index
+            faq.replies.splice(index, 1);
+            // Save the updated FAQ
+            return faq.save();
+        })
+        .then(() => {
+            res.status(200).json({ status: "Reply deleted." });
+        })
+        .catch((err) => {
+            console.error("Error deleting reply:", err);
+            res.status(500).json({ message: "Internal server error" });
+        });
+});
+
+
 module.exports = router;

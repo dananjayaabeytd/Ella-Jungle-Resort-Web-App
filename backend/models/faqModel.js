@@ -18,8 +18,12 @@ const faqSchema = new Schema({
     dislikes: {
         type: Number,
         default: 0
-    }
+    },
+    replies: [{
+        type: String // Assuming replies are strings, modify as needed
+    }]
 });
+
 
 const FAQ = mongoose.model("FAQ", faqSchema);
 

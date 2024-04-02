@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-import { FaThumbsUp } from 'react-icons/fa'; // Import thumbs-up icon
+import { FaThumbsUp, FaTimes } from 'react-icons/fa'; // Import thumbs-up and times icons
 
 const AllFaq = () => {
   const [faqs, setFaqs] = useState([]);
+  const [replyInput, setReplyInput] = useState('');
 
   useEffect(() => {
     fetchFaqs();
@@ -35,6 +36,27 @@ const AllFaq = () => {
     }
   };
 
+  const handleReply = async (faqId) => {
+    try {
+      await axios.put(`/api/faq/addreply/${faqId}`, { reply: replyInput });
+      // Refresh FAQs after reply added
+      fetchFaqs();
+      setReplyInput(''); // Clear reply input field
+    } catch (error) {
+      console.error('Error replying to FAQ:', error);
+    }
+  };
+
+  const handleDeleteReply = async (faqId, replyIndex) => {
+    try {
+      await axios.put(`/api/faq/deletereply/${faqId}`, { index: replyIndex });
+      // Refresh FAQs after reply deleted
+      fetchFaqs();
+    } catch (error) {
+      console.error('Error deleting reply:', error);
+    }
+  };
+
   const handleDelete = async (faqId) => {
     try {
       await axios.delete(`/api/faq/deletefaq/${faqId}`);
@@ -56,10 +78,37 @@ const AllFaq = () => {
       </div>
       <ul className="list-none p-0">
         {faqs.map(faq => (
-          <li key={faq._id} className="mb-8 p-10 shadow-md relative"> {/* Decrease margin */}
-            <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3> {/* Increase title size */}
+          <li key={faq._id} className="mb-8 p-10 shadow-md relative">
+            <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">
+              {/* Form to add reply */}
+              <form onSubmit={() => handleReply(faq._id)} className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  value={replyInput}
+                  onChange={(e) => setReplyInput(e.target.value)}
+                  placeholder="Your reply..."
+                  className="w-full border rounded-md px-3 py-2"
+                />
+                <Button type="submit" color="teal-500">Reply</Button>
+              </form>
+              {/* Display replies */}
+              {faq.replies.length > 0 && (
+                <div className="mt-4">
+                  {faq.replies.map((reply, index) => (
+                    <div key={index} className="flex items-center justify-between bg-gray-100 p-3 rounded-md">
+                      <div>
+                        <span className="font-bold text-gray-800">Admin:</span> {reply}
+                      </div>
+                      <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
+                        <FaTimes />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <br></br>
               <span className="font-bold">Likes: {faq.likes}</span>
             </div>
             <div className="mt-2 flex items-center" style={{ width: '180px' }}>
