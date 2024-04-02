@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const Option = require('./Option'); // Require the Option model
 
 const eventSchema = new Schema({
     eventName: {
@@ -23,17 +24,12 @@ const eventSchema = new Schema({
         required: true
     },
 
-    decorationPreferences: {
-        minimalistChecked: {
-          type: Boolean,
-          default: false,
-        },
-        elegantChecked: {
-          type: Boolean,
-          default: false,
-        }
-    },
 
+    selectedOptions: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Option', // Reference to the Option model
+      }],
+      
     eventImage: {
         type: String, // Store the filename or image URL
         required: true
@@ -43,3 +39,16 @@ const eventSchema = new Schema({
 const Event = mongoose.model("Event", eventSchema);
 
 module.exports = Event;
+
+
+
+// decorationPreferences: {
+//     minimalistChecked: {
+//       type: Boolean,
+//       default: false,
+//     },
+//     elegantChecked: {
+//       type: Boolean,
+//       default: false,
+//     }
+// },

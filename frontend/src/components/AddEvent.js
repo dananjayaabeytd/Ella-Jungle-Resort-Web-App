@@ -7,6 +7,7 @@ import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 
 
 function AddEvent() {
+  
     
   const [eventName, setEventName] = useState("");
   const [eventCategory, setEventCategory] = useState("");
@@ -18,6 +19,8 @@ function AddEvent() {
 
   const navigate = useNavigate();
 
+
+  
 
   function sendData(e) {
     e.preventDefault();
@@ -119,19 +122,6 @@ function AddEvent() {
           onChange={(e) =>  setEventDate(e.target.value)}
         />
       </div>
-
-      
-      {/* Event Time */}
-      {/*
-      <div className="ml-30 text-base font-semibold mt-5">
-        <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
-        <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-          type="time"
-          placeholder="Event Time"
-          name="eventTime"
-        />
-      </div>
-      */}
 
       
 

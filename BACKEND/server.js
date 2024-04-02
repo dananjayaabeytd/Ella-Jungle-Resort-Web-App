@@ -29,5 +29,10 @@ app.use ("/event", eventRouter);
 //Here when URL is searched as http://Localhost:8070/event, the 'events.js' file in routes folder is executed
 
 
+const optionRouter = require("./routes/options");
+app.use ("/option", optionRouter);
+//Here when URL is searched as http://Localhost:8070/option, the 'options.js' file in routes folder is executed
+
+
 
 

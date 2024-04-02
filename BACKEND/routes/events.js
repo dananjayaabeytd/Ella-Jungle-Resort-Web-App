@@ -16,14 +16,20 @@ const storage = multer.diskStorage({
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
 
+
+
 // Add an event with image
 router.route("/add").post(upload.single("file"), async (req, res) => {
   const { eventName, eventCategory, eventDate, eventDescription } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
-  const decorationPreferences = {
-    minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
-    elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
-  };
+  //const //decorationPreferences = {
+    //minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
+    //elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
+  //};
+
+  // Convert selectedOptions to an array of ObjectIds
+  const selectedOptions = req.body["selectedOptions[]"] ? JSON.parse(req.body["selectedOptions[]"]) : [];
+
 
   try {
     const newEvent = new Event({
@@ -31,7 +37,8 @@ router.route("/add").post(upload.single("file"), async (req, res) => {
       eventCategory,
       eventDate,
       eventDescription,
-      decorationPreferences,
+      //decorationPreferences,
+      selectedOptions,
       eventImage,
     });
 
@@ -74,11 +81,13 @@ router.route("/update/:id").put(upload.single("file"), async (req, res) => {
 
   // Assuming decorationPreferences come in as an array of "true" values with keys as the preference names
   //const { decorationPreferences } = req.body;
-  const decorationPreferences = {
-    minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
-    elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
-  };
+  //const //decorationPreferences = {
+    // minimalistChecked: req.body["decorationPreferences.minimalistChecked"] === "true",
+    // elegantChecked: req.body["decorationPreferences.elegantChecked"] === "true",
+  //};
 
+  // Convert selectedOptions to an array of ObjectIds
+  const selectedOptions = req.body["selectedOptions[]"] ? JSON.parse(req.body["selectedOptions[]"]) : [];
 
   try {
     const updateEvent = {
@@ -88,7 +97,8 @@ router.route("/update/:id").put(upload.single("file"), async (req, res) => {
       eventDescription,
       //decorationPreferences: preferences, // Update this part based on your actual data structure
       //decorationPreferences: decorationPreferences || [], // If no preferences provided, default to empty array
-      decorationPreferences,
+      //decorationPreferences,
+      selectedOptions,
       eventImage,
       
     };
