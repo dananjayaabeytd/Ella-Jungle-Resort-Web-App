@@ -94,16 +94,17 @@ Router.route("/getAgencyPackageById/:id").get((req, res) => {
 });
 
 // get agency package by agency id
-
-Router.route("/getAgencyPackageByAgencyId/:id").get((req, res) => {
-  AgencyPackages.find({ agencyId: req.params.id })
+Router.route("/getAgencyPackageByAgencyId/:agencyId").get((req, res) => {
+  AgencyPackages.find({ agencyId: req.params.agencyId })
     .then((agencyPackages) => {
       res.json(agencyPackages);
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).json({ error: "Failed to fetch agency packages" });
     });
 });
+
 
 // update agency package
 

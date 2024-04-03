@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { useParams } from "react-router-dom";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
 import AgencyRequestPackage from "../../../components/travelAgency/client/agencyRequestPackage";
@@ -6,8 +7,27 @@ import AgencyPackageCard from "../../../components/travelAgency/client/agencyPac
 
 function AgencyDetails() {
   const { userId, agencyId } = useParams();
+  const [agencyPackages, setAgencyPackages] = useState([]);
+  const [error, setError] = useState(null);
 
-  console.log("User ID:", userId);
+  useEffect(() => {
+    const fetchAgencyPackages = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3005/getAgencyPackageByAgencyId/${agencyId}`
+        );
+        setAgencyPackages(response.data);
+      } catch (error) {
+        setError(error);
+      }
+    };
+    fetchAgencyPackages();
+  }, [agencyId]);
+
+  if (error) {
+    // Handle error here, e.g., display an error message
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div>
@@ -26,10 +46,19 @@ function AgencyDetails() {
         </div>
         <div className="flex justify-center">
           <div className="container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
-            <AgencyPackageCard />
-            <AgencyPackageCard />
-            <AgencyPackageCard />
-            <AgencyPackageCard />
+            {agencyPackages.map((agencyPackage) => (
+              <AgencyPackageCard
+                key={agencyPackage._id}
+                packageName={agencyPackage.packageName}
+                packageImage={agencyPackage.packageImage}
+                packageDescription={agencyPackage.packageDescription}
+                price={agencyPackage.price}
+                fullDays={agencyPackage.fullDays}
+                activityId={agencyPackage.activityId}
+                roomId={agencyPackage.roomId}
+                transportId={agencyPackage.transportId}
+              />
+            ))}
           </div>
         </div>
       </div>

@@ -26,10 +26,25 @@ function AgencyPackageFinal({
   };
 
   const handleCreatePackage = async () => {
+    // Check if a room is selected
+    if (!selectedRoomId) {
+      alert("Please select a room.");
+      return;
+    }
+
+    // Check if packageName is empty
+    if (!packageName.trim()) {
+      alert("Please enter package name");
+      return;
+    }
+
+    // If an image is not selected, set it to null
+    const packageImageData = packageImage ? packageImage : null;
+
     try {
       const formData = new FormData();
       formData.append("packageName", packageName);
-      formData.append("packageImage", packageImage);
+      formData.append("packageImage", packageImageData);
       formData.append("roomId", selectedRoomId);
       formData.append("activityId", selectedActivityId);
       formData.append("transportId", selectedTransportId);
@@ -40,7 +55,7 @@ function AgencyPackageFinal({
       formData.append("fullDays", fullDays);
       formData.append("agencyId", agencyId);
       formData.append("published", false); // Assuming this is the correct value
-  
+
       const response = await axios.post(
         "http://localhost:3005/addAgencyPackage",
         formData,
@@ -56,11 +71,6 @@ function AgencyPackageFinal({
       console.error("Error creating package:", error);
     }
   };
-  
-
-
-
-  
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
@@ -115,6 +125,24 @@ function AgencyPackageFinal({
     }
   }, [selectedTransportId]);
 
+  const updatePrice = () => {
+    // Calculate the package price
+    const packagePrice =
+      selectedRoom.price +
+      selectedActivity.price +
+      selectedTransport.pricePerKm;
+
+    // Calculate commission and discount values
+    const commissionValue = (commission / 100) * packagePrice;
+    const discountValue = (discount / 100) * packagePrice;
+
+    // Calculate the final price
+    const finalPrice = packagePrice + commissionValue - discountValue;
+
+    // Update the price state
+    setPrice(finalPrice);
+  };
+
   return (
     <div>
       <div>
@@ -151,35 +179,67 @@ function AgencyPackageFinal({
       </div>
       <div>
         <h3>Enter Package Name</h3>
-        <input type="text" value={packageName} onChange={(e) => setPackageName(e.target.value)} />
+        <input
+          type="text"
+          value={packageName}
+          onChange={(e) => setPackageName(e.target.value)}
+          required
+        />
       </div>
       <div>
         <h3>Enter Image for Package</h3>
-        <input type="file" onChange={handleFileChange}/>
+        <input type="file" onChange={handleFileChange} />
       </div>
       <div>
         <h3>Enter Description for Package</h3>
-        <textarea value={packageDescription} onChange={(e) => setPackageDescription(e.target.value)}></textarea>
-      </div>
-      <div>
-        <h3>Enter Price Of Package</h3>
-        <input type="number" value={price} onChange={(e) => setPrice(Number(e.target.value))} />
-      </div>
-      <div>
-        <h3>Enter Discount</h3>
-        <input type="number" value={discount} onChange={(e) => setDiscount(Number(e.target.value))} />
-      </div>
-      <div>
-        <h3>Enter Commission</h3>
-        <input type="number" value={commission} onChange={(e) => setCommission(Number(e.target.value))} />
+        <textarea
+          value={packageDescription}
+          onChange={(e) => setPackageDescription(e.target.value)}
+        ></textarea>
       </div>
       <div>
         <h3>Enter Full Days</h3>
-        <input type="number" value={fullDays} onChange={(e) => setFullDays(Number(e.target.value))} />
+        <input
+          type="number"
+          value={fullDays}
+          onChange={(e) => setFullDays(Number(e.target.value))}
+        />
       </div>
       <div>
-      <button className="bg-green-200" onClick={handleCreatePackage}>create new package</button>
+        <h3>Enter Discount</h3>
+        <input
+          type="number"
+          value={discount}
+          onChange={(e) => setDiscount(Number(e.target.value))}
+        />
       </div>
+      <div>
+        <h3>Enter Commission</h3>
+        <input
+          type="number"
+          value={commission}
+          onChange={(e) => setCommission(Number(e.target.value))}
+        />
+      </div>
+
+      <div>
+        <h3>Enter Price Of Package</h3>
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+        />
+        <button onClick={updatePrice}>Update price</button>
+      </div>
+
+      <button
+        className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+        type="submit"
+        onClick={handleCreatePackage}
+      >
+        Create Package
+        <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+      </button>
     </div>
   );
 }
