@@ -181,6 +181,20 @@ router.route("/apply/:id").get(async(req,res)=>{
 });
 
 
+//get a activity by activity id
+router.get('/getActivityById/:id', async (req, res) => {
+    try {
+      const activity = await SpecialActivity.findById(req.params.id);
+      if (!activity) {
+        return res.status(404).send({ error: 'Activity not found' });
+      }
+      res.status(200).send(activity);
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  } 
+);
+
 
 
 module.exports = router;

@@ -22,7 +22,7 @@ export default function App() {
           <Route path="/AgencyRequestDetails/:requestId" element={<AgencyRequestDetails />} />
           <Route path="/AgencySentRequestList/:userId" element={<AgencySentRequestList />} />
           <Route path="/AgencySentRequestDetails/:requestId" element={<AgencySentRequestDetails />} />
-          <Route path="/AgencyCreatePackage" element={<AgencyCreatePackage />} />
+          <Route path="/AgencyCreatePackage/:agencyId" element={<AgencyCreatePackage />} />
         </Routes>
       </div>
     </Router>

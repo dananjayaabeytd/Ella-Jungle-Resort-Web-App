@@ -9,7 +9,7 @@ const AgencyPackagesSchema = new Schema({
   },
   packageImage: {
     type: String,
-    required: true,
+    required: false,
   },
   roomId: {
     type: String,
@@ -17,15 +17,15 @@ const AgencyPackagesSchema = new Schema({
   },
   activityId: {
     type: String,
-    required: true,
+    required: false,
   },
   transportId: {
     type: String,
-    required: true,
+    required: false,
   },
   spaId: {
     type: String,
-    required: true,
+    required: false,
   },
   fullDays: {
     type: Number,
@@ -33,15 +33,15 @@ const AgencyPackagesSchema = new Schema({
   },
   packageDescription: {
     type: String,
-    required: true,
+    required: false,
   },
   commission: {
     type: Number,
-    required: true,
+    required: false,
   },
   discount: {
     type: Number,
-    required: true,
+    required: false,
   },
   price: {
     type: Number,
@@ -49,6 +49,10 @@ const AgencyPackagesSchema = new Schema({
   },
   agencyId: {
     type: String,
+    required: true,
+  },
+  published: {
+    type: Boolean,
     required: true,
   },
 });

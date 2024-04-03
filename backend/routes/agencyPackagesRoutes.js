@@ -2,7 +2,6 @@ const Router = require("express").Router();
 
 let AgencyPackages = require("../models/agencyPackageModel");
 
-
 // Add new agency package
 
 Router.route("/addAgencyPackage").post((req, res) => {
@@ -18,6 +17,7 @@ Router.route("/addAgencyPackage").post((req, res) => {
   const discount = Number(req.body.discount);
   const price = Number(req.body.price);
   const agencyId = req.body.agencyId;
+  const published = req.body.published;
 
   const newAgencyPackage = new AgencyPackages({
     packageName,
@@ -32,6 +32,7 @@ Router.route("/addAgencyPackage").post((req, res) => {
     discount,
     price,
     agencyId,
+    published,
   });
 
   newAgencyPackage
@@ -56,7 +57,6 @@ Router.route("/getAllAgencyPackage").get((req, res) => {
     });
 });
 
-
 // get agency package by id
 
 Router.route("/getAgencyPackageById/:id").get((req, res) => {
@@ -68,7 +68,6 @@ Router.route("/getAgencyPackageById/:id").get((req, res) => {
       console.log(err);
     });
 });
-
 
 // get agency package by agency id
 
@@ -99,6 +98,7 @@ Router.route("/updateAgencyPackage/:id").put((req, res) => {
       agencyPackage.discount = Number(req.body.discount);
       agencyPackage.price = Number(req.body.price);
       agencyPackage.agencyId = req.body.agencyId;
+      agencyPackage.published = req.body.published;
 
       agencyPackage
         .save()
@@ -113,7 +113,6 @@ Router.route("/updateAgencyPackage/:id").put((req, res) => {
       console.log(err);
     });
 });
-
 
 // delete agency package
 

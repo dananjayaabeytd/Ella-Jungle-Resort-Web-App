@@ -3,13 +3,31 @@ import axios from "axios";
 import AgencyPackageRoom from "../../../components/travelAgency/agency/agencyPackageRoom";
 import AgencyPackageActivity from "../../../components/travelAgency/agency/agencyPackageActivity";
 import AgencyPackageTransport from "../../../components/travelAgency/agency/agencyPackageTransport";
+import { useParams } from "react-router-dom";
+import AgencyPackageFinal from "../../../components/travelAgency/agency/agencyPackageFinal";
 
 function AgencyCreatePackage() {
+  const { agencyId } = useParams();
+  const [selectedRoomId, setSelectedRoomId] = useState(null); // State to store the ID of the selected room
+  const [selectedActivityId, setSelectedActivityId] = useState(null); // State to store the ID of the selected activity
+  const [selectedTransportId, setSelectedTransportId] = useState(null); // State to store the ID of the selected transport
+
+  const handleRoomSelection = (roomId) => {
+    setSelectedRoomId(roomId); // Update the selected room ID
+  };
+
+  const handleActivitySelection = (activityId) => {
+    setSelectedActivityId(activityId); // Update the selected activity ID
+  };
+
+  const handleTransportSelection = (transportId) => {
+    setSelectedTransportId(transportId); // Update the selected transport ID
+  };
+
   const [activeTab, setActiveTab] = useState("Rooms");
   const [rooms, setRooms] = useState([]);
   const [activities, setActivities] = useState([]);
   const [transports, setTransports] = useState([]);
-
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -42,35 +60,38 @@ function AgencyCreatePackage() {
   useEffect(() => {
     const fetchTransports = async () => {
       try {
-        const response = await axios.get("http://localhost:3005/getAllTransports");
+        const response = await axios.get(
+          "http://localhost:3005/getAllTransports"
+        );
         console.log("Transports response:", response.data); // Log the response data
         if (Array.isArray(response.data.transports)) {
           setTransports(response.data.transports);
         } else {
-          console.error("Error fetching transports: Response data is not an array");
+          console.error(
+            "Error fetching transports: Response data is not an array"
+          );
         }
       } catch (error) {
         console.error("Error fetching transports:", error);
       }
     };
-    
+
     fetchTransports();
   }, []);
-  
-  
-  
 
   const renderTabContent = () => {
     switch (activeTab) {
       case "Rooms":
         return rooms.map((room) => (
           <AgencyPackageRoom
-            key={room._id}
             roomId={room._id}
             roomName={room.roomName}
             image={room.image}
             description={room.description}
             price={room.price}
+            isSelected={selectedRoomId === room._id} // Pass whether the room is selected or not
+            onSelect={handleRoomSelection}
+            showCheckbox={true}
           />
         ));
 
@@ -82,22 +103,41 @@ function AgencyCreatePackage() {
             activityImage={activity.image}
             description={activity.description}
             price={activity.price}
+            isSelected={selectedActivityId === activity._id} // Pass whether the activity is selected or not
+            onSelect={handleActivitySelection}
+            showCheckbox={true}
           />
         ));
 
       case "Transport":
-        return transports.map((transport) => (
-          console.log("Transport:", transport),
-          <AgencyPackageTransport
-            transportId={transport._id}
-            vehicleType={transport.vehicleType}
-            pricePerKm={transport.pricePerKm}
-            maxPassengers={transport.maxPassengers}
-            image={transport.image}
-            description={transport.description}
-            agencyId={transport.agencyId}
+        return transports.map(
+          (transport) => (
+            console.log("Transport:", transport),
+            (
+              <AgencyPackageTransport
+                transportId={transport._id}
+                vehicleType={transport.vehicleType}
+                pricePerKm={transport.pricePerKm}
+                maxPassengers={transport.maxPassengers}
+                image={transport.image}
+                description={transport.description}
+                agencyId={transport.agencyId}
+                isSelected={selectedTransportId === transport._id} // Pass whether the transport is selected or not
+                onSelect={handleTransportSelection}
+                showCheckbox={true}
+              />
+            )
+          )
+        );
+
+      case "Create Package":
+        return (
+          <AgencyPackageFinal
+            selectedRoomId={selectedRoomId}
+            selectedActivityId={selectedActivityId}
+            selectedTransportId={selectedTransportId}
           />
-        ));
+        );
 
       default:
         return null;
