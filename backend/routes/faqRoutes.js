@@ -3,11 +3,12 @@ const FAQ = require("../models/faqModel");
 
 // Insert / Create
 router.route("/addfaq").post((req, res) => {
-    const { faqtitle, faqdescription } = req.body;
+    const { faqtitle, faqdescription, giverName } = req.body;
 
     const newFAQ = new FAQ({
         faqtitle,
-        faqdescription
+        faqdescription,
+        giverName
     });
 
     newFAQ.save()

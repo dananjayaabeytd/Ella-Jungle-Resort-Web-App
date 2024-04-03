@@ -2,17 +2,31 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const AddFaq = () => {
+  const userInfo = useSelector(state => state.auth.userInfo);
   const [newFaqTitle, setNewFaqTitle] = useState('');
   const [newFaqDescription, setNewFaqDescription] = useState('');
 
   const handleAddFaq = async (e) => {
     e.preventDefault();
 
+    if (userInfo === null) {
+      alert("You must be logged in to submit feedback.");
+      return;
+    }
+
+    // Check if any of the fields are empty
+    if (!newFaqTitle.trim() || !newFaqDescription.trim()) {
+      alert("Please fill in all fields before submitting.");
+      return;
+    }
+
     const newFaq = {
       faqtitle: newFaqTitle,
       faqdescription: newFaqDescription,
+      giverName: userInfo.name
     };
 
     try {

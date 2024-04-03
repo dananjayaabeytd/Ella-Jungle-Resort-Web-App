@@ -21,7 +21,11 @@ const faqSchema = new Schema({
     },
     replies: [{
         type: String // Assuming replies are strings, modify as needed
-    }]
+    }],
+    giverName: {
+        type: String,
+        required: true
+    }
 });
 
 

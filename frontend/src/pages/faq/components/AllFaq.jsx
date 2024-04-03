@@ -79,6 +79,7 @@ const AllFaq = () => {
       <ul className="list-none p-0">
         {faqs.map(faq => (
           <li key={faq._id} className="mb-8 p-10 shadow-md relative">
+            <p>{faq.giverName}</p><br></br>
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">
