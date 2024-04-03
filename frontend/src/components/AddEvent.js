@@ -118,7 +118,7 @@ export default function AddEvent() {
 
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-theme-green shadow-2xl shadow-theme-green rounded-[50px] overflow-auto font-lexend opacity-90 border border-theme-green">
+        <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-theme-green rounded-[50px] overflow-auto font-lexend opacity-80 border border-theme-green">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
               Add Event

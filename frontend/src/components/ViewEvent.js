@@ -96,7 +96,7 @@ export default function ViewEvent() {
   
         <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
             {/* Event Details */}
-            <div className="container shadow-md rounded-md overflow-hidden w-full h-96 flex items-center justify-center">
+            <div className="container shadow-md rounded-3xl overflow-hidden w-full h-96 flex items-center justify-center">
                 <img className="w-full h-full object-fill" src={`http://localhost:8070/Images/${selectedEvent.eventImage}`} alt="Event Image"
                 />
             </div>
