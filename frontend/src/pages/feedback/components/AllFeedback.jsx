@@ -61,6 +61,7 @@ const AllFeedback = () => {
       <ul className="list-none p-0">
         {allFeedback && allFeedback.map((feedback) => (
           <li key={feedback._id} className="mb-8 p-10 shadow-md relative"> {/* Decrease margin */}
+            <p className="font-bold">{feedback.giverName}</p><br></br>
             <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3> {/* Increase title size */}
             <p className="font-bold">{feedback.fbdescription}</p>
             <div className="mt-4">

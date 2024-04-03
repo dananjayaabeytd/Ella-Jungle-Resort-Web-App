@@ -3,37 +3,44 @@ import axios from "axios";
 import StarRating from "./StarRating";
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-
-const starStyles = {
-  marginRight: "3px",
-  color: "#ffc107",
-  fontSize: "6rem", // Adjust star size
-};
+import { useSelector } from 'react-redux';
 
 const AddFeedback = () => {
+  const userInfo = useSelector(state => state.auth.userInfo);
   const [fbtitle, setTitle] = useState("");
   const [fbdescription, setDescription] = useState("");
-  const [rating, setRating] = useState(0); 
+  const [rating, setRating] = useState(0);
 
   function sendData(e) {
     e.preventDefault();
 
+    if (userInfo === null) {
+      alert("You must be logged in to submit feedback.");
+      return;
+    }
+
+    // Check if any of the fields are empty
+    if (!fbtitle.trim() || !fbdescription.trim() || rating === 0) {
+      alert("Please fill in all fields and provide a rating before submitting.");
+      return;
+    }
+
     const newFeedback = {
       fbtitle,
       fbdescription,
-      rating 
+      rating,
+      giverName: userInfo.name
     };
 
-    axios
-      .post("http://localhost:5000/api/feedbacks/addfeedback", newFeedback)
+    axios.post("http://localhost:5000/api/feedbacks/addfeedback", newFeedback)
       .then(() => {
         alert("Feedback Added.");
         setTitle("");
         setDescription("");
-        setRating(0); // Reset the rating after submitting feedback
+        setRating(0);
       })
       .catch((err) => {
-        alert(err);
+        alert("Error: " + err);
       });
   }
 

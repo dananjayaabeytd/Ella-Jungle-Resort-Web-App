@@ -1,24 +1,19 @@
 const router = require("express").Router();
 const Feedback = require("../models/feedbackModel");
 
-// Insert / Create
 router.route("/addfeedback").post((req, res) => {
-    const { fbtitle, fbdescription, rating } = req.body;
+    const { fbtitle, fbdescription, rating, giverName } = req.body;
 
     const newFeedback = new Feedback({
         fbtitle,
         fbdescription,
-        rating
+        rating,
+        giverName
     });
 
     newFeedback.save()
-        .then(() => {
-            res.json("Feedback Added.");
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).json("Error: " + err);
-        });
+        .then(() => res.json("Feedback Added."))
+        .catch((err) => res.status(400).json("Error: " + err));
 });
 
 // Read
