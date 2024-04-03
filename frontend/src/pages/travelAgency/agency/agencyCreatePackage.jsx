@@ -84,6 +84,7 @@ function AgencyCreatePackage() {
       case "Rooms":
         return rooms.map((room) => (
           <AgencyPackageRoom
+            key={room._id}
             roomId={room._id}
             roomName={room.roomName}
             image={room.image}
@@ -98,6 +99,7 @@ function AgencyCreatePackage() {
       case "Special Activities":
         return activities.map((activity) => (
           <AgencyPackageActivity
+          key={activity._id}
             activityId={activity._id}
             activityName={activity.name}
             activityImage={activity.image}
@@ -112,9 +114,9 @@ function AgencyCreatePackage() {
       case "Transport":
         return transports.map(
           (transport) => (
-            console.log("Transport:", transport),
             (
               <AgencyPackageTransport
+                key={transport._id}
                 transportId={transport._id}
                 vehicleType={transport.vehicleType}
                 pricePerKm={transport.pricePerKm}
@@ -136,6 +138,7 @@ function AgencyCreatePackage() {
             selectedRoomId={selectedRoomId}
             selectedActivityId={selectedActivityId}
             selectedTransportId={selectedTransportId}
+            agencyId={agencyId}
           />
         );
 

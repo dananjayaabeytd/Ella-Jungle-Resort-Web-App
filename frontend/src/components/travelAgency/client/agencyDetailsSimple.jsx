@@ -49,7 +49,7 @@ function AgencyDetailsSimple({
               <p className="pb-2">{mobile}</p>
               <p className="pb-2">{businessMail}</p>
               <button
-                class="justify-center px-10 py-0.5 mt-4 mb-5 ml-20 text-xl text-white bg-green-500 rounded-3xl max-md:px-5"
+                className="justify-center px-10 py-0.5 mt-4 mb-5 ml-20 text-xl text-white bg-green-500 rounded-3xl max-md:px-5"
                 onClick={() => handleDetailsClick(agencyId, userId)}
               >
                 More Details

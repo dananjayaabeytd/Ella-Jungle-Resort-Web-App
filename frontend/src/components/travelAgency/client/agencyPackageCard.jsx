@@ -14,15 +14,14 @@ function AgencyPackageCard() {
 			</figure>
 			<div className="flex flex-col ml-5 w-[43%] max-md:ml-0 max-md:w-full">
 				<div className="flex flex-col self-stretch my-auto font-bold max-md:mt-10">
-				<h2 className="text-3xl text-black text-opacity-80">Package 1</h2>
+				<h2 className="text-3xl text-black text-opacity-80">Package Name</h2>
 				<ul className="text-xs text-black mt-11 text-opacity-60 max-md:mt-10">
-					<li>6 Nights</li>
+					
 					<li>5 days</li>
-					<li>River boat ride</li>
-					<li>Luxury transport</li>
-					<li>Luxury accommodation</li>
-					<li>Cabana</li>
-					<li>Daily breakfast and dinner</li>
+					<li>Special id</li>
+					<li>Room id</li>
+					<li>transport id</li>
+					<li>description</li>
 				</ul>
 				<p className="text-2xl text-green-600 mt-7">LKR 50,000</p>
 				<button className="justify-center px-14 py-2.5 mt-5 text-sm text-center text-white bg-green-500 rounded-2xl max-md:px-5">

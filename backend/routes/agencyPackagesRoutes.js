@@ -1,49 +1,73 @@
 const Router = require("express").Router();
+const multer = require("multer");
 
 let AgencyPackages = require("../models/agencyPackageModel");
+
+storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../frontend/src/assets/agencyPackageImages/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage }).single("packageImage");
+
+
 
 // Add new agency package
 
 Router.route("/addAgencyPackage").post((req, res) => {
-  const packageName = req.body.packageName;
-  const packageImage = req.body.packageImage;
-  const roomId = req.body.roomId;
-  const activityId = req.body.activityId;
-  const transportId = req.body.transportId;
-  const spaId = req.body.spaId;
-  const fullDays = Number(req.body.fullDays);
-  const packageDescription = req.body.packageDescription;
-  const commission = Number(req.body.commission);
-  const discount = Number(req.body.discount);
-  const price = Number(req.body.price);
-  const agencyId = req.body.agencyId;
-  const published = req.body.published;
+  upload(req, res, function (err) {
+    if (err) {
+      console.error("Error uploading file:", err);
+      return res.status(400).send("Error uploading file");
+    }
 
-  const newAgencyPackage = new AgencyPackages({
-    packageName,
-    packageImage,
-    roomId,
-    activityId,
-    transportId,
-    spaId,
-    fullDays,
-    packageDescription,
-    commission,
-    discount,
-    price,
-    agencyId,
-    published,
-  });
+    const packageName = req.body.packageName;
+    const packageImage = req.file ? req.file.filename : null; // Check if file exists
+    const roomId = req.body.roomId;
+    const activityId = req.body.activityId;
+    const transportId = req.body.transportId;
+    const fullDays = Number(req.body.fullDays);
+    const packageDescription = req.body.packageDescription;
+    const commission = Number(req.body.commission);
+    const discount = Number(req.body.discount);
+    const price = Number(req.body.price);
+    const agencyId = req.body.agencyId;
+    const published = req.body.published;
 
-  newAgencyPackage
-    .save()
-    .then(() => {
-      res.json("New package added!");
-    })
-    .catch((err) => {
-      console.log(err);
+    const newAgencyPackage = new AgencyPackages({
+      packageName,
+      packageImage,
+      roomId,
+      activityId,
+      transportId,
+      fullDays,
+      packageDescription,
+      commission,
+      discount,
+      price,
+      agencyId,
+      published,
     });
+
+    newAgencyPackage
+      .save()
+      .then(() => {
+        res.json("New package added!");
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send("Error saving package to database");
+      });
+  });
 });
+
+
+
+
 
 // get all agency packages from the database
 
