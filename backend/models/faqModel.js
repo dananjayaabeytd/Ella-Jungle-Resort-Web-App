@@ -11,16 +11,8 @@ const faqSchema = new Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Number,
-        default: 0
-    },
-    dislikes: {
-        type: Number,
-        default: 0
-    },
     replies: [{
-        type: String // Assuming replies are strings, modify as needed
+        type: String 
     }],
     giverName: {
         type: String,
@@ -29,9 +21,12 @@ const faqSchema = new Schema({
     giverId: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now // Automatically set the date when FAQ is created
     }
 });
-
 
 const FAQ = mongoose.model("FAQ", faqSchema);
 

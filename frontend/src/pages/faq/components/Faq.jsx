@@ -60,6 +60,15 @@ const Faq = () => {
     }
   };
 
+  // Function to format the createdAt date
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   return (
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
@@ -73,7 +82,9 @@ const Faq = () => {
           {faqs.map(faq => (
             // FAQ items...
             <li key={faq._id} className="mb-8 p-10 shadow-md relative">
-            <p>{faq.giverName}</p><br></br>
+            <p>{faq.giverName}</p>
+            {/* Display the formatted createdAt date */}
+            <p className="text-sm text-gray-500">{formatDate(faq.createdAt)}</p><br />
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">

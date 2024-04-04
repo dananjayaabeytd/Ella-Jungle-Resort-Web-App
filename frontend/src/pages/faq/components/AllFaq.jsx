@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-import { FaTimes } from 'react-icons/fa'; // Import thumbs-up and times icons
+import { FaTimes } from 'react-icons/fa';
 
 const AllFaq = () => {
   const [faqs, setFaqs] = useState([]);
@@ -22,10 +22,10 @@ const AllFaq = () => {
   };
 
   const handleReply = async (faqId) => {
+    if (!replyInput.trim()) return; // Prevent empty replies
     try {
       await axios.put(`/api/faq/addreply/${faqId}`, { reply: replyInput });
-      // Refresh FAQs after reply added
-      fetchFaqs();
+      fetchFaqs(); // Refresh FAQs after reply added
       setReplyInput(''); // Clear reply input field
     } catch (error) {
       console.error('Error replying to FAQ:', error);
@@ -35,8 +35,7 @@ const AllFaq = () => {
   const handleDeleteReply = async (faqId, replyIndex) => {
     try {
       await axios.put(`/api/faq/deletereply/${faqId}`, { index: replyIndex });
-      // Refresh FAQs after reply deleted
-      fetchFaqs();
+      fetchFaqs(); // Refresh FAQs after reply deleted
     } catch (error) {
       console.error('Error deleting reply:', error);
     }
@@ -45,12 +44,20 @@ const AllFaq = () => {
   const handleDelete = async (faqId) => {
     try {
       await axios.delete(`/api/faq/deletefaq/${faqId}`);
-      setFaqs(faqs.filter(faq => faq._id !== faqId));
-      alert('FAQ deleted successfully!');
+      setFaqs(faqs.filter(faq => faq._id !== faqId)); // Optimistically remove the FAQ from the UI
     } catch (error) {
       console.error('Error deleting FAQ:', error);
       alert('Failed to delete FAQ. Please try again.');
     }
+  };
+
+  // Function to format the createdAt date
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
   };
 
   return (
@@ -58,8 +65,8 @@ const AllFaq = () => {
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl">All FAQs</h1>
         <div className="flex space-x-2">
-        <Link to="/myfaq" className="no-underline"> {/* Update this link as needed */}
-            <Button className="btn btn-primary bg-green-500">My FAQ</Button> {/* Added "My FAQ" button */}
+          <Link to="/myfaq" className="no-underline">
+            <Button className="btn btn-primary bg-green-500">My FAQ</Button>
           </Link>
           <Link to="/addfaq" className="no-underline">
             <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
@@ -67,14 +74,18 @@ const AllFaq = () => {
         </div>
       </div>
       <ul className="list-none p-0">
-      {faqs.map(faq => (
+        {faqs.map(faq => (
           <li key={faq._id} className="mb-8 p-10 shadow-md relative">
-            <p>{faq.giverName}</p><br></br>
+            <p>{faq.giverName}</p>
+            {/* Display the formatted createdAt date */}
+            <p className="text-sm text-gray-500">{formatDate(faq.createdAt)}</p><br />
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">
-              {/* Form to add reply */}
-              <form onSubmit={() => handleReply(faq._id)} className="flex items-center space-x-2">
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                handleReply(faq._id);
+              }} className="flex items-center space-x-2">
                 <input
                   type="text"
                   value={replyInput}
@@ -84,7 +95,6 @@ const AllFaq = () => {
                 />
                 <Button type="submit" color="teal-500">Reply</Button>
               </form>
-              {/* Display replies */}
               {faq.replies.length > 0 && (
                 <div className="mt-4">
                   {faq.replies.map((reply, index) => (
@@ -99,7 +109,6 @@ const AllFaq = () => {
                   ))}
                 </div>
               )}
-              <br></br>
             </div>
             <div className="mt-2 flex items-center" style={{ width: '180px' }}>
               <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
