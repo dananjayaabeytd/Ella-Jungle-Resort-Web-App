@@ -117,7 +117,6 @@ export default function UpdateEvent() {
                 <option value="Decoration">Decoration</option>
                 <option value="Catering">Catering</option>
                 <option value="Entertainment">Entertainment</option>
-                <option value="Parking">Parking</option>
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
               </select>

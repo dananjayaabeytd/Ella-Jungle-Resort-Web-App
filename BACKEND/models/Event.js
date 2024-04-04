@@ -34,7 +34,6 @@ const eventSchema = new Schema({
   
     eventImage: {
         type: String, // Store the filename or image URL
-        required: true
     }
 });
 

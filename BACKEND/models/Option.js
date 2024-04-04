@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const optionSchema = new Schema({
     optionCategory: {
         type: String,
-        enum: ['Decoration', 'Catering', 'Entertainment', 'Parking', 'Photography', 'Other'],
+        enum: ['Decoration', 'Catering', 'Entertainment', 'Photography', 'Other'],
         required: true
     },
 

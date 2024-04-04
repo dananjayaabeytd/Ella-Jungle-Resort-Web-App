@@ -87,7 +87,6 @@ export default function AddOption() {
                 <option value="Decoration">Decoration</option>
                 <option value="Catering">Catering</option>
                 <option value="Entertainment">Entertainment</option>
-                <option value="Parking">Parking</option>
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
               </select>
@@ -130,7 +129,7 @@ export default function AddOption() {
             {/* Event Image */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="file"> Option Image </label>
-              <input type="file" id="file" name="file" accept="image/*"
+              <input type="file" id="file" name="file" accept="image/*" required
                 className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
                 onChange={(e) => setFile(e.target.files[0])}
               />

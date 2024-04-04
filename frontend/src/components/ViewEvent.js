@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 
@@ -11,6 +12,11 @@ export default function ViewEvent() {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [allOptions, setAllOptions] = useState([]);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedEventId, setSelectedEventId] = useState(null);
+
+    const navigate = useNavigate();
   
     useEffect(() => {
         // Fetch all options when the component mounts
@@ -26,6 +32,8 @@ export default function ViewEvent() {
         getOptions();
       }, []);
     
+
+     
 
       
     useEffect(() => {
@@ -51,15 +59,24 @@ export default function ViewEvent() {
   }, [eventId]);
 
 
+  const handleDeleteClick = (eventId) => {
+    setSelectedEventId(eventId); // Set the option ID to state
+    setIsModalOpen(true); // Show the modal
+  };
   
-  const handleDeleteClick = async (eventId) => {
-    try {
-      await axios.delete(`http://localhost:8070/event/delete/${eventId}`);
-      alert("Event deleted successfully!");
-      window.location.reload(); // Refresh the page after deletion
-    } catch (error) {
-      console.error("Error deleting event:", error.message);
-      alert("Error deleting event. Please try again.");
+
+  const confirmDelete = async () => {
+    if (selectedEventId) {
+      try {
+        await axios.delete(`http://localhost:8070/event/delete/${selectedEventId}`);
+        alert("Event Deleted Successfully!");
+        setIsModalOpen(false); // Close the modal
+        navigate("/events");
+        // setOption(allOptions.filter(option => option._id !== selectedOptionId)); // Update state to remove the item
+      } catch (error) {
+        console.error("Error deleting option:", error.message);
+        alert("Error deleting option. Please try again.");
+      }
     }
   };
   
@@ -69,7 +86,10 @@ export default function ViewEvent() {
     return <div>Loading...</div>;
   }
 
-  
+
+  // Get unique categories
+  const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
+
 
 
   return (
@@ -103,132 +123,45 @@ export default function ViewEvent() {
 
             <div className="px-0 pb-0 pt-0">
                 {/* Event Name with Inika font */}
-                <h1 className="text-3xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
+                <h1 className="text-4xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
                 
                 {/* Event Date with Lexend font */}
                 <h6 className="text-base text-gray-600 font-lexend text-center">Ella Jungle Resort</h6>
                 
                 <div className="price mt-2">
-                <div className="text-xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
+                <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
                 </div>
     
                 {/* Event Description with McLaren font */}
                 <div className="p-des mt-2 max-h-24">
-                <p className="text-base font-mclaren text-center">{selectedEvent.eventDescription}</p>
+                <p className="text-lg font-mclaren text-center">{selectedEvent.eventDescription}</p>
                 </div>
 
             </div>
 
+            {/*Options Loop*/}
+            <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
+              {categories.map((category, index) => (
+                      <div key={index} className="text-base font-semibold ml-16">
+                        {/* Category Title */}
+                        <p className="mt-0 mb-1 block text-xl font-inika text-green-800">{category} Options:-</p>
+                        {/* Options for this category */}
+                        {allOptions.filter((option) => option.optionCategory === category).map((option) => (
+                            <div key={option._id} className="form-check">
+                              <input type="checkbox" id={option._id} name={option.optionName}
+                                checked={selectedOptions.includes(option._id)}
+                                className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
+                              />
+                              <label htmlFor={option._id} className="ml-2 text-lg text-black">
+                                {option.optionName}
+                              </label>
+                            </div>
+                          ))}
+                      </div>
+                    ))}
+            </div> 
+            {/*Options Loop Ends Here*/}
             
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                
-            {/* Decoration Preferences */}
-            
-            <div className="text-base font-semibold ml-12">
-              <label className="block font-bold text-lg text-green-800">Decoration Preferences:</label>
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Decoration").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName} checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2  text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            {/* Catering Preferences */}
-            <div className="text-base font-semibold ml-16">
-              <label className="block font-bold text-lg text-green-800">Catering Preferences:</label>
-
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Catering").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-
-
-
-            {/* Entertainment Preferences */}
-            <div className="text-base font-semibold ml-12">
-              <label className="block font-bold text-lg text-green-800">Entertainment Preferences:</label>
-
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Entertainment").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-
-
-            
-            {/* Parking Preferences */}
-            <div className="text-base font-semibold ml-16">
-              <label className="block font-bold text-lg text-green-800">Parking Preferences:</label>
-
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Parking").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-
-
-            
-            {/* Photography Preferences */}
-            <div className="text-base font-semibold ml-12">
-              <label className="block font-bold text-lg text-green-800">Photography Preferences:</label>
-
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Photography").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-
-            {/* Other Preferences */}
-            <div className="text-base font-semibold ml-16">
-              <label className="block font-bold text-lg text-green-800">Other Preferences:</label>
-
-              {allOptions && allOptions.filter((option) => option.optionCategory === "Other").map((option) => (
-                <div key={option._id} className="form-check">
-                  <input type="checkbox" id={option._id} name={option.optionName}
-                    checked={selectedOptions.includes(option._id)}
-                    className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                  />
-                  <label htmlFor={option._id} className="ml-2 text-green-800">
-                    {option.optionName} 
-                  </label>
-                </div>
-              ))}
-            </div>
-        </div> 
 
             {/* Display total cost */}
             <div className="text-base font-semibold mt-5">
@@ -247,7 +180,8 @@ export default function ViewEvent() {
                         Buy
                     </button>
 
-                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" onClick={() => handleDeleteClick(selectedEvent._id)}>
+                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
+                    onClick={() => handleDeleteClick(selectedEvent._id)}>
                         Delete
                     </button>
                 </div>
@@ -258,6 +192,36 @@ export default function ViewEvent() {
         
     </div>
     {/* Scrolling content End*/}
+
+        
+            {/* Pop-up Modal for deletion confirmation */}
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
+                  <div className="relative top-1/3  mx-auto p-5 w-96 shadow-lg rounded-3xl bg-white border-secondary-green " >
+                    <div className="mt-3 text-center">
+                      <h3 className="leading-6 text-xl font-bold text-green-800 font-inika pt-4">Deletion Confirmation</h3>
+                      <div className="mt-2 px-7 py-3">
+                        <p className="text-md font-mclaren text-gray-500">
+                          Are you sure you want to remove this event? This action cannot be undone</p>
+                      </div>
+                      <div className="items-center px-4 py-3">
+                        <button id="delete-btn" 
+                        className="px-4 py-2 mx-2 font-mclaren bg-red-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" 
+                        onClick={confirmDelete}>
+                          Delete
+                        </button>
+                        <button 
+                        className="px-4 py-2 mx-2 font-mclaren bg-gray-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
+                        onClick={() => setIsModalOpen(false)}>
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Pop-up Ends Here */}
+
       
     
     </div>
