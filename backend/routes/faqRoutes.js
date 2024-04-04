@@ -9,7 +9,7 @@ router.post("/addfaq", (req, res) => {
         faqtitle,
         faqdescription,
         giverName,
-        giverId // Save giverId along with the FAQ
+        giverId
     });
 
     newFAQ.save()

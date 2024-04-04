@@ -44,7 +44,7 @@ const AllFaq = () => {
   const handleDelete = async (faqId) => {
     try {
       await axios.delete(`/api/faq/deletefaq/${faqId}`);
-      setFaqs(faqs.filter(faq => faq._id !== faqId)); // Optimistically remove the FAQ from the UI
+      setFaqs(faqs.filter(faq => faq._id !== faqId)); 
     } catch (error) {
       console.error('Error deleting FAQ:', error);
       alert('Failed to delete FAQ. Please try again.');
