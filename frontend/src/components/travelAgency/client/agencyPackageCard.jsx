@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function AgencyPackageCard({
-  key,
+  packageId, 
   packageName,
   packageImage,
   packageDescription,
@@ -44,7 +44,13 @@ function AgencyPackageCard({
     if(packageImage === null){
       packageImage = "No_Image.png";
     }
-	
+    
+    const handleBookNowClick = () => {
+      window.location = `/agencyPackageBooking/${userId}/${packageId}`;
+    };
+    
+
+    
   return (
     <section className="w-full px-5 py-5 bg-white border border-black border-solid grow rounded-xl max-md:pl-5 max-md:mt-10 max-md:max-w-full">
       <div className="flex gap-5 max-md:flex-col max-md:gap-0">
@@ -68,10 +74,12 @@ function AgencyPackageCard({
               <li>transport id: {transportId}</li>
               <li>{packageDescription}</li>
             </ul>
-            <p className="text-2xl text-green-600 mt-7">LKR {price}</p>
+            <p className="text-2xl text-green-600 mt-7">LKR {price} </p>
             
             <div className="justify-center mt-5 max-md:px-5">
-              <button className=" w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
+              <button className=" w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+              onClick={handleBookNowClick}
+              >
                 Book Now
                 <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
               </button>

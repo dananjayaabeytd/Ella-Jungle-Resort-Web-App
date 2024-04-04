@@ -29,6 +29,7 @@ function AgencyDetails() {
     return <div>Error: {error.message}</div>;
   }
 
+
   return (
     <div>
       <div className="flex">
@@ -48,15 +49,17 @@ function AgencyDetails() {
           <div className="container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
             {agencyPackages.map((agencyPackage) => (
               <AgencyPackageCard
-                key={agencyPackage._id}
-                packageName={agencyPackage.packageName}
-                packageImage={agencyPackage.packageImage}
-                packageDescription={agencyPackage.packageDescription}
-                price={agencyPackage.price}
-                fullDays={agencyPackage.fullDays}
-                activityId={agencyPackage.activityId}
-                roomId={agencyPackage.roomId}
-                transportId={agencyPackage.transportId}
+              key={agencyPackage._id} // This should remain as the key for React's internal use
+              packageId={agencyPackage._id} // Pass the package ID as a different prop
+              packageName={agencyPackage.packageName}
+              packageImage={agencyPackage.packageImage}
+              packageDescription={agencyPackage.packageDescription}
+              price={agencyPackage.price}
+              fullDays={agencyPackage.fullDays}
+              activityId={agencyPackage.activityId}
+              roomId={agencyPackage.roomId}
+              transportId={agencyPackage.transportId}
+              userId={userId}
               />
             ))}
           </div>

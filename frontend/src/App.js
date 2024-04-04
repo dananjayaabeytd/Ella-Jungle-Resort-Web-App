@@ -8,6 +8,7 @@ import AgencySentRequestList from "./pages/travelAgency/client/agencySentRequest
 import AgencySentRequestDetails from "./pages/travelAgency/client/agencySentRequestDetails";
 import AgencyCreatePackage from "./pages/travelAgency/agency/agencyCreatePackage";
 import AgencyMyPackage from "./pages/travelAgency/agency/agencyMyPackage";
+import AgencyPackageBooking from "./pages/travelAgency/client/agencyPackageBooking";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/AgencySentRequestDetails/:requestId" element={<AgencySentRequestDetails />} />
           <Route path="/AgencyCreatePackage/:agencyId" element={<AgencyCreatePackage />} />
           <Route path="/AgencyMyPackage/:agencyId" element={<AgencyMyPackage />} />
+          <Route path="AgencyPackageBooking/:userId/:packageId" element={<AgencyPackageBooking />} />
         </Routes>
       </div>
     </Router>

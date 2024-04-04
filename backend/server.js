@@ -51,3 +51,6 @@ app.use('/', ActivityReservationRouter);
 
 const AgencyPackagesRouter = require('./routes/agencyPackagesRoutes');
 app.use('/', AgencyPackagesRouter);
+
+const AgencyPackageReservationRouter = require('./routes/agencyPackageReservationRoutes');
+app.use('/', AgencyPackageReservationRouter);
