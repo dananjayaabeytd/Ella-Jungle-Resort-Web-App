@@ -88,17 +88,22 @@ const Faq = () => {
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">
-              {/* Form to add reply */}
-              <form onSubmit={() => handleReply(faq._id)} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={replyInput}
-                  onChange={(e) => setReplyInput(e.target.value)}
-                  placeholder="Your reply..."
-                  className="w-full border rounded-md px-3 py-2"
-                />
-                <Button type="submit" color="teal-500">Reply</Button>
-              </form>
+              {/* Reply form visible to admins only */}
+              {userInfo && userInfo.isAdmin && (
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  handleReply(faq._id);
+                }} className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={replyInput}
+                    onChange={(e) => setReplyInput(e.target.value)}
+                    placeholder="Your reply..."
+                    className="w-full border rounded-md px-3 py-2"
+                  />
+                  <Button type="submit" color="teal-500">Reply</Button>
+                </form>
+              )}
               {/* Display replies */}
               {faq.replies.length > 0 && (
                 <div className="mt-4">
@@ -107,9 +112,12 @@ const Faq = () => {
                       <div>
                         <span className="font-bold text-gray-800">Admin:</span> {reply}
                       </div>
-                      <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
-                        <FaTimes />
-                      </Button>
+                      {/* Delete reply button visible to admins only */}
+                      {userInfo && userInfo.isAdmin && (
+                        <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
+                          <FaTimes />
+                        </Button>
+                      )}
                     </div>
                   ))}
                 </div>

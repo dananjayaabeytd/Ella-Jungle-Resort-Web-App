@@ -3,10 +3,12 @@ import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
 import { FaTimes } from 'react-icons/fa';
+import { useSelector } from 'react-redux'; // Import useSelector
 
 const AllFaq = () => {
   const [faqs, setFaqs] = useState([]);
   const [replyInput, setReplyInput] = useState('');
+  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   useEffect(() => {
     fetchFaqs();
@@ -64,7 +66,8 @@ const AllFaq = () => {
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl">All FAQs</h1>
-        <div className="flex space-x-2">
+        {user && !user.isAdmin && (
+          <div className="flex space-x-2">
           <Link to="/myfaq" className="no-underline">
             <Button className="btn btn-primary bg-green-500">My FAQ</Button>
           </Link>
@@ -72,30 +75,33 @@ const AllFaq = () => {
             <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
           </Link>
         </div>
+        )}
       </div>
       {faqs.length > 0 ? (
         <ul className="list-none p-0">
         {faqs.map(faq => (
           <li key={faq._id} className="mb-8 p-10 shadow-md relative">
             <p>{faq.giverName}</p>
-            {/* Display the formatted createdAt date */}
             <p className="text-sm text-gray-500">{formatDate(faq.createdAt)}</p><br />
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
             <div className="mt-4">
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                handleReply(faq._id);
-              }} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={replyInput}
-                  onChange={(e) => setReplyInput(e.target.value)}
-                  placeholder="Your reply..."
-                  className="w-full border rounded-md px-3 py-2"
-                />
-                <Button type="submit" color="teal-500">Reply</Button>
-              </form>
+              {/* Reply form visible to admins only */}
+              {user && user.isAdmin && (
+                <form onSubmit={(e) => {
+                  e.preventDefault();
+                  handleReply(faq._id);
+                }} className="flex items-center space-x-2">
+                  <input
+                    type="text"
+                    value={replyInput}
+                    onChange={(e) => setReplyInput(e.target.value)}
+                    placeholder="Your reply..."
+                    className="w-full border rounded-md px-3 py-2"
+                  />
+                  <Button type="submit" color="teal-500">Reply</Button>
+                </form>
+              )}
               {faq.replies.length > 0 && (
                 <div className="mt-4">
                   {faq.replies.map((reply, index) => (
@@ -103,22 +109,27 @@ const AllFaq = () => {
                       <div>
                         <span className="font-bold text-gray-800">Admin:</span> {reply}
                       </div>
-                      <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
-                        <FaTimes />
-                      </Button>
+                      {/* Delete reply button visible to admins only */}
+                      {user && user.isAdmin && (
+                        <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
+                          <FaTimes />
+                        </Button>
+                      )}
                     </div>
                   ))}
                 </div>
               )}
             </div>
-            <div className="mt-2 flex items-center" style={{ width: '180px' }}>
-              <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
-            </div>
+            {/* Delete FAQ button visible to admins only */}
+            {user && user.isAdmin && (
+              <div className="mt-2 flex items-center" style={{ width: '180px' }}>
+                <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
+              </div>
+            )}
           </li>
         ))}
       </ul>
       ) : (
-        // Display when no FAQs are found
         <div className="text-center">
           <p className="text-xl">No FAQs to display.</p><br/>
         </div>
