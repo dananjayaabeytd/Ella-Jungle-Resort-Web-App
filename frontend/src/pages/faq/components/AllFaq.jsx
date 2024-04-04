@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-import { FaThumbsUp, FaTimes } from 'react-icons/fa'; // Import thumbs-up and times icons
+import { FaTimes } from 'react-icons/fa'; // Import thumbs-up and times icons
 
 const AllFaq = () => {
   const [faqs, setFaqs] = useState([]);
@@ -21,20 +21,6 @@ const AllFaq = () => {
     }
   };
 
-  const handleLike = async (faqId) => {
-    try {
-      await axios.put(`/api/faq/like/${faqId}`);
-      // Update the local state to reflect the change
-      setFaqs(prevFaqs => prevFaqs.map(faq => {
-        if (faq._id === faqId) {
-          return { ...faq, likes: faq.likes + 1 };
-        }
-        return faq;
-      }));
-    } catch (error) {
-      console.error('Error liking FAQ:', error);
-    }
-  };
 
   const handleReply = async (faqId) => {
     try {
@@ -110,12 +96,8 @@ const AllFaq = () => {
                 </div>
               )}
               <br></br>
-              <span className="font-bold">Likes: {faq.likes}</span>
             </div>
             <div className="mt-2 flex items-center" style={{ width: '180px' }}>
-              <Button onClick={() => handleLike(faq._id)} color="teal-500">
-                <FaThumbsUp /> {/* Render thumbs-up icon */}
-              </Button>
               <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
             </div>
           </li>
