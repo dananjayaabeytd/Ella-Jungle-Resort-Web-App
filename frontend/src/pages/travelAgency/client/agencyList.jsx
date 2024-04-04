@@ -8,6 +8,12 @@ function AgencyList() {
   const { userId } = useParams();
 
   const [agencies, setAgencies] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredAgencies, setFilteredAgencies] = useState([]);
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [sortOrderName, setSortOrderName] = useState("asc");
+const [sortOrderRating, setSortOrderRating] = useState("asc");
+  
 
   useEffect(() => {
     const fetchAgencies = async () => {
@@ -24,6 +30,42 @@ function AgencyList() {
     fetchAgencies();
   }, []);
 
+  useEffect(() => {
+    // Filter agencies based on search query
+    const filtered = agencies.filter((agency) =>
+      agency.agencyName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredAgencies(filtered);
+  }, [searchQuery, agencies]);
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSortChange = (sortBy) => {
+    const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
+    setSortOrder(newSortOrder);
+  
+    // Sort agencies based on the selected sort option and sortOrder
+    const sorted = [...filteredAgencies].sort((a, b) => {
+      if (sortBy === "name") {
+        return newSortOrder === "asc"
+          ? a.agencyName.localeCompare(b.agencyName)
+          : b.agencyName.localeCompare(a.agencyName);
+      } else if (sortBy === "rating") {
+        return newSortOrder === "asc"
+          ? a.rating - b.rating
+          : b.rating - a.rating;
+      }
+      return 0;
+    });
+  
+    setFilteredAgencies(sorted);
+  };
+  
+
+  
+
   return (
     <div>
       <div className="relative">
@@ -39,7 +81,8 @@ function AgencyList() {
 
       <div className="flex mt-5 ml-10">
         <div className="container flex-col justify-center mx-auto ">
-          {agencies.map((agency) => {
+          {filteredAgencies.map((agency) => {
+            
             console.log("Agency ID:", agency.id);
             console.log("Agency Name:", agency.agencyName);
             console.log("Agency Address:", agency.address);
@@ -51,6 +94,7 @@ function AgencyList() {
 
             return (
               <AgencyDetailsSimple
+                key={agency.id}
                 agencyId={agency.id}
                 agencyName={agency.agencyName}
                 businessRegistrationNumber={agency.businessRegistrationNumber}
@@ -65,7 +109,11 @@ function AgencyList() {
         </div>
 
         <div className="flex-1 mr-20">
-          <AgencySearch />
+        <AgencySearch
+            handleSearchInputChange={handleSearchInputChange}
+            handleSortChange={handleSortChange}
+            sortOrder={sortOrder}
+          />
         </div>
       </div>
     </div>
