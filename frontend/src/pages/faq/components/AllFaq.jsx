@@ -73,7 +73,8 @@ const AllFaq = () => {
           </Link>
         </div>
       </div>
-      <ul className="list-none p-0">
+      {faqs.length > 0 ? (
+        <ul className="list-none p-0">
         {faqs.map(faq => (
           <li key={faq._id} className="mb-8 p-10 shadow-md relative">
             <p>{faq.giverName}</p>
@@ -116,6 +117,12 @@ const AllFaq = () => {
           </li>
         ))}
       </ul>
+      ) : (
+        // Display when no FAQs are found
+        <div className="text-center">
+          <p className="text-xl">No FAQs to display.</p><br/>
+        </div>
+      )}
     </div>
   );
 };

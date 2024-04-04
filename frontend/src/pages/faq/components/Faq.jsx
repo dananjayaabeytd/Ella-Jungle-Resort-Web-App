@@ -125,7 +125,7 @@ const Faq = () => {
       ) : (
         // Display when no FAQs are found for the giverId
         <div className="text-center">
-          <p className="text-xl">No FAQs to display.</p>
+          <p className="text-xl">You Have no FAQs to display.</p><br/>
         </div>
       )}
     </div>
