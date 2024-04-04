@@ -65,7 +65,8 @@ const AllFeedback = () => {
           </Link>
         </div>
       </div>
-      <ul className="list-none p-0">
+      {allFeedback.length > 0 ? (
+        <ul className="list-none p-0">
         {allFeedback && allFeedback.map((feedback) => (
           <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
             <p className="font-bold">{feedback.giverName}</p><br></br>
@@ -78,6 +79,11 @@ const AllFeedback = () => {
           </li>
         ))}
       </ul>
+      ) : (
+        <div className="text-center">
+          <p className="text-xl">No Feedbacks to display.</p><br/><br/>
+        </div>
+      )}
     </div>
   );
 };

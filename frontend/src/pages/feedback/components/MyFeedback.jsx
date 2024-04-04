@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import DeleteFeedback from "./DeleteFeedback";
+import UpdateFeedback from "./UpdateFeedback";
 import { Button } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 
@@ -25,17 +26,17 @@ const renderStarRating = (rating) => {
 
 const MyFeedback = () => {
   const [allFeedback, setFeedback] = useState([]);
+  const [showUpdateForm, setShowUpdateForm] = useState({});
   const userInfo = useSelector(state => state.auth.userInfo);
-  
+
   useEffect(() => {
     const giverId = userInfo ? userInfo._id : null;
     if (giverId) {
       fetchFeedbacks(giverId);
     } else {
-      // If there's no user info, clear the feedbacks to ensure the component doesn't display outdated information
       setFeedback([]);
     }
-  }, [userInfo]); // Depend on userInfo to re-trigger effect when it changes
+  }, [userInfo]);
 
   const fetchFeedbacks = async (giverId) => {
     try {
@@ -45,7 +46,6 @@ const MyFeedback = () => {
       console.error("An error occurred while fetching feedbacks.", error.message);
     }
   };
-  
 
   const handleDeleteFeedback = async (feedbackId) => {
     try {
@@ -56,6 +56,13 @@ const MyFeedback = () => {
       console.error("Error deleting Feedback.", error.message);
       alert("Error deleting feedback. Please try again.");
     }
+  };
+
+  const toggleUpdateForm = (feedbackId) => {
+    setShowUpdateForm(prevState => ({
+      ...prevState,
+      [feedbackId]: !prevState[feedbackId]
+    }));
   };
 
   return (
@@ -76,13 +83,36 @@ const MyFeedback = () => {
               <div className="mt-4">
                 {renderStarRating(feedback.rating)}
               </div>
-              <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />
+              <div className="flex justify-end space-x-2">
+                {showUpdateForm[feedback._id] ? (
+                  <UpdateFeedback
+                    feedbackId={feedback._id}
+                    currentTitle={feedback.fbtitle}
+                    currentDescription={feedback.fbdescription}
+                    currentRating={feedback.rating}
+                    onUpdateFeedback={() => {
+                      fetchFeedbacks(userInfo._id);
+                      toggleUpdateForm(feedback._id); // Close the form after updating
+                    }}
+                  />
+                ) : (
+                  <>
+                    <Button
+                      className="bg-green-500"
+                      onClick={() => toggleUpdateForm(feedback._id)}
+                    >
+                      Update
+                    </Button>
+                    <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />
+                  </>
+                )}
+              </div>
             </li>
           ))}
         </ul>
       ) : (
         <div className="text-center">
-          <p className="text-xl">No Feedbacks to display.</p><br></br>
+          <p className="text-xl">You have no Feedbacks to display.</p><br/><br/>
         </div>
       )}
     </div>

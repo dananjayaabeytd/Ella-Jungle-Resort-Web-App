@@ -21,6 +21,7 @@ import AllFeedback from './pages/feedback/components/AllFeedback';
 import AllFaq from './pages/faq/components/AllFaq';
 import AddFaq from './pages/faq/components/AddFaq';
 import MyFeedback from './pages/feedback/components/MyFeedback';
+import UpdateFeedback from './pages/feedback/components/UpdateFeedback';
 import Faq from './pages/faq/components/Faq';
 
 import store from './store';
@@ -103,6 +104,10 @@ const router = createBrowserRouter([
       {
         path: '/myfaq',
         element: <Faq />
+      },
+      {
+        path: '/updatefeedback',
+        element: <UpdateFeedback />
       }
 
     ],
