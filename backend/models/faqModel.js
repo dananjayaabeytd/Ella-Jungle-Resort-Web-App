@@ -24,7 +24,7 @@ const faqSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: Date.now // Automatically set the date when FAQ is created
+        default: Date.now
     }
 });
 

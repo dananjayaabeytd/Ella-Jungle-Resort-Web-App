@@ -50,6 +50,15 @@ const AllFeedback = () => {
     }
   };
 
+  // Function to format the createdAt date
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   return (
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
@@ -69,7 +78,8 @@ const AllFeedback = () => {
         <ul className="list-none p-0">
         {allFeedback && allFeedback.map((feedback) => (
           <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
-            <p className="font-bold">{feedback.giverName}</p><br></br>
+            <p className="font-bold">{feedback.giverName}</p>
+            <p className="text-sm text-gray-500">{formatDate(feedback.createdAt)}</p><br />
             <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3>
             <p className="font-bold">{feedback.fbdescription}</p>
             <div className="mt-4">
