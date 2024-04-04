@@ -27,26 +27,24 @@ const MyFeedback = () => {
   const [allFeedback, setFeedback] = useState([]);
   const userInfo = useSelector(state => state.auth.userInfo);
   
-  // Ensure that giverId is safely accessed
-  const giverId = userInfo ? userInfo._id : null;
-
   useEffect(() => {
+    const giverId = userInfo ? userInfo._id : null;
     if (giverId) {
-      axios.get(`http://localhost:5000/api/feedbacks/feedbacksByGiverId/${giverId}`)
-        .then((res) => {
-          setFeedback(res.data);
-        })
-        .catch((err) => {
-          // Check if the error is a 404 and customize the message
-          if (err.response && err.response.status === 404) {
-            alert("There are no feedbacks under your ID");
-          } else {
-            // For all other errors, display a generic message or log the error
-            console.error("An error occurred while fetching feedbacks.", err.message);
-          }
-        });
+      fetchFeedbacks(giverId);
+    } else {
+      // If there's no user info, clear the feedbacks to ensure the component doesn't display outdated information
+      setFeedback([]);
     }
-  }, [giverId]);
+  }, [userInfo]); // Depend on userInfo to re-trigger effect when it changes
+
+  const fetchFeedbacks = async (giverId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/feedbacks/feedbacksByGiverId/${giverId}`);
+      setFeedback(response.data);
+    } catch (error) {
+      console.error("An error occurred while fetching feedbacks.", error.message);
+    }
+  };
   
 
   const handleDeleteFeedback = async (feedbackId) => {
