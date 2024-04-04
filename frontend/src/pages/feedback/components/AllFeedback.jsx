@@ -3,11 +3,12 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import DeleteFeedback from "./DeleteFeedback";
 import { Button } from '@material-tailwind/react';
+import { useSelector } from 'react-redux'; // Import useSelector
 
 const starStyles = {
   marginRight: "3px",
   color: "#ffc107",
-  fontSize: "1.5rem", // Adjust star size
+  fontSize: "1.5rem",
 };
 
 const renderStarRating = (rating) => {
@@ -24,6 +25,7 @@ const renderStarRating = (rating) => {
 
 const AllFeedback = () => {
   const [allFeedback, setFeedback] = useState([]);
+  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   useEffect(() => {
     function getFeedback() {
@@ -50,7 +52,6 @@ const AllFeedback = () => {
     }
   };
 
-  // Function to format the createdAt date
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
       year: 'numeric',
@@ -63,35 +64,36 @@ const AllFeedback = () => {
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl">All Feedback</h1>
-        <div>
-          {/* My Feedback Button */}
-          <Link to="/MyFeedback" className="no-underline mr-2">
-            <Button className="btn btn-primary bg-green-500">My Feedback</Button>
-          </Link>
-          {/* Add Feedback Button */}
-          <Link to="/AddFeedback" className="no-underline">
-            <Button className="btn btn-primary bg-green-500">Enter Feedback</Button>
-          </Link>
-        </div>
+        {/* Adjust the condition to check if user is NOT an admin */}
+        {user && !user.isAdmin && (
+          <div>
+            <Link to="/MyFeedback" className="no-underline mr-2">
+              <Button className="btn btn-primary bg-green-500">My Feedback</Button>
+            </Link>
+            <Link to="/AddFeedback" className="no-underline">
+              <Button className="btn btn-primary bg-green-500">Enter Feedback</Button>
+            </Link>
+          </div>
+        )}
       </div>
       {allFeedback.length > 0 ? (
         <ul className="list-none p-0">
-        {allFeedback && allFeedback.map((feedback) => (
-          <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
-            <p className="font-bold">{feedback.giverName}</p>
-            <p className="text-sm text-gray-500">{formatDate(feedback.createdAt)}</p><br />
-            <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3>
-            <p className="font-bold">{feedback.fbdescription}</p>
-            <div className="mt-4">
-              {renderStarRating(feedback.rating)}
-            </div>
-            <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />
-          </li>
-        ))}
-      </ul>
+          {allFeedback.map((feedback) => (
+            <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
+              <p className="font-bold">{feedback.giverName}</p>
+              <p className="text-sm text-gray-500">{formatDate(feedback.createdAt)}</p><br />
+              <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3>
+              <p className="font-bold">{feedback.fbdescription}</p>
+              <div className="mt-4">
+                {renderStarRating(feedback.rating)}
+              </div>
+              {user && user.isAdmin && <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />}
+            </li>
+          ))}
+        </ul>
       ) : (
         <div className="text-center">
-          <p className="text-xl">No Feedbacks to display.</p><br/><br/>
+          <p className="text-xl">No Feedbacks to display.</p><br /><br />
         </div>
       )}
     </div>
