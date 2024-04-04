@@ -2,24 +2,31 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-import { FaTimes } from 'react-icons/fa'; // Import thumbs-up and times icons
+import { FaTimes } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
 
-const AllFaq = () => {
+const Faq = () => {
   const [faqs, setFaqs] = useState([]);
   const [replyInput, setReplyInput] = useState('');
+  const userInfo = useSelector(state => state.auth.userInfo);
+
+  const giverId = userInfo ? userInfo._id : null;
 
   useEffect(() => {
-    fetchFaqs();
-  }, []);
+    if (giverId) {
+      fetchFaqs(giverId);
+    }
+  }, [giverId]);
 
-  const fetchFaqs = async () => {
+  const fetchFaqs = async (giverId) => {
     try {
-      const response = await axios.get('/api/faq');
+      const response = await axios.get(`/api/faq/bygiver/${giverId}`);
       setFaqs(response.data);
     } catch (error) {
       console.error('Error fetching FAQs:', error);
     }
   };
+
 
   const handleReply = async (faqId) => {
     try {
@@ -56,19 +63,16 @@ const AllFaq = () => {
   return (
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl">All FAQs</h1>
-        <div className="flex space-x-2">
-        <Link to="/myfaq" className="no-underline"> {/* Update this link as needed */}
-            <Button className="btn btn-primary bg-green-500">My FAQ</Button> {/* Added "My FAQ" button */}
-          </Link>
-          <Link to="/addfaq" className="no-underline">
-            <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
-          </Link>
-        </div>
+        <h1 className="text-4xl">My FAQs</h1>
+        <Link to="/addfaq" className="no-underline">
+          <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
+        </Link>
       </div>
-      <ul className="list-none p-0">
-      {faqs.map(faq => (
-          <li key={faq._id} className="mb-8 p-10 shadow-md relative">
+      {faqs.length > 0 ? (
+        <ul className="list-none p-0">
+          {faqs.map(faq => (
+            // FAQ items...
+            <li key={faq._id} className="mb-8 p-10 shadow-md relative">
             <p>{faq.giverName}</p><br></br>
             <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
             <p>{faq.faqdescription}</p>
@@ -105,10 +109,16 @@ const AllFaq = () => {
               <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
             </div>
           </li>
-        ))}
-      </ul>
+          ))}
+        </ul>
+      ) : (
+        // Display when no FAQs are found for the giverId
+        <div className="text-center">
+          <p className="text-xl">No FAQs to display.</p>
+        </div>
+      )}
     </div>
   );
 };
 
-export default AllFaq;
+export default Faq;

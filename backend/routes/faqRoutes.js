@@ -3,22 +3,18 @@ const FAQ = require("../models/faqModel");
 
 // Insert / Create
 router.route("/addfaq").post((req, res) => {
-    const { faqtitle, faqdescription, giverName } = req.body;
+    const { faqtitle, faqdescription, giverName, giverId } = req.body; // Include giverId
 
     const newFAQ = new FAQ({
         faqtitle,
         faqdescription,
-        giverName
+        giverName,
+        giverId // Save giverId along with the FAQ
     });
 
     newFAQ.save()
-        .then(() => {
-            res.json("FAQ Added.");
-        })
-        .catch((err) => {
-            console.log(err);
-            res.status(400).json("Error: " + err);
-        });
+        .then(() => res.json("FAQ Added."))
+        .catch(err => res.status(400).json("Error: " + err));
 });
 
 // Read
@@ -32,6 +28,18 @@ router.route("/").get((req, res) => {
             res.status(400).json("Error: " + err);
         });
 });
+
+
+// Read FAQs by giverId
+router.route("/bygiver/:giverId").get((req, res) => {
+    const giverId = req.params.giverId;
+
+    FAQ.find({ giverId: giverId })
+        .then(faqs => res.json(faqs))
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+
 
 // Update Likes
 router.route("/like/:id").put((req, res) => {

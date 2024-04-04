@@ -17,7 +17,6 @@ const AddFaq = () => {
       return;
     }
 
-    // Check if any of the fields are empty
     if (!newFaqTitle.trim() || !newFaqDescription.trim()) {
       alert("Please fill in all fields before submitting.");
       return;
@@ -26,13 +25,13 @@ const AddFaq = () => {
     const newFaq = {
       faqtitle: newFaqTitle,
       faqdescription: newFaqDescription,
-      giverName: userInfo.name
+      giverName: userInfo.name,
+      giverId: userInfo._id // Include the giverId when creating a new FAQ
     };
 
     try {
       const response = await axios.post('/api/faq/addfaq', newFaq);
       console.log('FAQ added:', response.data);
-      // Clear input fields
       setNewFaqTitle('');
       setNewFaqDescription('');
       alert('FAQ added successfully!');
