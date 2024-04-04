@@ -83,7 +83,7 @@ export default function ViewActivity() {
 
 
                 {filteredActivities.map((SpecialActivity) => (
-                    <div key={SpecialActivity._id} className="bg-white shadow-lg rounded-lg p-6 mb-6 w-96">
+                    <div key={SpecialActivity._id} className="bg-white shadow-lg shadow-black rounded-lg p-6 mb-6 w-96">
                         {SpecialActivity.image && (
                             <img src={require(`../../assets/${SpecialActivity.image}`)} alt={SpecialActivity.name} className="mb-4 w-full" />)}
 
@@ -102,6 +102,12 @@ export default function ViewActivity() {
                         <br />
 
                         <p className="text-lg font-normal mb-2">
+                        <span className="font-bold">Distance(km):</span> {parseFloat(SpecialActivity.distance).toFixed(2)}
+                        </p>
+
+                        <br />
+
+                        <p className="text-lg font-normal mb-2">
                             <span className="font-bold">Price Per Person (LKR):</span> {parseFloat(SpecialActivity.price).toFixed(2)}
                         </p>
 
@@ -109,8 +115,8 @@ export default function ViewActivity() {
                         <br />
 
                         <div className="flex mt-2">
-                            <Link to={`/update/${SpecialActivity._id}`} className="bg-green-500 hover:bg-green-600 text-white py-1 px-4 rounded-full mr-2">Update</Link>
-                            <button className="bg-red-500 hover:bg-red-600 text-white py-1 px-4 rounded-full" onClick={() => handleDelete(SpecialActivity._id)}>Delete</button>
+                            <Link to={`/update/${SpecialActivity._id}`} className="bg-green-500 hover:bg-green-600 text-white py-2 px-5 rounded-full mr-2">Update</Link>
+                            <button className="bg-red-500 hover:bg-red-600 text-white py-2 px-5 rounded-full" onClick={() => handleDelete(SpecialActivity._id)}>Delete</button>
                         </div>
 
 

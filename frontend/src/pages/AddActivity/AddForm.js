@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
+import ActivityBackground from '../../assets/ActivityBackground.jpg';
 
 
 
 const AddForm = () => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [distance, setDistance] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const navigate = useNavigate(); // Use useNavigate hook for navigation
@@ -27,6 +29,7 @@ const AddForm = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
+    formData.append("distance", price);
     formData.append("price", price);
     formData.append("image", image);
 
@@ -54,8 +57,8 @@ const AddForm = () => {
 
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-xl py-14 px-11 text-xl font-extrabold text-black shadow-lg">
+    <div className="flex items-center justify-center min-h-screen" style={{ backgroundImage: `url(${ActivityBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+      <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-xl py-14 px-11 text-xl font-extrabold text-black shadow-lg shadow-black">
         <form className="flex flex-col w-full" onSubmit={handleSubmit}>
           <h2 className="self-center text-3xl text-white mb-8">Add a Special Activity</h2>
 
@@ -83,13 +86,21 @@ const AddForm = () => {
           <br />
 
           <div>
+             <label htmlFor="distance" className="mt-8">Distance(km)</label><br />
+             <input type="number" id="distance" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1"
+             value={distance} onChange={(e) => setDistance(parseFloat(e.target.value))} required />
+          </div>
+
+          <br />
+
+          <div>
             <label htmlFor="price" className="mt-8">Price Per Person (LKR)</label><br />
             <input type="number" id="price" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1"
               value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
           </div>
 
 
-          <button type="submit" className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-[60px] hover:bg-green-600">
+          <button type="submit" className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-[60px] hover:bg-green-600 shadow-lg shadow-black">
             Submit
           </button>
 

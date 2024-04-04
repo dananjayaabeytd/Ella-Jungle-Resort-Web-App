@@ -4,9 +4,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-
-
-
 //create an object
 const specialActivitiesSchema = new Schema({
     //properties of special activities
@@ -23,6 +20,11 @@ const specialActivitiesSchema = new Schema({
     description:{
         type:String,
         required:true
+    },
+
+    distance:{
+        type:Number,
+        //required:true
     },
 
     price:{

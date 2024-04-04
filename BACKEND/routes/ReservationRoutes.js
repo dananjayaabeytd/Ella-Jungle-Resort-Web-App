@@ -4,7 +4,10 @@ let Reservation = require("../models/ActivityReservation");
 
 
 
-router.route("/confirmapply").post((req,res)=>{
+
+
+
+router.route("/confirmactivity/:id").post((req,res)=>{
 
     const {activityID,guestID,activityName} = req.body;
 
@@ -15,7 +18,7 @@ router.route("/confirmapply").post((req,res)=>{
     })
 
     newReservation.save().then(()=>{
-        res.json("Apply Condirmed")
+        res.json("Apply Confirmed")
     }).catch((err)=>{
         console.log(err);
     })

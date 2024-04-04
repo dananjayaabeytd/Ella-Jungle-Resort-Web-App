@@ -41,7 +41,7 @@ router.post("/add", (req, res) => {
 
 
       // File upload successful, continue with adding the activity
-      const { name, description, price } = req.body;
+      const { name, description, distance, price } = req.body;
       const image = req.file ? req.file.filename : ""; // If no file uploaded, set empty string
   
 
@@ -51,6 +51,7 @@ router.post("/add", (req, res) => {
           name,
           image,
           description,
+          distance,
           price,
         });
 
@@ -89,13 +90,14 @@ router.route("/update/:id").put(async(req,res)=>{
     let userId = req.params.id;
     
     //fetching the newly updated data in destructive format
-    const{name,image,description,price}=req.body;
+    const{name,image,description,distance,price}=req.body;
 
     //creating an object to update the data
     const updateSpecialActivity={
         name,
         image,
         description,
+        distance,
         price
     };
     

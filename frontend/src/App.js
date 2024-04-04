@@ -7,6 +7,7 @@ import ViewActivity from "./pages/AllActivity/ViewActivity";
 import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import HomeActivity from "./pages/HomeActivity/HomeActivity";
 import ReservationActivity from "./pages/ReservationActivity/ReservationActivity";
+import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
 
 
 export default function App() {
@@ -15,12 +16,13 @@ export default function App() {
         <div>
           <MyNavbar/>
               <Routes>
-              <Route path="/add" element={<AddForm/>}/>
-              <Route path="/update/:id" element={<UpdateForm/>}/>
-              <Route path="/" element={<ViewActivity/>}/>
-              <Route path="/home" element ={<HomeActivity/>}/>
-              <Route path="/apply/:id" element={<ReservationActivity/>}/>
               
+              <Route path="/" element={<ViewActivity/>} />
+              <Route path="/add" element={<AddForm />} />
+              <Route path="/update/:id" element={<UpdateForm />} />
+              <Route path="/home" element={<HomeActivity />} />
+              <Route path="/apply/:id" element={<ReservationActivity />} />
+              <Route path="/confirmactivity/:id" element={ConfirmReservation}/>
               </Routes>
              
                 

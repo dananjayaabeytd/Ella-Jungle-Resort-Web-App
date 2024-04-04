@@ -2,6 +2,7 @@
 import  React,{useState,useEffect} from "react";
 import {useParams,useNavigate} from "react-router-dom";
 import axios from "axios";
+import ActivityBackground from '../../assets/ActivityBackground.jpg';
 
 function UpdateForm() {
 
@@ -10,6 +11,7 @@ function UpdateForm() {
      const [name,setName]= useState("");
      //const [image,setImage]= useState("");
      const[description,setDescription] = useState("");
+     const [distance,setDistance] = useState("");
      const [price,setPrice] = useState("");
      const navigate= useNavigate();
 
@@ -29,6 +31,7 @@ function UpdateForm() {
           setName(res.data.specialActivity.name);
           //setImage(res.data.specialActivity.image);
           setDescription(res.data.specialActivity.description);
+          setDistance(res.data.specialActivity.distance);
           setPrice(res.data.specialActivity.price);
 
 
@@ -50,7 +53,7 @@ function UpdateForm() {
 
     //creates an object with the current state values
     const updatedSpecialActivity={
-          name,/*image*/description,price
+          name,/*image*/description,distance,price
       
   };  
 
@@ -74,8 +77,8 @@ function UpdateForm() {
 
 
 return (
-  <div className="flex items-center justify-center min-h-screen bg-cover">
-    <div className="bg-green-600 bg-opacity-90 flex items-center justify-center w-full max-w-[600px] rounded-xl shadow-lg py-14 px-11 text-xl font-extrabold text-black">
+  <div className="flex items-center justify-center min-h-screen bg-cover"style={{ backgroundImage: `url(${ActivityBackground})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+    <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-xl shadow-lg shadow-black py-14 px-11 text-xl font-extrabold text-black">
       <form className="flex flex-col w-full" onSubmit={handleUpdate}>
         <h2 className="self-center text-3xl text-white mb-8">Update</h2>
 
@@ -101,6 +104,16 @@ return (
         ></textarea>
 
 
+        <label htmlFor="distance" className="mt-8 text-white">Distance</label>
+        <input
+          type="text"
+          id="distance"
+          className="mt-2 rounded-lg bg-white h-[50px] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
+          value={distance}
+          onChange={(e) => setDistance(e.target.value)}
+        />
+
+
 
         <label htmlFor="price" className="mt-8 text-white">Price</label>
         <input
@@ -116,7 +129,7 @@ return (
         <button
           type="submit"
           className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-lg text-white font-semibold
-           hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+           hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg shadow-black">
 
           Update
 
