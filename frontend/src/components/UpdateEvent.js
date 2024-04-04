@@ -321,11 +321,7 @@ export default function UpdateEvent() {
               <label className="block font-bold text-xl text-green-800" htmlFor="file">
                 Event Image
               </label>
-              <input
-                type="file"
-                id="file"
-                name="file"
-                accept="image/*"
+              <input type="file" id="file" name="file" accept="image/*"
                 onChange={(e) => setFile(e.target.files[0])}
                 className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
               />
@@ -334,7 +330,7 @@ export default function UpdateEvent() {
             <div className="flex justify-center mt-5">
               <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Update Event </button>
 
-              <Link to={`/`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
+              <Link to={`/events`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
             </div>
           </form>
         </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import axios from "axios"; // axios for making HTTP requests
 import { useNavigate } from 'react-router-dom'; // for programmatic navigation
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 
 export default function AddEvent() {
   const [eventName, setEventName] = useState("");
@@ -97,7 +98,7 @@ export default function AddEvent() {
         setEventDescription("");
         setSelectedOptions([]);
         setFile(null);
-        navigate("/");
+        navigate("/events");
       })
       .catch((err) => {
         alert(err);
@@ -287,10 +288,11 @@ export default function AddEvent() {
               />
             </div>
 
-            <center>
-              <br />
+            <div className="flex justify-center mt-5">
               <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Submit </button>
-            </center>
+
+              <Link to={`/events`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
+            </div>
           </form>
         </div>
       </div>

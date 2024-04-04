@@ -13,8 +13,19 @@ const optionSchema = new Schema({
         required: true
     },
 
+    optionDescription: {
+        type: String,
+        required: true
+    },
+
     optionPrice: {
         type: Number,
+        required: true
+    },
+
+    
+    optionImage: {
+        type: String, // Store the filename or image URL
         required: true
     }
 

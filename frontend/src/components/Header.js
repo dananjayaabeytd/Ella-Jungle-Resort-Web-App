@@ -20,10 +20,10 @@ function Header() {
         <h1 className="w-full text-xl font-bold font-lexend md:flex text-gray-900 m-2">Ella Jungle Resort</h1>
 
       <ul className="hidden md:flex font-lexend ">
-        <Link to="/home" className="p-2 px-6  hover:scale-110">Home</Link>
-        <Link to="/" className="p-2 px-6  hover:scale-110">Events</Link>
-        <Link to="/add" className="p-2 px-6  hover:scale-110">Book</Link>
-        <Link to="/allOptions" className="p-2 px-6  hover:scale-110">Services</Link>
+        <Link to="/" className="p-2 px-6  hover:scale-110">Home</Link>
+        <Link to="/events" className="p-2 px-6  hover:scale-110">Events</Link>
+        <Link to="/addEvent" className="p-2 px-6  hover:scale-110">Book</Link>
+        <Link to="/allOptions" className="p-2 px-6  hover:scale-110">Options</Link>
         <Link to="/test" className="p-2 px-6  hover:scale-110">Bookings</Link>
       </ul>
       <div onClick={handleNav} className="block px-8">

@@ -97,7 +97,7 @@ export default function ViewEvent() {
         <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
             {/* Event Details */}
             <div className="container shadow-md rounded-3xl overflow-hidden w-full h-96 flex items-center justify-center">
-                <img className="w-full h-full object-fill" src={`http://localhost:8070/Images/${selectedEvent.eventImage}`} alt="Event Image"
+                <img className="w-full h-full object-fill" src={`http://localhost:8070/Images/${selectedEvent.eventImage}`} 
                 />
             </div>
 
@@ -241,7 +241,7 @@ export default function ViewEvent() {
             <div className="lg:px-40 sm:px-20 pb-5 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
                 <div className="mt-0 flex justify-center items-center">
                     {/* Using Link component for View button */}
-                    <Link to={`/update/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
+                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
 
                     <button className="mx-28 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
                         Buy

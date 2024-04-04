@@ -3,7 +3,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
-import christmas1 from '../assets/christmas1.jpg';
 import wedding1 from '../assets/wedding1.jpg';
 import birthday1 from '../assets/birthday1.jpg';
 import birthday2 from '../assets/birthday2.jpg';

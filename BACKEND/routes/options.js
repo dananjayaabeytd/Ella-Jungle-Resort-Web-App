@@ -1,22 +1,48 @@
 const router = require("express").Router();
 const Option = require("../models/Option");
+const multer = require("multer");
+const path = require("path");
 
-// Add an option
-router.route("/addOption").post((req,res) => {
-    const { optionCategory, optionName, optionPrice } = req.body;
 
+
+// Configure storage for multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/Images"); // Ensure this directory exists or multer will throw an error
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+// Initialize multer with the storage configuration
+const upload = multer({ storage: storage });
+
+
+
+// Add an Option with image
+router.route("/addOption").post(upload.single("file"), async (req, res) => {
+  const { optionCategory, optionName, optionDescription, optionPrice } = req.body;
+  const optionImage = req.file ? req.file.filename : ""; // Check if file exists
+
+
+  try {
     const newOption = new Option({
-        optionCategory,
-        optionName,
-        optionPrice
+      optionCategory,
+      optionName,
+      optionDescription,
+      optionDescription,
+      optionPrice,
+      optionImage
     });
 
-    newOption.save().then(() => {      //If Successful
-        res.json("Option Added")       //A response in json format to the frontend
-    }).catch((err) => {
-        console.log(err);               //If Unsuccessful
-    })
-})
+    const savedOption = await newOption.save();
+    res.json({ status: "Option Added", option: savedOption });
+  } catch (error) {
+    console.error("Error adding option:", error.message);
+    res.status(500).send({ status: "Error with adding option", error: error.message });
+  }
+});
 
 
 
@@ -38,34 +64,29 @@ router.route("/allOptions").get(async (req, res) => {
 
 
 
-/*Updating details of an option*/
-//When http://Localhost:8070/option/update/5fdeu38rsfk is run, 5fdeu38rsfk user is updated
-//':id' colon id is says "Fetch whatever comes after the slash as the optionId". Colon is a must
-router.route("/updateOption/:id").put(async(req,res) => {         //Always an Asynchronous message wait for a promise. This increases functionality
-    let userId = req.params.id;
-
-    const {optionCategory, optionName, optionPrice} = req.body;
-
-    //Create 'update object'
+// Update Option
+router.route("/updateOption/:id").put(upload.single("file"), async (req, res) => {
+  let optionId = req.params.id;
+  const { optionCategory, optionName, optionDescription, optionPrice } = req.body;
+  const optionImage = req.file ? req.file.filename : ""; // Check if file exists
+  
+  try {
     const updateOption = {
-        optionCategory,
-        optionName,
-        optionPrice
-    }
+      optionCategory,
+      optionName,
+      optionDescription,
+      optionPrice,
+      optionImage
+      
+    };
 
-    //If you didn't use the ID as Primary Key, you can use findOneAndUpdate, here.
-    //Await helps to halt the function until the promise from async is received
-    const update = await Option.findByIdAndUpdate(userId, updateOption)       //Pass the update object as parameter
-    .then(() => {
-        res.status(200).send({status:"Option Updated"});                      //Success error code:200
-    }).catch((err) => {
-        console.log(err);
-        res.status(500).send({status:"Error with updating option", error:err.message});        //Server error code:500
-    })
-})
-
-
-
+    const updatedOption = await Option.findByIdAndUpdate(optionId, updateOption, { new: true });
+    res.status(200).send({ status: "Option Updated", option: updatedOption });
+  } catch (error) {
+    console.error("Error updating option:", error.message);
+    res.status(500).send({ status: "Error with updating option", error: error.message });
+  }
+});
 
 
 
@@ -94,7 +115,7 @@ router.route("/getOption/:id").get(async (req, res) => {
     if (!option) {
       return res.status(404).send({ status: "Option not found" });
     }
-    res.status(200).send({ status: "Option Fetched", event });
+    res.status(200).send({ status: "Option Fetched", option });
   } catch (error) {
     console.error("Error fetching option:", error.message);
     res.status(500).send({ status: "Error with get option", error: error.message });

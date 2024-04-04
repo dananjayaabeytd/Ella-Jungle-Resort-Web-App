@@ -1,7 +1,8 @@
 const router = require("express").Router();
+const Event = require("../models/Event");
 const multer = require("multer");
 const path = require("path");
-const Event = require("../models/Event");
+
 
 // Configure storage for multer
 const storage = multer.diskStorage({
@@ -15,6 +16,7 @@ const storage = multer.diskStorage({
 
 // Initialize multer with the storage configuration
 const upload = multer({ storage: storage });
+
 
 
 

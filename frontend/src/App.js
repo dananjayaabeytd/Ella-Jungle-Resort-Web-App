@@ -8,6 +8,7 @@ import AddOption from "./components/AddOption"
 import OptionList from "./components/OptionList"
 import ViewEvent from "./components/ViewEvent"
 import EventHome from "./components/EventHome"
+import UpdateOption from "./components/UpdateOption"
 
 
 import TestPage from "./components/TestPage"
@@ -21,15 +22,16 @@ export default function App() {
       <div>
       
         <Routes>
-          <Route path="/" exact element={<EventList/>}/>
-          <Route path="/add" exact element={<AddEvent/>}/>
-          <Route path="/update/:eventId" exact element={<UpdateEvent/>}/>
+          <Route path="/" exact element={<EventHome/>}/>
+          <Route path="/events" exact element={<EventList/>}/>
+          <Route path="/addEvent" exact element={<AddEvent/>}/>
+          <Route path="/updateEvent/:eventId" exact element={<UpdateEvent/>}/>
           <Route path="/addOption" exact element={<AddOption/>}/>
           <Route path="/allOptions" exact element={<OptionList/>}/>
-          <Route path="/view/:eventId" exact element={<ViewEvent/>}/>
+          <Route path="/viewEvent/:eventId" exact element={<ViewEvent/>}/>
           <Route path="/header" exact element={<Header/>}/>
-          <Route path="/home" exact element={<EventHome/>}/>
           <Route path="/test" exact element={<TestPage/>}/>
+          <Route path="/updateOption/:optionId" exact element={<UpdateOption/>}/>
         </Routes>
         
       </div>
