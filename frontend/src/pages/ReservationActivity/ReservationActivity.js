@@ -49,6 +49,12 @@ export default function ReservationActivity() {
 
                         <br /><hr /><br />
 
+                          <p className="text-lg font-normal mb-2">
+                          <span className="font-bold">Distance(km):</span> {parseFloat(specialActivity.distance).toFixed(2)}
+                          </p>
+
+                        <br /><hr /><br />
+
                         <p className="text-lg font-normal mb-2">
                             <span className="font-bold">Price Per Person: LKR</span> {parseFloat(specialActivity.price).toFixed(2)}
                         </p>
