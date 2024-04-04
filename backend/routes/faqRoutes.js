@@ -69,4 +69,13 @@ router.put("/deletereply/:id", (req, res) => {
         .catch(err => res.status(500).json("Error: " + err));
 });
 
+
+// get the latest faqs
+router.get("/recent", (req, res) => {
+    FAQ.find().sort({ createdAt: -1 }).limit(4)
+        .then(faqs => res.json(faqs))
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+
 module.exports = router;
