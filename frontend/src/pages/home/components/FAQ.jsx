@@ -5,6 +5,8 @@ import {
   AccordionHeader,
   AccordionBody,
 } from '@material-tailwind/react';
+import { Button } from '@material-tailwind/react';
+import { Link } from "react-router-dom";
 
 function Icon({ id, open }) {
   return (
@@ -52,6 +54,9 @@ export function FAQsection() {
           </AccordionBody>
         </Accordion>
       ))}
+      <Link to="/faq" className="flex justify-center mt-4">
+            <Button className="btn btn-primary bg-green-500">View More FAQs</Button>
+          </Link>
     </div>
   );
 }
