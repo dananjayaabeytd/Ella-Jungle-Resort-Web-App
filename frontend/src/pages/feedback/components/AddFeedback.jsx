@@ -29,7 +29,8 @@ const AddFeedback = () => {
       fbtitle,
       fbdescription,
       rating,
-      giverName: userInfo.name
+      giverName: userInfo.name,
+      giverId: userInfo._id
     };
 
     axios.post("http://localhost:5000/api/feedbacks/addfeedback", newFeedback)

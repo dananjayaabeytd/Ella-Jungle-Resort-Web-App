@@ -20,6 +20,7 @@ import AddFeedback from './pages/feedback/components/AddFeedback';
 import AllFeedback from './pages/feedback/components/AllFeedback';
 import AllFaq from './pages/faq/components/AllFaq';
 import AddFaq from './pages/faq/components/AddFaq';
+import MyFeedback from './pages/feedback/components/MyFeedback';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -85,6 +86,10 @@ const router = createBrowserRouter([
       {
         path: '/addfeedback',
         element: <AddFeedback />,
+      },
+      {
+        path: '/myfeedback',
+        element: <MyFeedback />,
       },
       {
         path: '/faq',

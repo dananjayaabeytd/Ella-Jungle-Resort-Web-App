@@ -18,6 +18,10 @@ const feedbackSchema = new Schema({
     giverName: {
         type: String,
         required: true
+    },
+    giverId: {
+        type: String,
+        required: true
     }
 });
 

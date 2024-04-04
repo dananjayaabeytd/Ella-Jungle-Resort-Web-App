@@ -2,13 +2,14 @@ const router = require("express").Router();
 const Feedback = require("../models/feedbackModel");
 
 router.route("/addfeedback").post((req, res) => {
-    const { fbtitle, fbdescription, rating, giverName } = req.body;
+    const { fbtitle, fbdescription, rating, giverName, giverId } = req.body;
 
     const newFeedback = new Feedback({
         fbtitle,
         fbdescription,
         rating,
-        giverName
+        giverName,
+        giverId
     });
 
     newFeedback.save()
@@ -27,6 +28,42 @@ router.route("/").get((req, res) => {
             res.status(400).json("Error: " + err);
         });
 });
+
+
+// Get feedbacks by giverName
+router.route("/feedbacksByGiver/:giverName").get((req, res) => {
+    const giverName = req.params.giverName;
+
+    Feedback.find({ giverName: giverName })
+        .then(feedbacks => {
+            if (feedbacks.length) {
+                res.json(feedbacks);
+            } else {
+                res.status(404).json("No feedbacks found for the given name.");
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).json("Error: " + err);
+        });
+});
+
+
+// Get feedbacks by giverId
+router.route("/feedbacksByGiverId/:giverId").get((req, res) => {
+    const giverId = req.params.giverId;
+
+    Feedback.find({ giverId: giverId })
+        .then(feedbacks => {
+            if (feedbacks.length) {
+                res.json(feedbacks);
+            } else {
+                res.status(404).json("No feedbacks found for the given ID.");
+            }
+        })
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
 
 // Update
 router.route("/updatefeedback/:id").put((req, res) => {
