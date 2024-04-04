@@ -78,4 +78,17 @@ router.get("/recent", (req, res) => {
 });
 
 
+
+// update faq
+router.put("/updatefaq/:id", (req, res) => {
+    const { id } = req.params;
+    const { faqtitle, faqdescription } = req.body;
+  
+    FAQ.findByIdAndUpdate(id, { faqtitle, faqdescription }, { new: true })
+      .then(updatedFaq => res.json(updatedFaq))
+      .catch(err => res.status(400).json("Error: " + err));
+  });
+  
+
+
 module.exports = router;

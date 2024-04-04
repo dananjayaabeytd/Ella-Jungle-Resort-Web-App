@@ -1,22 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Button } from '@material-tailwind/react';
-import { Link } from "react-router-dom";
-import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
+import UpdateFaq from "./UpdateFaq"; // Ensure you have this component created
+import { Link } from "react-router-dom";
 
 const Faq = () => {
   const [faqs, setFaqs] = useState([]);
-  const [replyInput, setReplyInput] = useState('');
+  const [showUpdateForm, setShowUpdateForm] = useState({});
   const userInfo = useSelector(state => state.auth.userInfo);
 
-  const giverId = userInfo ? userInfo._id : null;
-
   useEffect(() => {
+    const giverId = userInfo ? userInfo._id : null;
     if (giverId) {
       fetchFaqs(giverId);
     }
-  }, [giverId]);
+  }, [userInfo]);
 
   const fetchFaqs = async (giverId) => {
     try {
@@ -24,28 +23,6 @@ const Faq = () => {
       setFaqs(response.data);
     } catch (error) {
       console.error('Error fetching FAQs:', error);
-    }
-  };
-
-
-  const handleReply = async (faqId) => {
-    try {
-      await axios.put(`/api/faq/addreply/${faqId}`, { reply: replyInput });
-      // Refresh FAQs after reply added
-      fetchFaqs();
-      setReplyInput(''); // Clear reply input field
-    } catch (error) {
-      console.error('Error replying to FAQ:', error);
-    }
-  };
-
-  const handleDeleteReply = async (faqId, replyIndex) => {
-    try {
-      await axios.put(`/api/faq/deletereply/${faqId}`, { index: replyIndex });
-      // Refresh FAQs after reply deleted
-      fetchFaqs();
-    } catch (error) {
-      console.error('Error deleting reply:', error);
     }
   };
 
@@ -60,7 +37,13 @@ const Faq = () => {
     }
   };
 
-  // Function to format the createdAt date
+  const toggleUpdateForm = (faqId) => {
+    setShowUpdateForm(prevState => ({
+      ...prevState,
+      [faqId]: !prevState[faqId]
+    }));
+  };
+
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString("en-US", {
       year: 'numeric',
@@ -73,38 +56,20 @@ const Faq = () => {
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl">My FAQs</h1>
-        <Link to="/addfaq" className="no-underline">
-          <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
-        </Link>
+        <div className="flex space-x-2">
+          <Link to="/addfaq" className="no-underline">
+            <Button className="btn btn-primary bg-green-500">Add FAQ</Button>
+          </Link>
+        </div>
       </div>
       {faqs.length > 0 ? (
         <ul className="list-none p-0">
-          {faqs.map(faq => (
-            // FAQ items...
+          {faqs.map((faq) => (
             <li key={faq._id} className="mb-8 p-10 shadow-md relative">
-            <p>{faq.giverName}</p>
-            {/* Display the formatted createdAt date */}
-            <p className="text-sm text-gray-500">{formatDate(faq.createdAt)}</p><br />
-            <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
-            <p>{faq.faqdescription}</p>
-            <div className="mt-4">
-              {/* Reply form visible to admins only */}
-              {userInfo && userInfo.isAdmin && (
-                <form onSubmit={(e) => {
-                  e.preventDefault();
-                  handleReply(faq._id);
-                }} className="flex items-center space-x-2">
-                  <input
-                    type="text"
-                    value={replyInput}
-                    onChange={(e) => setReplyInput(e.target.value)}
-                    placeholder="Your reply..."
-                    className="w-full border rounded-md px-3 py-2"
-                  />
-                  <Button type="submit" color="teal-500">Reply</Button>
-                </form>
-              )}
-              {/* Display replies */}
+              <p>{faq.giverName}</p>
+              <p className="text-sm text-gray-500">{formatDate(faq.createdAt)}</p><br />
+              <h3 className="mb-4 font-bold text-2xl">{faq.faqtitle}</h3>
+              <p>{faq.faqdescription}
               {faq.replies.length > 0 && (
                 <div className="mt-4">
                   {faq.replies.map((reply, index) => (
@@ -112,28 +77,48 @@ const Faq = () => {
                       <div>
                         <span className="font-bold text-gray-800">Admin:</span> {reply}
                       </div>
-                      {/* Delete reply button visible to admins only */}
-                      {userInfo && userInfo.isAdmin && (
-                        <Button onClick={() => handleDeleteReply(faq._id, index)} color="red" size="sm">
-                          <FaTimes />
-                        </Button>
-                      )}
                     </div>
                   ))}
                 </div>
               )}
-              <br></br>
-            </div>
-            <div className="mt-2 flex items-center" style={{ width: '180px' }}>
-              <Button onClick={() => handleDelete(faq._id)} color="red" className="ml-2">Delete</Button>
-            </div>
-          </li>
+              
+              
+              
+              </p><br/><br/><br/>
+              <div className="flex justify-end space-x-2">
+                {showUpdateForm[faq._id] ? (
+                  <UpdateFaq
+                    faqId={faq._id}
+                    currentTitle={faq.faqtitle}
+                    currentDescription={faq.faqdescription}
+                    onUpdateFaq={() => {
+                      fetchFaqs(userInfo._id); // Adjust based on your state management
+                      toggleUpdateForm(faq._id); // Close the form after updating
+                    }}
+                  />
+                ) : (
+                  <>
+                    <Button
+                      className="bg-green-500"
+                      onClick={() => toggleUpdateForm(faq._id)}
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      className="bg-red-500"
+                      onClick={() => handleDelete(faq._id)}
+                    >
+                      Delete
+                    </Button>
+                  </>
+                )}
+              </div>
+            </li>
           ))}
         </ul>
       ) : (
-        // Display when no FAQs are found for the giverId
         <div className="text-center">
-          <p className="text-xl">You Have no FAQs to display.</p><br/>
+          <p className="text-xl">You Have no FAQs to display.</p><br />
         </div>
       )}
     </div>

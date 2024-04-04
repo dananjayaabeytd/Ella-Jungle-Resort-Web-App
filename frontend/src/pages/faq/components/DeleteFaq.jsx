@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Button } from '@material-tailwind/react';
 
 const DeleteFaq = ({ faqId }) => {
   const [deleted, setDeleted] = useState(false);
@@ -22,7 +23,7 @@ const DeleteFaq = ({ faqId }) => {
 
   return (
     <div>
-      <button onClick={handleDelete}>Delete FAQ</button>
+      <Button className="btn btn-secondary bg-red-500" onClick={handleDelete}>Delete FAQ</Button>
     </div>
   );
 };

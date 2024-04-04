@@ -23,6 +23,7 @@ import AddFaq from './pages/faq/components/AddFaq';
 import MyFeedback from './pages/feedback/components/MyFeedback';
 import UpdateFeedback from './pages/feedback/components/UpdateFeedback';
 import Faq from './pages/faq/components/Faq';
+import UpdateFaq from './pages/faq/components/UpdateFaq';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -108,6 +109,10 @@ const router = createBrowserRouter([
       {
         path: '/updatefeedback',
         element: <UpdateFeedback />
+      },
+      {
+        path: '/updatefaq',
+        element: <UpdateFaq />
       }
 
     ],
