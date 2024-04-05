@@ -51,6 +51,17 @@ export function FAQsection() {
           <AccordionBody>
             {faq.faqdescription}
             <div className="text-sm text-gray-500">Posted on: {new Date(faq.createdAt).toLocaleDateString()}</div>
+            {faq.replies.length > 0 && (
+                <div className="mt-4">
+                  {faq.replies.map((reply, index) => (
+                    <div key={index} className="flex items-center justify-between bg-gray-100 p-3 rounded-md">
+                      <div>
+                        <span className="font-bold text-gray-800">Admin:</span> {reply}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
           </AccordionBody>
         </Accordion>
       ))}
