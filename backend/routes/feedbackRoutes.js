@@ -94,4 +94,16 @@ router.route("/deletefeedback/:id").delete((req, res) => {
         });
 });
 
+
+
+
+// Get last 4 added Feedbacks
+router.get("/lastFeedbacks", (req, res) => {
+    Feedback.find().sort({ createdAt: -1 }).limit(3)
+        .then(feedbacks => res.json(feedbacks))
+        .catch(err => res.status(400).json("Error: " + err));
+});
+
+
+
 module.exports = router;

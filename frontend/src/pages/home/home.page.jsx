@@ -4,6 +4,7 @@ import Heromid from './components/Heromid';
 import { BookingCard } from './components/cards';
 import { BookingCardsContainer } from './components/Cardpack';
 import { FAQsection } from './components/FAQ';
+import LatestFeedbacks from './components/FEEDBACK'
 import topleft from '../../assets/topleft.png'
 
 function HomePage() {
@@ -22,6 +23,7 @@ function HomePage() {
       <Heromid />
       <BookingCardsContainer />
       <FAQsection />
+      <LatestFeedbacks />
     </div>
   );
 }

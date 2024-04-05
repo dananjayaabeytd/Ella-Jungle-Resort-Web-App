@@ -42,7 +42,7 @@ export function FAQsection() {
 
   return (
     <div className='my-20 max-w-[800px] mx-auto'>
-      <h1 className='pb-10 mb-6 text-4xl font-bold text-center'>Frequently Asked Questions</h1>
+      <h1 className='pb-1 mb-6 text-4xl font-bold text-center'>Frequently Asked Questions</h1>
       {faqs.map((faq, index) => (
         <Accordion key={faq._id} open={open === index} icon={<Icon id={index} open={open} />}>
           <AccordionHeader onClick={() => setOpen(open === index ? null : index)}>
@@ -56,7 +56,7 @@ export function FAQsection() {
       ))}
       <Link to="/faq" className="flex justify-center mt-4">
             <Button className="btn btn-primary bg-green-500">View More FAQs</Button>
-          </Link>
+          </Link><br/><br/>
     </div>
   );
 }
