@@ -5,6 +5,7 @@ import bggreen from '../assets/bggreen.jpg'; // Import the image
 import axios from "axios"   //axios for making HTTP requests
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import CustomPopup from './CustomPopup'; // Import the modal component
 
 
 export default function AddOption() {
@@ -14,6 +15,11 @@ export default function AddOption() {
   const [optionDescription, setOptionDescription] = useState("");
   const [optionPrice, setOptionPrice] = useState("");  
   const [file, setFile] = useState(null);
+  
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
 
   const navigate = useNavigate();
 
@@ -34,16 +40,24 @@ export default function AddOption() {
         },
       })
       .then(() => {
-        alert("Option Added");
+         // Custom success notification
+         setPopupMessage("Option added successfully!");
+         setPopupType('info');
+         setIsPopupOpen(true);
+
         setOptionCategory("");
         setOptionName("");
         setOptionDescription("");
         setOptionPrice("");
         setFile(null);
-        navigate("/allOptions");
+
       })
       .catch((err) => {
         alert(err);
+        // Custom success notification
+        setPopupMessage("Error adding option. Please try again.");
+        setPopupType('error');
+        setIsPopupOpen(true);
       });
   }
 
@@ -143,6 +157,20 @@ export default function AddOption() {
             </div>
           </form>
         </div>
+
+
+        {/* Your component structure */}
+      <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            navigate("/allOptions");
+          }}
+          type={popupType}
+        />
+
+
       </div>
     </div>
   );

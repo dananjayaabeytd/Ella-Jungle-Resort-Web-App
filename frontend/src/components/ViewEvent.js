@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
+import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
+import CustomPopup from './CustomPopup'; // Import the modal component
 
 export default function ViewEvent() {
 
@@ -15,6 +17,11 @@ export default function ViewEvent() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
+ 
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
 
     const navigate = useNavigate();
   
@@ -58,11 +65,6 @@ export default function ViewEvent() {
     getEventDetails();
   }, [eventId]);
 
-
-  const handleDeleteClick = (eventId) => {
-    setSelectedEventId(eventId); // Set the option ID to state
-    setIsModalOpen(true); // Show the modal
-  };
   
 
   const confirmDelete = async () => {
@@ -71,11 +73,18 @@ export default function ViewEvent() {
         await axios.delete(`http://localhost:8070/event/delete/${selectedEventId}`);
         alert("Event Deleted Successfully!");
         setIsModalOpen(false); // Close the modal
-        navigate("/events");
-        // setOption(allOptions.filter(option => option._id !== selectedOptionId)); // Update state to remove the item
+        // Custom success notification
+        setPopupMessage("Event Deleted Successfully!");
+        setPopupType('info');
+        setIsPopupOpen(true);
+
+
       } catch (error) {
-        console.error("Error deleting option:", error.message);
-        alert("Error deleting option. Please try again.");
+        console.error("Error deleting event:", error.message);
+        // Custom success notification
+        setPopupMessage("Error deleting event. Please try again!");
+        setPopupType('error');
+        setIsPopupOpen(true);
       }
     }
   };
@@ -148,7 +157,7 @@ export default function ViewEvent() {
                         {/* Options for this category */}
                         {allOptions.filter((option) => option.optionCategory === category).map((option) => (
                             <div key={option._id} className="form-check">
-                              <input type="checkbox" id={option._id} name={option.optionName}
+                              <input readOnly type="checkbox" id={option._id} name={option.optionName}
                                 checked={selectedOptions.includes(option._id)}
                                 className="form-checkbox h-5 w-5 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
                               />
@@ -181,7 +190,11 @@ export default function ViewEvent() {
                     </button>
 
                     <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
-                    onClick={() => handleDeleteClick(selectedEvent._id)}>
+                    onClick={() => {
+                      setSelectedEventId(selectedEvent._id);
+                      setIsModalOpen(true);
+                    }}
+                    >
                         Delete
                     </button>
                 </div>
@@ -194,34 +207,24 @@ export default function ViewEvent() {
     {/* Scrolling content End*/}
 
         
-            {/* Pop-up Modal for deletion confirmation */}
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-                  <div className="relative top-1/3  mx-auto p-5 w-96 shadow-lg rounded-3xl bg-white border-secondary-green " >
-                    <div className="mt-3 text-center">
-                      <h3 className="leading-6 text-xl font-bold text-green-800 font-inika pt-4">Deletion Confirmation</h3>
-                      <div className="mt-2 px-7 py-3">
-                        <p className="text-md font-mclaren text-gray-500">
-                          Are you sure you want to remove this event? This action cannot be undone</p>
-                      </div>
-                      <div className="items-center px-4 py-3">
-                        <button id="delete-btn" 
-                        className="px-4 py-2 mx-2 font-mclaren bg-red-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" 
-                        onClick={confirmDelete}>
-                          Delete
-                        </button>
-                        <button 
-                        className="px-4 py-2 mx-2 font-mclaren bg-gray-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
-                        onClick={() => setIsModalOpen(false)}>
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Pop-up Ends Here */}
+      {/* Use the Confirm Deletion Modal here */}
+      <ConfirmDeletion
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={confirmDelete}
+      />
 
+      {/* Your component structure */}
+      <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setIsModalOpen(false); // Close the modal
+            navigate("/events");
+          }}
+          type={popupType}
+        />
       
     
     </div>

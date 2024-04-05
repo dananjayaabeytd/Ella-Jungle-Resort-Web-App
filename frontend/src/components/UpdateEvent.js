@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import bggreen from '../assets/bggreen.jpg'; // Import the image
+import CustomPopup from './CustomPopup'; // Import the modal component
 
 export default function UpdateEvent() {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -21,6 +22,11 @@ export default function UpdateEvent() {
 
   const { eventId } = useParams(); // Get the eventId from URL params
   const [allOptions, setAllOptions] = useState([]);
+  
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
   
   useEffect(() => {
     // Fetch all options when the component mounts
@@ -155,11 +161,19 @@ export default function UpdateEvent() {
         },
       });
 
-      alert("Event details updated successfully!");
-      navigate(`/viewEvent/${eventId}`);
+
+      // Custom success notification
+      setPopupMessage("Event details updated successfully!");
+      setPopupType('info');
+      setIsPopupOpen(true);
+
+
     } catch (error) {
       console.error("Error updating event details:", error.message);
-      alert("Error updating event details. Please try again.");
+      // Custom success notification
+      setPopupMessage("Error updating event details. Please try again.");
+      setPopupType('error');
+      setIsPopupOpen(true);
     }
   };
 
@@ -344,6 +358,17 @@ export default function UpdateEvent() {
             </div>
           </form>
         </div>
+
+        {/* Your component structure */}
+      <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            navigate(`/viewEvent/${eventId}`);
+          }}
+          type={popupType}
+        />
       </div>
     </div>
   );

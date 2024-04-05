@@ -3,6 +3,7 @@ import bggreen from '../assets/bggreen.jpg'; // Import the image
 import axios from "axios"; // axios for making HTTP requests
 import { useNavigate } from 'react-router-dom'; // for programmatic navigation
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import CustomPopup from './CustomPopup'; // Import the modal component
 
 export default function AddEvent() {
   const [eventName, setEventName] = useState("");
@@ -13,6 +14,11 @@ export default function AddEvent() {
   const [file, setFile] = useState(null);
   const [allOptions, setAllOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
   
   const [formError, setFormError] = useState("");
 
@@ -101,7 +107,11 @@ export default function AddEvent() {
         },
       })
       .then(() => {
-        alert("Event Added");
+        // Custom success notification
+        setPopupMessage("Event added successfully!");
+        setPopupType('info');
+        setIsPopupOpen(true);
+
         setEventName("");
         setEventCategory("");
         setEventDate("");
@@ -109,10 +119,14 @@ export default function AddEvent() {
         setSelectedOptions([]);
         setFile(null);
         setFormError("");
-        navigate("/events");
+
       })
       .catch((err) => {
         alert(err);
+        // Custom success notification
+        setPopupMessage("Error adding event. Please try again.");
+        setPopupType('error');
+        setIsPopupOpen(true);
       });
   }
 
@@ -284,6 +298,19 @@ export default function AddEvent() {
             </div>
           </form>
         </div>
+
+        {/* Your component structure */}
+      <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            navigate("/events");
+          }}
+          type={popupType}
+        />
+
+
       </div>
     </div>
   );

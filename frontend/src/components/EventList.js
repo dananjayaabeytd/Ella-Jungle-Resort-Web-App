@@ -1,17 +1,23 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
+import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
+import CustomPopup from './CustomPopup'; // Import the modal component
 
-import axios from "axios";
 
 export default function EventList() {
 
   const [allEvents, setEvents] = useState([]);
-
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
 
   const navigate = useNavigate();
 
@@ -39,12 +45,18 @@ export default function EventList() {
     if (selectedEventId) {
       try {
         await axios.delete(`http://localhost:8070/event/delete/${selectedEventId}`);
-        alert("Event Deleted Successfully!");
         setIsModalOpen(false); // Close the modal
+        // Custom success notification
+        setPopupMessage("Event Deleted Successfully!");
+        setPopupType('info');
+        setIsPopupOpen(true);
         setEvents(allEvents.filter(event => event._id !== selectedEventId)); // Update state to remove the item
       } catch (error) {
         console.error("Error deleting event:", error.message);
-        alert("Error deleting event. Please try again.");
+        // Custom error notification
+        setPopupMessage("Error deleting event. Please try again.");
+        setPopupType('error');
+        setIsPopupOpen(true);
       }
     }
   };
@@ -107,7 +119,10 @@ export default function EventList() {
               <Link to={`/viewEvent/${event._id}`} className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> View </Link>
 
               <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
-              onClick={() => handleDeleteClick(event._id)}
+               onClick={() => {
+                setSelectedEventId(event._id);
+                setIsModalOpen(true);
+              }}
               >
                 Delete
               </button>
@@ -125,33 +140,24 @@ export default function EventList() {
     </ul>
       
       
-            {/* Pop-up Modal for deletion confirmation */}
-            {isModalOpen && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" id="my-modal">
-                  <div className="relative top-1/3  mx-auto p-5 w-96 shadow-lg rounded-3xl bg-white border-secondary-green " >
-                    <div className="mt-3 text-center">
-                      <h3 className="leading-6 text-xl font-bold text-green-800 font-inika pt-4">Deletion Confirmation</h3>
-                      <div className="mt-2 px-7 py-3">
-                        <p className="text-md font-mclaren text-gray-500">
-                          Are you sure you want to remove this event? This action cannot be undone</p>
-                      </div>
-                      <div className="items-center px-4 py-3">
-                        <button id="delete-btn" 
-                        className="px-4 py-2 mx-2 font-mclaren bg-red-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50" 
-                        onClick={confirmDelete}>
-                          Delete
-                        </button>
-                        <button 
-                        className="px-4 py-2 mx-2 font-mclaren bg-gray-500 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
-                        onClick={() => setIsModalOpen(false)}>
-                          Cancel
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* Pop-up Ends Here */}
+      {/* Use the Confirm Deletion Modal here */}
+      <ConfirmDeletion
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onConfirm={confirmDelete}
+      />
+
+
+      {/* Your component structure */}
+      <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            setIsModalOpen(false); // Close the modal
+          }}
+          type={popupType}
+        />
     
     </div>
   </div>
