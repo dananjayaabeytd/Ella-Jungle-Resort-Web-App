@@ -23,16 +23,16 @@ function AgencyNewRequest({ requestId, arrivalDate, departureDate, sentDate, use
   return (
     
     <div onClick={() => handleUpdateClick(requestId)}>
-      <div className="flex gap-5 justify-between py-2.5 shadow-md bg-white bg-opacity-0  max-md:flex-wrap">
-        <div className="flex ml-5">
-          <h2 className="text-sm font-bold leading-5 text-neutral-800">
+      <div className="border border-green-300 flex gap-5 justify-between py-2.5 shadow-md bg-gray-300 bg-opacity-30  max-md:flex-wrap max-w-[900px] mx-auto mb-2 rounded-xl">
+          <div className="flex ">
+            <h2 className="ml-5 text-sm font-bold leading-5 text-neutral-800">
             Yasiru Pahan
           </h2>
         </div>
         <div className="flex ">
-          <div className="flex text-sm ml-[-800px] min-w-[650px] max-w-[500px]">
-            {/* max 60 chars */}
-            <p className="flex text-gray-600">Arrival Date: {arrivalDate}</p>
+            <div className="flex text-sm ">
+              {/* max 60 chars */}
+              <p className="flex text-gray-600 ml-[-500px]">Arrival Date: {arrivalDate}</p>
             <p className="flex ml-10 text-gray-600">
               Departure Date: {departureDate}
             </p>

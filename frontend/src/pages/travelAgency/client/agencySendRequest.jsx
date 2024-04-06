@@ -118,54 +118,53 @@ function AgencySendRequest() {
                   />
                 </div>
                 <div className="flex items-start mb-2">
-  <label>Number of Days</label>
-  <input
-    type="number"
-    className="ml-[52px] w-20 rounded-lg border border-green-500"
-    id="noOfDays"
-    name="NoOfDays"
-    value={formData.NoOfDays}
-    onChange={handleChange}
-    min="0" // Add min attribute to disallow negative numbers
-  />
-</div>
-<div className="flex items-start mb-2">
-  <label>Number of Nights</label>
-  <input
-    type="number"
-    className="ml-[41px] w-20 rounded-lg border border-green-500"
-    id="noOfNights"
-    name="NoOfNights"
-    value={formData.NoOfNights}
-    onChange={handleChange}
-    min="0" // Add min attribute to disallow negative numbers
-  />
-</div>
-<div className="flex items-start mb-2">
-  <label>Number of Adults</label>
-  <input
-    type="number"
-    className="ml-[44px] w-20 rounded-lg border border-green-500"
-    id="noOfAdults"
-    name="NoOfAdults"
-    value={formData.NoOfAdults}
-    onChange={handleChange}
-    min="0" // Add min attribute to disallow negative numbers
-  />
-</div>
-<div className="flex items-start mb-2">
-  <label>Number of Children</label>
-  <input
-    type="number"
-    className="w-20 ml-[24px] rounded-lg border border-green-500"
-    id="noOfChildren"
-    name="NoOfChildren"
-    value={formData.NoOfChildren}
-    onChange={handleChange}
-    min="0" // Add min attribute to disallow negative numbers
-  />
-</div>
-
+                  <label>Number of Days</label>
+                  <input
+                    type="number"
+                    className="ml-[52px] w-20 rounded-lg border border-green-500"
+                    id="noOfDays"
+                    name="NoOfDays"
+                    value={formData.NoOfDays}
+                    onChange={handleChange}
+                    min="0" // Add min attribute to disallow negative numbers
+                  />
+                </div>
+                <div className="flex items-start mb-2">
+                  <label>Number of Nights</label>
+                  <input
+                    type="number"
+                    className="ml-[41px] w-20 rounded-lg border border-green-500"
+                    id="noOfNights"
+                    name="NoOfNights"
+                    value={formData.NoOfNights}
+                    onChange={handleChange}
+                    min="0" // Add min attribute to disallow negative numbers
+                  />
+                </div>
+                <div className="flex items-start mb-2">
+                  <label>Number of Adults</label>
+                  <input
+                    type="number"
+                    className="ml-[44px] w-20 rounded-lg border border-green-500"
+                    id="noOfAdults"
+                    name="NoOfAdults"
+                    value={formData.NoOfAdults}
+                    onChange={handleChange}
+                    min="0" // Add min attribute to disallow negative numbers
+                  />
+                </div>
+                <div className="flex items-start mb-2">
+                  <label>Number of Children</label>
+                  <input
+                    type="number"
+                    className="w-20 ml-[24px] rounded-lg border border-green-500"
+                    id="noOfChildren"
+                    name="NoOfChildren"
+                    value={formData.NoOfChildren}
+                    onChange={handleChange}
+                    min="0" // Add min attribute to disallow negative numbers
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col mx-20 mt-[-5px] ">

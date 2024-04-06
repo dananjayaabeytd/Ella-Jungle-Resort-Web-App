@@ -99,7 +99,7 @@ function AgencyCreatePackage() {
       case "Special Activities":
         return activities.map((activity) => (
           <AgencyPackageActivity
-          key={activity._id}
+            key={activity._id}
             activityId={activity._id}
             activityName={activity.name}
             activityImage={activity.image}
@@ -112,25 +112,21 @@ function AgencyCreatePackage() {
         ));
 
       case "Transport":
-        return transports.map(
-          (transport) => (
-            (
-              <AgencyPackageTransport
-                key={transport._id}
-                transportId={transport._id}
-                vehicleType={transport.vehicleType}
-                pricePerKm={transport.pricePerKm}
-                maxPassengers={transport.maxPassengers}
-                image={transport.image}
-                description={transport.description}
-                agencyId={transport.agencyId}
-                isSelected={selectedTransportId === transport._id} // Pass whether the transport is selected or not
-                onSelect={handleTransportSelection}
-                showCheckbox={true}
-              />
-            )
-          )
-        );
+        return transports.map((transport) => (
+          <AgencyPackageTransport
+            key={transport._id}
+            transportId={transport._id}
+            vehicleType={transport.vehicleType}
+            pricePerKm={transport.pricePerKm}
+            maxPassengers={transport.maxPassengers}
+            image={transport.image}
+            description={transport.description}
+            agencyId={transport.agencyId}
+            isSelected={selectedTransportId === transport._id} // Pass whether the transport is selected or not
+            onSelect={handleTransportSelection}
+            showCheckbox={true}
+          />
+        ));
 
       case "Create Package":
         return (
@@ -149,8 +145,8 @@ function AgencyCreatePackage() {
 
   return (
     <div>
-      <div className="container w-[900px] mx-auto border border-black h-[1500px] rounded">
-        <div className="container w-[900px] mx-auto">
+      <div className="container w-[900px] mx-auto border border-green-500 my-10 rounded-2xl bg-gray-100">
+        <div className="container w-full mx-auto">
           <div className="sm:hidden">
             <label htmlFor="tabs" className="sr-only">
               Create your package
@@ -167,14 +163,14 @@ function AgencyCreatePackage() {
               <option>Create Package</option>
             </select>
           </div>
-          <ul className="hidden text-xl font-medium text-center text-gray-900 bg-green-200 border rounded-lg drop-shadow-lg sm:flex">
+          <ul className="hidden text-xl font-medium text-center text-gray-900 bg-green-200 border border-green-500 rounded-xl drop-shadow-lg sm:flex">
             <li
               className={`w-full focus-within:z-10 ${
                 activeTab === "Rooms" && "bg-green-300"
               }`}
             >
               <button
-                className="inline-block w-full py-3 border-r border-gray-200 rounded-l-lg hover:text-green-500 focus:outline-none focus:bg-green-300 hover:bg-gray-50 focus:text-gray-500"
+                className="inline-block w-full py-3 border-r border-gray-200 rounded-l-2xl hover:text-green-500 focus:outline-none focus:bg-green-300 hover:bg-gray-50 focus:text-gray-500 focus:rounded-2xl"
                 onClick={() => setActiveTab("Rooms")}
               >
                 Rooms
@@ -218,7 +214,9 @@ function AgencyCreatePackage() {
             </li>
           </ul>
         </div>
-        <div className="container bg-gray-100">{renderTabContent()}</div>
+        <div className=" rounded-b-2xl">
+          {renderTabContent()}
+        </div>
       </div>
     </div>
   );

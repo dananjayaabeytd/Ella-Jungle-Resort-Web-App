@@ -23,39 +23,34 @@ function AgencySentRequestList() {
   const rejectedRequests = requests.filter((request) => !request.Status);
 
   return (
-    <div>
-      <div className="container mx-auto flex w-[1000px] border-black border flex-col">
+    <div className="flex flex-col">
+      <h1 className="flex justify-center my-10 ml-2 text-4xl">
+        Agency Sent Request List
+      </h1>
+      <div className="container mx-auto flex w-[1000px] border-black border flex-col rounded-xl">
         <div className="container mx-auto">
-          <h2 className="mb-5 text-xl">Accepted Requests</h2>
+          <h2 className="my-5 ml-10 text-xl font-medium">Accepted Requests</h2>
           <div className="container px-[10px] flex-col flex">
             {acceptedRequests.map((request) => {
-              console.log("Request ID:", request._id);
-              console.log("RoomType:", request.RoomType);
-              console.log("NoOfAdults:", request.NoOfAdults);
-              console.log("NoOfChildren:", request.NoOfChildren);
-              console.log("SentDate:", request.SentDate);
               return (
                 <AgencySentRequest
+                  key={request._id}
                   requestId={request._id}
                   RoomType={request.RoomType}
                   NoOfAdults={request.NoOfAdults}
                   NoOfChildren={request.NoOfChildren}
                   sentDate={request.SentDate}
+                  AgencyId={request.AgencyId}
                 />
               );
             })}
           </div>
         </div>
 
-        <div className="container mx-auto mt-[50px] ">
-          <h2 className="mb-5 text-xl">Pending Requests</h2>
+        <div className="container mx-auto mt-[50px] mb-10">
+          <h2 className="my-5 ml-10 text-xl font-medium">Pending Requests</h2>
           <div className="container px-[10px] flex-col flex">
             {rejectedRequests.map((request) => {
-              console.log("Request ID:", request._id);
-              console.log("RoomType:", request.RoomType);
-              console.log("NoOfAdults:", request.NoOfAdults);
-              console.log("NoOfChildren:", request.NoOfChildren);
-              console.log("SentDate:", request.SentDate);
               return (
                 <AgencySentRequest
                   requestId={request._id}
@@ -63,6 +58,7 @@ function AgencySentRequestList() {
                   NoOfAdults={request.NoOfAdults}
                   NoOfChildren={request.NoOfChildren}
                   sentDate={request.SentDate}
+                  AgencyId={request.AgencyId}
                 />
               );
             })}

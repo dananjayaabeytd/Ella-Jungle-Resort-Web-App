@@ -1,12 +1,30 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 
-
-function AgencySentRequest({ requestId, RoomType, NoOfAdults, NoOfChildren, sentDate }) {
-  
+function AgencySentRequest({
+  requestId,
+  RoomType,
+  NoOfAdults,
+  NoOfChildren,
+  sentDate,
+  AgencyId,
+}) {
   const [formattedSentDate, setFormattedSentDate] = useState("");
-  
+  const [AgencyName, setAgencyName] = useState("");
+
+  useEffect(() => {
+    const fetchAgencyName = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3005/getAgency/${AgencyId}`);
+        setAgencyName(response.data.agencyName || "");
+      } catch (error) {
+        console.error("Error fetching agency:", error); 
+      }
+    };
+
+    fetchAgencyName();
+  }, [AgencyId]);
+
   useEffect(() => {
     const formattedDate = () => {
       const date = new Date(sentDate);
@@ -20,43 +38,45 @@ function AgencySentRequest({ requestId, RoomType, NoOfAdults, NoOfChildren, sent
     };
     setFormattedSentDate(formattedDate());
   }, [sentDate]);
-    
-    const NoOfPersons = NoOfAdults + NoOfChildren;
 
-    const handleUpdateClick = (requestId) => {
-      window.location = `/AgencySentRequestDetails/${requestId}`;
-    };
-  
+  const NoOfPersons = NoOfAdults + NoOfChildren;
+
+  const handleUpdateClick = (requestId) => {
+    window.location = `/AgencySentRequestDetails/${requestId}`;
+  };
+
   return (
     <div>
       <div onClick={() => handleUpdateClick(requestId)}>
-      <div className="flex gap-5 justify-between py-2.5 shadow-md bg-white bg-opacity-0  max-md:flex-wrap">
-        <div className="flex ml-5">
-          <h2 className="text-sm font-bold leading-5 text-neutral-800">
-            ABC agency
-          </h2>
-        </div>
-        <div className="flex ">
-          <div className="flex text-sm ml-[-800px] min-w-[650px] max-w-[500px]">
-            {/* max 60 chars */}
-            <p className="flex text-gray-600">Room Type : {RoomType}</p>
-            <p className="flex ml-10 text-gray-600">
-              No of Persons: {NoOfPersons}
-            </p>
+        <div className="border border-green-300 flex gap-5 justify-between py-2.5 shadow-md bg-gray-300 bg-opacity-30  max-md:flex-wrap max-w-[900px] mx-auto mb-2 rounded-xl">
+          <div className="flex ">
+            <h2 className="ml-5 text-sm font-bold leading-5 text-neutral-800">
+              {AgencyName}
+            </h2>
           </div>
-          <div className="flex gap-5 ">
-            <p className="" name="message sent date">
-              {formattedSentDate}
-            </p>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c9b973415e6ba1bace812d7c55154ed12ed535485ab212fb6c71cbe83671982?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
-              alt="IconScout feature icon 2"
-              className="w-5 shrink-0 aspect-square"
-            />
+          <div className="flex ">
+            <div className="flex text-sm ">
+              {/* max 60 chars */}
+              <p className="flex text-gray-600 ml-[-500px]">
+                Room Type : {RoomType}
+              </p>
+              <p className="flex ml-10 text-gray-600">
+                No of Persons: {NoOfPersons}
+              </p>
+            </div>
+            <div className="flex gap-5 ">
+              <p className="" name="message sent date">
+                {formattedSentDate}
+              </p>
+              <img
+                src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c9b973415e6ba1bace812d7c55154ed12ed535485ab212fb6c71cbe83671982?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
+                alt="IconScout feature icon 2"
+                className="w-5 shrink-0 aspect-square"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </div>
   );
 }

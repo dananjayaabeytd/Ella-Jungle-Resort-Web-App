@@ -18,7 +18,7 @@ function AgencyPackageActivity({
   return (
     <div>
       <div
-        className={`mx-auto bg-white rounded-3xl border-[#4CAF50] border-t border-b max-w-[800px] ${
+        className={`mx-auto bg-white my-5 rounded-3xl border-green-500 border max-w-[800px] ${
           isSelected ? "bg-green-200" : ""
         }`}
         onClick={handleClick} // Call handleClick when the room is clicked
@@ -34,13 +34,13 @@ function AgencyPackageActivity({
               <div className="flex pl-5 text-xl">
                 <div>
                   <h1 className="pb-2 text-2xl">{activityName}</h1>
-                  {/* <p className="pb-2">{description}</p> */}
-                  <p className="pb-2">{price}</p>
+                  <p className="pb-2 max-w-[550px]">{description}</p>
+                  <p className="pb-2">LKR. {price}.00</p>
                 </div>
               </div>
             </div>
             {showCheckbox && (
-              <div className="relative ml-auto my-auto mr-20 flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border w-[130px]">
+              <div className="relative border border-green-300 ml-auto my-auto mr-20 flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border w-[130px] hover:bg-green-50">
                 <nav className="flex flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
                   <div
                     role="button"
@@ -62,7 +62,7 @@ function AgencyPackageActivity({
                             <input
                               id={`checkbox-${activityId}`}
                               type="checkbox"
-                              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-300 checked:bg-green-500 checked:before:bg-gray-900 hover:before:opacity-0"
+                              className="border border-green-300 before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-300 checked:bg-green-500 checked:before:bg-gray-900 hover:before:opacity-0"
                               checked={isSelected}
                               onChange={() => {}}
                             />

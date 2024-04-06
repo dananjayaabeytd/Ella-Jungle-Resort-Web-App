@@ -15,9 +15,8 @@ function AgencyPackageRoom({
   };
 
   return (
-    <div>
-      <div
-        className={`mx-auto bg-white rounded-3xl border-[#4CAF50] border-t border-b max-w-[800px] ${
+    <div className="">
+      <div className={`mx-auto bg-white rounded-3xl my-5 border-green-500 border max-w-[800px] ${
           isSelected ? "bg-green-200" : ""
         }`}
         onClick={handleClick} // Call handleClick when the room is clicked
@@ -30,18 +29,24 @@ function AgencyPackageRoom({
               alt=""
             />
 
+            {/* <img
+              className="ml-3 w-60 rounded-3xl"
+              src={require(`../../../assets/rooms/${image}`)}
+              alt={roomName}
+            /> */}
+
             <div className="flex flex-col items-start">
               <div className="flex pl-5 text-xl">
                 <div>
                   <h1 className="pb-2 text-2xl">{roomName}</h1>
                   <p className="pb-2">{description}</p>
-                  <p className="pb-2">{price}</p>
+                  <p className="pb-2">LKR {price}.00</p>
                 </div>
               </div>
             </div>
 
             {showCheckbox && (
-              <div className="relative ml-auto my-auto mr-20 flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border w-[130px]">
+              <div className="relative border-green-300 border ml-auto my-auto mr-20 flex flex-col text-gray-700 bg-white shadow-md rounded-xl bg-clip-border w-[130px] hover:bg-green-50">
                 <nav className="flex flex-col gap-1 p-2 font-sans text-base font-normal text-blue-gray-700">
                   <div
                     role="button"
@@ -63,7 +68,7 @@ function AgencyPackageRoom({
                             <input
                               id={`checkbox-${roomId}`}
                               type="checkbox"
-                              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-300 checked:bg-green-500 checked:before:bg-gray-900 hover:before:opacity-0"
+                              className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-green-500 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-gray-300 checked:bg-green-500 checked:before:bg-gray-900 hover:before:opacity-0"
                               checked={isSelected}
                               onChange={() => {}}
                             />

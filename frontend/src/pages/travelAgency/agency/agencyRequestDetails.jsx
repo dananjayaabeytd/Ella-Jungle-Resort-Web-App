@@ -5,6 +5,8 @@ import Swal from "sweetalert2";
 
 function AgencyRequestDetails() {
   const { requestId } = useParams();
+  const [clientName, setClientName] = useState("");
+  
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
@@ -88,28 +90,25 @@ function AgencyRequestDetails() {
       console.error("Error accepting request:", error);
     }
   };
+
+  
   
 
   return (
     <div>
-      <div className="container my-10 flex flex-col mx-auto bg-green-500 border border-black bg-opacity-20 max-w-[1000px] rounded-lg">
+      <div className="flex bg-gray-200 rounded-2xl bg-opacity-60 container my-10  flex-col mx-auto  border border-green-500  max-w-[1000px] ">
         <div className="mt-3 text-2xl text-center">
-          <h1>new reservation</h1>
+          <h1>Received Request</h1>
         </div>
 
         <div className="flex mx-auto mt-10">
           <form>
-            <div className="flex items-start form-group">
-              <div className="flex flex-col mx-20 text-xl">
+            <div className="flex items-start text-xl font-medium text-gray-900 form-group">
+              <div className="flex flex-col gap-2 mx-20 text-xl">
                 <div className="flex items-start mb-2 ">
                   <label>Client Name</label>
-                  <input
-                    type="text"
-                    id="arrivalDate"
-                    name="ArrivalDate"
-                    className="ml-[92px] rounded-lg"
-                    readOnly
-                  />
+                  <h1 className=" text-green-500  ml-[70px] text-2xl">{}</h1>
+                  
                 </div>
                 <div className="flex items-start mb-2 ">
                   <label>Arrival Date</label>
@@ -117,7 +116,7 @@ function AgencyRequestDetails() {
                     type="date"
                     id="arrivalDate"
                     name="ArrivalDate"
-                    className="ml-[92px] rounded-lg"
+                    className="ml-[92px] rounded-lg border border-green-500"
                     readOnly
                     value={requestData.ArrivalDate}
                   />
@@ -126,7 +125,7 @@ function AgencyRequestDetails() {
                   <label>Departure Date</label>
                   <input
                     type="date"
-                    className="ml-[59px] rounded-lg "
+                    className="ml-[59px] rounded-lg border border-green-500 "
                     id="departureDate"
                     name="DepartureDate"
                     value={requestData.DepartureDate}
@@ -137,7 +136,7 @@ function AgencyRequestDetails() {
                   <label>Number of Days</label>
                   <input
                     type="number"
-                    className="ml-[51px] w-20 rounded-lg"
+                    className="ml-[51px] w-20 rounded-lg border border-green-500"
                     id="noOfDays"
                     name="NoOfDays"
                     value={requestData.NoOfDays}
@@ -148,7 +147,7 @@ function AgencyRequestDetails() {
                   <label>Number of Nights</label>
                   <input
                     type="number"
-                    className="ml-[35px] w-20 rounded-lg"
+                    className="ml-[40px] w-20 rounded-lg border border-green-500"
                     id="noOfNights"
                     name="NoOfNights"
                     value={requestData.NoOfNights}
@@ -159,7 +158,7 @@ function AgencyRequestDetails() {
                   <label>Number of Adults</label>
                   <input
                     type="number"
-                    className="ml-[37px] w-20 rounded-lg"
+                    className="ml-[42px] w-20 rounded-lg border border-green-500"
                     id="noOfAdults"
                     name="NoOfAdults"
                     value={requestData.NoOfAdults}
@@ -170,7 +169,7 @@ function AgencyRequestDetails() {
                   <label>Number of Children</label>
                   <input
                     type="number"
-                    className="w-20 ml-[20px] rounded-lg"
+                    className="w-20 ml-[22px] rounded-lg border border-green-500"
                     id="noOfChildren"
                     name="NoOfChildren"
                     value={requestData.NoOfChildren}
@@ -183,7 +182,7 @@ function AgencyRequestDetails() {
                 <div className="flex ml-20">Room Type</div>
                 <div className="relative inline-flex hs-dropdown">
                   <select
-                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-green-500 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
                     aria-labelledby="hs-dropdown-default"
                     value={requestData.RoomType}
                     readOnly
@@ -197,12 +196,12 @@ function AgencyRequestDetails() {
               </div>
             </div>
             <div className="flex flex-col mx-20 mt-5 mb-10">
-              <div>
+              <div className="mb-2 text-xl font-medium text-gray-900">
                 <label className="text-xl">Special Requests:</label>
               </div>
               <div>
                 <textarea
-                  className="w-[750px] max-h-[100px] h-[100px] rounded-lg"
+                  className="w-[750px] max-h-[100px] h-[100px] border-green-500 border rounded-lg"
                   name="RequestDescription"
                   id="RequestDescription"
                   value={requestData.RequestDescription}
@@ -214,12 +213,12 @@ function AgencyRequestDetails() {
               <div>
                 <button
                   id="spRequest"
-                  className="mx-20 mb-10 w-[200px] h-10 bg-green-400 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+                  className="border border-gray-300 mx-20 mb-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
                   type="button" // Change type to button to prevent form submission
                   onClick={handleAcceptRequest}
                 >
                   Accept Request
-                  <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-10 rotate-12 group-hover:-translate-x-40 ease"></span>
+                  <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease"></span>
                 </button>
               </div>
             )}
