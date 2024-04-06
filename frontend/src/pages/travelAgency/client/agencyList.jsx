@@ -3,6 +3,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import AgencyDetailsSimple from "../../../components/travelAgency/client/agencyDetailsSimple";
 import AgencySearch from "../../../components/travelAgency/client/agencySearch";
+import bggreen from "../../../assets/bggreen.jpg";
 
 function AgencyList() {
   const { userId } = useParams();
@@ -68,6 +69,7 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
 
   return (
     <div>
+
       <div className="relative">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/4679ea9add8d1b500755cddc88572db5b5edc0e21c1eb1fca547dd90b914ba02?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
@@ -91,6 +93,7 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
             console.log("Agency Fax:", agency.fax);
             console.log("Agency Rating:", agency.rating);
             console.log("Client ID", userId);
+            console.log("Agency Image:", agency.img);
 
             return (
               <AgencyDetailsSimple
@@ -103,6 +106,7 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
                 businessMail={agency.businessMail}
                 rating={agency.rating}
                 userId={userId} // Pass userId here
+                img={agency.img}
               />
             );
           })}

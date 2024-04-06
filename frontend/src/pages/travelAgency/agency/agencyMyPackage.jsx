@@ -27,8 +27,12 @@ function AgencyMyPackage() {
     return <div>Error: {error.message}</div>;
   }
 
-  const publishedPackages = agencyPackages.filter((agencyPackage) => agencyPackage.published);
-  const unPublishedPackages = agencyPackages.filter((agencyPackage) => !agencyPackage.published);
+  const publishedPackages = agencyPackages.filter(
+    (agencyPackage) => agencyPackage.published
+  );
+  const unPublishedPackages = agencyPackages.filter(
+    (agencyPackage) => !agencyPackage.published
+  );
 
   return (
     <div>
@@ -37,9 +41,28 @@ function AgencyMyPackage() {
           <h1 className="flex justify-center text-4xl font-semibold">
             My Packages
           </h1>
+
+          <div className="mx-auto mt-[50px]">
+            <section className="flex flex-col w-[250px] px-8 py-5 my-auto text-xl bg-green-500 rounded-xl bg-opacity-20 mx-auto">
+              <p className="flex justify-center text-black">Add new package</p>
+              <div className="flex justify-center">
+                <button
+                  className="flex justify-center px-5 py-2 mt-4 text-center text-white bg-green-500 rounded-2xl"
+                  onClick={() => {
+                    window.location.href = `/AgencyCreatePackage/${agencyId}`;
+                  }}
+                >
+                  Add
+                </button>
+              </div>
+            </section>
+          </div>
         </div>
 
-        <h1 className="flex mt-20 ml-40 text-2xl font-semibold"> Published Packages </h1>
+        <h1 className="flex mt-20 ml-40 text-2xl font-semibold">
+          {" "}
+          Published Packages{" "}
+        </h1>
 
         <div className="container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
           {publishedPackages.map((agencyPackage) => (
@@ -57,11 +80,14 @@ function AgencyMyPackage() {
           ))}
         </div>
 
-        <h1 className="flex mt-20 ml-40 text-2xl font-semibold"> Published Packages </h1>
+        <h1 className="flex mt-20 ml-40 text-2xl font-semibold">
+          {" "}
+          Published Packages{" "}
+        </h1>
         <div className="container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
           {unPublishedPackages.map((agencyPackage) => (
             <AgencyPackageCard
-              key={agencyPackage._id}
+              packageId={agencyPackage._id}
               packageName={agencyPackage.packageName}
               packageImage={agencyPackage.packageImage}
               packageDescription={agencyPackage.packageDescription}

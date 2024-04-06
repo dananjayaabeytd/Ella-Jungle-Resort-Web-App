@@ -32,8 +32,8 @@ function AgencyDetails() {
 
   return (
     <div>
-      <div className="flex">
-        <div>
+      <div className="flex bg-gray-200 rounded-b-2xl bg-opacity-60">
+        <div className="flex ">
           <AgencyDetailsProfile agencyId={agencyId} />
         </div>
 
@@ -60,6 +60,7 @@ function AgencyDetails() {
               roomId={agencyPackage.roomId}
               transportId={agencyPackage.transportId}
               userId={userId}
+              agencyId={agencyId}
               />
             ))}
           </div>

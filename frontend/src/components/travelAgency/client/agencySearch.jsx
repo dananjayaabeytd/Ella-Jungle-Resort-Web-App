@@ -2,15 +2,33 @@ import { useEffect, useState } from "react";
 import { Ripple, Input, initTWE } from "tw-elements";
 
 function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
+
+  const [isSticky, setIsSticky] = useState(false);
+
+  
   useEffect(() => {
     // Initialize tw-elements
     initTWE({ Ripple, Input });
+
+    const handleScroll = () => {
+      // Check if the scroll position is greater than the top position of the search component
+      if (window.scrollY > 0) {
+        setIsSticky(true);
+      } else {
+        setIsSticky(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    
+    // Cleanup the event listener
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <section className="flex flex-col items-start px-5 py-6 text-sm rounded-xl bg-green-500 bg-opacity-10 w-[300px]">
+    <section className={`flex flex-col border border-green-600 items-start px-5 py-6 text-sm rounded-[30px] bg-white bg-opacity-70 w-[300px] ${isSticky ? 'sticky top-0' : ''}`}>
       <div
-        className="relative flex justify-center mx-auto"
+        className="relative flex justify-center mx-auto bg-green-200 border rounded-xl"
         data-twe-input-wrapper-init
         data-twe-input-group-ref
       >
@@ -25,7 +43,7 @@ function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
         />
         <label
           htmlFor="exampleFormControlInput"
-          className="pointer-events-none rounded-full absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-green-500"
+          className="pointer-events-none rounded-full absolute left-3 top-0 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500 transition-all duration-200 ease-out peer-focus:-translate-y-[0.9rem] peer-focus:scale-[0.8] peer-focus:text-green-500 "
         >
           Search
         </label>

@@ -1,5 +1,21 @@
 const router = require("express").Router();
 const Agency = require("../models/agencyModel");
+const multer = require("multer");
+
+
+storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "../frontend/src/assets/agencyImages/");
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}_${file.originalname}`);
+  }
+});
+
+const upload = multer({ storage }).single("img");
+
+
+
 
 // Insert new agency
 router.post("/add", async (req, res) => {

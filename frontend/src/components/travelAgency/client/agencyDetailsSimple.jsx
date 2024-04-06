@@ -1,5 +1,6 @@
 import React from "react";
 import StarRating from "./agencyStarRating";
+import NoImage from "../../../assets/agencyImages/No_Image";
 
 function AgencyDetailsSimple({
   agencyId,
@@ -10,24 +11,25 @@ function AgencyDetailsSimple({
   businessMail,
   rating,
   userId,
+  img,
 }) {
-
   console.log("Agency ID:", agencyId);
   console.log("userId:", userId);
-  
-  
-  
+
   const handleDetailsClick = (agencyId, userId) => {
     window.location.href = `/AgencyDetails/${userId}/${agencyId}`;
   };
 
   return (
-    <div className="container flex flex-col mx-5 border-t border-[#4CAF50] max-w-[780px] border-b">
+    <div className="container flex flex-col mx-5  border-green-600 max-w-[780px] border bg-gray-200 rounded-[20px] bg-opacity-50 mb-6">
       <div className="flex items-start mx-5 mt-5 ">
         <img
           className="ml-3 w-60 rounded-3xl"
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/792c7ac941d0eed14463449a48a7e8eab3826f850bd35b8183438d15e0b42ad8?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
-          alt=""
+          src={require(`../../../assets/agencyImages/${img || "No_Image"}`)}
+          alt={img}
+          onError={(e) => {
+            e.target.src = NoImage; // Set image source to default image if original image not found
+          }}
         />
 
         <div className="flex flex-col items-start">

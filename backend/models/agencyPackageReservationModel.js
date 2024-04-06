@@ -11,6 +11,18 @@ const AgencyPackageReservationSchema = new Schema({
     type: String,
     required: true,
   },
+  fullName: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
   reservationDate: {
     type: Date,
     required: true,

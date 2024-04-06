@@ -37,7 +37,7 @@ function AgencyDetailsProfile() {
   }, [agencyId]);
 
   return (
-    <div className="container flex flex-col min-h-[350px] mx-20 mt-3">
+    <div className="container flex flex-col min-h-[350px] mx-20 mt-3 ">
       <h1 className="self-start mt-3 mb-5 ml-3 text-4xl font-semibold">
         {agencyData.agencyName}
       </h1>
@@ -70,7 +70,7 @@ function AgencyDetailsProfile() {
           <div className="flex pl-5 mt-5 max-w-[700px]">
             <p>{agencyData.description}</p>
           </div>
-          <div className="flex gap-5 mt-5 ml-5">
+          <div className="flex gap-5 my-5 ml-5">
             <a
               href="{ agencyData.websiteLink}"
             >
