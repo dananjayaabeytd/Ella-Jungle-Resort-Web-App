@@ -2,7 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+
+//initializes an Express application
 const app = express();
+
+//to read the url in .env file 
 require("dotenv").config();
 
 
@@ -11,7 +15,10 @@ require("dotenv").config();
 //define the port
 const PORT = process.env.PORT || 8080;
 
+// allow client-side code to make requests to this server from different domains.
 app.use(cors());
+
+//parses incoming request bodies in JSON format.
 app.use(bodyParser.json());
 
 

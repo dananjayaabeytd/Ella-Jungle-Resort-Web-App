@@ -22,7 +22,7 @@ export default function App() {
               <Route path="/update/:id" element={<UpdateForm />} />
               <Route path="/home" element={<HomeActivity />} />
               <Route path="/apply/:id" element={<ReservationActivity />} />
-              <Route path="/confirmactivity/:id" element={ConfirmReservation}/>
+              <Route path="/confirmactivity/:id" element={<ConfirmReservation/>}/>
               </Routes>
              
                 

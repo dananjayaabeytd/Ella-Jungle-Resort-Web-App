@@ -18,9 +18,11 @@ const storage = multer.diskStorage({
   });
 
 
-
 // Multer instance
 const upload = multer({ storage: storage }).single('image');
+
+
+
 
 
 
@@ -157,6 +159,8 @@ router.route("/get/:id").get(async(req,res)=>{
 });
 
 
+
+
 //to view all the activities added in home page for guests
 router.route("/home").get((req,res)=>{
   SpecialActivity.find().then((SpecialActivity)=>{
@@ -165,6 +169,8 @@ router.route("/home").get((req,res)=>{
       console.log(err)
   })
 })
+
+
 
 //to retreive data of a one activity for reservation
 router.route("/apply/:id").get(async(req,res)=>{
