@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const userRoutes = require('./routes/userRoutes.js');
 const agencyRoutes = require('./routes/agencyRoutes.js');
+//app.use(express.static('public'))
 
 const port = process.env.PORT || 5000;
 connectDB();
@@ -45,3 +46,21 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
+
+
+
+
+
+//VilanIN
+
+
+const eventRouter = require("./routes/events");
+app.use ("/event", eventRouter);
+//Here when URL is searched as http://Localhost:5000/event, the 'events.js' file in routes folder is executed
+
+
+const optionRouter = require("./routes/options");
+app.use ("/option", optionRouter);
+//Here when URL is searched as http://Localhost:5000/option, the 'options.js' file in routes folder is executed
+
+//VilanOUT

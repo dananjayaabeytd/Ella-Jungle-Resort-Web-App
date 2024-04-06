@@ -24,6 +24,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Event Management'
+          path='/eventHome'
           link='https://images.pexels.com/photos/1190298/pexels-photo-1190298.jpeg?cs=srgb&dl=pexels-wendy-wei-1190298.jpg&fm=jpg'
         />
         <CardDefault

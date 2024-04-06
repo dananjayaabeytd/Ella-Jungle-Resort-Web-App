@@ -19,6 +19,13 @@ import Dashboard from './pages/useradmin/Dashboard';
 import { UserUpdate } from './pages/useradmin/components/UpdateUser';
 import PrivateRoute from './PrivateRoute';
 
+
+import EventHome from "./components/EventHome"
+
+
+//VilanApp
+import App from './App';
+
 import store from './store';
 import { Provider } from 'react-redux';
 
@@ -81,6 +88,14 @@ const router = createBrowserRouter([
         element: <UserUpdate />,
       },
 
+
+      //VilanIn
+      {
+        path: '/eventHome',
+        element: <EventHome />,
+      },
+
+
     ],
   },
 ]);
@@ -89,9 +104,15 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
+      {/* VilanApp */}
+      {/* <App /> */}
+
       <ThemeProvider>
         <RouterProvider router={router} />
       </ThemeProvider>
+
+
+
     </React.StrictMode>
   </Provider>
 );
