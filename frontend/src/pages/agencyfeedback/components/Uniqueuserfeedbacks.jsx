@@ -125,7 +125,7 @@ const Uniqueuserfeedback = () => {
         </ul>
       ) : (
         <div className="text-center">
-          <p className="text-xl">You have no Feedbacks to display.</p><br/><br/>
+          <p className="text-xl">You have no Agency Feedback to display.</p><br/><br/>
         </div>
       )}
     </div>
