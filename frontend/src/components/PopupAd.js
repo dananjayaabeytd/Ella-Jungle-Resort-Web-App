@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
+import EventHeader from './EventHeader';
 
 // ViewEvent
 export default function PopupAd() {
@@ -16,6 +18,8 @@ export default function PopupAd() {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedEventId, setSelectedEventId] = useState(null);
+
+    const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
     const navigate = useNavigate();
   

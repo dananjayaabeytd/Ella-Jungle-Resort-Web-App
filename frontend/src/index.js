@@ -19,12 +19,25 @@ import Dashboard from './pages/useradmin/Dashboard';
 import { UserUpdate } from './pages/useradmin/components/UpdateUser';
 import PrivateRoute from './PrivateRoute';
 
-
+//VilanIn
+import EventHeader from './components/EventHeader';
+import AddEvent from "./components/AddEvent"
+import EventList from "./components/EventList"
+import UpdateEvent from "./components/UpdateEvent"
+import AddOption from "./components/AddOption"
+import OptionList from "./components/OptionList"
+import ViewEvent from "./components/ViewEvent"
 import EventHome from "./components/EventHome"
+import UpdateOption from "./components/UpdateOption"
+import PopupAd from "./components/PopupAd"
+
+import TestPage from "./components/TestPage"
+import TestSecondary from "./components/TestSecondary"
+//VilanOut
 
 
 //VilanApp
-import App from './App';
+//import App from './App';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -94,6 +107,38 @@ const router = createBrowserRouter([
         path: '/eventHome',
         element: <EventHome />,
       },
+      {
+        path: '/events',
+        element: < EventList/>,
+      },
+      {
+        path: '/addEvent',
+        element: < AddEvent/>,
+      },
+      {
+        path: '/updateEvent/:eventId',
+        element: < UpdateEvent/>,
+      },
+      {
+        path: '/addOption',
+        element: < AddOption/>,
+      },
+      {
+        path: '/allOptions',
+        element: < OptionList/>,
+      },
+      {
+        path: '/viewEvent/:eventId',
+        element: < ViewEvent/>,
+      },
+      {
+        path: '/updateOption/:optionId',
+        element: < UpdateOption/>,
+      },
+      {
+        path: '/test',
+        element: < TestPage/>,
+      },
 
 
     ],
@@ -104,8 +149,6 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
     <React.StrictMode>
-      {/* VilanApp */}
-      {/* <App /> */}
 
       <ThemeProvider>
         <RouterProvider router={router} />

@@ -12,19 +12,15 @@ function Header() {
   };
 
   return (
-    <div className="relative bg-theme-green flex justify-between items-center h-14 w-auto  mx-2 px-0 text-black" style={{
-        backgroundImage: `url(${bggreen})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}>
+    <div className="relative  flex justify-between items-center h-14 w-auto  mx-2  text-black" >
         <h1 className="w-full text-xl font-bold font-lexend md:flex text-gray-900 m-2">Ella Jungle Resort</h1>
 
-      <ul className="hidden md:flex font-lexend ">
-        <Link to="/eventHome" className="p-2 px-6  hover:scale-110">Home</Link>
-        <Link to="/events" className="p-2 px-6  hover:scale-110">Events</Link>
-        <Link to="/addEvent" className="p-2 px-6  hover:scale-110">Book</Link>
-        <Link to="/allOptions" className="p-2 px-6  hover:scale-110">Options</Link>
-        <Link to="/test" className="p-2 px-6  hover:scale-110">Bookings</Link>
+      <ul className="hidden md:flex font-lexend px-8">
+        <Link to="/eventHome" className="p-2 px-10  hover:scale-110">Home</Link>
+        <Link to="/events" className="p-2 px-10  hover:scale-110">Events</Link>
+        <Link to="/addEvent" className="p-2 px-10  hover:scale-110">Book</Link>
+        <Link to="/allOptions" className="p-2 px-10  hover:scale-110">Options</Link>
+        <Link to="/test" className="p-2 px-10  hover:scale-110">Bookings</Link>
       </ul>
       <div onClick={handleNav} className="block px-8">
         {!nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
@@ -38,11 +34,11 @@ function Header() {
         <h1 className="w-full text-xl font-bold text-gray-900 m-4 font-lexend">Ella Jungle Resort</h1>
 
         <ul className="p-4 uppercase font-lexend">
-          <li className="p-4 border-b border-gray-600">Home</li>
-          <li className="p-4 border-b border-gray-600">Events</li>
-          <li className="p-4 border-b border-gray-600">Book Event</li>
-          <li className="p-4 border-b border-gray-600">Services</li>
-          <li className="p-4 border-b border-gray-600">Bookings</li>
+          <li className="p-4 border-b border-gray-600"><Link to="/eventHome">Home</Link></li>
+          <li className="p-4 border-b border-gray-600"><Link to="/events">Events</Link></li>
+          <li className="p-4 border-b border-gray-600"><Link to="/allOptions">Book Event</Link></li>
+          <li className="p-4 border-b border-gray-600"><Link to="/allOptions">Options</Link></li>
+          <li className="p-4 border-b border-gray-600"><Link to="/test">My Bookings</Link></li>
         </ul>
       </div>
     </div>

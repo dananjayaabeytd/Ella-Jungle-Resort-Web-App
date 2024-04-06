@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
-import { useSelector } from 'react-redux'; // Import useSelector
 import wedding1 from '../assets/wedding1.jpg';
 import birthday1 from '../assets/birthday1.jpg';
 import birthday2 from '../assets/birthday2.jpg';
 import meet1 from '../assets/meet1.jpg';
+import EventHeader from './EventHeader';
 
 
 export default function EventHome() {
@@ -16,6 +17,7 @@ export default function EventHome() {
 
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [allOptions, setAllOptions] = useState([]);
+
     const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
   
     useEffect(() => {
@@ -38,6 +40,7 @@ export default function EventHome() {
 
 
   return (
+    
     <div className="relative min-h-screen">
     {/* Background Image */}
     <div
@@ -49,9 +52,11 @@ export default function EventHome() {
       }}
     ></div>
   
+  
     {/* Content Wrapper */}
     <div className="relative z-10 flex flex-col justify-items-stretch mr-20 ml-20 justify-center min-h-screen">
-            
+            {/* Call Header */}
+    <EventHeader/>
   
       {/* Your scrolling content */}
       
@@ -61,7 +66,7 @@ export default function EventHome() {
             backgroundPosition: 'center',
       }}>
         
-      
+    
   
         <div className="lg:px-0 sm:px-10 pt-0 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1" >
             {/* Event Details */}

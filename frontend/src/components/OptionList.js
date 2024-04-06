@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux'; // Import useSelector
 import { Link } from "react-router-dom";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
 import CustomPopup from './CustomPopup'; // Import the modal component
+import EventHeader from './EventHeader';
 
 export default function OptionList() {
     
@@ -14,6 +16,8 @@ export default function OptionList() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
+  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
 
   useEffect(() => {
@@ -67,6 +71,8 @@ export default function OptionList() {
 
             {/* Content Wrapper */}
             <div className="relative z-10 flex flex-col justify-items-stretch mr-20 ml-20 min-h-screen p-2 items-center justify-between">
+              {/* Call Header */}
+              <EventHeader/>
 
             <Link to="/addOption" className="ml-5 mb-6 text-white text-xl font-mclaren px-4 py-1 bg-blue-500 hover:bg-blue-800 rounded-3xl items-center">
           Add Option

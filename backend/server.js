@@ -7,6 +7,9 @@ const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const userRoutes = require('./routes/userRoutes.js');
 const agencyRoutes = require('./routes/agencyRoutes.js');
+const eventRouter = require("./routes/events.js");
+const optionRouter = require("./routes/options.js");
+
 //app.use(express.static('public'))
 
 const port = process.env.PORT || 5000;
@@ -28,6 +31,9 @@ app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/agencies', agencyRoutes);
+app.use ("/event", eventRouter);
+app.use ("/option", optionRouter);
+app.use(express.static('public'))
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
@@ -54,13 +60,11 @@ app.listen(port, () => console.log(`Server started on port ${port}`));
 //VilanIN
 
 
-const eventRouter = require("./routes/events");
-app.use ("/event", eventRouter);
 //Here when URL is searched as http://Localhost:5000/event, the 'events.js' file in routes folder is executed
 
 
-const optionRouter = require("./routes/options");
-app.use ("/option", optionRouter);
+
 //Here when URL is searched as http://Localhost:5000/option, the 'options.js' file in routes folder is executed
+
 
 //VilanOUT

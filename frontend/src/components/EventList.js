@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useSelector } from 'react-redux'; // Import useSelector
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
 import CustomPopup from './CustomPopup'; // Import the modal component
-
+import EventHeader from './EventHeader';
 
 export default function EventList() {
 
@@ -18,6 +19,7 @@ export default function EventList() {
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
 
+  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   const navigate = useNavigate();
 
@@ -65,6 +67,7 @@ export default function EventList() {
 
   return (
     <div className="relative min-h-screen">
+      
     {/* Background Image */}
     <div
       className="absolute inset-0 z-0 bg-fixed"
@@ -74,9 +77,14 @@ export default function EventList() {
         backgroundPosition: 'center',
       }}
     ></div>
+
+    
+    
   
     {/* Content Wrapper */}
     <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+      {/* Call Header */}
+    <EventHeader/>
    
     <ul>
       {allEvents && allEvents.map((event) => (

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import axios from "axios"; // axios for making HTTP requests
+import { useSelector } from 'react-redux'; // Import useSelector
 import { useNavigate } from 'react-router-dom'; // for programmatic navigation
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import CustomPopup from './CustomPopup'; // Import the modal component
+import EventHeader from './EventHeader';
 
 export default function AddEvent() {
   const [eventName, setEventName] = useState("");
@@ -19,7 +21,8 @@ export default function AddEvent() {
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
 
-  
+  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
+
   const [formError, setFormError] = useState("");
 
   const navigate = useNavigate();
@@ -177,6 +180,10 @@ export default function AddEvent() {
           backgroundPosition: 'center',
         }}
       ></div>
+
+       
+    {/* Call Header */}
+    <EventHeader/>
 
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
