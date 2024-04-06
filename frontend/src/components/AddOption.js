@@ -86,6 +86,7 @@ export default function AddOption() {
           
           <form className="mt-3" onSubmit={sendData}>
 
+
             {/* Option Category */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionCategory">Option Category</label>
@@ -128,7 +129,7 @@ export default function AddOption() {
             </div>
             
 
-            
+
 
             {/* Option Price */}
             <div className="ml-30 text-base font-semibold mt-5">

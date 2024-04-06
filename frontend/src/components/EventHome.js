@@ -79,7 +79,7 @@ export default function EventHome() {
     
                 {/* Event Description with McLaren font */}
                 <div className="px-40 mt-2 pt-56 pb-16">
-                <p className="bg-secondary-green opacity-85 text-lg font-mclaren text-center rounded-3xl p-4">Welcome to our Event Planning Section, where ideas take flight and planning comes to life. Here, you're not just organizing an event; you're crafting experiences that will last a lifetime. With our tools and personalized guidance, we make your vision a seamless reality. Let's embark on this journey together, creating events that leave lasting impressions</p>
+                <p className="bg-secondary-green opacity-85 text-lg font-inika text-center rounded-3xl p-4">Welcome to our Event Planning Section, where ideas take flight and planning comes to life. Here, you're not just organizing an event; you're crafting experiences that will last a lifetime. With our tools and personalized guidance, we make your vision a seamless reality. Let's embark on this journey together, creating events that leave lasting impressions</p>
                 </div>
 
             </div>

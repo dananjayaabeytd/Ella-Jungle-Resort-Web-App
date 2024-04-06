@@ -36,3 +36,12 @@ app.use ("/option", optionRouter);
 
 
 
+//const userRoutes = require('./routes/userRoutes');
+// app.use('/users', userRoutes);
+// //Here when URL is searched as http://Localhost:8070/option, the 'options.js' file in routes folder is executed
+
+
+
+
+
+
