@@ -1,15 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StarRating from "./StarRating";
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
-const AddFeedback = () => {
+const AddagencyFeedback = () => {
   const userInfo = useSelector(state => state.auth.userInfo);
+  const [agencies, setAgencies] = useState([]);
+  const [selectedAgency, setSelectedAgency] = useState({});
   const [fbtitle, setTitle] = useState("");
   const [fbdescription, setDescription] = useState("");
   const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    const fetchAgencies = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/agencies/");
+        setAgencies(response.data);
+      } catch (err) {
+        console.error("Error fetching agencies:", err);
+      }
+    };
+
+    fetchAgencies();
+  }, []);
 
   function sendData(e) {
     e.preventDefault();
@@ -19,8 +34,7 @@ const AddFeedback = () => {
       return;
     }
 
-    // Check if any of the fields are empty
-    if (!fbtitle.trim() || !fbdescription.trim() || rating === 0) {
+    if (!fbtitle.trim() || !fbdescription.trim() || rating === 0 || !selectedAgency.agencyName) {
       alert("Please fill in all fields and provide a rating before submitting.");
       return;
     }
@@ -30,15 +44,18 @@ const AddFeedback = () => {
       fbdescription,
       rating,
       giverName: userInfo.name,
-      giverId: userInfo._id
+      giverId: userInfo._id,
+      agencyname: selectedAgency.agencyName,
+      agencyId: selectedAgency._id,
     };
 
-    axios.post("http://localhost:5000/api/feedbacks/addfeedback", newFeedback)
+    axios.post("http://localhost:5000/api/agencyfeedbacks/addfeedback", newFeedback)
       .then(() => {
         alert("Feedback Added.");
         setTitle("");
         setDescription("");
         setRating(0);
+        setSelectedAgency({});
       })
       .catch((err) => {
         alert("Error: " + err);
@@ -48,10 +65,30 @@ const AddFeedback = () => {
   return (
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl">Share Your Feedback</h1>
+        <h1 className="text-4xl">Share Your Feedback about agencies</h1>
       </div>
       <form onSubmit={sendData}>
         <div className="mb-8 p-10 shadow-md relative">
+          <div className="mb-4">
+            <label htmlFor="agency" className="block text-xl font-bold">Select Agency</label>
+            <select
+              id="agency"
+              className="block w-full mt-1 p-2 border rounded-md"
+              value={selectedAgency._id || ""}
+              onChange={(e) => {
+                const agency = agencies.find(agency => agency._id === e.target.value);
+                setSelectedAgency(agency || {});
+              }}
+              required
+            >
+              <option value="">--Select Agency--</option>
+              {agencies.map((agency) => (
+                <option key={agency._id} value={agency._id}>
+                  {agency.agencyName}
+                </option>
+              ))}
+            </select>
+          </div>
           <div className="mb-4">
             <label htmlFor="title" className="block text-xl font-bold">What's your feedback about?</label>
             <input
@@ -80,9 +117,7 @@ const AddFeedback = () => {
           </div>
           <div className="flex justify-end space-x-4">
             <Button type="submit" className="btn btn-primary bg-green-500">Submit</Button>
-            <Link to="/myagencyfeedback" className="no-underline">
-              <Button className="btn btn-secondary bg-red-500">Cancel</Button>
-            </Link>
+            
           </div>
         </div>
       </form>
@@ -90,4 +125,4 @@ const AddFeedback = () => {
   );
 };
 
-export default AddFeedback;
+export default AddagencyFeedback;

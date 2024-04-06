@@ -3,54 +3,38 @@ import axios from "axios";
 import StarRating from "./StarRating";
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
-import { useSelector } from 'react-redux';
 
-const AddFeedback = () => {
-  const userInfo = useSelector(state => state.auth.userInfo);
-  const [fbtitle, setTitle] = useState("");
-  const [fbdescription, setDescription] = useState("");
-  const [rating, setRating] = useState(0);
+const UpdateagencyFeedback = ({ feedbackId, currentTitle, currentDescription, currentRating, onUpdateFeedback }) => {
+  const [fbTitle, setFbTitle] = useState(currentTitle);
+  const [fbDescription, setFbDescription] = useState(currentDescription);
+  const [rating, setRating] = useState(currentRating);
 
-  function sendData(e) {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (userInfo === null) {
-      alert("You must be logged in to submit feedback.");
+    // Validation for empty fields
+    if (!fbTitle.trim() || !fbDescription.trim() || rating === 0) {
+      alert("Please fill in all fields and provide a rating.");
       return;
     }
 
-    // Check if any of the fields are empty
-    if (!fbtitle.trim() || !fbdescription.trim() || rating === 0) {
-      alert("Please fill in all fields and provide a rating before submitting.");
-      return;
+    try {
+      const updatedFeedback = { fbtitle: fbTitle, fbdescription: fbDescription, rating };
+      await axios.put(`http://localhost:5000/api/agencyfeedbacks/updatefeedback/${feedbackId}`, updatedFeedback);
+      onUpdateFeedback(); // Refresh or navigate as needed
+      alert("Feedback updated successfully!");
+    } catch (error) {
+      console.error("Error updating feedback.", error.message);
+      alert("Error updating feedback. Please try again.");
     }
-
-    const newFeedback = {
-      fbtitle,
-      fbdescription,
-      rating,
-      giverName: userInfo.name,
-      giverId: userInfo._id
-    };
-
-    axios.post("http://localhost:5000/api/feedbacks/addfeedback", newFeedback)
-      .then(() => {
-        alert("Feedback Added.");
-        setTitle("");
-        setDescription("");
-        setRating(0);
-      })
-      .catch((err) => {
-        alert("Error: " + err);
-      });
-  }
+  };
 
   return (
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl">Share Your Feedback</h1>
+        <h1 className="text-4xl">Update Your Agency Feedback</h1>
       </div>
-      <form onSubmit={sendData}>
+      <form onSubmit={handleUpdate}>
         <div className="mb-8 p-10 shadow-md relative">
           <div className="mb-4">
             <label htmlFor="title" className="block text-xl font-bold">What's your feedback about?</label>
@@ -59,8 +43,8 @@ const AddFeedback = () => {
               id="title"
               className="block w-full mt-1 p-2 border rounded-md"
               placeholder="Enter Title"
-              value={fbtitle}
-              onChange={(e) => setTitle(e.target.value)}
+              value={fbTitle}
+              onChange={(e) => setFbTitle(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -70,8 +54,8 @@ const AddFeedback = () => {
               id="description"
               className="block w-full mt-1 p-2 border rounded-md"
               placeholder="Enter Your Description"
-              value={fbdescription}
-              onChange={(e) => setDescription(e.target.value)}
+              value={fbDescription}
+              onChange={(e) => setFbDescription(e.target.value)}
             />
           </div>
           <div className="mb-4">
@@ -79,8 +63,9 @@ const AddFeedback = () => {
             <StarRating rating={rating} onRatingChange={setRating} />
           </div>
           <div className="flex justify-end space-x-4">
-            <Button type="submit" className="btn btn-primary bg-green-500">Submit</Button>
-            <Link to="/myagencyfeedback" className="no-underline">
+            <Button type="submit" className="btn btn-primary bg-green-500">Update</Button>
+
+            <Link to="/Feedback" className="no-underline">
               <Button className="btn btn-secondary bg-red-500">Cancel</Button>
             </Link>
           </div>
@@ -90,4 +75,4 @@ const AddFeedback = () => {
   );
 };
 
-export default AddFeedback;
+export default UpdateagencyFeedback;

@@ -24,6 +24,9 @@ import MyFeedback from './pages/feedback/components/MyFeedback';
 import UpdateFeedback from './pages/feedback/components/UpdateFeedback';
 import Faq from './pages/faq/components/Faq';
 import UpdateFaq from './pages/faq/components/UpdateFaq';
+import AddagencyFeedback from './pages/agencyfeedback/components/Addagencyfeedback';
+import Uniqueuserfeedback from './pages/agencyfeedback/components/Uniqueuserfeedbacks';
+
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -113,6 +116,14 @@ const router = createBrowserRouter([
       {
         path: '/updatefaq',
         element: <UpdateFaq />
+      },
+      {
+        path: '/addagencyfeedback',
+        element: <AddagencyFeedback />
+      },
+      {
+        path: '/myagencyfeedback',
+        element: <Uniqueuserfeedback />
       }
 
     ],
