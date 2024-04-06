@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useUpdateUserMutation } from '../../slices/usersApiSlice';
-import { setCredentials } from '../../slices/authSlice';
+import {
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+} from '../../slices/usersApiSlice';
+import { setCredentials, logout } from '../../slices/authSlice';
 import convertToBase64 from '../../helper/convert';
 import avatar from '../../assets/profile.png';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
   const [name, setName] = useState('');
@@ -27,6 +31,8 @@ const Profile = () => {
   const dispatch = useDispatch();
   const { userInfo } = useSelector(state => state.auth);
   const [updateProfile] = useUpdateUserMutation();
+  const [deleteUser] = useDeleteUserMutation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userInfo) {
@@ -68,8 +74,21 @@ const Profile = () => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await deleteUser(userInfo._id).unwrap();
+      await dispatch(logout());
+      toast.success('Account deleted successfully');
+      navigate('/');
+    } catch (err) {
+      toast.error(
+        err?.data?.message || err?.error || 'Failed to delete account'
+      );
+    }
+  };
+
   return (
-    <div className='max-w-md p-8 mx-auto mt-10 bg-white rounded-lg shadow-md'>
+    <div className='max-w-md p-8 mx-auto mt-10 bg-green-300 rounded-lg shadow-md mb-[20px]'>
       <h1 className='mb-4 text-2xl font-bold text-center'>Update Profile</h1>
 
       <form onSubmit={submitHandler} className='space-y-4'>
@@ -136,14 +155,15 @@ const Profile = () => {
           <label htmlFor='userType' className='text-sm font-semibold'>
             User Type:
           </label>
-          <input
-            type='text'
+          <select
             id='userType'
-            placeholder='Enter user type'
             value={userType}
             onChange={e => setUserType(e.target.value)}
             className='px-4 py-2 border rounded-lg'
-          />
+          >
+            <option value='Guest'>Guest</option>
+            <option value='Travel Agent'>Travel Agent</option>
+          </select>
         </div>
 
         <div className='flex flex-col space-y-2'>
@@ -176,9 +196,16 @@ const Profile = () => {
 
         <button
           type='submit'
-          className='w-full py-2 text-white transition duration-300 bg-green-500 rounded-lg hover:bg-green-600'
+          className='w-full py-2 text-white transition duration-300 bg-blue-500 rounded-lg hover:bg-blue-600'
         >
           Update
+        </button>
+        <button
+          type='button'
+          onClick={handleDelete}
+          className='w-full py-2 text-white transition duration-300 bg-red-500 rounded-lg hover:bg-red-600'
+        >
+          Delete Account
         </button>
       </form>
     </div>

@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import { UserPlusIcon } from '@heroicons/react/24/solid';
-
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import ReactTimeAgo from 'react-time-ago';
+import { Link } from 'react-router-dom';
+import topleft from '../../assets/topleft.png'
 
 import {
   Card,
@@ -20,6 +21,7 @@ import {
   Tab,
   Avatar,
 } from '@material-tailwind/react';
+import { DialogCustomAnimation } from './components/DeletePopup';
 
 TimeAgo.addLocale(en);
 
@@ -29,42 +31,58 @@ const TABS = [
     value: 'all',
   },
   {
-    label: 'Monitored',
-    value: 'monitored',
+    label: 'Admins',
+    value: 'admin',
   },
   {
-    label: 'Unmonitored',
-    value: 'unmonitored',
+    label: 'Users',
+    value: 'user',
   },
 ];
 
-const TABLE_HEAD = ['User', 'User Type', 'Access Level', 'Employed', 'Actions'];
+const TABLE_HEAD = ['User', 'User Role', 'Access Level', 'Registered', 'Updated ', 'Actions'];
 
 function MembersTable() {
+  const backgroundStyle = {
+    position: 'absolute',
+    top: -140,
+    left: -40,
+    width: '1000px', 
+    height: '790px',
+    zIndex: -1,
+  };
+  
   const [users, setUsers] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedTab, setSelectedTab] = useState('all');
+
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/users/all');
+      setUsers(response.data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/users/all');
-        setUsers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
-
     fetchUsers();
   }, []);
 
   const filteredUsers = users
-    ? users.filter(user =>
+    ? users.filter(user => {
+        if (selectedTab === 'all') return true;
+        if (selectedTab === 'admin') return user.isAdmin;
+        if (selectedTab === 'user') return !user.isAdmin;
+        return false;
+      }).filter(user =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
 
   return (
     <>
+    <img src={topleft} alt="Top Left Background" style={backgroundStyle} />
       <Card className='w-[1200px] h-full mx-auto mb-10'>
         <CardHeader floated={false} shadow={false} className='rounded-none'>
           <div className='flex items-center justify-between gap-8 mb-8'>
@@ -77,17 +95,21 @@ function MembersTable() {
               </Typography>
             </div>
             <div className='flex flex-col gap-2 shrink-0 sm:flex-row'>
-              <Button className='flex items-center gap-3' size='sm'>
+              <Button className='flex items-center gap-3 bg-green-500' size='sm'>
                 <UserPlusIcon strokeWidth={2} className='w-4 h-4' /> Add member
               </Button>
             </div>
           </div>
 
           <div className='flex flex-col items-center justify-between gap-4 md:flex-row'>
-            <Tabs value='all' className='w-full md:w-max'>
+            <Tabs value={selectedTab} className='w-full md:w-max'>
               <TabsHeader>
                 {TABS.map(({ label, value }) => (
-                  <Tab key={value} value={value}>
+                  <Tab
+                    key={value}
+                    value={value}
+                    onClick={() => setSelectedTab(value)}
+                  >
                     &nbsp;&nbsp;{label}&nbsp;&nbsp;
                   </Tab>
                 ))}
@@ -133,6 +155,7 @@ function MembersTable() {
                   org,
                   isAdmin,
                   createdAt,
+                  updatedAt,
                   img,
                 }) => (
                   <tr key={_id}>
@@ -202,12 +225,25 @@ function MembersTable() {
                       </Typography>
                     </td>
                     <td className='p-4 border-b border-blue-gray-50'>
-                      <Button className='h-[30px] px-auto pb-[25px] bg-red-600'>
-                        Delete
-                      </Button>
-                      <Button className='ml-5 h-[30px] px-auto pb-[25px] bg-blue-600'>
-                        Update
-                      </Button>
+                      <Typography
+                        variant='small'
+                        color='blue-gray'
+                        className='font-normal'
+                      >
+                        <ReactTimeAgo date={updatedAt} />
+                      </Typography>
+                    </td>
+                    <td className='p-4 border-b border-blue-gray-50'>
+                      <DialogCustomAnimation
+                        id={_id}
+                        onUserDeleted={fetchUsers}
+                        name={name}
+                      />
+                      <Link to={`/updateuser/${_id}`}>
+                        <Button className='ml-5 h-[30px] px-auto pb-[25px] bg-blue-600'>
+                          Update
+                        </Button>
+                      </Link>
                     </td>
                   </tr>
                 )

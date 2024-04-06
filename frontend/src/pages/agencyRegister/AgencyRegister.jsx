@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 
@@ -16,6 +16,8 @@ function AgencyRegister() {
   const [taxIdNumber, setTaxIdNumber] = useState('');
   const [description, setDescription] = useState('');
   const [websiteLink, setWebsiteLink] = useState('');
+
+  const navigate = useNavigate
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -42,6 +44,9 @@ function AgencyRegister() {
       .catch(err => {
         alert(err);
       });
+
+
+      navigate('/agency')
   };
 
   return (

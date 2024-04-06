@@ -86,13 +86,15 @@ function UpdateAgency() {
     return <div>Loading...</div>;
   }
   return (
-    <div className='flex items-center justify-center h-screen '>
+    <div className='flex items-center justify-center h-screen mb-[10px] my-[50px]'>
       <form
         onSubmit={handleSubmit}
-        className='max-w-md px-8 py-6 bg-white rounded shadow-md'
+        className=' px-8 py-6 bg-green-300 rounded shadow-md mt-[-200px] w-[700px]'
       >
+        <div className='text-4xl mx-[130px] my-5'>Update Agency Details</div>
         <div className='grid grid-cols-2 gap-4'>
           <div>
+            <label >Agency Name</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -102,6 +104,7 @@ function UpdateAgency() {
             />
           </div>
           <div>
+          <label>Agent Name</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='email'
@@ -111,6 +114,7 @@ function UpdateAgency() {
             />
           </div>
           <div>
+          <label>Agency Mail</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='email'
@@ -120,6 +124,7 @@ function UpdateAgency() {
             />
           </div>
           <div>
+          <label>Fax</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -130,6 +135,7 @@ function UpdateAgency() {
           </div>
 
           <div>
+          <label>Mobile</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               placeholder='Business Mobile'
@@ -138,6 +144,7 @@ function UpdateAgency() {
             />
           </div>
           <div>
+          <label>Tax ID</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -148,6 +155,7 @@ function UpdateAgency() {
           </div>
 
           <div>
+          <label>Address</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -158,6 +166,7 @@ function UpdateAgency() {
           </div>
 
           <div>
+          <label>Description</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -168,6 +177,7 @@ function UpdateAgency() {
           </div>
 
           <div>
+          <label>Website Link</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -177,6 +187,7 @@ function UpdateAgency() {
             />
           </div>
           <div>
+          <label>Business Reg. No</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
@@ -187,31 +198,24 @@ function UpdateAgency() {
           </div>
 
           <div>
+          <label hidden>Img</label>
             <input
               className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
               type='text'
               placeholder='image'
               value={img}
               onChange={e => setImg(e.target.value)}
+              hidden
             />
           </div>
         </div>
         <button
-          className='w-full px-4 py-2 mt-4 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline'
+          className='w-full px-4 py-2 mt-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline'
           type='submit'
           onSubmit={handleSubmit}
         >
           Update Agency Details
         </button>
-        <p className='mt-2 text-sm text-center'>
-          Already have an account?{' '}
-          <Link
-            to='/sign-in'
-            className='font-medium text-green-500 hover:text-green-800'
-          >
-            Sign In
-          </Link>
-        </p>
       </form>
     </div>
   );

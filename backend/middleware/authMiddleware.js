@@ -11,6 +11,10 @@ const protect = asyncHandler(async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
+      if (!decoded.userId) {
+        throw new Error('Invalid token');
+      }
+
       req.user = await User.findById(decoded.userId).select('-password');
 
       next();
@@ -25,13 +29,28 @@ const protect = asyncHandler(async (req, res, next) => {
   }
 });
 
-const isAdmin = (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
-    next();
-  } else {
-    res.status(401).send({ error: 'Not authorized as an admin' });
+const isAdmin = asyncHandler(async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      console.log('User not found');
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    if (user.isAdmin) {
+      next();
+    } else {
+      console.log('Not authorized as an admin');
+      return res.status(403).json({ message: 'Not authorized as an admin' });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: 'Internal Server Error' });
   }
-};
+});
+
+
 
 
 module.exports = { protect,isAdmin  };

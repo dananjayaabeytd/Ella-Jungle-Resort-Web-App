@@ -16,6 +16,8 @@ import AgencyList from './pages/allagencies/AgencyList';
 import AgencyProfile from './pages/allagencies/AgencyProfile';
 import UpdateAgency from './pages/allagencies/components/UpdateAgency';
 import Dashboard from './pages/useradmin/Dashboard';
+import { UserUpdate } from './pages/useradmin/components/UpdateUser';
+import PrivateRoute from './PrivateRoute';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -52,7 +54,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/all',
-        element: <MembersTable />,
+        element: <PrivateRoute component={MembersTable}/>,
       },
       {
         path: '/profile',
@@ -64,7 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/:id',
-        element: <AgencyProfile />,
+        element: <PrivateRoute component={AgencyProfile} />,
       },
       {
         path: 'update/:id',
@@ -73,7 +75,11 @@ const router = createBrowserRouter([
       {
         path: '/admindashboard',
         element: <Dashboard />,
-      }
+      },
+      {
+        path: 'updateuser/:id',
+        element: <UserUpdate />,
+      },
 
     ],
   },

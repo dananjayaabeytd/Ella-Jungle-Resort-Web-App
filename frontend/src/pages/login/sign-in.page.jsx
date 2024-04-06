@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom';
 function SignInPage() {
   return (
     <div
-      className='flex items-center justify-center h-[1100px] mt-[-400px] '
+      className='flex items-center justify-center h-[1200px] mt-[-450px] '
       style={{ backgroundImage: `url(${back})`, backgroundSize: 'cover' }}
     >
       <Outlet />

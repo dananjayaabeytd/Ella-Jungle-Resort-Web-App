@@ -6,7 +6,7 @@ const connectDB = require('./config/db.js');
 const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 const userRoutes = require('./routes/userRoutes.js');
-const agencyRoutes = require('./routes/agencyRoutes.js')
+const agencyRoutes = require('./routes/agencyRoutes.js');
 
 const port = process.env.PORT || 5000;
 connectDB();
@@ -14,10 +14,14 @@ connectDB();
 const cors = require('cors');
 const app = express();
 
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
+
 // Enable CORS
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
 
 app.use(cookieParser());
 
@@ -33,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
   );
 } else {
   app.get('/', (req, res) => {
-    res.send('API is running....');
+    res.render('index'); // Render index.ejs
   });
 }
 

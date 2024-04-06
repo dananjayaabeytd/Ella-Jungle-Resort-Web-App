@@ -28,6 +28,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Travel Agent Management'
+          path='/agency'
           link='https://img.freepik.com/free-photo/full-shot-travel-concept-with-landmarks_23-2149153258.jpg'
         />
         <CardDefault

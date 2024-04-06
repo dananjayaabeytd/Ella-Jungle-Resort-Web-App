@@ -35,10 +35,11 @@ function SignUpPage() {
   const { userInfo } = useSelector(state => state.auth);
 
   useEffect(() => {
-    if (type == 'Travel Agent') {
+    if (type === 'Travel Agent') {
       navigate('/agencyregister');
-    } else {
-      navigate('/');
+    } 
+    else if (type === 'Guest') {
+      navigate('/profile');
     }
   }, [navigate, userInfo]);
 
@@ -68,7 +69,7 @@ function SignUpPage() {
 
   return (
     <div
-      className='flex items-center justify-center h-[1350px] mt-[-400px]'
+      className='flex items-center justify-center h-[1350px] mt-[-300px]'
       style={{ backgroundImage: `url(${back})`, backgroundSize: 'cover' }}
     >
       <div className='relative flex flex-col text-gray-700 bg-black bg-opacity-70 shadow-none rounded-xl bg-clip-border mt-[300px] p-8 mb-20'>
