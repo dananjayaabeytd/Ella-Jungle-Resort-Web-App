@@ -65,6 +65,7 @@ const Roomform = () => {
     }
   };
 
+
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="bg-green-200 rounded-lg p-12 shadow-lg w-96">
@@ -75,8 +76,13 @@ const Roomform = () => {
             <input type="text" id="roomName" name="roomName" value={roomDetails.roomName} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
           </div>
           <div className="mb-6">
-            <label htmlFor="roomType" className="block text-sm font-medium text-gray-700">Room Type</label>
-            <input type="text" id="roomType" name="roomType" value={roomDetails.roomType} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full" />
+          <label htmlFor="roomType" className="block text-sm font-medium text-gray-700">Room Type</label>
+            <select id="roomType" name="roomType" value={roomDetails.roomType} onChange={handleChange} className="mt-1 p-2 border border-gray-300 rounded-md w-full">
+              <option value="">Select Room Type</option>
+              <option value="chalet">Chalet</option>
+              <option value="cabin">Cabin</option>
+              <option value="cottage">Cottage</option>
+            </select>
           </div>
           <div className="mb-6">
             <label htmlFor="maxCount" className="block text-sm font-medium text-gray-700">Max Count</label>

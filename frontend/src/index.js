@@ -13,6 +13,7 @@ import RoomPage from './pages/Room-management/RoomPage';
 import UpdateRoomForm from './pages/Room-management/UpdateRoom';
 import AvailableRooms from './pages/Residence-booking-page/Residence-booking-components/AvailableRooms';
 import ReservationForm from './pages/Residence-booking-page/Residence-booking-components/Bookingform';
+import ReservationPage from './pages/Reservation-management/reservationPage';
 
 
 const router = createBrowserRouter([
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: '/Booking/:id',
         element: <ReservationForm/>
+      },
+      {
+        path: '/allReservations',
+        element: <ReservationPage/>
       }
      
     ],

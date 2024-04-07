@@ -21,7 +21,7 @@ function NavList() {
       >
         <Link to="/">
           <a
-            href='#'
+            href='/' // Update href with the correct URL path
             className='flex items-center font-bold transition-colors hover:text-green-500'
           >
             Home
@@ -34,66 +34,31 @@ function NavList() {
         color='blue-gray'
         className='p-1 font-medium'
       >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Packages
-        </a>
+        <Link to="/packages">
+          <a
+            href='/packages' // Update href with the correct URL path
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Packages
+          </a>
+        </Link>
       </Typography>
+      {/* Similar updates for other list items */}
       <Typography
         as='li'
         variant='small'
         color='blue-gray'
         className='p-1 font-medium'
+        key={6} // Add a unique key to each list item
       >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Rooms
-        </a>
-      </Typography>
-      <Typography
-        as='li'
-        variant='small'
-        color='blue-gray'
-        className='p-1 font-medium'
-      >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Events
-        </a>
-      </Typography>
-
-      <Typography
-        as='li'
-        variant='small'
-        color='blue-gray'
-        className='p-1 font-medium'
-      >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Activities
-        </a>
-      </Typography>
-
-      <Typography
-        as='li'
-        variant='small'
-        color='blue-gray'
-        className='p-1 font-medium'
-      >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Offers
-        </a>
+        <Link to="/offers">
+          <a
+            href='/offers' // Update href with the correct URL path
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Offers
+          </a>
+        </Link>
       </Typography>
     </ul>
   );
@@ -122,17 +87,13 @@ function MyNavbar() {
         </div>
         <div className='flex items-center'>
           <Link to='/sign-in'>
-            <Button
-              color='green'
-              size='regular'
-              className='hidden mr-4 lg:block'
-            >
+            <Button variant='filled' color='green' className='hidden mr-4 lg:block'>
               Login
             </Button>
           </Link>
 
           <Link to='/signup'>
-            <Button color='green' size='regular' className='hidden lg:block'>
+            <Button variant='filled' color='green' className='hidden lg:block'>
               Signup
             </Button>
           </Link>
