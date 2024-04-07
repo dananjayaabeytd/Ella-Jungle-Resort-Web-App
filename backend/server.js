@@ -9,6 +9,7 @@ const userRoutes = require('./routes/userRoutes.js');
 const agencyRoutes = require('./routes/agencyRoutes.js');
 const eventRouter = require("./routes/events.js");
 const optionRouter = require("./routes/options.js");
+const ticketRouter = require("./routes/tickets.js");
 
 //app.use(express.static('public'))
 
@@ -33,6 +34,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/agencies', agencyRoutes);
 app.use ("/event", eventRouter);
 app.use ("/option", optionRouter);
+app.use ("/ticket", ticketRouter);
 app.use(express.static('public'))
 
 if (process.env.NODE_ENV === 'production') {

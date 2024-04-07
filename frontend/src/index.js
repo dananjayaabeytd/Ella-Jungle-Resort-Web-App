@@ -30,6 +30,7 @@ import ViewEvent from "./components/ViewEvent"
 import EventHome from "./components/EventHome"
 import UpdateOption from "./components/UpdateOption"
 import MyEvents from "./components/MyEvents"
+import BuyEventTicket from "./components/BuyEventTicket"
 import PopupAd from "./components/PopupAd"
 
 import TestPage from "./components/TestPage"
@@ -143,6 +144,10 @@ const router = createBrowserRouter([
       {
         path: '/myEvents',
         element: < MyEvents/>,
+      },
+      {
+        path: '/buyEventTicket/:eventId',
+        element: < BuyEventTicket/>,
       },
 
 

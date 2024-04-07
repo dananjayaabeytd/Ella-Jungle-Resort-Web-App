@@ -179,7 +179,7 @@ export default function ViewEvent() {
             </div> 
             {/*Options Loop Ends Here*/}
             
-            
+
           {/* Display Total Cost of Public events for only Admins */}
             {selectedEvent.isPublic && user.isAdmin && (
             <div className="text-base font-semibold mt-5">
@@ -214,9 +214,8 @@ export default function ViewEvent() {
                     {/* Using Link component for View button */}
                     <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
 
-                    <button className="mx-28 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
-                        Buy
-                    </button>
+                     {/* Using Link component for View button */}
+                     <Link to={`/buyEventTicket/${selectedEvent._id}`} className="mx-28 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> Buy </Link>
 
                     <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
                     onClick={() => {
