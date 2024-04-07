@@ -14,7 +14,7 @@ export default function AddOption() {
   const [optionCategory, setOptionCategory] = useState("");
   const [optionName, setOptionName] = useState("");
   const [optionDescription, setOptionDescription] = useState("");
-  const [optionPrice, setOptionPrice] = useState("");  
+  const [optionPrice, setOptionPrice] = useState(0);  
   const [file, setFile] = useState(null);
   
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -50,7 +50,7 @@ export default function AddOption() {
         setOptionCategory("");
         setOptionName("");
         setOptionDescription("");
-        setOptionPrice("");
+        setOptionPrice(0);
         setFile(null);
 
       })
@@ -79,7 +79,7 @@ export default function AddOption() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-theme-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend">
+        <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
               Add Option
@@ -100,7 +100,7 @@ export default function AddOption() {
                 value={optionCategory}
                 onChange={(e) => setOptionCategory(e.target.value)}
               >
-                <option value="" disabled>Select Category</option>
+                <option value="" disabled className="text-gray-500">Select Category</option>
                 <option value="Decoration">Decoration</option>
                 <option value="Catering">Catering</option>
                 <option value="Entertainment">Entertainment</option>
@@ -136,7 +136,7 @@ export default function AddOption() {
             {/* Option Price */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
-              <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+              <input required className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="number" placeholder="Enter Price" name="optionPrice" value={optionPrice}
                 onChange={(e) =>  setOptionPrice(e.target.value)}
               />

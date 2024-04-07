@@ -8,7 +8,7 @@ import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
 import CustomPopup from './CustomPopup'; // Import the modal component
 import EventHeader from './EventHeader';
 
-export default function EventList() {
+export default function MyEvents() {
 
   const [allEvents, setEvents] = useState([]);
   
@@ -93,7 +93,7 @@ export default function EventList() {
   
       {/* Your scrolling content */}
       {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.filter(event => event.isPublic === true).map((event) => (
+        {allEvents.filter(event => event.isPublic === false).map((event) => (
       <div key={event._id} className="container bg-fixed my-5 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 
       

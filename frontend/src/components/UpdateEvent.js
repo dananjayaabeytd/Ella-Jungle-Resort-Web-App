@@ -15,7 +15,10 @@ export default function UpdateEvent() {
   const [updatedEventDate, setUpdatedEventDate] = useState("");
   const [updatedEventDescription, setUpdatedEventDescription] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
-  const [totalCost, setTotalCost] = useState(0); // Total cost state
+  const [totalCost, setTotalCost] = useState(""); // Total cost state
+  const [isPublic, setIsPublic] = useState(false); // Total cost state
+  const [ticketPrice, setTicketPrice] = useState(""); // Total cost state
+  
   const [file, setFile] = useState(null);
 
   const [formError, setFormError] = useState("");
@@ -89,7 +92,9 @@ export default function UpdateEvent() {
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
-      setTotalCost(selectedEvent.totalCost || 0);
+      setTotalCost(selectedEvent.totalCost || null);
+      setIsPublic(selectedEvent.isPublic || false);
+      setTicketPrice(selectedEvent.ticketPrice || "");
       setSelectedOptions(selectedEvent.selectedOptions || [].map(id => id.toString()));
     }
   }, [selectedEvent]);
@@ -150,6 +155,8 @@ export default function UpdateEvent() {
     formData.append("eventDate", updatedEventDate);
     formData.append("eventDescription", updatedEventDescription);
     formData.append("totalCost", totalCost);
+    formData.append("isPublic", isPublic);
+    formData.append("ticketPrice", ticketPrice);
     formData.append("file", file);
 
     
@@ -237,7 +244,7 @@ export default function UpdateEvent() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-gray-200 opacity-75 shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend border-8 border-double border-theme-green">
+        <div className="container my-10 max-w-4xl mx-auto p-10 bg-gray-200 opacity-85 shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend border-8 border-double border-theme-green">
           <div className="text-5xl font-extrabold ... bg-clip-text text-transparent bg-gradient-to-r from-theme-green to-green-800 ">    
               Update Event
           </div>
@@ -330,6 +337,58 @@ export default function UpdateEvent() {
             {/* Display total cost */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
+            </div>
+
+
+                        {/* Is Public? */}
+                        <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-4 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-1 ">
+                <div className="text-base font-semibold ml-16">
+                    <div>
+                        <label htmlFor="public" className="flex items-center">
+                            <input
+                                type="radio"
+                                id="public"
+                                name="isPublic"
+                                value="true"
+                                checked={isPublic === true}
+                                onChange={() => setIsPublic(true)}
+                                className="form-radio h-5 w-5 text-green-600"
+                            />
+                            <span className="ml-2 text-black">Public - The event will be published for all users.</span>
+                        </label>
+                        <p></p>
+                    </div>
+
+                    <div>
+                        <label htmlFor="private" className="flex items-center">
+                            <input
+                                type="radio"
+                                id="private"
+                                name="isPublic"
+                                value="false"
+                                checked={isPublic === false}
+                                onChange={() => setIsPublic(false)}
+                                className="form-radio h-5 w-5 text-green-600"
+                            />
+                            <span className="ml-2 text-black">Private - The event will not be published.</span>
+                        </label>
+
+                    
+                    
+            {/* Ticket Price - Only displayed if isPublic is true */}
+              {isPublic === true && (
+                  <div className="ml-30  text-base font-semibold mt-4 flex justify">
+                      <label className="block font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price</label>
+                      <input required className=" p-1 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
+                          type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice}
+                          onChange={(e) => setTicketPrice(e.target.value)}
+                          
+                      />
+                      <label className="block font-bold text-xl text-green-800 felx" htmlFor="ticketPrice">LKR</label>
+                  </div>
+              )}    
+                    </div>
+                </div>
             </div>
 
 

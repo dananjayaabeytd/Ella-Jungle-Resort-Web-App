@@ -75,7 +75,6 @@ export default function ViewEvent() {
     if (selectedEventId) {
       try {
         await axios.delete(`http://localhost:5000/event/deleteEvent/${selectedEventId}`);
-        alert("Event Deleted Successfully!");
         setIsModalOpen(false); // Close the modal
         // Custom success notification
         setPopupMessage("Event Deleted Successfully!");
@@ -180,11 +179,32 @@ export default function ViewEvent() {
             </div> 
             {/*Options Loop Ends Here*/}
             
-
-            {/* Display total cost */}
+            
+          {/* Display Total Cost of Public events for only Admins */}
+            {selectedEvent.isPublic && user.isAdmin && (
             <div className="text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
             </div>
+          )}
+
+          {/* Display Total Cost of private events for all users */}
+          {!selectedEvent.isPublic && (
+            <div className="text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
+            </div>
+          )}
+
+
+
+          {/* Display ticket price for public events */}
+          {selectedEvent.isPublic && (
+            <div className="ml-30 text-base font-semibold mt-0">
+            <p1 className="block  text-lg text-green-80">Grab Your Tickets Now for only {selectedEvent.ticketPrice} LKR !! Enjoy the Moment</p1>
+          </div>
+          )}
+            
+          
+
 
         
         
@@ -225,15 +245,19 @@ export default function ViewEvent() {
 
       {/* Your component structure */}
       <CustomPopup
-          isOpen={isPopupOpen}
-          message={popupMessage}
-          onClose={() => {
-            setIsPopupOpen(false);
-            setIsModalOpen(false); // Close the modal
+        isOpen={isPopupOpen}
+        message={popupMessage}
+        onClose={() => {
+          setIsPopupOpen(false);
+          setIsModalOpen(false); // Close the modal
+          if (selectedEvent.isPublic) {
             navigate("/events");
-          }}
-          type={popupType}
-        />
+          } else {
+            navigate("/myEvents");
+          }
+        }}
+        type={popupType}
+      />
       
     
     </div>

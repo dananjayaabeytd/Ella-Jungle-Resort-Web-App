@@ -53,7 +53,7 @@ export default function UpdateEvent() {
         setUpdatedOptionCategory(selectedOption.optionCategory || "");
         setUpdatedOptionName(selectedOption.optionName || "");
         setUpdatedOptionDescription(selectedOption.optionDescription || "");
-        setUpdatedOptionPrice(selectedOption.optionPrice || 0);
+        setUpdatedOptionPrice(selectedOption.optionPrice || "");
       
     }
   }, [selectedOption]);
@@ -110,7 +110,7 @@ export default function UpdateEvent() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-theme-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend">
+        <div className="container my-10 max-w-4xl mx-auto p-10 bg-theme-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
               Update Event

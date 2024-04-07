@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const eventSchema = new Schema({
+    eventUserId: {
+        type: String,
+       
+    },
     eventName: {
         type: String,
         required: true
@@ -30,7 +34,14 @@ const eventSchema = new Schema({
         required: true
     },
 
-  
+    isPublic: {
+        type: Boolean,
+    },
+
+    ticketPrice: {
+        type: Number,
+    },
+
     eventImage: {
         type: String, // Store the filename or image URL
     }
