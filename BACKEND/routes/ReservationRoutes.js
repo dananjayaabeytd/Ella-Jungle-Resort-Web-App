@@ -18,10 +18,19 @@ router.post("/confirmactivity/:id", (req, res) => {
     // Extract  activity name from the request body
     const activityName  = req.body.activityName; 
 
+    const noOfPeople  = req.body.noOfPeople; 
+
+    const activityPrice  = req.body.activityPrice; 
+
+    const totalPrice  = req.body.totalPrice; 
+
     const newReservation = new Reservation({
         activityID: activityId, // Assign the fetched activity ID
         guestID: defaultGuestID,
-        activityName: activityName
+        activityName: activityName,
+        noOfPeople:noOfPeople,
+        activityPrice:activityPrice,
+        totalPrice: totalPrice
     });
 
     newReservation.save().then(() => {
