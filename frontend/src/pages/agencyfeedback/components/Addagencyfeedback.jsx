@@ -2,29 +2,32 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import StarRating from "./StarRating";
 import { Button } from '@material-tailwind/react';
-import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
 const AddagencyFeedback = () => {
   const userInfo = useSelector(state => state.auth.userInfo);
-  const [agencies, setAgencies] = useState([]);
+  const { agencyId: paramAgencyId } = useParams(); // Get agencyId from URL params
   const [selectedAgency, setSelectedAgency] = useState({});
   const [fbtitle, setTitle] = useState("");
   const [fbdescription, setDescription] = useState("");
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    const fetchAgencies = async () => {
+    // Fetch agency details based on agencyId from URL params
+    const fetchAgencyDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/agencies/");
-        setAgencies(response.data);
+        const response = await axios.get(`http://localhost:5000/api/agencies/get/${paramAgencyId}`);
+        setSelectedAgency(response.data);
       } catch (err) {
-        console.error("Error fetching agencies:", err);
+        console.error("Error fetching agency details:", err);
       }
     };
 
-    fetchAgencies();
-  }, []);
+    if (paramAgencyId) {
+      fetchAgencyDetails();
+    }
+  }, [paramAgencyId]);
 
   function sendData(e) {
     e.preventDefault();
@@ -71,23 +74,13 @@ const AddagencyFeedback = () => {
         <div className="mb-8 p-10 shadow-md relative">
           <div className="mb-4">
             <label htmlFor="agency" className="block text-xl font-bold">Select Agency</label>
-            <select
+            <input
+              type="text"
               id="agency"
               className="block w-full mt-1 p-2 border rounded-md"
-              value={selectedAgency._id || ""}
-              onChange={(e) => {
-                const agency = agencies.find(agency => agency._id === e.target.value);
-                setSelectedAgency(agency || {});
-              }}
-              required
-            >
-              <option value="">--Select Agency--</option>
-              {agencies.map((agency) => (
-                <option key={agency._id} value={agency._id}>
-                  {agency.agencyName}
-                </option>
-              ))}
-            </select>
+              value={selectedAgency.agencyName || ""}
+              readOnly
+            />
           </div>
           <div className="mb-4">
             <label htmlFor="title" className="block text-xl font-bold">What's your feedback about?</label>
@@ -117,7 +110,6 @@ const AddagencyFeedback = () => {
           </div>
           <div className="flex justify-end space-x-4">
             <Button type="submit" className="btn btn-primary bg-green-500">Submit</Button>
-            
           </div>
         </div>
       </form>

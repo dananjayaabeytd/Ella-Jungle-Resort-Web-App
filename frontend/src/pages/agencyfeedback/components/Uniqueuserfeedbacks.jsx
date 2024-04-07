@@ -80,14 +80,12 @@ const Uniqueuserfeedback = () => {
     <div className="container mx-auto relative">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-4xl">My Agency Feedback</h1>
-        <Link to="/addagencyfeedback" className="no-underline">
-          <Button className="btn btn-primary bg-green-500">Enter Feedback</Button>
-        </Link>
       </div>
       {allFeedback.length > 0 ? (
         <ul className="list-none p-0">
           {allFeedback.map((feedback) => (
             <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
+              <p className="font-bold">Agency : {feedback.agencyname}</p><br/>
               <p className="font-bold">{feedback.giverName}</p>
               <p className="text-sm text-gray-500">{formatDate(feedback.createdAt)}</p><br />
               <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3>

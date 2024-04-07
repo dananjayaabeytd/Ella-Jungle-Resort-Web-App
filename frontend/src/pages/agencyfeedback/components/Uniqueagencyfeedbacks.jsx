@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const starStyles = {
   marginRight: "3px",
@@ -28,6 +29,7 @@ const Uniqueagencyfeedback = () => {
   const [allFeedback, setFeedback] = useState([]);
   const userInfo = useSelector(state => state.auth.userInfo);
   const { id } = useParams();
+  const user = useSelector(state => state.auth.userInfo);
 
   useEffect(() => {
     const giverId = userInfo ? userInfo._id : null;
@@ -58,17 +60,18 @@ const Uniqueagencyfeedback = () => {
   };
 
   return (
-    <div className="container mx-auto relative">
-      <div className="flex justify-between items-center mb-1">
+    <div className="container relative mx-auto">
+      <div className="flex items-center justify-between mb-1">
         <h1 className="text-2xl">Agency Feedback</h1>
       </div>
       {allFeedback.length > 0 ? (
-        <ul className="list-none p-0">
+        <ul className="p-0 list-none">
           {allFeedback.map((feedback) => (
-            <li key={feedback._id} className="mb-8 p-10 shadow-md relative">
+            <li key={feedback._id} className="relative p-10 mb-8 shadow-md">
+              <p className="font-bold">Agency : {feedback.agencyname}</p><br/>
               <p className="font-bold">{feedback.giverName}</p>
               <p className="text-sm text-gray-500">{formatDate(feedback.createdAt)}</p><br />
-              <h3 className="mb-4 font-bold text-2xl">{feedback.fbtitle}</h3>
+              <h3 className="mb-4 text-2xl font-bold">{feedback.fbtitle}</h3>
               <p className="font-bold">{feedback.fbdescription}</p>
               <div className="mt-4">
                 {renderStarRating(feedback.rating)}
@@ -83,6 +86,8 @@ const Uniqueagencyfeedback = () => {
         </div>
       )}
     </div>
+
+
   );
 };
 

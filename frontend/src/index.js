@@ -26,6 +26,7 @@ import Faq from './pages/faq/components/Faq';
 import UpdateFaq from './pages/faq/components/UpdateFaq';
 import AddagencyFeedback from './pages/agencyfeedback/components/Addagencyfeedback';
 import Uniqueuserfeedback from './pages/agencyfeedback/components/Uniqueuserfeedbacks';
+import Uniqueagencyfeedback from './pages/agencyfeedback/components/Uniqueagencyfeedbacks';
 
 
 import store from './store';
@@ -85,6 +86,7 @@ const router = createBrowserRouter([
         path: '/admindashboard',
         element: <Dashboard />,
       },
+      //Ishara
       {
         path: '/feedback',
         element: <AllFeedback />,
@@ -118,13 +120,17 @@ const router = createBrowserRouter([
         element: <UpdateFaq />
       },
       {
-        path: '/addagencyfeedback',
+        path: '/addagencyfeedback/:agencyId',
         element: <AddagencyFeedback />
       },
       {
         path: '/myagencyfeedback',
         element: <Uniqueuserfeedback />
-      }
+      },
+      {
+        path: '/uniqueagency/:id',
+        element: <Uniqueagencyfeedback />
+      },
 
     ],
   },
