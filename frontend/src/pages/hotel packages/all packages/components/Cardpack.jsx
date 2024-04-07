@@ -1,0 +1,55 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BookingCard } from './cards'; // Assuming this is the correct path to your BookingCard component
+
+export function BookingCardsContainer() {
+  const [allPackages, setPackages] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const packagesResponse = await axios.get("http://localhost:8081/hotel_packages/");
+        const roomsResponse = await axios.get("http://localhost:8081/Rooms/rooms");
+        const activitiesResponse = await axios.get("http://localhost:8081/SpecialActivity");
+        const spasResponse = await axios.get("http://localhost:8081/spapackages");
+
+        const packages = packagesResponse.data;
+        const rooms = roomsResponse.data.reduce((acc, room) => ({ ...acc, [room._id]: room.roomName }), {});
+        const activities = activitiesResponse.data.reduce((acc, activity) => ({ ...acc, [activity._id]: activity.name }), {});
+        const spas = spasResponse.data.reduce((acc, spa) => ({ ...acc, [spa._id]: spa.spaPackageName }), {});
+
+        const updatedPackages = packages.map(pack => ({
+          ...pack,
+          room_name: rooms[pack.room_id],
+          SActivity_name: activities[pack.SActivity_id],
+          spa_name: spas[pack.spa_id],
+        }));
+
+        setPackages(updatedPackages);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        // Handle the error, such as displaying an error message to the user
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 gap-1 pl-6 mx-20 sm:grid-cols-2 lg:grid-cols-3">
+      {allPackages.map((pack) => (
+        <div key={pack._id}>
+          <BookingCard
+            id={pack._id}
+            package_name={pack.package_name}
+            room_name={pack.room_name}
+            SActivity_name={pack.SActivity_name}
+            spa_name={pack.spa_name}
+            package_des={pack.package_des}
+            price={pack.price}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
