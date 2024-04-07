@@ -97,7 +97,7 @@ function NavList() {
         color='blue-gray'
         className='p-1 font-medium'
       >
-        <Link to='/spaUser'>
+        <Link to='/spaUserList'>
           <a
             href='#'
             className='flex items-center font-bold transition-colors hover:text-green-500'

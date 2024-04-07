@@ -1,12 +1,19 @@
 const express = require('express');
-const Appointment = require('../models/appointment.js');
-
 const router = express.Router();
+const Appointment = require('../models/Appointment');
 
-// Route for creating a new appointment
-router.post('/', async (req, res) => {
+// Create a new appointment
+router.post('/appointments', async (req, res) => {
   try {
-    const {  NIC,firstName, lastName, address, contactNumber, appointmentTypes, appointmentDate, totalPrice, status } = req.body;
+    const {
+      NIC,
+      firstName,
+      lastName,
+      address,
+      contactNumber,
+      appointmentType,
+      appointmentDate,
+    } = req.body;
 
     const newAppointment = new Appointment({
       NIC,
@@ -14,81 +21,68 @@ router.post('/', async (req, res) => {
       lastName,
       address,
       contactNumber,
-      appointmentTypes,
+      appointmentType,
       appointmentDate,
-      totalPrice,
-      status
     });
 
     const savedAppointment = await newAppointment.save();
-
     res.status(201).json(savedAppointment);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    console.error('Error creating appointment:', error);
+    res.status(500).json({ error: 'Failed to create appointment' });
   }
 });
 
-// Route for getting all appointments
-router.get('/', async (req, res) => {
+// Get all appointments
+router.get('/appointments', async (req, res) => {
   try {
     const appointments = await Appointment.find();
-
-    res.status(200).json({
-      count: appointments.length,
-      data: appointments
-    });
+    res.status(200).json(appointments);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    console.error('Error fetching appointments:', error);
+    res.status(500).json({ error: 'Failed to fetch appointments' });
   }
 });
 
-// Route for getting a single appointment by id
-router.get('/:id', async (req, res) => {
+// Get appointment by ID
+router.get('/appointments/:id', async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id);
-
     if (!appointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+      return res.status(404).json({ error: 'Appointment not found' });
     }
-
     res.status(200).json(appointment);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    console.error('Error fetching appointment:', error);
+    res.status(500).json({ error: 'Failed to fetch appointment' });
   }
 });
 
-// Route for updating an appointment by id
-router.put('/:id', async (req, res) => {
+// Update appointment by ID
+router.put('/appointments/:id', async (req, res) => {
   try {
-    const updatedAppointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-    if (!updatedAppointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+    const appointment = await Appointment.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
     }
-
-    res.status(200).json(updatedAppointment);
+    res.status(200).json(appointment);
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    console.error('Error updating appointment:', error);
+    res.status(500).json({ error: 'Failed to update appointment' });
   }
 });
 
-// Route for deleting an appointment by id
-router.delete('/:id', async (req, res) => {
+// Delete appointment by ID
+router.delete('/appointments/:id', async (req, res) => {
   try {
-    const deletedAppointment = await Appointment.findByIdAndDelete(req.params.id);
-
-    if (!deletedAppointment) {
-      return res.status(404).json({ message: 'Appointment not found' });
+    const appointment = await Appointment.findByIdAndDelete(req.params.id);
+    if (!appointment) {
+      return res.status(404).json({ error: 'Appointment not found' });
     }
-
     res.status(200).json({ message: 'Appointment deleted successfully' });
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send({ message: 'Server Error' });
+    console.error('Error deleting appointment:', error);
+    res.status(500).json({ error: 'Failed to delete appointment' });
   }
 });
 

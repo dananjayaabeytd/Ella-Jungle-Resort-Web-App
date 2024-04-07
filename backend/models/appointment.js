@@ -23,21 +23,14 @@ const appointmentSchema = mongoose.Schema(
       required: true,
     },
     appointmentTypes: {
-      type: [String], // Array of strings for multiple appointment types
+      type: String, 
       required: true,
     },
     appointmentDate: {
       type: Date,
       required: true,
     },
-    totalPrice: {
-      type: Number,
-      required: true,
-    },
-    status: {
-      type: String,
-      default: 'pending',
-    },
+   
   },
   {
     timestamps: true,

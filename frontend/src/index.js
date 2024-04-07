@@ -26,6 +26,7 @@ import Faq from './pages/faq/components/Faq';
 import Spa from './pages/spaPackages/spa';
 import SpaUser from './pages/spaPackages/spaUser';
 import AppointmentView from './pages/spaPackages/appointmentView';
+import SpaUserList from './pages/spaPackages/spaUserList';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: '/appointmentView',
         element: <AppointmentView />,
+      },
+      {
+        path: '/spaUserList',
+        element: <SpaUserList />,
       },
 
     ],
