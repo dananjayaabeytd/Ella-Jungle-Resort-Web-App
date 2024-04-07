@@ -32,6 +32,17 @@ app.use('/SpecialActivity',specialActivityRouter);
 const RoomRouter = require('./routes/Rooms');
 app.use('/Rooms', RoomRouter);
 
+const SpaRouter = require('./routes/spapackageRouter');
+app.use('/spapackages', SpaRouter);
+
+const Custom_packages_Router = require('./routes/custom_packages');
+app.use('/custom_packages', Custom_packages_Router);
+
+const Custom_packages_booking_Router = require('./routes/custom_bookingRoute');
+app.use('/custombooking', Custom_packages_booking_Router);
+
+const Hotel_packages_booking_Router = require('./routes/hotel_bookingRoute');
+app.use('/hotelbooking', Hotel_packages_booking_Router);
 
 // Start the server
 app.listen(PORT, () => {
