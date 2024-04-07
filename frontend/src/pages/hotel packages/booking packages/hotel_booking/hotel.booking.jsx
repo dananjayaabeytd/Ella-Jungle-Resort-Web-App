@@ -58,17 +58,7 @@ const HotelBookingForm = () => {
       );
       console.log(response.data);
       alert('Booking added successfully!');
-      setFormData({
-        user_id: '',
-        package_id: id,
-        checkin_date: '',
-        checkout_date: '',
-        credit_card_no: '',
-        name_on_card: '',
-        exp_date: '',
-        price: price,
-        total_price: 0, // Reset total_price to 0
-      });
+     
 
       setOpenSuccess(true); 
 
@@ -261,9 +251,11 @@ const HotelBookingForm = () => {
           <Button onClick={handleCloseSuccess} color='primary'>
             Close
           </Button>
+          <Link to='/'>
           <Button onClick={handleGetReceipt} color='primary' variant='contained'>
             Get Receipt
           </Button>
+          </Link>
         </DialogActions>
       </Dialog>
 
