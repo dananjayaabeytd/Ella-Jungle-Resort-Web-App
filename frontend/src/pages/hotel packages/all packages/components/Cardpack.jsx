@@ -4,6 +4,8 @@ import { BookingCard } from './cards'; // Assuming this is the correct path to y
 
 export function BookingCardsContainer() {
   const [allPackages, setPackages] = useState([]);
+  const [minPrice, setMinPrice] = useState('');
+  const [maxPrice, setMaxPrice] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,21 +37,56 @@ export function BookingCardsContainer() {
     fetchData();
   }, []);
 
+  const handleMinPriceChange = (event) => {
+    setMinPrice(event.target.value);
+  };
+
+  const handleMaxPriceChange = (event) => {
+    setMaxPrice(event.target.value);
+  };
+
+  const filteredPackages = allPackages.filter((pack) => {
+    const packPrice = parseFloat(pack.price);
+    const min = parseFloat(minPrice);
+    const max = parseFloat(maxPrice);
+    return (!minPrice || packPrice >= min) && (!maxPrice || packPrice <= max);
+  });
+
+
   return (
-    <div className="grid grid-cols-1 gap-1 pl-6 mx-20 sm:grid-cols-2 lg:grid-cols-3">
-      {allPackages.map((pack) => (
-        <div key={pack._id}>
-          <BookingCard
-            id={pack._id}
-            package_name={pack.package_name}
-            room_name={pack.room_name}
-            SActivity_name={pack.SActivity_name}
-            spa_name={pack.spa_name}
-            package_des={pack.package_des}
-            price={pack.price}
-          />
-        </div>
-      ))}
+    <div>
+      <div className="flex justify-center space-x-4 my-4">
+  <input
+    type="number"
+    placeholder="Min Price"
+    value={minPrice}
+    onChange={handleMinPriceChange}
+    className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-green-500"
+  />
+  <input
+    type="number"
+    placeholder="Max Price"
+    value={maxPrice}
+    onChange={handleMaxPriceChange}
+    className="border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:border-green-500"
+  />
+</div>
+
+      <div className="grid grid-cols-1 gap-1 pl-6 mx-20 sm:grid-cols-2 lg:grid-cols-3">
+        {filteredPackages.map((pack) => (
+          <div key={pack._id}>
+            <BookingCard
+              id={pack._id}
+              package_name={pack.package_name}
+              room_name={pack.room_name}
+              SActivity_name={pack.SActivity_name}
+              spa_name={pack.spa_name}
+              package_des={pack.package_des}
+              price={pack.price}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
