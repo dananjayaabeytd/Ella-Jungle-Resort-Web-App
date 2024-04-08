@@ -46,8 +46,13 @@ function AgencyPackageCard({
   }
 
   const handleBookNowClick = () => {
-    window.location = `/agencyPackageBooking/${userId}/${packageId}`;
+    if (agencyId) {
+      window.location = `/agencyPackageBooking/${userId}/${packageId}`;
+    } else {
+      window.location = `/AgencyPackageDetails/${packageId}`; 
+    }
   };
+  
 
   return (
     <section className="w-full px-5 py-5 bg-gray-200 border border-black border-solid bg-opacity-60 grow rounded-xl max-md:pl-5 max-md:mt-10 max-md:max-w-full">
@@ -67,17 +72,17 @@ function AgencyPackageCard({
             </h2>
             <ul className="text-black text-md mt-11 text-opacity-60 max-md:mt-10">
               <li>{fullDays} days</li>
-              <li>{activityName != "null" ? ` ${activityName}` : null}</li>
+              <li>{activityName !== "null" ? ` ${activityName}` : null}</li>
 
               <li>Room Type: {roomType} </li>
-              <li>{transportId != "null" ? "Transport Included " : "Transport Not Included"}</li>
-
+              <li>
+                {transportId !== "null" ? "Transport Included " : "Transport Not Included"}
+              </li>
 
               <li>{packageDescription}</li>
             </ul>
             <p className="text-2xl text-green-600 mt-7">LKR {price} </p>
 
-          
             <div className="justify-center mt-5 max-md:px-5 ">
               <button
                 className=" w-[200px] h-10 bg-green-500 rounded-full border-gray-400 border  text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"

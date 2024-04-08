@@ -45,6 +45,9 @@ function AgencyPackageBooking() {
     fetchPackageDetails();
   }, [packageId]);
 
+
+  
+
   const handleBookNow = async (e) => {
     e.preventDefault();
     try {
@@ -69,6 +72,16 @@ function AgencyPackageBooking() {
 
       // Check if the response is successful
       if (response.status === 200) {
+        // Update room reservation
+        await axios.post("http://localhost:3005/booking", {
+          roomID: packageDetails.roomID,
+          fullName: fullName,
+          email: email,
+          contactNumber: contactNumber,
+          checkIn: checkInDate,
+          checkOut: checkOutDate,
+        });
+
         Swal.fire({
           icon: "success",
           title: "Your reservation has been added successfully!",
@@ -106,7 +119,7 @@ function AgencyPackageBooking() {
           {packageDetails && (
             <>
               <h1 className="text-2xl text-black mt-7">
-                Your Package : {packageDetails.packageName}{" "}
+                Your Package : {packageDetails.packageName}
               </h1>
               <div className="my-5 ">
                 <label className="block text-xl font-medium text-gray-700">

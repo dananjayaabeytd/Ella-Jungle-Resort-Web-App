@@ -139,16 +139,17 @@ Router.route("/updateAgencyPackage/:id").put((req, res) => {
     });
 });
 
-// delete agency package
-
+// delete agency package by ID
 Router.route("/deleteAgencyPackage/:id").delete((req, res) => {
   AgencyPackages.findByIdAndDelete(req.params.id)
     .then(() => {
-      res.json("Package deleted!");
+      res.json("Package deleted successfully!");
     })
     .catch((err) => {
       console.log(err);
+      res.status(500).json({ error: "Failed to delete package" });
     });
 });
+
 
 module.exports = Router;

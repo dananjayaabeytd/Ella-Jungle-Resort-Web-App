@@ -10,6 +10,7 @@ import AgencyCreatePackage from "./pages/travelAgency/agency/agencyCreatePackage
 import AgencyMyPackage from "./pages/travelAgency/agency/agencyMyPackage";
 import AgencyPackageBooking from "./pages/travelAgency/client/agencyPackageBooking";
 import AgencyHome from "./pages/travelAgency/agencyHome";
+import AgencyPackageDetails from "./pages/travelAgency/agency/agencyPackageDetails";
 
 
 
@@ -38,6 +39,7 @@ export default function App() {
           <Route path="/AgencyRequestDetails/:requestId" element={<AgencyRequestDetails />} />
           <Route path="/AgencyCreatePackage/:agencyId" element={<AgencyCreatePackage />} />
           <Route path="/AgencyMyPackage/:agencyId" element={<AgencyMyPackage />} />
+          <Route path="/AgencyPackageDetails/:packageId" element={<AgencyPackageDetails />} />
           
         </Routes>
       </div>

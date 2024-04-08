@@ -43,16 +43,19 @@ function AgencyMyPackage() {
           </h1>
 
           <div className="mx-auto mt-[50px]">
-            <section className="flex flex-col w-[250px] px-8 py-5 my-auto text-xl bg-green-500 rounded-xl bg-opacity-20 mx-auto">
-              <p className="flex justify-center text-black">Add new package</p>
-              <div className="flex justify-center">
+            <section className="flex flex-col w-[200px]  my-auto text-xl bg-green-500 rounded-xl bg-opacity-20 mx-auto border border-green-500">
+              <p className="flex justify-center mt-3 text-black">
+                Add new package
+              </p>
+              <div className="justify-center m-auto my-3 max-md:px-5">
                 <button
-                  className="flex justify-center px-5 py-2 mt-4 text-center text-white bg-green-500 rounded-2xl"
+                  className=" w-[100px] h-10 bg-green-500 rounded-full border-gray-400 border mx-auto text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
                   onClick={() => {
                     window.location.href = `/AgencyCreatePackage/${agencyId}`;
                   }}
                 >
                   Add
+                  <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease"></span>
                 </button>
               </div>
             </section>
@@ -81,8 +84,7 @@ function AgencyMyPackage() {
         </div>
 
         <h1 className="flex mt-20 ml-40 text-2xl font-semibold">
-          {" "}
-          Published Packages{" "}
+          Unpublished Packages
         </h1>
         <div className="container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
           {unPublishedPackages.map((agencyPackage) => (
