@@ -5,7 +5,7 @@ import { ThemeProvider } from '@material-tailwind/react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import RootLayout from './layout/root.layout';
 import SignInPage from './pages/login/sign-in.page';
-import SignUpPage from './pages/sign-up.page';
+import SignUpPage from './pages/signup/sign-up.page';
 import HomePage from './pages/home/home.page';
 import ResetPwd from './pages/login/components/ResetPwd';
 import MembersTable from './pages/useradmin/admin.allusers';

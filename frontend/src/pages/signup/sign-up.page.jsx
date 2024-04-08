@@ -1,14 +1,14 @@
 import React from 'react';
-import back from '../assets/back.png';
+import back from '../../assets/back.png';
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRegisterMutation } from '../slices/usersApiSlice';
-import { setCredentials } from '../slices/authSlice';
+import { useRegisterMutation } from '../../slices/usersApiSlice';
+import { setCredentials } from '../../slices/authSlice';
 import { toast } from 'react-toastify';
-import avatar from '../assets/profile.png';
-import convertToBase64 from '../helper/convert';
+import avatar from '../../assets/profile.png';
+import convertToBase64 from '../../helper/convert';
 
 function SignUpPage() {
   const [name, setName] = useState('');
