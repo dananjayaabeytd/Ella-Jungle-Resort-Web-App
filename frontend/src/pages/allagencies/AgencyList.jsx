@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { HorizontalCard } from './components/agencyCard';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const AgencyList = () => {
   const [allAgencies, setAllAgencies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const { userInfo } = useSelector(state => state.auth);
 
   useEffect(() => {
     const getAgencies = async () => {
@@ -40,14 +42,16 @@ const AgencyList = () => {
         Search
       </button>
 
-      <Link to='/agencyregister'>
-        <button
-          type='submit'
-          className='flex-shrink-0 px-4 py-2 mx-10 text-white bg-green-500 rounded'
-        >
-          Register Agency
-        </button>
-      </Link>
+      {userInfo && (
+        <Link to='/agencyregister'>
+          <button
+            type='submit'
+            className='flex-shrink-0 px-4 py-2 mx-10 text-white bg-green-500 rounded'
+          >
+            Register Agency
+          </button>
+        </Link>
+      )}
 
       <ul>
         {filteredAgencies.map(agency => (
