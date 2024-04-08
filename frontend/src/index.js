@@ -50,7 +50,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/agencyregister',
-        element: <AgencyRegister />,
+        element: <PrivateRoute component={AgencyRegister}/>,
       },
       {
         path: '/all',
@@ -58,7 +58,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/profile',
-        element: <Profile />,
+        element: <PrivateRoute component={Profile}/>,
       },
       {
         path: '/agency',
@@ -70,15 +70,15 @@ const router = createBrowserRouter([
       },
       {
         path: 'update/:id',
-        element: <UpdateAgency />,
+        element: <PrivateRoute component={UpdateAgency} />,
       },
       {
         path: '/admindashboard',
-        element: <Dashboard />,
+        element: <PrivateRoute component={Dashboard} />,
       },
       {
         path: 'updateuser/:id',
-        element: <UserUpdate />,
+        element: <PrivateRoute component={UserUpdate} />,
       },
 
     ],
