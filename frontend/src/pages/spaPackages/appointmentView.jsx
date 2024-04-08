@@ -7,7 +7,6 @@ import pdfIcon from '../../assets/health/pdf.jpg';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-
 const BackgroundContainer = styled.div`
     background-image: url(${backgroundImage});
     background-size: cover;
@@ -79,231 +78,58 @@ const ActionButton = styled.button`
     margin-right: 5px;
 `;
 
-const Modal = styled.div`
-    display: ${(props) => (props.show ? 'block' : 'none')};
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
-`;
-
-const ModalContent = styled.div`
-    background-color: #AFF7CA;
-    margin: 10% auto;
-    padding: 20px;
-    border: 1px solid #004200;
-    width: 60%;
-    max-width: 400px;
-    border-radius: 10px;
-`;
-
-const CloseButton = styled.span`
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-`;
-
-const EditForm = styled.form`
-    display: flex;
-    flex-direction: column;
-`;
-
-const EditInput = styled.input`
-    margin-bottom: 10px;
-    padding: 8px;
-    border: 1px solid #004200;
-    border-radius: 5px;
-`;
-
-const UpdateButton = styled.button`
-    background-color: #03947e;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-        background-color: #45a049;
-    }
-`;
-
-const CancelButton = styled.button`
-    background-color: #737272;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-
-    &:hover {
-        background-color: #e53935;
-    }
-`;
-
-const SearchBar = styled.input`
-    padding: 10px;
-    width:30%;
-    border: 1px solid #004200;
-    border-radius: 40px;
-    margin-bottom: 10px;
-`;
-
 const Appointments = () => {
     const [appointments, setAppointments] = useState([]);
-    const [filteredAppointments, setFilteredAppointments] = useState([]);
-    const [selectedAppointment, setSelectedAppointment] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editedAppointment, setEditedAppointment] = useState({
-        NIC:'',
-        firstName: '',
-        lastName: '',
-        address: '',
-        contactNumber: '',
-        appointmentDate: '',
-        appointmentTypes: [],
-        totalPrice: ''
-    });
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const fetchAppointments = async () => {
             try {
-                const response = await axios.get('http://localhost:5555/appointments');
-                setAppointments(response.data.data);
+                const response = await axios.get('/api/appointments');
+                setAppointments(response.data);
             } catch (error) {
-                console.error(error.message);
+                console.error('Error fetching appointments:', error);
+                // Handle error gracefully
             }
         };
 
         fetchAppointments();
     }, []);
 
-    useEffect(() => {
-        setFilteredAppointments(appointments.filter(appointment =>
-            appointment.NIC.toLowerCase().includes(searchQuery.toLowerCase())
-        ));
-    }, [searchQuery, appointments]);
-
-    const handleEditClick = (appointment) => {
-        setSelectedAppointment(appointment);
-        setEditedAppointment(appointment);
-        setIsModalOpen(true);
-    };
-
     const handleDeleteClick = async (appointmentId) => {
         try {
-            await axios.delete(`http://localhost:5555/appointments/${appointmentId}`);
+            await axios.delete(`/api/appointments/${appointmentId}`);
             setAppointments(appointments.filter(appointment => appointment._id !== appointmentId));
+            swal('Success', 'Appointment deleted successfully', 'success');
         } catch (error) {
-            console.error(error.message);
+            console.error('Error deleting appointment:', error);
+            swal('Error', 'Failed to delete appointment', 'error');
         }
     };
 
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setEditedAppointment({
-            ...editedAppointment,
-            [name]: value
-        });
-    };
-
-    const handleUpdateAppointment = () => {
-        if (!validateInputs()) {
-            return;
-        }
-
-        const updatedAppointments = appointments.map((appointment) => {
-            if (appointment._id === editedAppointment._id) {
-                return editedAppointment;
-            }
-            return appointment;
-        });
-        setAppointments(updatedAppointments);
-
-        axios.put('http://localhost:5555/appointments/' + editedAppointment._id, editedAppointment)
-        .then(response => {
-            setIsModalOpen(false);
-            swal('Success', 'Appointment updated successfully', 'success');
-        })
-        .catch(error => {
-            console.error(error.message);
-            swal('Error', 'Failed to update appointment', 'error');
-        });
-    };
-
-    const validateInputs = () => {
-        if (
-            editedAppointment.NIC === '' ||
-            editedAppointment.firstName === '' ||
-            editedAppointment.lastName === '' ||
-            editedAppointment.address === ''|| editedAppointment.contactNumber === '' ||
-            editedAppointment.appointmentDate === '' ||
-            editedAppointment.appointmentTypes.length === 0 ||
-            editedAppointment.totalPrice === ''
-        ) {
-            swal('Error', 'All fields are required', 'error');
-            return false;
-        }
-        const contactNumberRegex = /^[0-9]+$/;
-        if (!contactNumberRegex.test(editedAppointment.contactNumber)) {
-            swal('Error', 'Contact number should contain only numbers', 'error');
-            return false;
-        }
-    
-        return true;
-    };
-    
     const handleDownloadPdf = () => {
         const doc = new jsPDF();
         const tableColumn = ["NIC", "Name", "Address", "Contact Number", "Appointment Date", "Appointment Types", "Total Price"];
-        const tableRows = [];
-    
-        filteredAppointments.forEach(appointment => {
-            const appointmentData = [
-                appointment.NIC,
-                `${appointment.firstName} ${appointment.lastName}`,
-                appointment.address,
-                appointment.contactNumber,
-                new Date(appointment.appointmentDate).toLocaleString(),
-                appointment.appointmentTypes.join(', '),
-                `$${appointment.totalPrice}`
-            ];
-            tableRows.push(appointmentData);
-        });
-    
+        const tableRows = appointments.map(appointment => [
+            appointment.NIC,
+            `${appointment.firstName} `,
+            appointment.address,
+            appointment.contactNumber,
+            new Date(appointment.appointmentDate).toLocaleString(),
+            appointment.appointmentType,
+            `$${appointment.totalPrice}`
+        ]);
+
         doc.autoTable({ head: [tableColumn], body: tableRows });
         doc.save('appointments.pdf');
     };
-    
 
     return (
         <BackgroundContainer>
             <PageContainer>
-           
                 <BoxContainer>
                     <PdfIcon src={pdfIcon} alt="PDF Icon" onClick={handleDownloadPdf} />
-                    <h2 style={{fontSize:'24px',}}>APPOINTMENTS</h2>
-                    <SearchBar
-                        type="text"
-                        placeholder="Search by NIC"
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                    />
+                    <h2 style={{ fontSize: '24px' }}>APPOINTMENTS</h2>
                     <AppointmentsContainer>
                         <Table>
                             <TableHead>
@@ -313,24 +139,23 @@ const Appointments = () => {
                                     <TableHeader>Address</TableHeader>
                                     <TableHeader>Contact Number</TableHeader>
                                     <TableHeader>Appointment Date</TableHeader>
-                                    <TableHeader>Appointment Types</TableHeader>
+                                    <TableHeader>Appointment Type</TableHeader>
                                     <TableHeader>Total Price</TableHeader>
                                     <TableHeader>Actions</TableHeader>
                                 </TableRow>
                             </TableHead>
                             <tbody>
-                                {filteredAppointments.map((appointment, index) => (
+                                {appointments.map((appointment) => (
                                     <TableRow key={appointment._id}>
                                         <TableCell>{appointment.NIC}</TableCell>
-                                        <TableCell>{appointment.firstName} {appointment.lastName}</TableCell>
+                                        <TableCell>{`${appointment.firstName}`}</TableCell>
                                         <TableCell>{appointment.address}</TableCell>
                                         <TableCell>{appointment.contactNumber}</TableCell>
                                         <TableCell>{new Date(appointment.appointmentDate).toLocaleString()}</TableCell>
-                                        <TableCell>{appointment.appointmentTypes.join(', ')}</TableCell>
+                                        <TableCell>{appointment.appointmentType}</TableCell>
                                         <TableCell>${appointment.totalPrice}</TableCell>
                                         <TableCell>
-                                            <ActionButton bgColor="#256F46" onClick={() => handleEditClick(appointment)}>Edit</ActionButton>
-                                            <ActionButton bgColor="#737272" onClick={() => handleDeleteClick(appointment._id)}>Delete</ActionButton>
+                                            <ActionButton bgColor="#256F46" onClick={() => handleDeleteClick(appointment._id)}>Delete</ActionButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}
@@ -338,68 +163,6 @@ const Appointments = () => {
                         </Table>
                     </AppointmentsContainer>
                 </BoxContainer>
-                {selectedAppointment && (
-                    <Modal show={isModalOpen}>
-                        <ModalContent>
-                            <CloseButton onClick={handleCloseModal}>&times;</CloseButton>
-                            <EditForm>
-                                <EditInput
-                                    type="text"
-                                    name="firstName"
-                                    value={editedAppointment.firstName}
-                                    onChange={handleInputChange}
-                                    placeholder="First Name"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="lastName"
-                                    value={editedAppointment.lastName}
-                                    onChange={handleInputChange}
-                                    placeholder="Last Name"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="address"
-                                    value={editedAppointment.address}
-                                    onChange={handleInputChange}
-                                    placeholder="Address"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="contactNumber"
-                                    value={editedAppointment.contactNumber}
-                                    onChange={handleInputChange}
-                                    placeholder="Contact Number"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="appointmentDate"
-                                    value={editedAppointment.appointmentDate}
-                                    onChange={handleInputChange}
-                                    placeholder="Appointment Date"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="appointmentTypes"
-                                    value={editedAppointment.appointmentTypes.join(', ')}
-                                    onChange={handleInputChange}
-                                    placeholder="Appointment Types"
-                                />
-                                <EditInput
-                                    type="text"
-                                    name="totalPrice"
-                                    value={editedAppointment.totalPrice}
-                                    onChange={handleInputChange}
-                                    placeholder="Total Price"
-                                />
-                                <div>
-                                    <UpdateButton style={{ marginRight: '10px' }} type="button" onClick={handleUpdateAppointment}>Update</UpdateButton>
-                                    <CancelButton type="button" onClick={handleCloseModal}>Cancel</CancelButton>
-                                </div>
-                            </EditForm>
-                        </ModalContent>
-                    </Modal>
-                )}
             </PageContainer>
         </BackgroundContainer>
     );

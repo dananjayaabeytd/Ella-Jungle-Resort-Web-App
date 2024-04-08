@@ -1,38 +1,30 @@
 const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config();
-const connectDB = require('./config/db.js');
+const connectDB = require('./config/db');
 const cookieParser = require('cookie-parser');
-const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
-const userRoutes = require('./routes/userRoutes.js');
-const agencyRoutes = require('./routes/agencyRoutes.js')
-const feedbackRoutes = require('./routes/feedbackRoutes.js')
-const appointmentRouter = require('./routes/appointmentRouter.js'); // Import appointment route
+const { notFound, errorHandler } = require('./middleware/errorMiddleware');
+const userRoutes = require('./routes/userRoutes');
+const agencyRoutes = require('./routes/agencyRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
+const spaPackageRoutes = require('./routes/spaRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes'); // Import appointment routes
 
-const spaPackageRoutes = require('./routes/spaRoutes.js');
-
-
-
-const port = process.env.PORT || 5000;
+dotenv.config();
 connectDB();
 
-const cors = require('cors');
+const port = process.env.PORT || 5000;
 const app = express();
 
-// Enable CORS
-app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cookieParser());
 
 app.use('/api/users', userRoutes);
 app.use('/api/agencies', agencyRoutes);
-app.use('/api/feedbacks',feedbackRoutes); //ishara feedbackRoutes
-app.use('/appointments', appointmentRouter);//appointments
-
-app.use('/api/spa-packages', spaPackageRoutes); 
+app.use('/api/feedbacks', feedbackRoutes);
+app.use('/api/spa-packages', spaPackageRoutes);
+app.use('/api/appointments', appointmentRoutes); // Use appointment routes
 
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
