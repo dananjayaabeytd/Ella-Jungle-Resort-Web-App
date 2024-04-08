@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useLogoutMutation } from '../../slices/usersApiSlice';
 import { logout } from '../../slices/authSlice';
+import avatar from '../../assets/profile.png';
 
 function NavList() {
   return (
@@ -156,7 +157,7 @@ function MyNavbar() {
               </Link>
             </Typography>
             <img
-              src={userInfo.img}
+              src={userInfo.img || avatar}
               alt='avatar'
               className='relative inline-block h-12 w-12 !rounded-full  object-cover object-center mr-5'
             />
