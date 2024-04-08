@@ -46,6 +46,10 @@ const AgencyPackagesSchema = new Schema({
   price: {
     type: Number,
     required: true,
+    validate: {
+      validator: Number.isFinite,
+      message: '{VALUE} is not a valid float value for price'
+    }
   },
   agencyId: {
     type: String,

@@ -124,7 +124,7 @@ Router.get("/getRequestsByAgency/:agencyId", async (req, res) => {
 
 // update the request data
 Router.route("/UpdateRequest/:requestId").put(async (req, res) => {
-  const requestId = req.params.requestId; // Get the ID from the URL parameter
+  const requestId = req.params.requestId; 
   const {
     ArrivalDate,
     DepartureDate,

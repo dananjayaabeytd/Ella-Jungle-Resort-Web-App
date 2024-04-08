@@ -10,6 +10,7 @@ function AgencyPackageFinal({
   selectedActivityId,
   selectedTransportId,
   agencyId,
+  packageId,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
@@ -22,66 +23,140 @@ function AgencyPackageFinal({
   const [fullDays, setFullDays] = useState(0);
   const [packageImage, setPackageImage] = useState(null);
 
-  const handleFileChange = (e) => {
-    setPackageImage(e.target.files[0]);
-  };
+  useEffect(() => {
+    const fetchPackageDetails = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3005/getAgencyPackageById/${packageId}`
+        );
+        const packageDetails = response.data;
 
-  const handleCreatePackage = async () => {
-    // Check if a room is selected
+        setPackageName(packageDetails.packageName);
+        setPackageDescription(packageDetails.packageDescription);
+        setPrice(packageDetails.price);
+        setDiscount(packageDetails.discount);
+        setCommission(packageDetails.commission);
+        setFullDays(packageDetails.fullDays);
+        setPackageImage(packageDetails.packageImage);
+        
+      } catch (error) {
+        console.error("Error fetching package details:", error);
+      }
+    };
+
+    if (packageId !== "null") {
+      fetchPackageDetails();
+    }
+  }, [packageId]);
+
+  const handleCreateOrUpdatePackage = async () => {
     if (!selectedRoomId) {
       alert("Please select a room.");
       return;
     }
 
-    // Check if packageName is empty
     if (!packageName.trim()) {
       alert("Please enter package name");
       return;
     }
 
-    // If an image is not selected, set it to null
-    const packageImageData = packageImage ? packageImage : null;
+    const packageImageData = packageImage ? packageImage : "No_Image.png";
 
     try {
       const formData = new FormData();
       formData.append("packageName", packageName);
       formData.append("packageImage", packageImageData);
       formData.append("roomId", selectedRoomId);
-      formData.append("activityId", selectedActivityId);
-      formData.append("transportId", selectedTransportId);
-      formData.append("packageDescription", packageDescription);
-      formData.append("price", price);
-      formData.append("discount", discount);
-      formData.append("commission", commission);
+      formData.append("activityId", selectedActivityId || null);
+      formData.append("transportId", selectedTransportId || null);
+      formData.append("spaId", null);
       formData.append("fullDays", fullDays);
+      formData.append("packageDescription", packageDescription);
+      formData.append("commission", commission);
+      formData.append("discount", discount);
+      formData.append("price", price);
       formData.append("agencyId", agencyId);
-      formData.append("published", false); // Assuming this is the correct value
+      formData.append("published", false);
 
-      const response = await axios.post(
-        "http://localhost:3005/addAgencyPackage",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      console.log(response.data);
-      Swal.fire({
-        icon: "success",
-        title: "New package added!",
-        showConfirmButton: false,
-        timer: 1500
-      }).then(() => {
-        window.location.reload();
-      });
+      if (packageId === "null") {
+        const response = await axios.post(
+          "http://localhost:3005/addAgencyPackage",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response.data);
+        Swal.fire({
+          icon: "success",
+          title: "New package added!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, update it!",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            const response = await axios.put(
+              `http://localhost:3005/updateAgencyPackage/${packageId}`,
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+            console.log(response.data);
+            Swal.fire({
+              icon: "success",
+              title: "Package updated!",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              window.location.reload();
+            });
+          }
+        });
+      }
     } catch (error) {
-      console.error("Error creating package:", error);
+      console.error("Error creating/updating package:", error);
     }
+
+    console.log("packageName", packageName);
+    console.log("packageImage", packageImageData);
+    console.log("roomId", selectedRoomId);
+    console.log("activityId", selectedActivityId);
+    console.log("transportId", selectedTransportId);
+    console.log("fullDays", fullDays);
+    console.log("packageDescription", packageDescription);
+    console.log("commission", commission);
+    console.log("discount", discount);
+    console.log("price", price);
+    console.log("agencyId", agencyId);
+
+
+
+    
+  };
+
+  const handleFileChange = (e) => {
+    setPackageImage(e.target.files[0]);
   };
 
   useEffect(() => {
     const fetchRoomDetails = async () => {
+      if (!selectedRoomId) return;
       try {
         const response = await axios.get(
           `http://localhost:3005/rooms/${selectedRoomId}`
@@ -134,20 +209,17 @@ function AgencyPackageFinal({
   }, [selectedTransportId]);
 
   const updatePrice = () => {
-    // Calculate the package price
-    const packagePrice =
-      selectedRoom.price +
-      selectedActivity.price +
-      selectedTransport.pricePerKm;
+    const roomPrice = selectedRoom ? selectedRoom.price : 0;
+    const activityPrice = selectedActivity ? selectedActivity.price : 0;
+    const transportPrice = selectedTransport ? selectedTransport.pricePerKm : 0;
 
-    // Calculate commission and discount values
+    const packagePrice = roomPrice + activityPrice + transportPrice;
+
     const commissionValue = (commission / 100) * packagePrice;
     const discountValue = (discount / 100) * packagePrice;
 
-    // Calculate the final price
     const finalPrice = packagePrice + commissionValue - discountValue;
 
-    // Update the price state
     setPrice(finalPrice);
   };
 
@@ -238,22 +310,23 @@ function AgencyPackageFinal({
         </div>
 
         <div className="flex">
-          <h3 className="ml-20 text-xl text-black mt-7">
-            Final Price : 
-          </h3>
+          <h3 className="ml-20 text-xl text-black mt-7">Final Price :</h3>
           <input
             type="number"
             className="flex  w-[150px] mt-[25px] ml-[50px] border border-green-500 rounded-lg h-[30px] px-3"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
           />
-          <button onClick={updatePrice} className="px-2 ml-2 text-xs text-black bg-green-300 border border-gray-400 rounded-xl mt-7">Update price</button>
+          <button
+            onClick={updatePrice}
+            className="px-2 ml-2 text-xs text-black bg-green-300 border border-gray-400 rounded-xl mt-7"
+          >
+            Update price
+          </button>
         </div>
 
         <div className="">
-          <h3 className="ml-20 text-xl text-black mt-7">
-            Description : 
-          </h3>
+          <h3 className="ml-20 text-xl text-black mt-7">Description :</h3>
           <textarea
             value={packageDescription}
             className="flex  w-[600px] mt-3 ml-20 border border-green-500 rounded-lg min-h-[50px] px-3 py-2"
@@ -264,9 +337,9 @@ function AgencyPackageFinal({
         <button
           className="mx-20 my-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
           type="submit"
-          onClick={handleCreatePackage}
+          onClick={handleCreateOrUpdatePackage}
         >
-          Create Package
+          {packageId === "null" ? "Create " : "Update "} Package
           <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease"></span>
         </button>
       </div>

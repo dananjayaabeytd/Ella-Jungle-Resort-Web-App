@@ -37,7 +37,7 @@ export default function App() {
           {/* Agency view */}
           <Route path="/AgencyRequestList/:agencyId" element={<AgencyRequestList />} />
           <Route path="/AgencyRequestDetails/:requestId" element={<AgencyRequestDetails />} />
-          <Route path="/AgencyCreatePackage/:agencyId" element={<AgencyCreatePackage />} />
+          <Route path="/AgencyCreatePackage/:agencyId/:packageId" element={<AgencyCreatePackage />} />
           <Route path="/AgencyMyPackage/:agencyId" element={<AgencyMyPackage />} />
           <Route path="/AgencyPackageDetails/:packageId" element={<AgencyPackageDetails />} />
           

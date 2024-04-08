@@ -29,6 +29,11 @@ function AgencyPackageDetails() {
     fetchPackageDetails();
   }, [packageId]);
 
+
+  const handleUpdatePackage = () => {
+    window.location = `/AgencyCreatePackage/${packageDetails.agencyId}/${packageId}`;
+  };
+
   const handleDeletePackage = async () => {
     // Display confirmation dialog
     Swal.fire({
@@ -166,7 +171,9 @@ function AgencyPackageDetails() {
       )}
 
       <div className="flex justify-center gap-20 mx-auto mt-5">
-        <button className="border border-gray-300 mb-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300">
+        <button className="border border-gray-300 mb-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+        onClick={handleUpdatePackage}
+        >
           Update Package
         </button>
         <button

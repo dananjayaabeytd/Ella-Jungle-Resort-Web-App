@@ -9,12 +9,10 @@ storage = multer.diskStorage({
   },
   filename: function (req, file, cb) {
     cb(null, `${Date.now()}_${file.originalname}`);
-  }
+  },
 });
 
 const upload = multer({ storage }).single("packageImage");
-
-
 
 // Add new agency package
 
@@ -28,12 +26,12 @@ Router.route("/addAgencyPackage").post((req, res) => {
     const packageName = req.body.packageName;
     const packageImage = req.file ? req.file.filename : null; // Check if file exists
     const roomId = req.body.roomId;
-    const activityId = req.body.activityId;
-    const transportId = req.body.transportId;
+    const activityId = req.body.activityId || null;
+    const transportId = req.body.transportId || null;
     const fullDays = Number(req.body.fullDays);
-    const packageDescription = req.body.packageDescription;
-    const commission = Number(req.body.commission);
-    const discount = Number(req.body.discount);
+    const packageDescription = req.body.packageDescription || null;
+    const commission = Number(req.body.commission || 0);
+    const discount = Number(req.body.discount || 0);
     const price = Number(req.body.price);
     const agencyId = req.body.agencyId;
     const published = req.body.published;
@@ -64,10 +62,6 @@ Router.route("/addAgencyPackage").post((req, res) => {
       });
   });
 });
-
-
-
-
 
 // get all agency packages from the database
 
@@ -105,38 +99,55 @@ Router.route("/getAgencyPackageByAgencyId/:agencyId").get((req, res) => {
     });
 });
 
-
 // update agency package
+Router.route("/updateAgencyPackage/:packageId").put(async (req, res) => {
+  const packageId = req.params.packageId;
 
-Router.route("/updateAgencyPackage/:id").put((req, res) => {
-  AgencyPackages.findById(req.params.id)
-    .then((agencyPackage) => {
-      agencyPackage.packageName = req.body.packageName;
-      agencyPackage.packageImage = req.body.packageImage;
-      agencyPackage.roomId = req.body.roomId;
-      agencyPackage.activityId = req.body.activityId;
-      agencyPackage.transportId = req.body.transportId;
-      agencyPackage.spaId = req.body.spaId;
-      agencyPackage.fullDays = Number(req.body.fullDays);
-      agencyPackage.packageDescription = req.body.packageDescription;
-      agencyPackage.commission = Number(req.body.commission);
-      agencyPackage.discount = Number(req.body.discount);
-      agencyPackage.price = Number(req.body.price);
-      agencyPackage.agencyId = req.body.agencyId;
-      agencyPackage.published = req.body.published;
+  const {
+    packageName,
+    packageImage,
+    roomId,
+    activityId,
+    transportId,
+    fullDays,
+    packageDescription,
+    commission,
+    discount,
+    price,
+    agencyId,
+    published,
+  } = req.body;
 
-      agencyPackage
-        .save()
-        .then(() => {
-          res.json("Package updated!");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+  const updatedPackage = {
+    packageName,
+    packageImage,
+    roomId,
+    activityId,
+    transportId,
+    fullDays,
+    packageDescription,
+    commission,
+    discount,
+    price,
+    agencyId,
+    published,
+  };
+
+  try {
+    const updatePackage = await AgencyPackages.findByIdAndUpdate(
+      packageId,
+      updatedPackage
+    );
+
+    if (updatePackage) {
+      res.status(200).json({ message: "Package updated successfully" });
+    } else {
+      res.status(404).json({ error: "Package not found" });
+    }
+  } catch (error) {
+    console.error("Error updating package:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 
 // delete agency package by ID
@@ -150,6 +161,5 @@ Router.route("/deleteAgencyPackage/:id").delete((req, res) => {
       res.status(500).json({ error: "Failed to delete package" });
     });
 });
-
 
 module.exports = Router;

@@ -79,6 +79,7 @@ function AgencyMyPackage() {
               activityId={agencyPackage.activityId}
               roomId={agencyPackage.roomId}
               transportId={agencyPackage.transportId}
+              
             />
           ))}
         </div>
@@ -98,6 +99,7 @@ function AgencyMyPackage() {
               activityId={agencyPackage.activityId}
               roomId={agencyPackage.roomId}
               transportId={agencyPackage.transportId}
+              
             />
           ))}
         </div>

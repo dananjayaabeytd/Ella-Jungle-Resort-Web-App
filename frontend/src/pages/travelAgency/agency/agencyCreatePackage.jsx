@@ -7,11 +7,16 @@ import { useParams } from "react-router-dom";
 import AgencyPackageFinal from "../../../components/travelAgency/agency/agencyPackageFinal";
 
 function AgencyCreatePackage() {
-  const { agencyId } = useParams();
+  const { agencyId, packageId } = useParams();
   const [selectedRoomId, setSelectedRoomId] = useState(null); // State to store the ID of the selected room
   const [selectedActivityId, setSelectedActivityId] = useState(null); // State to store the ID of the selected activity
   const [selectedTransportId, setSelectedTransportId] = useState(null); // State to store the ID of the selected transport
+ 
+let pId;
 
+
+  console.log("packageId", packageId);
+  
   const handleRoomSelection = (roomId) => {
     setSelectedRoomId(roomId); // Update the selected room ID
   };
@@ -28,6 +33,26 @@ function AgencyCreatePackage() {
   const [rooms, setRooms] = useState([]);
   const [activities, setActivities] = useState([]);
   const [transports, setTransports] = useState([]);
+
+  useEffect(() => {
+    const fetchPackageDetails = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3005/getAgencyPackageById/${packageId}`);
+        const packageDetails = response.data;
+        
+        // Set the selected room ID based on package details
+        setSelectedRoomId(packageDetails.roomId);
+        setSelectedActivityId(packageDetails.activityId);
+        setSelectedTransportId(packageDetails.transportId);
+      } catch (error) {
+        console.error("Error fetching package details:", error);
+      }
+    };
+
+    fetchPackageDetails(); // Call the function here
+  }, [packageId]);
+
+  
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -135,6 +160,7 @@ function AgencyCreatePackage() {
             selectedActivityId={selectedActivityId}
             selectedTransportId={selectedTransportId}
             agencyId={agencyId}
+            packageId={packageId}
           />
         );
 
