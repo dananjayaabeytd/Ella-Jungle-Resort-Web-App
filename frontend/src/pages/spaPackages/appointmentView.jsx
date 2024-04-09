@@ -78,8 +78,17 @@ const ActionButton = styled.button`
     margin-right: 5px;
 `;
 
+const SearchBar = styled.input`
+    padding: 10px;
+    width: 30%;
+    border: 1px solid #004200;
+    border-radius: 40px;
+    margin-bottom: 10px;
+`;
+
 const Appointments = () => {
     const [appointments, setAppointments] = useState([]);
+    const [filteredAppointments, setFilteredAppointments] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -96,6 +105,12 @@ const Appointments = () => {
         fetchAppointments();
     }, []);
 
+    useEffect(() => {
+        setFilteredAppointments(appointments.filter(appointment =>
+            appointment.NIC.toLowerCase().includes(searchQuery.toLowerCase())
+        ));
+    }, [searchQuery, appointments]);
+
     const handleDeleteClick = async (appointmentId) => {
         try {
             await axios.delete(`/api/appointments/${appointmentId}`);
@@ -109,10 +124,10 @@ const Appointments = () => {
 
     const handleDownloadPdf = () => {
         const doc = new jsPDF();
-        const tableColumn = ["NIC", "Name", "Address", "Contact Number", "Appointment Date", "Appointment Types", "Total Price"];
-        const tableRows = appointments.map(appointment => [
+        const tableColumn = ["NIC", "Name", "Address", "Contact Number", "Appointment Date", "Appointment Type", "Total Price"];
+        const tableRows = filteredAppointments.map(appointment => [
             appointment.NIC,
-            `${appointment.firstName} `,
+            `${appointment.firstName} ${appointment.lastName}`,
             appointment.address,
             appointment.contactNumber,
             new Date(appointment.appointmentDate).toLocaleString(),
@@ -130,6 +145,12 @@ const Appointments = () => {
                 <BoxContainer>
                     <PdfIcon src={pdfIcon} alt="PDF Icon" onClick={handleDownloadPdf} />
                     <h2 style={{ fontSize: '24px' }}>APPOINTMENTS</h2>
+                    <SearchBar
+                        type="text"
+                        placeholder="Search by NIC"
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                     <AppointmentsContainer>
                         <Table>
                             <TableHead>
@@ -145,10 +166,10 @@ const Appointments = () => {
                                 </TableRow>
                             </TableHead>
                             <tbody>
-                                {appointments.map((appointment) => (
+                                {filteredAppointments.map((appointment) => (
                                     <TableRow key={appointment._id}>
                                         <TableCell>{appointment.NIC}</TableCell>
-                                        <TableCell>{`${appointment.firstName}`}</TableCell>
+                                        <TableCell>{`${appointment.firstName} ${appointment.lastName}`}</TableCell>
                                         <TableCell>{appointment.address}</TableCell>
                                         <TableCell>{appointment.contactNumber}</TableCell>
                                         <TableCell>{new Date(appointment.appointmentDate).toLocaleString()}</TableCell>
