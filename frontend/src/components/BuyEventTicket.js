@@ -23,7 +23,6 @@ export default function BuyEventTicket() {
 
   const navigate = useNavigate();
 
-
   
   useEffect(() => {
     // Fetch event data based on eventId when the component mounts
@@ -61,13 +60,6 @@ export default function BuyEventTicket() {
 
 
   
-
-
-
-
-
-
-
   function sendData(e) {
     e.preventDefault();
 
@@ -142,8 +134,6 @@ export default function BuyEventTicket() {
       </div>
 
 
-
-
       {/* User Mobile */}
       <div className="ml-30 text-base font-semibold mt-5">
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketUserMobile">User Mobile</label>
@@ -153,6 +143,7 @@ export default function BuyEventTicket() {
         />
       </div>
 
+
       {/* Ticket Count */}
       <div className="ml-30 text-base font-semibold mt-5">
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketCount">Ticket Count</label>
@@ -161,6 +152,7 @@ export default function BuyEventTicket() {
           onChange={(e) =>  setTicketCount(e.target.value)}
         />
       </div>
+
 
       {/* Display total cost */}
       <div className="ml-30 text-base font-semibold mt-5">

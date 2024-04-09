@@ -107,7 +107,7 @@ const router = createBrowserRouter([
       //VilanIn
       {
         path: '/eventHome',
-        element: <EventHome />,
+        element: <TestPage />,
       },
       {
         path: '/events',
@@ -149,6 +149,7 @@ const router = createBrowserRouter([
         path: '/buyEventTicket/:eventId',
         element: < BuyEventTicket/>,
       },
+     
 
 
     ],

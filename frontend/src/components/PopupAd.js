@@ -258,11 +258,20 @@ export default function PopupAd() {
                         onClick={confirmDelete}>
                           Buy
                         </button>
+
+                        <button 
+                        className="px-4 py-2 font-mclaren bg-gray-900 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
+                        >
+                          Next
+                        </button>
+
                         <button 
                         className="px-4 py-2 font-mclaren bg-gray-900 text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
                         onClick={() => setIsModalOpen(false)}>
                           Skip
                         </button>
+
+                        
                       </div>
                     </div>
                   </div>

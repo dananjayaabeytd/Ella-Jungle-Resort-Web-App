@@ -83,7 +83,7 @@ export default function OptionList() {
                     <div key={index}>
                         {/* Category Title */}
                         <div className="container mt-16 max-w-5xl mx-auto">
-                            <p className="bg-secondary-green rounded-3xl p-1 text-2xl font-bold text-green-800 font-inika text-center">
+                            <p className="bg-secondary-green rounded-3xl p-1 text-2xl font-bold textblack font-inika text-center">
                                 {category} Options
                             </p>
                         </div>

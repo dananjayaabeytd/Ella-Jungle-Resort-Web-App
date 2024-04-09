@@ -144,4 +144,29 @@ router.route("/getSelectedEvent/:id").get(async (req, res) => {
   }
 });
 
+
+// Get all events within a two-month period from today
+router.route("/popUpEvents").get(async (req, res) => {
+  try {
+    const currentDate = new Date();
+    const twoMonthsLater = new Date(currentDate);
+    twoMonthsLater.setMonth(twoMonthsLater.getMonth() + 2);
+
+    // Assuming your Event model has a date field named 'eventDate'
+    // Adjust the field name according to your actual model
+    const events = await Event.find({
+      eventDate: {
+        $gte: currentDate, // Greater than or equal to today
+        $lte: twoMonthsLater // Less than or equal to two months from today
+      }
+    });
+
+    res.json(events);
+  } catch (error) {
+    console.error("Error fetching events:", error.message);
+    res.status(500).send({ status: "Error with fetching events", error: error.message });
+  }
+});
+
+
 module.exports = router;

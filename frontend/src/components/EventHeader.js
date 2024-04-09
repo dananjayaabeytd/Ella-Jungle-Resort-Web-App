@@ -13,7 +13,7 @@ function Header() {
 
   return (
     <div className="relative flex justify-between items-center h-14 w-auto mx-2 text-black">
-      <h1 className="w-full text-xl font-bold font-lexend md:flex text-gray-900 m-2">Ella Jungle Resort</h1>
+      <h1 className="w-full text-xl font-bold font-lexend md:flex text-gray-900 m-2">Event Section</h1>
 
       <ul className="hidden md:flex font-lexend px-8">
         <NavLink to="/eventHome" currentPath={location.pathname}>Home</NavLink>

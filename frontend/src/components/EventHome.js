@@ -7,8 +7,11 @@ import bggreen from '../assets/bggreen.jpg'; // Import the image
 import wedding1 from '../assets/wedding1.jpg';
 import birthday1 from '../assets/birthday1.jpg';
 import birthday2 from '../assets/birthday2.jpg';
+import flora4 from '../assets/flora4.jpg';
 import meet1 from '../assets/meet1.jpg';
 import EventHeader from './EventHeader';
+
+
 
 
 export default function EventHome() {
@@ -19,6 +22,52 @@ export default function EventHome() {
     const [allOptions, setAllOptions] = useState([]);
 
     const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
+
+    // Existing state and useEffect hook
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [futureEvents, setFutureEvents] = useState([]);
+    const [currentEventIndex, setCurrentEventIndex] = useState(0);
+
+
+
+    useEffect(() => {
+        function getEvents() {
+          axios.get("http://localhost:5000/event/popUpEvents")
+          .then((res) => {
+            if(res.data && res.data.length > 0) {
+                setFutureEvents(res.data);
+                setIsModalOpen(true); // Open the modal only if there are future events
+              }
+          }).catch((err) => {
+            alert(err.message);
+          });
+        }
+    
+        getEvents();
+      }, []);
+
+
+
+
+    // Function to move to the next event
+    const handleNextEvent = () => {
+        if(currentEventIndex < futureEvents.length - 1) {
+            setCurrentEventIndex(currentEventIndex + 1);
+        } else {
+            setIsModalOpen(false); // Close the modal if it's the last event
+        }
+    };
+
+
+    // Function to skip the modal
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
+
+// Assuming events is an array of event objects
+const currentEvent = futureEvents[currentEventIndex];
+
   
     useEffect(() => {
         // Fetch all options when the component mounts
@@ -61,7 +110,7 @@ export default function EventHome() {
       {/* Your scrolling content */}
       
       <div className="container bg-fixed my-5  mx-auto px-20  rounded-3xl overflow-auto bg-gray-50 bg-opacity-50 shadow-2xl shadow-theme-green " style={{
-            backgroundImage: `url(${birthday2})`,
+            backgroundImage: `url(${flora4})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
       }}>
@@ -86,28 +135,11 @@ export default function EventHome() {
     
                 {/* Event Description with McLaren font */}
                 <div className="px-40 mt-2 pt-56 pb-16">
-                <p className="bg-secondary-green opacity-85 text-lg font-inika text-center rounded-3xl p-4">Welcome to our Event Planning Section, where ideas take flight and planning comes to life. Here, you're not just organizing an event; you're crafting experiences that will last a lifetime. With our tools and personalized guidance, we make your vision a seamless reality. Let's embark on this journey together, creating events that leave lasting impressions</p>
+                <p className="bg-secondary-green opacity-85 text-xl font-inika text-center rounded-3xl p-4">Welcome to our Event Planning Section, where ideas take flight and planning comes to life. Here, you're not just organizing an event; you're crafting experiences that will last a lifetime. With our tools and personalized guidance, we make your vision a seamless reality. Let's embark on this journey together, creating events that leave lasting impressions</p>
                 </div>
 
             </div>
         
-
-            {/* <div className="lg:px-40 sm:px-20 pb-5 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
-                <div className="mt-0 flex justify-center items-center">
-                    {/* Using Link component for View button */}
-                    {/* <Link to={`/update`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
-
-                    <button className="mx-28 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
-                        Buy
-                    </button>
-
-                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" >
-                        Delete
-                    </button>
-                </div>
-                      
-            </div>   */}
-  
         </div>
 
         
@@ -192,6 +224,54 @@ export default function EventHome() {
 
 
         
+             {/* Pop-up Modal for Advertisement */}
+             {isModalOpen && currentEvent && (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-60 overflow-y-auto h-full w-full" id="my-modal">
+                  <div className="relative top-28   mx-auto p-5 w-2/5 h-4/6 shadow-lg rounded-3xl bg-white border-secondary-green " 
+                  style={{
+                    backgroundImage: `url(http://localhost:5000/Images/${currentEvent.eventImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}>
+                    <div className="mx-16 my-14 text-center items-center bg-gray-500 opacity-70 rounded-3xl border-8 border-black border-double">
+                      <h3 className="leading-6 text-2xl font-bold text-gray-950 font-inika pt-4 mx-8">{currentEvent.eventName}</h3>
+                      <div className="px-7 py-1 pt-2">
+                        <p className="text-base font-mclaren text-black">
+                        {currentEvent.eventDescription}</p>
+                        
+                      </div>
+                      <div className="text-lg font-semibold text-blue-600 text-center flex justify-between items-center mx-12 mt-1">
+                        <p className="text-sm font-mclaren text-black"> 
+                        {currentEvent.eventDate ? currentEvent.eventDate.substr(0, 10) : ""}</p>
+
+                        <p className="text-sm font-mclaren text-black">
+                        @Ella Jungle Resort</p>
+                      </div>
+                      <div className="items-center px-4 pb-5 mt-3 flex justify-between mx-6">
+                       
+                        <Link to={`/buyEventTicket/${currentEvent._id}`} className="px-4 py-2  font-mclaren bg-black text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"> Buy </Link>
+
+
+                        <button 
+                        className="px-4 py-2 font-mclaren bg-black text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
+                        onClick={handleNextEvent}>
+                          Next
+                        </button>
+
+                        <button 
+                        className="px-4 py-2 font-mclaren bg-black text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
+                        onClick={handleCloseModal}>
+                          Skip
+                        </button>
+                      </div>
+
+                      
+
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* Pop-up Ends Here */}
 
 
         
