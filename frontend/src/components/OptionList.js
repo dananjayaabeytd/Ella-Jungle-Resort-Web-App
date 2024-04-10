@@ -74,21 +74,23 @@ export default function OptionList() {
               {/* Call Header */}
               <EventHeader/>
 
-            <Link to="/addOption" className="ml-5 mb-6 text-white text-xl font-mclaren px-4 py-1 bg-blue-500 hover:bg-blue-800 rounded-3xl items-center">
-          Add Option
-        </Link>
+              {user.isAdmin && (
+            <Link to="/addOption" className="ml-5 mb-6 mt-2 text-white text-xl font-mclaren px-8 py-1 bg-blue-500 hover:bg-blue-800 rounded-3xl items-center">
+              Add Option
+            </Link>
+              )}
 
                 {/* Loop through categories */}
                 {categories.map((category, index) => (
                     <div key={index}>
                         {/* Category Title */}
-                        <div className="container mt-16 max-w-5xl mx-auto">
+                        <div className="container mt-2  max-w-5xl mx-auto">
                             <p className="bg-secondary-green rounded-3xl p-1 text-2xl font-bold textblack font-inika text-center">
                                 {category} Options
                             </p>
                         </div>
                         {/* Cards for each category */}
-                        <div className="items-center justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  w-full p-2">
+                        <div className="mb-14  justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4  w-full p-2">
                             {/* Cards for this category */}
                             {allOptions
                                 .filter((option) => option.optionCategory === category)
@@ -99,11 +101,13 @@ export default function OptionList() {
                                         </div>
                                         <div className="px-0 mb-3 mt-2 rounded-xl">
                                             <div className="pb-1">
-                                                <p className="text-lg font-bold text-green-800 font-inika text-center">{option.optionName}</p>
+                                                <p className="text-lg font-semibold text-green-800 font-inika text-center">{option.optionName}</p>
                                             </div>
                                             <p className="text-sm font-mclaren text-center">{option.optionDescription}</p>
                                             <p className="text-base text-blue-700 font-bold font-mclaren text-center pt-2 pb-1">{option.optionPrice} LKR</p>
-                                            <div className="mb-4 mt-1 flex justify-center items-center">
+
+                                            {user.isAdmin && (
+                                              <div className="mb-4 mt-1 flex justify-center items-center">
                                                 {/* Using Link component for Update button */}
                                                 <Link
                                                     to={`/updateOption/${option._id}`}
@@ -121,6 +125,8 @@ export default function OptionList() {
                                                     Remove
                                                 </button>
                                             </div>
+                                            )}
+                                            
                                         </div>
                                     </div>
                                 ))}

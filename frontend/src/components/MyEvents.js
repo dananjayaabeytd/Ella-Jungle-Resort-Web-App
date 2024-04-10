@@ -93,7 +93,7 @@ export default function MyEvents() {
   
       {/* Your scrolling content */}
       {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.filter(event => event.isPublic === false).map((event) => (
+        {allEvents.filter(event => event.eventUserId === user._id).map((event) => (
       <div key={event._id} className="container bg-fixed my-5 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 
       
@@ -119,13 +119,13 @@ export default function MyEvents() {
               <p className="text-base font-mclaren">{event.eventDescription}</p>
             </div>
   
-            <div className="mt-4 flex justify-center items-center">
+            <div className="mt-8 flex justify-center items-center">
 
 
               {/* Using Link component for View button */}
-              <Link to={`/updateEvent/${event._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
+              <Link to={`/updateEvent/${event._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800   rounded-3xl"> Update </Link>
 
-              <Link to={`/viewEvent/${event._id}`} className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> View </Link>
+              <Link to={`/viewEvent/${event._id}`} className="ml-5 text-white text-xl font-mclaren px-8 py-1 bg-theme-green hover:bg-green-800 rounded-3xl "> View </Link>
 
               <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
                onClick={() => {

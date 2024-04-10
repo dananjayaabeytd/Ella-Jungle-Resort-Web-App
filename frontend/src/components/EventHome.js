@@ -85,9 +85,6 @@ const currentEvent = futureEvents[currentEventIndex];
     
 
       
-      
-
-
   return (
     
     <div className="relative min-h-screen">
@@ -225,7 +222,7 @@ const currentEvent = futureEvents[currentEventIndex];
 
         
              {/* Pop-up Modal for Advertisement */}
-             {isModalOpen && currentEvent && (
+             {isModalOpen && currentEvent.isPublic && (
                 <div className="fixed inset-0 bg-gray-800 bg-opacity-60 overflow-y-auto h-full w-full" id="my-modal">
                   <div className="relative top-28   mx-auto p-5 w-2/5 h-4/6 shadow-lg rounded-3xl bg-white border-secondary-green " 
                   style={{

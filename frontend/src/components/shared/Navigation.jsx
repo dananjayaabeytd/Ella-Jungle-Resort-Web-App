@@ -74,6 +74,21 @@ function NavList() {
           Docs
         </a>
       </Typography>
+      <Typography
+        as='li'
+        variant='small'
+        color='blue-gray'
+        className='p-1 font-medium'
+      >
+        <Link to='/eventHome'>
+          <a
+            href='#'
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Events
+          </a>
+        </Link>
+      </Typography>
     </ul>
   );
 }

@@ -31,7 +31,6 @@ import EventHome from "./components/EventHome"
 import UpdateOption from "./components/UpdateOption"
 import MyEvents from "./components/MyEvents"
 import BuyEventTicket from "./components/BuyEventTicket"
-import PopupAd from "./components/PopupAd"
 
 import TestPage from "./components/TestPage"
 import TestSecondary from "./components/TestSecondary"
@@ -107,7 +106,7 @@ const router = createBrowserRouter([
       //VilanIn
       {
         path: '/eventHome',
-        element: <TestPage />,
+        element: <EventHome />,
       },
       {
         path: '/events',
