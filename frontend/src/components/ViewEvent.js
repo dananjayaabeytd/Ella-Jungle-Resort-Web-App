@@ -46,7 +46,9 @@ export default function ViewEvent() {
 
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
-    const navigate = useNavigate();
+  const navigate = useNavigate();
+
+  
     useEffect(() => {
         // Fetch all options when the component mounts
         function getOptions() {
@@ -164,9 +166,11 @@ export default function ViewEvent() {
                 {/* Event Date with Lexend font */}
                 <h6 className="text-base text-gray-600 font-lexend text-center mt-1">Ella Jungle Resort</h6>
                 
-                <div className="price mt-2">
+                <div className="flex justify-between mt-2 px-20">
                 <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
+                <div className=" text-2xl font-bold text-green-600 text-center ">{selectedEvent.eventTime}</div>
                 </div>
+
     
                 {/* Event Description with McLaren font */}
                 <div className="p-des mt-2 max-h-24">
@@ -176,11 +180,11 @@ export default function ViewEvent() {
 
 
             {/*Options Loop*/}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
+            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
               {categories.map((category, index) => (
                       <div key={index} className="text-base font-semibold ml-16">
                         {/* Category Title */}
-                        <p className="mb-1 block text-xl font-inika text-green-800">{category} Options:-</p>
+                        <p className="mb-1 block text-lg font-mclaren text-green-800">{category} Options:-</p>
                         {/* Options for this category */}
                         {allOptions.filter((option) => option.optionCategory === category).map((option) => (
                             <div key={option._id} className="form-check">
@@ -199,33 +203,36 @@ export default function ViewEvent() {
             {/*Options Loop Ends Here*/}
             
 
+            <div className="">
           {/* Display Total Cost of Public events for only Admins and the users who own the event*/}
             {selectedEvent.isPublic && (user.isAdmin || selectedEvent.eventUserId === user.userId) && (
-            <div className="text-base font-semibold">
-              <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
-            </div>
+            
+              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
+            
           )}
 
           {/* Display Total Cost of private events for all users */}
           {!selectedEvent.isPublic && (
-              <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
+              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
           )}
-
-
+      
+      </div>
 
           {/* Display ticket price for public events */}
           {selectedEvent.isPublic && (
-            <p1 className="text-lg font-semibold text-green-900">Grab Your Tickets Now for only {selectedEvent.ticketPrice} LKR !! Enjoy the Moment</p1>
+            <p className="mt-3 text-lg font-semibold font-mclaren text-green-900">Grab Your Tickets Now for only <span className="text-red-800">{selectedEvent.ticketPrice} LKR !!</span> Enjoy the Moment</p>
           )}
+          
 
             <div className="font-semibold">
-            <p1 className="text-lg text-green-80"></p1>
+            <p className="text-lg text-green-80"></p>
           </div>
+
 
 
         </div>
 
-        <div className="lg:px-40 sm:px-20  grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 mb-2">
+        <div className="mb-2">
                   
             
             <div className="mt-0 flex justify-center items-center">
@@ -233,18 +240,18 @@ export default function ViewEvent() {
               <Link to={`/buyEventTicket/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> Buy Ticket</Link>   
             </div>   
 
-            {user.isAdmin || selectedEvent.eventUserId === user._id && (
-                <div className="mt-0 mb-8 flex justify-center items-center">
+            {(user.isAdmin || selectedEvent.eventUserId === user.userId) && (
+                <div className="mt-8 mx-48 mb-8 flex justify-between items-center">
                     {/* Using Link component for View button */}
-                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
+                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-lexend px-4 py-1  bg-theme-green hover:bg-green-800 rounded-xl"> Update </Link>
 
-                    <button className="mx-14 text-white text-xl font-mclaren px-4 py-1  bg-black hover:bg-gray-800 rounded-3xl" 
+                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-black hover:bg-gray-800 rounded-xl" 
                     onClick={downloadPDF}>
                         Download Report
                     </button>
 
                     
-                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
+                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-red-500 hover:bg-red-800 rounded-xl" 
                     onClick={() => {
                       setSelectedEventId(selectedEvent._id);
                       setIsModalOpen(true);

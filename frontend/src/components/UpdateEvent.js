@@ -13,6 +13,7 @@ export default function UpdateEvent() {
   const [updatedEventName, setUpdatedEventName] = useState("");
   const [updatedEventCategory, setUpdatedEventCategory] = useState("");
   const [updatedEventDate, setUpdatedEventDate] = useState("");
+  const [updatedEventTime, setUpdatedEventTime] = useState("");
   const [updatedEventDescription, setUpdatedEventDescription] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [totalCost, setTotalCost] = useState(""); // Total cost state
@@ -91,6 +92,7 @@ export default function UpdateEvent() {
       setUpdatedEventName(selectedEvent.eventName || "");
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
+      setUpdatedEventTime(selectedEvent.eventTime || "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
       setTotalCost(selectedEvent.totalCost || null);
       setIsPublic(selectedEvent.isPublic || false);
@@ -148,11 +150,30 @@ export default function UpdateEvent() {
     }
 
 
+      
+  // Function to format event time to "hh:mm A" format
+  const formatEventTime = (timeString) => {
+    // Split the timeString into hours and minutes
+    const [hours, minutes] = timeString.split(":");
+    // Convert hours to number
+    let parsedHours = parseInt(hours, 10);
+    // Determine AM or PM
+    const suffix = parsedHours >= 12 ? "PM" : "AM";
+    // Adjust for 12-hour format
+    parsedHours = parsedHours % 12 || 12;
+    // Return formatted time
+    return `${parsedHours}:${minutes} ${suffix}`;
+  };
+
+  // Convert eventTime to "hh:mm A" format
+  const formattedEventTime = formatEventTime(updatedEventTime);
+
 
     const formData = new FormData();
     formData.append("eventName", updatedEventName);
     formData.append("eventCategory", updatedEventCategory);
     formData.append("eventDate", updatedEventDate);
+    formData.append("eventTime", formattedEventTime);
     formData.append("eventDescription", updatedEventDescription);
     formData.append("totalCost", totalCost);
     formData.append("isPublic", isPublic);
@@ -207,6 +228,7 @@ export default function UpdateEvent() {
     return `${year}-${month}-${day}`;
   };
 
+  
 
   
   // Function to validate event name
@@ -244,8 +266,8 @@ export default function UpdateEvent() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-gray-200 opacity-85 shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend border-8 border-double border-theme-green">
-          <div className="text-5xl font-extrabold ... bg-clip-text text-transparent bg-gradient-to-r from-theme-green to-green-800 ">    
+        <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green opacity-80 shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend border border-theme-green">
+          <div className="text-5xl font-extrabold ... bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center ">    
               Update Event
           </div>
 
@@ -283,6 +305,8 @@ export default function UpdateEvent() {
               </select>
             </div>
 
+            <div className="flex">
+
             {/* Event Date */}
             <div className="ml-30 text-base font-semibold mt-5">
                 <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
@@ -291,6 +315,17 @@ export default function UpdateEvent() {
                     className="w-full p-1 border-2 border-theme-green rounded text-lg font-lexend form-check"
                     onChange={(e) => setUpdatedEventDate(e.target.value)}
                 />
+            </div>
+
+            {/* Event Time */}
+            <div className="pl-20 text-base font-semibold mt-5">
+                <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
+                <input type="time" placeholder="Event Time" name="eventTime" required value={updatedEventTime}
+                    min={getCurrentDate()} // Set the min attribute to today's date
+                    className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                    onChange={(e) => setUpdatedEventTime(e.target.value)}
+                />
+            </div>
             </div>
 
             {/* Event Description */}

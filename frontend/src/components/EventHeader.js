@@ -21,6 +21,7 @@ function Header() {
         <NavLink to="/addEvent" currentPath={location.pathname}>Book</NavLink>
         <NavLink to="/allOptions" currentPath={location.pathname}>Options</NavLink>
         <NavLink to="/myEvents" currentPath={location.pathname}>Bookings</NavLink>
+        <NavLink to="/eventReports" currentPath={location.pathname}>Reports</NavLink>
       </ul>
 
       {/* Hamburger Menu for Mobile View */}

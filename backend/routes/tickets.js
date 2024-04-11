@@ -3,15 +3,19 @@ const router = require ("express").Router();
 let Ticket = require("../models/Ticket")      //Using Ticket model in Models folder
 
 router.route("/buyTicket").post((req,res) => {
-    const { eventId, ticketUserId, ticketUserEmail, ticketUserMobile, ticketCount, totalTicketCost } = req.body;
+    const { eventId, eventName, ticketUserId, ticketUserName, ticketUserEmail, ticketUserMobile, ticketCount, totalTicketCost, ticketBuyingDate, ticketBuyingTime } = req.body;
 
     const newTicket = new Ticket({
         eventId,
+        eventName,
         ticketUserId,
+        ticketUserName,
         ticketUserEmail,
         ticketUserMobile,
         ticketCount,
         totalTicketCost,
+        ticketBuyingDate,
+        ticketBuyingTime
 
     })
 
@@ -44,16 +48,20 @@ router.route("/allTickets").get((req,res) => {
 router.route("/updateTicket/:id").put(async(req,res) => {         //Always an Asynchronous message wait for a promise. This increases functionality
     let ticketId = req.params.id;
 
-    const {eventId, ticketUserId, ticketUserEmail, ticketUserMobile, ticketCount, totalTicketCost} = req.body;
+    const {eventId, eventName, ticketUserId, ticketUserName, ticketUserEmail, ticketUserMobile, ticketCount, totalTicketCost, ticketBuyingDate, ticketBuyingTime} = req.body;
 
     //Create 'update object'
     const updateTicket = {
         eventId,
+        eventName,
         ticketUserId,
+        ticketUserName,
         ticketUserEmail,
         ticketUserMobile,
         ticketCount,
         totalTicketCost,
+        ticketBuyingDate,
+        ticketBuyingTime
     }
 
     //If you didn't use the ID as Primary Key, you can use findOneAndUpdate, here.

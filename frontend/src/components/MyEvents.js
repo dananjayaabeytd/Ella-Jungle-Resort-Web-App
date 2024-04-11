@@ -109,9 +109,10 @@ export default function MyEvents() {
             
             {/* Event Date with Lexend font */}
             <h6 className="text-base text-gray-600 font-lexend">Ella Jungle Resort</h6>
-            
-            <div className="price mt-2">
-              <div className="text-xl font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</div>
+
+            <div className="flex justify-between mt-2">
+              <p className="text-xl font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</p>
+              <p className="text-xl font-bold text-green-600 pr-12">{event.eventTime}</p>
             </div>
   
             {/* Event Description with McLaren font */}

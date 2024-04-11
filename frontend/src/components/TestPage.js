@@ -1,128 +1,28 @@
-import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useSelector } from 'react-redux'; // Import useSelector
-import { useParams } from "react-router-dom";
-import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
 import bggreen from '../assets/bggreen.jpg'; // Import the image
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
 
-export default function ViewEvent() {
-    const pdfRef = useRef();
-
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const { eventId } = useParams(); // Get the eventId from URL params
-
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [allOptions, setAllOptions] = useState([]);
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedEventId, setSelectedEventId] = useState(null);
- 
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
-    const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
-
-    const downloadPDF = () => {
-        const input = pdfRef.current;
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');      
-            const pdf = new jsPDF('p', 'mm', 'a4', true);        
-            const pdfWidth = pdf.internal.pageSize.getWidth();       
-            const pdfHeight = pdf.internal.pageSize.getHeight();        
-            const imgWidth = canvas.width;
-            const imgHeight = canvas.height;   
-            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-            const imgX = (pdfWidth - imgWidth * ratio);
-            const imgY = 10;
-            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-            pdf.save('eventDetails.pdf');
-        });
-        };
-
-
+const TicketTable = () => {
+  const [tickets, setTickets] = useState([]);
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
-    const navigate = useNavigate();
-    useEffect(() => {
-        // Fetch all options when the component mounts
-        function getOptions() {
-          axios.get("http://localhost:5000/option/allOptions")
-            .then((res) => {
-              setAllOptions(res.data);
-            })
-            .catch((err) => {
-              alert(err.message);
-            });
-        }
-        getOptions();
-      }, []);
-    
 
-     
-    useEffect(() => {
-        // Fetch event data based on eventId when the component mounts
-        async function getEventDetails() {
-        try {
-            const response = await axios.get(`http://localhost:5000/event/getSelectedEvent/${eventId}`);
-            setSelectedEvent(response.data.event);
-            console.log("Fetched Event Details Successfully");
-
-
-            const eventSelectedOptions = response.data.event.selectedOptions || [];
-            setSelectedOptions(eventSelectedOptions.map(id => id.toString())); // Ensuring IDs are strings for comparison
-
-        
-        } catch (error) {
-            console.error("Error fetching event data:", error.message);
-            alert("Error fetching event data. Please try again.");
-        }
-    }
-
-    getEventDetails();
-  }, [eventId]);
-
-  
-
-  const confirmDelete = async () => {
-    if (selectedEventId) {
+  useEffect(() => {
+    const fetchTickets = async () => {
       try {
-        await axios.delete(`http://localhost:5000/event/deleteEvent/${selectedEventId}`);
-        setIsModalOpen(false); // Close the modal
-        // Custom success notification
-        setPopupMessage("Event Deleted Successfully!");
-        setPopupType('info');
-        setIsPopupOpen(true);
-
-
+        const response = await axios.get('http://localhost:5000/ticket/allTickets');
+        setTickets(response.data);
       } catch (error) {
-        console.error("Error deleting event:", error.message);
-        // Custom success notification
-        setPopupMessage("Error deleting event. Please try again!");
-        setPopupType('error');
-        setIsPopupOpen(true);
+        console.error('Error fetching tickets:', error);
       }
-    }
-  };
-  
+    };
 
-  
-  if (!selectedEvent) {
-    return <div>Loading...</div>;
-  }
-
-
-  // Get unique categories
-  const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
-
-
+    fetchTickets();
+  }, []);
 
   return (
-    <div className="relative min-h-screen">
-    {/* Background Image */}
+    <div className="flex flex-col items-center justify min-h-screen ">
+         {/* Background Image */}
     <div
       className="absolute inset-0 z-0 bg-fixed"
       style={{
@@ -130,159 +30,36 @@ export default function ViewEvent() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
-      
-    >
-  </div>
-
-     
-    
-    {/* Content Wrapper */}
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-            {/* Call Header */}
-    <EventHeader/>
-  
-      {/* Your scrolling content */}
-      
-      <div className="container bg-fixed my-10 max-w-5xl mx-auto p-5  rounded-3xl overflow-auto bg-gray-50 bg-opacity-50 shadow-2xl shadow-theme-green border-8 border-double border-theme-green">
-
-      
-  
-        <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
-            {/* Event Details */}
-            <div className="container shadow-md rounded-3xl overflow-hidden w-full h-96 flex items-center justify-center">
-                <img className="w-full h-full object-fill" src={`http://localhost:5000/Images/${selectedEvent.eventImage}`} 
-                />
-            </div>
-        </div>
-
-            <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1" ref={pdfRef}>
-
-            <div >
-                {/* Event Name with Inika font */}
-                <h1 className="text-4xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
-                
-                {/* Event Date with Lexend font */}
-                <h6 className="text-base text-gray-600 font-lexend text-center mt-1">Ella Jungle Resort</h6>
-                
-                <div className="price mt-2">
-                <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
-                </div>
-    
-                {/* Event Description with McLaren font */}
-                <div className="p-des mt-2 max-h-24">
-                <p className="text-lg font-mclaren text-center">{selectedEvent.eventDescription}</p>
-                </div>
-            </div>
-
-
-            {/*Options Loop*/}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
-              {categories.map((category, index) => (
-                      <div key={index} className="text-base font-semibold ml-16">
-                        {/* Category Title */}
-                        <p className="mb-1 block text-xl font-inika text-green-800">{category} Options:-</p>
-                        {/* Options for this category */}
-                        {allOptions.filter((option) => option.optionCategory === category).map((option) => (
-                            <div key={option._id} className="form-check">
-                              <input readOnly type="checkbox" id={option._id} name={option.optionName}
-                                checked={selectedOptions.includes(option._id)}
-                                className="form-checkbox h-4 w-4 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                              />
-                              <label htmlFor={option._id} className="ml-2 text-base text-black">
-                                {option.optionName}
-                              </label>
-                            </div>
-                          ))}
-                      </div>
-                    ))}
-            </div> 
-            {/*Options Loop Ends Here*/}
-            
-
-          {/* Display Total Cost of Public events for only Admins and the users who own the event*/}
-            {selectedEvent.isPublic && (user.isAdmin || selectedEvent.eventUserId === user.userId) && (
-            <div className="text-base font-semibold">
-              <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
-            </div>
-          )}
-
-          {/* Display Total Cost of private events for all users */}
-          {!selectedEvent.isPublic && (
-              <label className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</label>
-          )}
-
-
-
-          {/* Display ticket price for public events */}
-          {selectedEvent.isPublic && (
-            <p1 className="text-lg font-semibold text-green-900">Grab Your Tickets Now for only {selectedEvent.ticketPrice} LKR !! Enjoy the Moment</p1>
-          )}
-
-            <div className="font-semibold">
-            <p1 className="text-lg text-green-80"></p1>
-          </div>
-
-
-        </div>
-
-        <div className="lg:px-40 sm:px-20  grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 ">
-                <div className="mt-0 flex justify-center items-center">
-                    {/* Using Link component for View button */}
-                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> Update </Link>
-
-                     {/* Using Link component for View button */}
-                     <Link to={`/buyEventTicket/${selectedEvent._id}`} className="mx-28 text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> Buy </Link>
-
-                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
-                    onClick={() => {
-                      setSelectedEventId(selectedEvent._id);
-                      setIsModalOpen(true);
-                    }}
-                    >
-                        Delete
-                    </button>
-                </div>  
-
-                 <div className="mt-0 flex justify-center items-center">
-                    <button className=" text-white text-xl font-mclaren px-4 py-1  bg-black hover:bg-gray-800 rounded-3xl" 
-                    onClick={downloadPDF}>
-                        Download PDF
-                    </button>
-                </div>    
-        </div>  
-
-       
+    ></div>
+      <h2 className="text-2xl font-bold text-green-800 mb-4">Ticket Details</h2>
+      <div className="shadow-2xl shadow-theme-green rounded-3xl overflow-hidden">
+        <table className="min-w-full leading-normal">
+          <thead className="font-bold text-left text-green-800 bg-green-100 rounded-t-3xl">
+            <tr>
+              <th className="px-5 py-3 border-b-2 border-gray-200">Event ID</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200">User ID</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200">Email</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200">Mobile</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200">Count</th>
+              <th className="px-5 py-3 border-b-2 border-gray-200">Total Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            {user.isAdmin && tickets.map((ticket) => (
+              <tr key={ticket._id} className="border-b border-gray-200 hover:bg-green-50">
+                <td className="px-5 py-2">{ticket.eventId}</td>
+                <td className="px-5 py-2">{ticket.ticketUserId}</td>
+                <td className="px-5 py-2">{ticket.ticketUserEmail}</td>
+                <td className="px-5 py-2">{ticket.ticketUserMobile}</td>
+                <td className="px-5 py-2">{ticket.ticketCount}</td>
+                <td className="px-5 py-2">{ticket.totalTicketCost}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
-    {/* Scrolling content End*/}
+  );
+};
 
-        
-      {/* Use the Confirm Deletion Modal here */}
-      <ConfirmDeletion
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={confirmDelete}
-      />
-
-      {/* Your component structure */}
-      <CustomPopup
-        isOpen={isPopupOpen}
-        message={popupMessage}
-        onClose={() => {
-          setIsPopupOpen(false);
-          setIsModalOpen(false); // Close the modal
-          if (selectedEvent.isPublic) {
-            navigate("/events");
-          } else {
-            navigate("/myEvents");
-          }
-        }}
-        type={popupType}
-      />
-      
-    
-    </div>
-  </div>
-  )
-}
-
-
+export default TicketTable;

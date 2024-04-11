@@ -11,6 +11,7 @@ export default function AddEvent() {
   const [eventName, setEventName] = useState("");
   const [eventCategory, setEventCategory] = useState("");
   const [eventDate, setEventDate] = useState("");
+  const [eventTime, setEventTime] = useState(""); // State for ticket buying time
   const [eventDescription, setEventDescription] = useState("");
   const [totalCost, setTotalCost] = useState(""); // Total cost state
   const [isPublic, setIsPublic] = useState(false);
@@ -97,11 +98,17 @@ export default function AddEvent() {
         return;
       }
 
+       // Convert eventTime to "hh:mm A" format
+  const formattedEventTime = formatEventTime(eventTime);
+
+
+
     const formData = new FormData();
     formData.append("eventUserId", user._id); // Append user ID
     formData.append("eventName", eventName);
     formData.append("eventCategory", eventCategory);
     formData.append("eventDate", eventDate);
+    formData.append("eventTime", formattedEventTime);
     formData.append("eventDescription", eventDescription);
     formData.append("totalCost", totalCost);
     formData.append("isPublic", isPublic);
@@ -166,6 +173,21 @@ export default function AddEvent() {
   
     return `${year}-${month}-${day}`;
   };
+
+ 
+// Function to format event time to "hh:mm A" format
+const formatEventTime = (timeString) => {
+  // Split the timeString into hours and minutes
+  const [hours, minutes] = timeString.split(":");
+  // Convert hours to number
+  let parsedHours = parseInt(hours, 10);
+  // Determine AM or PM
+  const suffix = parsedHours >= 12 ? "PM" : "AM";
+  // Adjust for 12-hour format
+  parsedHours = parsedHours % 12 || 12;
+  // Return formatted time
+  return `${parsedHours}:${minutes} ${suffix}`;
+};
 
 
   // Function to validate event name
@@ -240,6 +262,7 @@ export default function AddEvent() {
               </select>
             </div>
 
+      <div className="flex ">
             {/* Event Date */}
             <div className="ml-30 text-base font-semibold mt-5">
                 <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
@@ -250,6 +273,18 @@ export default function AddEvent() {
                 />
             </div>
 
+
+            {/* Event Time */}
+            <div className="pl-20 text-base font-semibold mt-5">
+                <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
+                <input type="time" placeholder="Event Time" name="eventTime" required value={eventTime}
+                    min={getCurrentDate()} // Set the min attribute to today's date
+                    className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                    onChange={(e) => setEventTime(e.target.value)}
+                />
+            </div>
+
+            </div>
 
             {/* Event Description */}    
             <div className="ml-30 text-base font-semibold mt-5">

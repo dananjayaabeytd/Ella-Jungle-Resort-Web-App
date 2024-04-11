@@ -93,59 +93,55 @@ export default function EventList() {
   
       {/* Your scrolling content */}
       {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.filter(event => event.isPublic === true).map((event) => (
-      <div key={event._id} className="container bg-fixed my-5 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 
-      
-  
-      <div className="grid grid-cols-2 gap-16 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
-    <div className="container shadow-md rounded-md overflow-hidden w-full max-h-80">
-      <img className="w-full h-full object-fill" src={`http://localhost:5000/Images/${event.eventImage}`} alt="Event Image"
-      />
-    </div>
+
+      {/* Cards for each Event */}
+      <div className=" px-8 pb-3 justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-x-6  w-full ">
+          {/* Cards for this category */}
+          {allEvents.filter(event => event.isPublic === true).map((event) => (
+                  <div key={event._id} className="container bg-fixed my-3 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
+                    <div className="grid  grid-cols-2 gap-9 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+                      <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-64">
+                          <img className="w-full h-full object-fill mt-3" src={`http://localhost:5000/Images/${event.eventImage}`} alt="Event" />
+                      </div>
         <div className="px-0 py-4">
             {/* Event Name with Inika font */}
-            <h1 className="text-3xl font-bold text-green-800 font-inika">{event.eventName}</h1>
+            <h1 className="text-xl font-bold text-green-800 font-inika">{event.eventName}</h1>
             
             {/* Event Date with Lexend font */}
-            <h6 className="text-base text-gray-600 font-lexend">Ella Jungle Resort</h6>
+            <h6 className="text-xs text-gray-600 font-lexend">Ella Jungle Resort</h6>
             
-            <div className="price mt-2">
-              <div className="text-xl font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</div>
+
+            <div className="flex justify-between">
+              <p className="text-base font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</p>
+              <p className="text-base font-bold text-green-600 pr-9">{event.eventTime}</p>
             </div>
+            
   
             {/* Event Description with McLaren font */}
-            <div className="p-des mt-2 max-h-24">
-              <p className="text-base font-mclaren">{event.eventDescription}</p>
+            <div className=" mt-1 max-h-24">
+              <p className="text-sm font-mclaren">{event.eventDescription}</p>
             </div>
   
-            <div className="mt-8 flex justify-center items-center">
-              
-            {user.isAdmin && event.eventUserId === user._id && (
-              <Link to={`/updateEvent/${event._id}`} className="mr-5 text-white text-xl font-mclaren px-4 py-1 bg-blue-500 hover:bg-blue-800    rounded-3xl"> Update </Link>
-            )}
+            <div className="mt-6 flex justify-center items-center">
+
+            <div className="mt-0 flex justify-center items-center">
+             {/* Using Link component for View button */}
+              <Link to={`/buyEventTicket/${event._id}`} className=" mr-5 text-white text-sm font-mclaren px-4 py-1 bg-blue-500 hover:bg-blue-800    rounded-3xl"> Buy Ticket</Link>   
+            </div>
 
             {/* Using Link component for View button */}
-              <Link to={`/viewEvent/${event._id}`} className=" text-white text-xl font-mclaren px-10 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> View </Link>
+              <Link to={`/viewEvent/${event._id}`} className=" text-white text-sm font-mclaren px-10 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> View </Link>
 
-              {user.isAdmin && event.eventUserId === user._id && (
-              <button className="ml-5 text-white text-xl font-mclaren px-4 py-1  bg-red-500 hover:bg-red-800 rounded-3xl" 
-               onClick={() => {
-                setSelectedEventId(event._id);
-                setIsModalOpen(true);
-              }}
-              >
-                Delete
-              </button>
-               )}
             </div>
                       
         </div>  
-  
+                      </div>
+                  </div>
+              ))}
       </div>
-      
-    </div>
-    ))}
+
+
     {/* Scrolling content End*/}
   
       
@@ -171,6 +167,7 @@ export default function EventList() {
         />
     
     </div>
+     {/* Content Wrapper Ends Here*/}
   </div>
   )
 }

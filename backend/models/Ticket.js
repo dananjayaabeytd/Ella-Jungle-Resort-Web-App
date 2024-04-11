@@ -5,8 +5,14 @@ const ticketSchema = new Schema({
     eventId: {
         type: String,
     },
+    eventName: {
+        type: String,
+    },
 
     ticketUserId: {
+        type: String,
+    },
+    ticketUserName: {
         type: String,
     },
 
@@ -26,6 +32,17 @@ const ticketSchema = new Schema({
     totalTicketCost: {
         type: Number,
     },
+
+    ticketBuyingDate: {
+        type: Date,
+    },
+
+    ticketBuyingTime: {
+        type: String,
+    },
+
+    
+    
 
 });
 
