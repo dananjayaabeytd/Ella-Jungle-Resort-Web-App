@@ -24,6 +24,8 @@ export default function AddEvent() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+  
+  const [showDescription, setShowDescription] = useState(null);
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
@@ -320,31 +322,43 @@ const formatEventTime = (timeString) => {
 
 
 
-            {/* Event Options */}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {categories.map((category, index) => (
-                <div key={index} className="text-base font-semibold ml-16">
-                  {/* Category Title */}
-                  <p className="mt-5 mb-1 text-lg font-bold text-green-900">{category} Options:-</p>
-                  {/* Options for this category */}
-                  {allOptions.filter((option) => option.optionCategory === category).map((option) => (
-                    <div key={option._id} className="form-check">
-                      <input
-                        type="checkbox"
-                        id={option._id}
-                        name={option.optionName}
-                        checked={selectedOptions.includes(option._id)}
-                        onChange={(e) => handleOptionChange(option._id, e.target.checked)}
-                        className="form-checkbox h-5 w-5 text-green-600"
-                      />
-                      <label htmlFor={option._id} className="ml-2 text-black">
-                        {option.optionName} - {option.optionPrice} LKR
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+        {/* Event Options */}
+<div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+  {categories.map((category, index) => (
+    <div key={index} className="text-base font-semibold ml-16">
+      {/* Category Title */}
+      <p className="mt-5 mb-1 text-lg font-bold text-green-900">{category} Options:-</p>
+      {/* Options for this category */}
+      {allOptions.filter((option) => option.optionCategory === category).map((option) => (
+        <div key={option._id} className="form-check flex items-center">
+          <input
+            type="checkbox"
+            id={option._id}
+            name={option.optionName}
+            checked={selectedOptions.includes(option._id)}
+            onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+            className="form-checkbox h-5 w-5 text-green-600"
+          />
+          <label
+            htmlFor={option._id}
+            className="ml-2 text-black cursor-pointer relative"
+            onMouseEnter={() => setShowDescription(option._id)}
+            onMouseLeave={() => setShowDescription(null)}
+          >
+            {option.optionName} - {option.optionPrice} LKR
+            {/* Tooltip */}
+            {showDescription === option._id && (
+              <div className="absolute z-10 -top-10 left-36 font-lexend bg-green-600 text-white text-xs rounded shadow p-1 w-48">
+                {option.optionDescription}
+              </div>
+            )}
+          </label>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
+
 
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
