@@ -207,7 +207,7 @@ export default function BuyEventTicket() {
       </div>
       
       <div className="flex"> 
-       <p className="ml- block font-bold text-lg text-green-900 font-mclaren">
+       <p className="block font-bold text-lg text-green-900 font-mclaren">
         More Friends, More Savings! Get <span className="text-red-800">15% Off</span> for Every Ticket Over 5!
       </p>
 

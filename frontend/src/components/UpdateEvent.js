@@ -15,6 +15,7 @@ export default function UpdateEvent() {
   const [updatedEventDate, setUpdatedEventDate] = useState("");
   const [updatedEventTime, setUpdatedEventTime] = useState("");
   const [updatedEventDescription, setUpdatedEventDescription] = useState("");
+  const [updatedAttendeeCount, setUpdatedAttendeeCount] = useState("");
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [totalCost, setTotalCost] = useState(""); // Total cost state
   const [isPublic, setIsPublic] = useState(false); // Total cost state
@@ -94,6 +95,7 @@ export default function UpdateEvent() {
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
       setUpdatedEventTime(selectedEvent.eventTime || "");
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
+      setUpdatedAttendeeCount(selectedEvent.attendeeCount || "");
       setTotalCost(selectedEvent.totalCost || null);
       setIsPublic(selectedEvent.isPublic || false);
       setTicketPrice(selectedEvent.ticketPrice || "");
@@ -103,26 +105,26 @@ export default function UpdateEvent() {
 
 
   
-  
   // Function to calculate total cost
   const calculateTotalCost = () => {
     let cost = 0;
     selectedOptions.forEach((optionId) => {
       const selectedOption = allOptions.find(option => option._id === optionId);
       if (selectedOption) {
-        cost += selectedOption.optionPrice;
+        // Multiply perPerson optionPrice by attendeeCount if it's a perPerson option
+        const optionCost = selectedOption.perPerson ? selectedOption.optionPrice * updatedAttendeeCount : selectedOption.optionPrice;
+        cost += optionCost;
       }
     });
     return cost;
   };
 
-
   
-  // Calculate total cost whenever selected options change
+  // Calculate total cost whenever selected options or attendeeCount change
   useEffect(() => {
     const cost = calculateTotalCost();
     setTotalCost(cost);
-  }, [selectedOptions, allOptions]);
+  }, [selectedOptions, allOptions, updatedAttendeeCount]);
 
 
 
@@ -146,6 +148,13 @@ export default function UpdateEvent() {
     // Check if user has selected at least 3 options
     if (selectedOptions.length < 3) {
       setFormError("Please Select at least Three Options");
+      return;
+    }
+
+
+    // Check if user has selected at least 3 options
+    if (updatedAttendeeCount < 10) {
+      setFormError("Expected attendees count should not be less than 10");
       return;
     }
 
@@ -175,6 +184,7 @@ export default function UpdateEvent() {
     formData.append("eventDate", updatedEventDate);
     formData.append("eventTime", formattedEventTime);
     formData.append("eventDescription", updatedEventDescription);
+    formData.append("attendeeCount", updatedAttendeeCount);
     formData.append("totalCost", totalCost);
     formData.append("isPublic", isPublic);
     formData.append("ticketPrice", ticketPrice);
@@ -336,6 +346,16 @@ export default function UpdateEvent() {
                 className="h-24 w-full p-1 border-2 border-theme-green rounded text-lg font-lexend"
                 onChange={(e) => setUpdatedEventDescription(e.target.value)}
               ></textarea>
+            </div>
+
+
+            {/* Attendee Count*/}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedAttendeeCount">Attendee Count</label>
+              <input type="number" placeholder="Enter Attendee Count" name="updatedAttendeeCount" required value={updatedAttendeeCount}
+                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                onChange={(e) => setUpdatedAttendeeCount(e.target.value)}
+              />
             </div>
 
 

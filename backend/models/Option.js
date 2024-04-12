@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const optionSchema = new Schema({
     optionCategory: {
         type: String,
-        enum: ['Decoration', 'Catering', 'Entertainment', 'Photography', 'Other'],
+        enum: ['Decoration', 'Beverage ', 'Entertainment', 'Photography', 'Other'],
         required: true
     },
 
@@ -16,6 +16,10 @@ const optionSchema = new Schema({
     optionDescription: {
         type: String,
         required: true
+    },
+
+    perPerson: {
+        type: Boolean,
     },
 
     optionPrice: {

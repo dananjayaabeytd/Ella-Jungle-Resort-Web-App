@@ -32,6 +32,11 @@ const eventSchema = new Schema({
         required: true
     },
 
+    attendeeCount: {
+        type: Number,
+        required: true
+    },
+
     selectedOptions: [String], // Save as an array of strings
 
     totalCost: {

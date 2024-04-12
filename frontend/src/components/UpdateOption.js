@@ -14,7 +14,8 @@ export default function UpdateEvent() {
   const [updatedOptionCategory, setUpdatedOptionCategory] = useState("");
   const [updatedOptionName, setUpdatedOptionName] = useState("");
   const [updatedOptionDescription, setUpdatedOptionDescription] = useState("");
-  const [updatedOptionPrice, setUpdatedOptionPrice] = useState(0); // Total cost state
+  const [updatedPerPerson, setUpdatedPerPerson] = useState(false);
+  const [updatedOptionPrice, setUpdatedOptionPrice] = useState(""); // Total cost state
   const [file, setFile] = useState(null);
 
   const { optionId } = useParams(); // Get the optionId from URL params
@@ -53,6 +54,7 @@ export default function UpdateEvent() {
         setUpdatedOptionCategory(selectedOption.optionCategory || "");
         setUpdatedOptionName(selectedOption.optionName || "");
         setUpdatedOptionDescription(selectedOption.optionDescription || "");
+        setUpdatedPerPerson(selectedOption.perPerson || false);
         setUpdatedOptionPrice(selectedOption.optionPrice || "");
       
     }
@@ -132,7 +134,7 @@ export default function UpdateEvent() {
               >
                 <option value="" disabled>Select Category</option>
                 <option value="Decoration">Decoration</option>
-                <option value="Catering">Catering</option>
+                <option value="Beverage ">Beverage </option>
                 <option value="Entertainment">Entertainment</option>
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
@@ -158,6 +160,22 @@ export default function UpdateEvent() {
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
                 onChange={(e) => setUpdatedOptionDescription(e.target.value)}
               ></textarea>
+            </div>
+
+
+          {/* Price per Person */}
+            <div className="pt-6">
+              <label htmlFor="perPerson" className="flex items-center font-bold text-lg text-green-900 font-lexend">
+                <input
+                  type="checkbox"
+                  id="perPerson"
+                  name="perPerson"
+                  checked={updatedPerPerson === true}
+                  onChange={(e) => setUpdatedPerPerson(e.target.checked)}
+                  className="form-checkbox h-5 w-5 text-green-600"
+                />
+                <span className="ml-2 text-black">Per Person - The price is determined per one person</span>
+              </label>
             </div>
 
 

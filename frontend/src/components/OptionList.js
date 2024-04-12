@@ -96,7 +96,7 @@ export default function OptionList() {
                                 .filter((option) => option.optionCategory === category)
                                 .map((option) => (
                                     <div key={option._id} className="bg-white max-w-md max-h-ful px-4 m-4 rounded-t-md rounded-b-3xl border-secondary-green border-double border-8 overflow-hidden shadow-2xl hover:scale-up-110">
-                                        <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-80">
+                                        <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-44">
                                             <img className="w-full h-full object-fill mt-3" src={`http://localhost:5000/Images/${option.optionImage}`} alt="Event" />
                                         </div>
                                         <div className="px-0 mb-3 mt-2 rounded-xl">
@@ -104,7 +104,16 @@ export default function OptionList() {
                                                 <p className="text-lg font-semibold text-green-800 font-inika text-center">{option.optionName}</p>
                                             </div>
                                             <p className="text-sm font-mclaren text-center">{option.optionDescription}</p>
-                                            <p className="text-base text-blue-700 font-bold font-mclaren text-center pt-2 pb-1">{option.optionPrice} LKR</p>
+
+                                            <div className="flex justify-center ">
+                                              <p className="text-base text-blue-700 font-bold font-mclaren text-center px-1 pt-2 pb-1">{option.optionPrice} LKR</p>
+
+                                              {option.perPerson &&(
+                                                <p className="text-base text-blue-700 font-bold font-lexend text-center px-1  pt-2 pb-1"> per person</p>
+                                              )}
+                                             
+                                            </div>
+                                            
 
                                             {user.isAdmin && (
                                               <div className="mb-4 mt-1 flex justify-center items-center">

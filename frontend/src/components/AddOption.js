@@ -14,7 +14,8 @@ export default function AddOption() {
   const [optionCategory, setOptionCategory] = useState("");
   const [optionName, setOptionName] = useState("");
   const [optionDescription, setOptionDescription] = useState("");
-  const [optionPrice, setOptionPrice] = useState(0);  
+  const [perPerson, setPerPerson] = useState(false);
+  const [optionPrice, setOptionPrice] = useState("");  
   const [file, setFile] = useState(null);
   
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -33,6 +34,7 @@ export default function AddOption() {
     formData.append("optionCategory", optionCategory);
     formData.append("optionName", optionName);
     formData.append("optionDescription", optionDescription);
+    formData.append("perPerson", perPerson);
     formData.append("optionPrice", optionPrice);
     formData.append("file", file);
 
@@ -50,7 +52,7 @@ export default function AddOption() {
         setOptionCategory("");
         setOptionName("");
         setOptionDescription("");
-        setOptionPrice(0);
+        setOptionPrice("");
         setFile(null);
 
       })
@@ -102,7 +104,7 @@ export default function AddOption() {
               >
                 <option value="" disabled className="text-gray-500">Select Category</option>
                 <option value="Decoration">Decoration</option>
-                <option value="Catering">Catering</option>
+                <option value="Beverage ">Beverage </option>
                 <option value="Entertainment">Entertainment</option>
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
@@ -130,11 +132,25 @@ export default function AddOption() {
               > </textarea>
             </div>
             
-
+            
+            {/* Price per Person */}
+            <div className="pt-6">
+              <label htmlFor="perPerson" className="flex items-center font-bold text-lg text-green-900 font-lexend">
+                <input
+                  type="checkbox"
+                  id="perPerson"
+                  name="perPerson"
+                  checked={perPerson === true}
+                  onChange={(e) => setPerPerson(e.target.checked)}
+                  className="form-checkbox h-5 w-5 text-green-600"
+                />
+                <span className="ml-2 text-black">Per Person - The price is determined per one person</span>
+              </label>
+            </div>
 
 
             {/* Option Price */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="ml-30 text-base font-semibold mt-2">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
               <input required className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="number" placeholder="Enter Price" name="optionPrice" value={optionPrice}

@@ -14,6 +14,7 @@ export default function AddEvent() {
   const [eventTime, setEventTime] = useState(""); // State for ticket buying time
   const [eventDescription, setEventDescription] = useState("");
   const [totalCost, setTotalCost] = useState(""); // Total cost state
+  const [attendeeCount, setAttendeeCount] = useState(""); // Total cost state
   const [isPublic, setIsPublic] = useState(false);
   const [ticketPrice, setTicketPrice] = useState(""); // Tciket state 
   const [file, setFile] = useState(null);
@@ -52,26 +53,28 @@ export default function AddEvent() {
     }
   }
 
+  
   // Function to calculate total cost
   const calculateTotalCost = () => {
     let cost = 0;
     selectedOptions.forEach((optionId) => {
       const selectedOption = allOptions.find(option => option._id === optionId);
       if (selectedOption) {
-        cost += selectedOption.optionPrice;
+        // Multiply perPerson optionPrice by attendeeCount if it's a perPerson option
+        const optionCost = selectedOption.perPerson ? selectedOption.optionPrice * attendeeCount : selectedOption.optionPrice;
+        cost += optionCost;
       }
     });
     return cost;
   };
 
   
-  // Calculate total cost whenever selected options change
+  // Calculate total cost whenever selected options or attendeeCount change
   useEffect(() => {
-    
     const cost = calculateTotalCost();
     setTotalCost(cost);
-  }, [selectedOptions, allOptions]);
-  
+  }, [selectedOptions, allOptions, attendeeCount]);
+
 
   // Function to handle form submission
   function sendData(e) {
@@ -81,7 +84,7 @@ export default function AddEvent() {
 
 
     // Check if all fields are filled
-    if (!eventName || !eventCategory || !eventDate || !eventDescription || selectedOptions.length === 0) {
+    if (!eventName || !eventCategory || !eventDate || !eventDescription || attendeeCount == 0 || selectedOptions.length === 0) {
         setFormError("Please Fill all fields ");
         return;
       }
@@ -98,6 +101,13 @@ export default function AddEvent() {
         return;
       }
 
+
+       // Check if user has selected at least 3 options
+    if (attendeeCount < 10) {
+      setFormError("Expected attendees count should not be less than 10");
+      return;
+    }
+
        // Convert eventTime to "hh:mm A" format
   const formattedEventTime = formatEventTime(eventTime);
 
@@ -110,6 +120,7 @@ export default function AddEvent() {
     formData.append("eventDate", eventDate);
     formData.append("eventTime", formattedEventTime);
     formData.append("eventDescription", eventDescription);
+    formData.append("attendeeCount", attendeeCount);
     formData.append("totalCost", totalCost);
     formData.append("isPublic", isPublic);
     formData.append("ticketPrice", ticketPrice);
@@ -296,6 +307,19 @@ const formatEventTime = (timeString) => {
               </textarea>
             </div>
 
+            
+            
+            {/* Attendee Count*/}
+            <div className="ml-30 text-base font-semibold mt-5">
+              <label className="block font-bold text-xl text-green-800" htmlFor="attendeeCount">Attendee Count</label>
+              <input type="number" placeholder="Enter Attendee Count" name="attendeeCount" required value={attendeeCount}
+                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                onChange={(e) => setAttendeeCount(e.target.value)}
+              />
+            </div>
+
+
+
             {/* Event Options */}
             <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               {categories.map((category, index) => (
@@ -322,10 +346,12 @@ const formatEventTime = (timeString) => {
               ))}
             </div>
 
-            {/* Display total cost */}
             <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
             </div>
+
+
+
 
 
             {/* Is Public? */}
@@ -392,7 +418,7 @@ const formatEventTime = (timeString) => {
 
             {/* Display form errors */}
             {formError && (
-              <div className="ml-30 font-semibold text-xl font-inika mt-3 text-red-600">
+              <div className="ml-30 font-semibold text-xl font-lexend mt-3 text-red-600">
                 <p>{formError}</p>
               </div>
             )}

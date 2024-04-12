@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 
 // Add an Option with image
 router.route("/addOption").post(upload.single("file"), async (req, res) => {
-  const { optionCategory, optionName, optionDescription, optionPrice } = req.body;
+  const { optionCategory, optionName, optionDescription, perPerson, optionPrice } = req.body;
   const optionImage = req.file ? req.file.filename : ""; // Check if file exists
 
 
@@ -31,7 +31,7 @@ router.route("/addOption").post(upload.single("file"), async (req, res) => {
       optionCategory,
       optionName,
       optionDescription,
-      optionDescription,
+      perPerson,
       optionPrice,
       optionImage
     });
@@ -67,7 +67,7 @@ router.route("/allOptions").get(async (req, res) => {
 // Update Option
 router.route("/updateOption/:id").put(upload.single("file"), async (req, res) => {
   let optionId = req.params.id;
-  const { optionCategory, optionName, optionDescription, optionPrice } = req.body;
+  const { optionCategory, optionName, optionDescription, perPerson, optionPrice } = req.body;
   const optionImage = req.file ? req.file.filename : ""; // Check if file exists
   
   try {
@@ -75,6 +75,7 @@ router.route("/updateOption/:id").put(upload.single("file"), async (req, res) =>
       optionCategory,
       optionName,
       optionDescription,
+      perPerson,
       optionPrice,
       optionImage
       

@@ -175,6 +175,8 @@ export default function ViewEvent() {
                 {/* Event Description with McLaren font */}
                 <div className="p-des mt-2 max-h-24">
                 <p className="text-lg font-mclaren text-center">{selectedEvent.eventDescription}</p>
+
+                <p className="text-lg font-lexend font-bold text-center mt-3">Expected Attendees Count : {selectedEvent.attendeeCount}</p>
                 </div>
             </div>
 
