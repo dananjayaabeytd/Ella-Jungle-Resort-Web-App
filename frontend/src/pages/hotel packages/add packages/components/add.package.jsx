@@ -55,6 +55,13 @@ export default function AddPackage() {
   const sendDate = (e) => {
     e.preventDefault();
 
+    
+  if (!room_id) {
+    alert("Please select a room.");
+    return;
+  }
+
+
     const newPackage = {
       package_name,
       room_id,
@@ -163,7 +170,7 @@ export default function AddPackage() {
             >
               <option value="">Select Spa Package</option>
               {spas && spas.length > 0 && spas.map(spa => (
-                <option key={spa._id} value={spa._id}>{spa.spaPackageName}</option>
+                <option key={spa._id} value={spa._id}>{spa.packageName}</option>
               ))}
             </select>
           </div>

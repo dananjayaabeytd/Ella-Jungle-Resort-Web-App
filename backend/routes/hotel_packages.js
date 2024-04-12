@@ -1,98 +1,94 @@
 const router = require("express").Router();
-const { response } = require("express");
-let Hotel_Package = require("../models/Hotel_Package");
+const Hotel_Package = require("../models/Hotel_Package");
 
+// Insert a new package
+router.route("/add").post((req, res) => {
+  const { package_name, room_id, SActivity_id, spa_id, package_des, price, package_img } = req.body;
 
-//insert
-router.route("/add").post((req,res)=>{
+  const newPackage = new Hotel_Package({
+    package_name,
+    room_id,
+    SActivity_id,
+    spa_id,
+    package_des,
+    price,
+    package_img,
+  });
 
-    const package_name = req.body.package_name;
-    const room_name = req.body.room_name;
-    const SActivity_name = req.body.SActivity_name;
-    const spa_name = req.body.spa_name;
-    const package_des = req.body.package_des;
-    const price = Number(req.body.price);
-    const package_img = req.body.package_img;
-    
-
-    const newPackage = new Hotel_Package({
-        
-        package_name,
-        room_name,
-        SActivity_name,
-        spa_name,
-        package_des,
-        price,
-        package_img
+  newPackage
+    .save()
+    .then(() => {
+      res.json("Package Added");
     })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: "Failed to add package" });
+    });
+});
 
-    newPackage.save().then(()=>{
-        res.json("Package Added")
-    }).catch((err)=>{
-        console.log(err);
+// Read all packages
+router.route("/").get((req, res) => {
+  Hotel_Package.find()
+    .then((hotel_packages) => {
+      res.json(hotel_packages);
     })
-})
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: "Failed to fetch packages" });
+    });
+});
 
-//read
-router.route("/").get((req,res)=>{
+// Update a package by ID
+router.route("/update/:id").put(async (req, res) => {
+  const packageId = req.params.id;
+  const { package_name, room_id, SActivity_id, spa_id, package_des, price, package_img } = req.body;
 
-    Hotel_Package.find().then((hotel_packages)=>{
-        res.json(hotel_packages)
-    }).catch((err) =>{
-        console.log(err)
+  const updatePackage = {
+    package_name,
+    room_id,
+    SActivity_id,
+    spa_id,
+    package_des,
+    price,
+    package_img,
+  };
+
+  await Hotel_Package.findByIdAndUpdate(packageId, updatePackage)
+    .then(() => {
+      res.status(200).send({ status: "Package updated" });
     })
-})
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ error: "Failed to update package" });
+    });
+});
 
+// Delete a package by ID
+router.route("/delete/:id").delete(async (req, res) => {
+  const packageId = req.params.id;
 
-//update
-router.route("/update/:id").put(async(req,res) =>{
-    let packageId = req.params.id;
-    const { package_name,room_name,SActivity_name,spa_name,package_des,price,package_img} = req.body;
-
-    const updatePackage = {
-      package_name,
-      room_name,
-      SActivity_name,
-      spa_name,
-      package_des,
-      price,
-      package_img
-    }
-
-    const update = await Hotel_Package.findByIdAndUpdate(packageId,updatePackage).then(()=>{
-        res.status(200).send({status: "Package updated"})
-    }).catch((err) =>{
-        console.log(err);
-        res.status(500).send({status: "Error with updating data",error: err.message});
+  await Hotel_Package.findByIdAndDelete(packageId)
+    .then(() => {
+      res.status(200).send({ status: "Package deleted" });
     })
-    
-})
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ error: "Failed to delete package" });
+    });
+});
 
+// Get a specific package by ID
+router.route("/get/:id").get(async (req, res) => {
+  const packageId = req.params.id;
 
-//delete
-router.route("/delete/:id").delete(async(req,res) =>{
-    let packageId = req.params.id;
-
-    await Hotel_Package.findByIdAndDelete(packageId)
-    .then(()=>{
-        res.status(200).send({status: "Package deleted"});
-    }).catch((err)=>{
-        console.log(err.message);
-        res.status(500).send({status: "Error with delete package",error: err.message});
+  await Hotel_Package.findById(packageId)
+    .then((package) => {
+      res.status(200).send({ status: "Package fetched", package });
     })
-})
-
-
-//get specific user
-router.route("/get/:id").get(async(req,res)=>{
-    let packageId = req.params.id;
-    await Hotel_Package.findById(packageId)
-    .then((package)=>{
-        res.status(200).send({status: "Package fetched",package})
-    }).catch((err) =>{
-        console.group(err.message);
-        res.status(500).send({status:"Error with package",error:err.message})
-    })
-})
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ error: "Failed to fetch package" });
+    });
+});
 
 module.exports = router;
