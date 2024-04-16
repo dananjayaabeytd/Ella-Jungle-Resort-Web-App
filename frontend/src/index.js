@@ -39,7 +39,7 @@ const router = createBrowserRouter([
             element: <Login />,
           },
           {
-            path: '/sign-in/reset', 
+            path: '/sign-in/reset',
             element: <ResetPwd />,
           },
         ],
@@ -50,15 +50,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/agencyregister',
-        element: <PrivateRoute component={AgencyRegister}/>,
+        element: <PrivateRoute component={AgencyRegister} />, //protected routes
       },
       {
         path: '/all',
-        element: <PrivateRoute component={MembersTable}/>,
+        element: <PrivateRoute component={MembersTable} />, //protected routes
       },
       {
         path: '/profile',
-        element: <PrivateRoute component={Profile}/>,
+        element: <PrivateRoute component={Profile} />, //protected routes
       },
       {
         path: '/agency',
@@ -66,7 +66,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/:id',
-        element: <PrivateRoute component={AgencyProfile} />,
+        element: <PrivateRoute component={AgencyProfile} />, //protected routes
       },
       {
         path: 'update/:id',
@@ -80,7 +80,6 @@ const router = createBrowserRouter([
         path: 'updateuser/:id',
         element: <PrivateRoute component={UserUpdate} />,
       },
-
     ],
   },
 ]);
