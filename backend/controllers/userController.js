@@ -188,10 +188,6 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-
-// @desc    Admin Get User Profile
-// @route   GET /api/users
-// @access  Private/Admin
 const adminGetProfile = asyncHandler(async (req, res) => {
   const userId = req.params.id; // Get the user ID from the request parameters
 
@@ -215,9 +211,6 @@ const adminGetProfile = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc    Admin Update User Profile
-// @route   GET /api/users
-// @access  Private/Admin
 const adminUpdateProfile = asyncHandler(async (req, res) => {
   const userId = req.params.id;
 
