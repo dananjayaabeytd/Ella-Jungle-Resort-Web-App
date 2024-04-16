@@ -14,7 +14,10 @@ const reservationRoutes = require('./routes/reservationRoutes');
 
 dotenv.config();
 const port = process.env.PORT || 5000;
+
+//connect to the database
 connectDB();
+
 const cors = require('cors');
 const app = express();
 
