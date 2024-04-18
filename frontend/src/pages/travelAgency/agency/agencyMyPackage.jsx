@@ -51,7 +51,7 @@ function AgencyMyPackage() {
                 <button
                   className=" w-[100px] h-10 bg-green-500 rounded-full border-gray-400 border mx-auto text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
                   onClick={() => {
-                    window.location.href = `/AgencyCreatePackage/${agencyId}`;
+                    window.location.href = `/AgencyCreatePackage/${agencyId}/null`;
                   }}
                 >
                   Add
@@ -63,14 +63,14 @@ function AgencyMyPackage() {
         </div>
 
         <h1 className="flex mt-20 ml-40 text-2xl font-semibold">
-          {" "}
-          Published Packages{" "}
+          Published Packages
         </h1>
 
         <div className="container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
           {publishedPackages.map((agencyPackage) => (
             <AgencyPackageCard
               key={agencyPackage._id}
+              packageId={agencyPackage._id}
               packageName={agencyPackage.packageName}
               packageImage={agencyPackage.packageImage}
               packageDescription={agencyPackage.packageDescription}
@@ -79,7 +79,6 @@ function AgencyMyPackage() {
               activityId={agencyPackage.activityId}
               roomId={agencyPackage.roomId}
               transportId={agencyPackage.transportId}
-              
             />
           ))}
         </div>
@@ -90,6 +89,7 @@ function AgencyMyPackage() {
         <div className="container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
           {unPublishedPackages.map((agencyPackage) => (
             <AgencyPackageCard
+              key={agencyPackage._id}
               packageId={agencyPackage._id}
               packageName={agencyPackage.packageName}
               packageImage={agencyPackage.packageImage}
@@ -99,7 +99,6 @@ function AgencyMyPackage() {
               activityId={agencyPackage.activityId}
               roomId={agencyPackage.roomId}
               transportId={agencyPackage.transportId}
-              
             />
           ))}
         </div>

@@ -162,4 +162,42 @@ Router.route("/deleteAgencyPackage/:id").delete((req, res) => {
     });
 });
 
+
+// Route to publish a package
+Router.route('/publishPackage/:packageId').put( async (req, res) => {
+  const packageId = req.params.packageId;
+
+  try {
+    const updatedPackage = await AgencyPackages.findByIdAndUpdate(
+      packageId,
+      { published: true },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPackage);
+  } catch (error) {
+    console.error("Error publishing package:", error);
+    res.status(500).json({ message: "Failed to publish package." });
+  }
+});
+
+// Route to unpublish a package
+Router.route('/unpublishPackage/:packageId').put( async (req, res) => {
+  const packageId = req.params.packageId;
+
+  try {
+    const updatedPackage = await AgencyPackages.findByIdAndUpdate(
+      packageId,
+      { published: false },
+      { new: true }
+    );
+
+    res.status(200).json(updatedPackage);
+  } catch (error) {
+    console.error("Error unpublishing package:", error);
+    res.status(500).json({ message: "Failed to unpublish package." });
+  }
+});
+
+
 module.exports = Router;

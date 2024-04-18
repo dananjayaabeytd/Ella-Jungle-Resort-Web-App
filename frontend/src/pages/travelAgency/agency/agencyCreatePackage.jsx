@@ -235,7 +235,7 @@ let pId;
                 className="inline-block w-full py-3 border-0 border-gray-200 rounded-r-lg hover:text-green-500 hover:bg-gray-50 focus:outline-none focus:bg-green-300 focus:text-gray-500"
                 onClick={() => setActiveTab("Create Package")}
               >
-                Create Package
+                {packageId !== 'null' ? "Update Package" : "Create Package"}
               </button>
             </li>
           </ul>

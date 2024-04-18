@@ -37,8 +37,7 @@ function AgencyPackageFinal({
         setDiscount(packageDetails.discount);
         setCommission(packageDetails.commission);
         setFullDays(packageDetails.fullDays);
-        setPackageImage(packageDetails.packageImage);
-        
+        setPackageImage(packageDetails.packageImage || "No_Image.png");
       } catch (error) {
         console.error("Error fetching package details:", error);
       }
@@ -95,39 +94,53 @@ function AgencyPackageFinal({
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location.reload();
+          window.location = `AgencyMyPackage/${agencyId}`;
         });
       } else {
-        Swal.fire({
-          title: "Are you sure?",
-          text: "You won't be able to revert this!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#d33",
-          cancelButtonColor: "#3085d6",
-          confirmButtonText: "Yes, update it!",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
+        try {
+          const updatedPackageData = {
+            packageName,
+            packageImage: packageImageData,
+            roomId: selectedRoomId,
+            activityId: selectedActivityId || null,
+            transportId: selectedTransportId || null,
+            fullDays,
+            packageDescription,
+            commission,
+            discount,
+            price,
+            agencyId,
+            published: false, // Assuming you're not updating the published status
+          };
+
+          Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, update it!",
+          }).then(async (result) => {
             const response = await axios.put(
               `http://localhost:3005/updateAgencyPackage/${packageId}`,
-              formData,
-              {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              }
+              updatedPackageData
             );
+
             console.log(response.data);
+
             Swal.fire({
               icon: "success",
               title: "Package updated!",
               showConfirmButton: false,
               timer: 1500,
             }).then(() => {
-              window.location.reload();
+              window.location = `/AgencyPackageDetails/${packageId}`;
             });
-          }
-        });
+          });
+        } catch (error) {
+          console.error("Error updating package:", error);
+        }
       }
     } catch (error) {
       console.error("Error creating/updating package:", error);
@@ -144,10 +157,6 @@ function AgencyPackageFinal({
     console.log("discount", discount);
     console.log("price", price);
     console.log("agencyId", agencyId);
-
-
-
-    
   };
 
   const handleFileChange = (e) => {
@@ -342,6 +351,18 @@ function AgencyPackageFinal({
           {packageId === "null" ? "Create " : "Update "} Package
           <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease"></span>
         </button>
+      </div>
+      <div>
+        <h1>{packageName}</h1>
+        <h1>{selectedRoomId}</h1>
+        <h1>{selectedActivityId}</h1>
+        <h1>{selectedTransportId}</h1>
+        <h1>{fullDays}</h1>
+        <h1>{packageDescription}</h1>
+        <h1>{commission}</h1>
+        <h1>{discount}</h1>
+        <h1>{price}</h1>
+        <h1>{agencyId}</h1>
       </div>
     </div>
   );

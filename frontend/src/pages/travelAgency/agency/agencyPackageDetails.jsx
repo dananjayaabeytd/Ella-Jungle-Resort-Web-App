@@ -13,6 +13,9 @@ function AgencyPackageDetails() {
   const [checkOutDate, setCheckOutDate] = useState("");
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [transportDetails, setTransportDetails] = useState(null);
+  const [roomDetails, setRoomDetails] = useState(null);
+  const [activityDetails, setActivityDetails] = useState(null);
 
   useEffect(() => {
     const fetchPackageDetails = async () => {
@@ -21,6 +24,9 @@ function AgencyPackageDetails() {
           `http://localhost:3005/getAgencyPackageById/${packageId}`
         );
         setPackageDetails(response.data);
+        fetchTransportDetails(response.data.transportId);
+        fetchRoomDetails(response.data.roomId);
+        fetchActivityDetails(response.data.activityId);
       } catch (error) {
         console.error("Error fetching package details:", error);
       }
@@ -29,6 +35,51 @@ function AgencyPackageDetails() {
     fetchPackageDetails();
   }, [packageId]);
 
+  useEffect(() => {
+    const handlePopstate = () => {
+      // Reload the page when navigating back
+      window.location.reload();
+    };
+
+    // Add event listener for the popstate event
+    window.addEventListener("popstate", handlePopstate);
+
+    // Clean up event listener when component unmounts
+    return () => {
+      window.removeEventListener("popstate", handlePopstate);
+    };
+  }, []);
+
+  const fetchTransportDetails = async (transportId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3005/getTransportById/${transportId}`
+      );
+      setTransportDetails(response.data.transport);
+    } catch (error) {
+      console.error("Error fetching transport details:", error);
+    }
+  };
+
+  const fetchRoomDetails = async (roomId) => {
+    try {
+      const response = await axios.get(`http://localhost:3005/rooms/${roomId}`);
+      setRoomDetails(response.data); // Assuming the response contains the entire room object
+    } catch (error) {
+      console.error("Error fetching room details:", error);
+    }
+  };
+
+  const fetchActivityDetails = async (activityId) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3005/get/${activityId}`
+      );
+      setActivityDetails(response.data.specialActivity); // Assuming the activity object is nested under 'specialActivity'
+    } catch (error) {
+      console.error("Error fetching activity details:", error);
+    }
+  };
 
   const handleUpdatePackage = () => {
     window.location = `/AgencyCreatePackage/${packageDetails.agencyId}/${packageId}`;
@@ -50,15 +101,14 @@ function AgencyPackageDetails() {
           await axios.delete(
             `http://localhost:3005/deleteAgencyPackage/${packageId}`
           );
-          // Show success alert
+          console.log("Package deleted successfully");
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
             icon: "success",
+          }).then(() => {
+            window.location = `/AgencyMyPackage/${packageDetails.agencyId}`;
           });
-          // Optional: Redirect to another page after deletion
-          // window.location = "/some-other-page";
-          console.log("Package deleted successfully");
         } catch (error) {
           console.error("Error deleting package:", error);
           // Show error alert if deletion fails
@@ -122,6 +172,58 @@ function AgencyPackageDetails() {
     }
   };
 
+  const handlePublishPackage = async () => {
+    try {
+      await axios.put(`http://localhost:3005/publishPackage/${packageId}`);
+      console.log("Package published successfully");
+      Swal.fire({
+        icon: "success",
+        title: "Package Published successfully!",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error("Error publishing package:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  };
+
+  const handleUnPublishPackage = async () => {
+    try {
+      await axios.put(`http://localhost:3005/unpublishPackage/${packageId}`);
+      console.log("Package unpublished successfully");
+      Swal.fire({
+        icon: "success",
+        title: "Package Unpublished successfully!",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
+      });
+    } catch (error) {
+      console.error("Error unpublishing package:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Something went wrong!",
+        showConfirmButton: false,
+        timer: 1500
+      }).then(() => {
+        window.location.reload();
+      });
+    }
+  };
+
   return (
     <div className="mb-10">
       <div className="flex mx-auto my-5">
@@ -147,21 +249,30 @@ function AgencyPackageDetails() {
                 <h2 className="mb-2 text-xl">Commission : </h2>
                 <h2 className="mb-2 text-xl">Discount : </h2>
                 <h2 className="mb-2 text-xl">Price : </h2>
+                <h2 className="mb-2 text-xl">Transport : </h2>
               </div>
               <div className="ml-5">
                 <h2 className="mb-2 text-xl">{packageDetails.packageName}</h2>
-                <h2 className="mb-2 text-xl">Room Type</h2>
-                <h2 className="mb-2 text-xl">Special Activity</h2>
+                <h2 className="mb-2 text-xl">
+                  {roomDetails && roomDetails.roomType}
+                </h2>
+                <h2 className="mb-2 text-xl">
+                  {activityDetails && activityDetails.name}{" "}
+                  {activityDetails ? "" : "Not Included"}
+                </h2>
                 <h2 className="mb-2 text-xl">{packageDetails.fullDays}</h2>
                 <h2 className="mb-2 text-xl">{packageDetails.commission} % </h2>
                 <h2 className="mb-2 text-xl">{packageDetails.discount} %</h2>
                 <h2 className="mb-2 text-xl">LKR {packageDetails.price} .00</h2>
+                <h2 className="mb-2 text-xl">
+                  {transportDetails && transportDetails.vehicleType}{" "}
+                  {transportDetails ? "" : "Not Included"}
+                </h2>
               </div>
             </div>
             <div>
-              <h2 className="mb-2 text-xl">Transport</h2>
               <h2 className="mb-2 ml-[-230px] text-xl w-[400px]">
-                Description
+                {packageDetails.description}
               </h2>
             </div>
           </div>
@@ -171,8 +282,9 @@ function AgencyPackageDetails() {
       )}
 
       <div className="flex justify-center gap-20 mx-auto mt-5">
-        <button className="border border-gray-300 mb-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
-        onClick={handleUpdatePackage}
+        <button
+          className="border border-gray-300 mb-10 w-[200px] h-10 bg-green-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
+          onClick={handleUpdatePackage}
         >
           Update Package
         </button>
@@ -182,6 +294,21 @@ function AgencyPackageDetails() {
         >
           Delete Package
         </button>
+        {packageDetails && packageDetails.published ? (
+          <button
+            className="border border-gray-300 mb-10 w-[200px] h-10 bg-red-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-red-500 hover:to-red-400 hover:ring-2 hover:ring-offset-2 hover:ring-red-400 transition-all ease-out duration-300"
+            onClick={handleUnPublishPackage}
+          >
+            Unpublish
+          </button>
+        ) : (
+          <button
+            className="border border-gray-300 mb-10 w-[200px] h-10 bg-red-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-red-500 hover:to-red-400 hover:ring-2 hover:ring-offset-2 hover:ring-red-400 transition-all ease-out duration-300"
+            onClick={handlePublishPackage}
+          >
+            Publish
+          </button>
+        )}
       </div>
 
       <div className="mt-10">
