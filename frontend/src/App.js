@@ -8,6 +8,7 @@ import {BrowserRouter as Router,Routes,Route} from "react-router-dom";
 import HomeActivity from "./pages/HomeActivity/HomeActivity";
 import ReservationActivity from "./pages/ReservationActivity/ReservationActivity";
 import ConfirmReservation from "./pages/ConfirmReservation/ConfirmReservation";
+import ViewActivityReservation from "./pages/AllActivity/ViewActivityReservation";
 
 
 export default function App() {
@@ -23,6 +24,7 @@ export default function App() {
               <Route path="/home" element={<HomeActivity />} />
               <Route path="/apply/:id" element={<ReservationActivity />} />
               <Route path="/confirmactivity/:id" element={<ConfirmReservation/>}/>
+              <Route path="/allActivityReservation" element={<ViewActivityReservation/>} />
               </Routes>
              
                 

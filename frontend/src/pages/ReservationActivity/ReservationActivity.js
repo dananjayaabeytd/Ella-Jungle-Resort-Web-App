@@ -56,7 +56,7 @@ export default function ReservationActivity() {
                         <br /><hr /><br />
 
                         <p className="text-lg font-normal mb-2">
-                            <span className="font-bold">Price Per Person: LKR</span> {parseFloat(specialActivity.price).toFixed(2)}
+                            <span className="font-bold">Price Per Person: Rs.</span> {parseFloat(specialActivity.price).toFixed(2)}
                         </p>
                         <br />
 

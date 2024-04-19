@@ -41,7 +41,14 @@ router.post("/confirmactivity/:id", (req, res) => {
     });
 });
 
-
+//to view all the values added
+router.route("/allActivityReservation").get((req,res)=>{
+    Reservation.find().then((Reservation)=>{
+        res.json(Reservation)
+    }).catch((err)=>{
+        console.log(err)
+    })
+})
 
 
 module.exports = router;

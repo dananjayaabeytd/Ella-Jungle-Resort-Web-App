@@ -63,10 +63,17 @@ export default function ViewActivity() {
     return (
         <div className="container mx-auto flex flex-col items-center min-h-screen bg-green-200">
         <div className="container flex flex-col items-center mt-8">
-        <button type="submit" className="justify-center self-center px-8 py-3 mt-14 whitespace-nowrap bg-green-800 rounded-full text-white shadow-lg"
+
+        <button type="submit" className="justify-center  px-8 py-3 mt-10 whitespace-nowrap bg-green-800 rounded-full text-white shadow-lg"
                 onClick={() => window.location.href = `/add`}>
                 Add Activity
-            </button>
+        </button>
+
+        <button type="submit" className="justify-center  px-8 py-3 mt-4 whitespace-nowrap bg-green-800 rounded-full text-white shadow-lg"
+               onClick={() => window.location.href = `/allActivityReservation`}  >
+                View Reservations
+        </button>
+
         <br/>  <h1 className="text-5xl font-bold mb-4">All Special Activities</h1><br/>
             <input
                 type="text"

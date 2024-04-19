@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from 'react-router-dom';
 import HomeBackground from '../../assets/HomeBackground.jpg';
+//import ActivityMap from "./ActivityMap";
 
 
 // TopBackground component
@@ -104,12 +105,13 @@ export default function HomeActivity() {
                                     <span className="font-bold"></span> {SpecialActivity.name}
                                 </p>
                                 <p className="text-lg font-normal mb-2">
-                                    <span className="font-normal">Price Per Person (LKR):</span> {parseFloat(SpecialActivity.price).toFixed(2)}
+                                    <span className="font-normal">Price Per Person : Rs.</span> {parseFloat(SpecialActivity.price).toFixed(2)}
                                 </p>
                             </div>
                         </Link>
                     ))}
                 </div>
+               
             </div>
         </div>
     );
