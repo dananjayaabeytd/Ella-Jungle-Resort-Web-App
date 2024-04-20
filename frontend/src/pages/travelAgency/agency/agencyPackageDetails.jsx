@@ -106,13 +106,12 @@ function AgencyPackageDetails() {
           await axios.delete(
             `http://localhost:3005/deleteAgencyPackage/${packageId}`
           );
-          console.log("Package deleted successfully");
+          window.location = `/AgencyMyPackage/${packageDetails.agencyId}`;
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "Package deleted successfully",
             icon: "success",
-          }).then(() => {
-            window.location = `/AgencyMyPackage/${packageDetails.agencyId}`;
+            showConfirmButton: false,
           });
         } catch (error) {
           console.error("Error deleting package:", error);
@@ -242,13 +241,23 @@ function AgencyPackageDetails() {
 
       {packageDetails ? (
         <div className="container flex mx-auto w-[700px] border border-green-500 min-h-[100px] rounded-2xl bg-white bg-opacity-70">
-          <img
-            src={require(`../../../assets/agencyPackageImages/${
-              packageDetails.packageImage || "No_Image.png"
-            }`)}
-            alt="Package"
-            className="mx-8 my-8 border border-green-500 h-[250px] rounded-xl w-[200px]"
-          />
+          {packageDetails && packageDetails.packageImage && (
+            <img
+              src={require(`../../../assets/agencyPackageImages/${
+                packageDetails.packageImage || "No_Image.png"
+              }`)}
+              alt="Package"
+              className="mx-8 my-8 border border-green-500 h-[250px] rounded-xl w-[200px]"
+            />
+          )}
+          {(!packageDetails || !packageDetails.packageImage) && (
+            <img
+              src={require(`../../../assets/agencyPackageImages/No_Image.png`)}
+              alt="No"
+              className="mx-8 my-8 border border-green-500 h-[250px] rounded-xl w-[200px]"
+            />
+          )}
+
           <div>
             <div className="flex mt-8 ">
               <div className="">

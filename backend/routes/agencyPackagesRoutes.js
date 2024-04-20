@@ -1,5 +1,6 @@
 const Router = require("express").Router();
 const multer = require("multer");
+const fs = require("fs");
 
 let AgencyPackages = require("../models/agencyPackageModel");
 
@@ -151,16 +152,38 @@ Router.route("/updateAgencyPackage/:packageId").put(async (req, res) => {
 });
 
 // delete agency package by ID
-Router.route("/deleteAgencyPackage/:id").delete((req, res) => {
-  AgencyPackages.findByIdAndDelete(req.params.id)
-    .then(() => {
-      res.json("Package deleted successfully!");
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).json({ error: "Failed to delete package" });
-    });
+
+Router.route("/deleteAgencyPackage/:id").delete(async (req, res) => {
+  try {
+    // Find the package by ID
+    const deletedPackage = await AgencyPackages.findByIdAndDelete(req.params.id);
+
+    if (!deletedPackage) {
+      return res.status(404).json({ error: "Package not found" });
+    }
+
+    // Check if the package image exists
+    if (deletedPackage.packageImage) {
+      // Construct the path to the package image
+      const imagePath = `../frontend/src/assets/agencyPackageImages/${deletedPackage.packageImage}`;
+
+      // Check if the file exists
+      if (fs.existsSync(imagePath)) {
+        // Delete the file from the filesystem
+        fs.unlinkSync(imagePath);
+        console.log("Package image deleted successfully");
+      } else {
+        console.log("Package image not found");
+      }
+    }
+
+    res.json("Package deleted successfully!");
+  } catch (err) {
+    console.error("Error deleting package:", err);
+    res.status(500).json({ error: "Failed to delete package" });
+  }
 });
+
 
 
 // Route to publish a package
