@@ -20,23 +20,25 @@ function AgencyPackageBooking() {
   const [children, setChildren] = useState(0);
   const [agencyId, setAgencyId] = useState("");
 
+  // Ensure that the tw-elements library is initialized only once
   useEffect(() => {
-    // Ensure that the tw-elements library is initialized only once
     return () => {
       initTWE({});
     };
   }, []);
 
+  // * Fetching package details
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
         const response = await axios.get(
           `http://localhost:3005/getAgencyPackageById/${packageId}`
         );
+
         setPackageDetails(response.data);
-        // Extract the agencyId from the fetched package details
-        const agencyId = response.data.agencyId;
+        const agencyId = response.data.agencyId;     // Extract the agencyId from the fetched package details
         setAgencyId(agencyId);
+        
       } catch (error) {
         console.error("Error fetching package:", error);
       }
@@ -45,9 +47,7 @@ function AgencyPackageBooking() {
     fetchPackageDetails();
   }, [packageId]);
 
-
-  
-
+  // * Handle booking
   const handleBookNow = async (e) => {
     e.preventDefault();
     try {

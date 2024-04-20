@@ -12,14 +12,14 @@ function AgencySendRequest() {
     ArrivalDate: "",
     DepartureDate: "",
     NoOfDays: "",
-    NoOfNights: "", // Initialize the form data
+    NoOfNights: "",
     NoOfAdults: "",
     NoOfChildren: "",
     RoomType: "",
     RequestDescription: "",
-    UserId: userId, // Set the client ID
-    AgencyId: agencyId, // Set the agency ID
-    Status: "false", // Set the status to false
+    UserId: userId,
+    AgencyId: agencyId,
+    Status: "false",
   });
 
   const handleChange = (e) => {
@@ -33,7 +33,6 @@ function AgencySendRequest() {
     const currentDate = new Date().toISOString(); // Get the current date
 
     const updatedFormData = {
-      // Include the current date in the formData
       ...formData,
       SentDate: currentDate,
     };
@@ -49,10 +48,10 @@ function AgencySendRequest() {
         showConfirmButton: false,
         timer: 1500,
       }).then(() => {
-        window.location.reload(); // Reload the component after showing the success message
+        window.location.reload(); 
       });
 
-      console.log("Success:", response.data); // Log the response
+      console.log("Success:", response.data);
 
       // Clear the form after successful submission (optional)
       setFormData({
@@ -69,13 +68,13 @@ function AgencySendRequest() {
         Status: "",
       });
     } catch (error) {
-      console.error("Error:", error); // Log any errors
+      console.error("Error:", error); 
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Something went wrong!",
       }).then(() => {
-        window.location.reload(); // Reload the component after showing the success message
+        window.location.reload(); 
       });
     }
   };
@@ -171,7 +170,7 @@ function AgencySendRequest() {
                 <div className="flex mb-2">Room Type</div>
                 <div className="relative inline-flex hs-dropdown">
                   <select
-                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-gray-200 border-green-500 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
+                    className="inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-green-500 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none "
                     aria-labelledby="hs-dropdown-default"
                     onChange={handleChange}
                     name="RoomType"

@@ -12,13 +12,16 @@ function AgencySentRequest({
   const [formattedSentDate, setFormattedSentDate] = useState("");
   const [AgencyName, setAgencyName] = useState("");
 
+  // * Fetch agency name
   useEffect(() => {
     const fetchAgencyName = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/getAgency/${AgencyId}`);
+        const response = await axios.get(
+          `http://localhost:3005/getAgency/${AgencyId}`
+        );
         setAgencyName(response.data.agencyName || "");
       } catch (error) {
-        console.error("Error fetching agency:", error); 
+        console.error("Error fetching agency:", error);
       }
     };
 
@@ -56,7 +59,6 @@ function AgencySentRequest({
           </div>
           <div className="flex ">
             <div className="flex text-sm ">
-              {/* max 60 chars */}
               <p className="flex text-gray-600 ml-[-500px]">
                 Room Type : {RoomType}
               </p>

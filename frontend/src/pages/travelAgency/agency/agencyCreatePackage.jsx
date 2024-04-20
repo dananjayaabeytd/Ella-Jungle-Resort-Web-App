@@ -8,25 +8,23 @@ import AgencyPackageFinal from "../../../components/travelAgency/agency/agencyPa
 
 function AgencyCreatePackage() {
   const { agencyId, packageId } = useParams();
-  const [selectedRoomId, setSelectedRoomId] = useState(null); // State to store the ID of the selected room
-  const [selectedActivityId, setSelectedActivityId] = useState(null); // State to store the ID of the selected activity
-  const [selectedTransportId, setSelectedTransportId] = useState(null); // State to store the ID of the selected transport
- 
-let pId;
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  const [selectedActivityId, setSelectedActivityId] = useState(null);
+  const [selectedTransportId, setSelectedTransportId] = useState(null);
 
-
-  console.log("packageId", packageId);
-  
+  // * Update the selected room ID
   const handleRoomSelection = (roomId) => {
-    setSelectedRoomId(roomId); // Update the selected room ID
+    setSelectedRoomId(roomId);
   };
 
+  // * Update the selected activity ID
   const handleActivitySelection = (activityId) => {
-    setSelectedActivityId(activityId); // Update the selected activity ID
+    setSelectedActivityId(activityId);
   };
 
+  // * Update the selected transport ID
   const handleTransportSelection = (transportId) => {
-    setSelectedTransportId(transportId); // Update the selected transport ID
+    setSelectedTransportId(transportId);
   };
 
   const [activeTab, setActiveTab] = useState("Rooms");
@@ -34,13 +32,16 @@ let pId;
   const [activities, setActivities] = useState([]);
   const [transports, setTransports] = useState([]);
 
+  // * Fetching package details
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/getAgencyPackageById/${packageId}`);
+        const response = await axios.get(
+          `http://localhost:3005/getAgencyPackageById/${packageId}`
+        );
         const packageDetails = response.data;
-        
-        // Set the selected room ID based on package details
+
+        // Set the selected IDs based on package details
         setSelectedRoomId(packageDetails.roomId);
         setSelectedActivityId(packageDetails.activityId);
         setSelectedTransportId(packageDetails.transportId);
@@ -52,8 +53,7 @@ let pId;
     fetchPackageDetails(); // Call the function here
   }, [packageId]);
 
-  
-
+  // * Fetching rooms
   useEffect(() => {
     const fetchRooms = async () => {
       try {
@@ -64,9 +64,10 @@ let pId;
       }
     };
 
-    fetchRooms(); // Call the function here
+    fetchRooms();
   }, []);
 
+  // * Fetching activities
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -79,16 +80,17 @@ let pId;
       }
     };
 
-    fetchActivities(); // Call the function here
+    fetchActivities();
   }, []);
 
+  // * Fetching transports
   useEffect(() => {
     const fetchTransports = async () => {
       try {
         const response = await axios.get(
           "http://localhost:3005/getAllTransports"
         );
-        console.log("Transports response:", response.data); // Log the response data
+        console.log("Transports response:", response.data);
         if (Array.isArray(response.data.transports)) {
           setTransports(response.data.transports);
         } else {
@@ -104,6 +106,7 @@ let pId;
     fetchTransports();
   }, []);
 
+  // * Render the content based on the active tab
   const renderTabContent = () => {
     switch (activeTab) {
       case "Rooms":
@@ -235,14 +238,12 @@ let pId;
                 className="inline-block w-full py-3 border-0 border-gray-200 rounded-r-lg hover:text-green-500 hover:bg-gray-50 focus:outline-none focus:bg-green-300 focus:text-gray-500"
                 onClick={() => setActiveTab("Create Package")}
               >
-                {packageId !== 'null' ? "Update Package" : "Create Package"}
+                {packageId !== "null" ? "Update Package" : "Create Package"}
               </button>
             </li>
           </ul>
         </div>
-        <div className=" rounded-b-2xl">
-          {renderTabContent()}
-        </div>
+        <div className=" rounded-b-2xl">{renderTabContent()}</div>
       </div>
     </div>
   );

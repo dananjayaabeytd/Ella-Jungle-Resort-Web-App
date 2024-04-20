@@ -2,16 +2,12 @@ import { useEffect, useState } from "react";
 import { Ripple, Input, initTWE } from "tw-elements";
 
 function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
-
   const [isSticky, setIsSticky] = useState(false);
 
-  
   useEffect(() => {
-    // Initialize tw-elements
     initTWE({ Ripple, Input });
 
     const handleScroll = () => {
-      // Check if the scroll position is greater than the top position of the search component
       if (window.scrollY > 0) {
         setIsSticky(true);
       } else {
@@ -20,13 +16,17 @@ function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
     };
 
     window.addEventListener("scroll", handleScroll);
-    
+
     // Cleanup the event listener
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <section className={`flex flex-col border border-green-600 items-start px-5 py-6 text-sm rounded-[30px] bg-white bg-opacity-70 w-[300px] ${isSticky ? 'sticky top-0' : ''}`}>
+    <section
+      className={`flex flex-col border border-green-600 items-start px-5 py-6 text-sm rounded-[30px] bg-white bg-opacity-70 w-[300px] ${
+        isSticky ? "sticky top-0" : ""
+      }`}
+    >
       <div
         className="relative flex justify-center mx-auto bg-green-200 border rounded-xl"
         data-twe-input-wrapper-init

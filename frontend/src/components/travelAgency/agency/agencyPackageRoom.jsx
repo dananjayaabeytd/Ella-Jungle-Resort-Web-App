@@ -11,15 +11,16 @@ function AgencyPackageRoom({
   showCheckbox,
 }) {
   const handleClick = () => {
-    onSelect(roomId); // Call the onSelect function with the roomId when the room is clicked
+    onSelect(roomId);
   };
 
   return (
     <div className="">
-      <div className={`mx-auto bg-white rounded-3xl my-5 border-green-500 border max-w-[800px] ${
+      <div
+        className={`mx-auto bg-white rounded-3xl my-5 border-green-500 border max-w-[800px] ${
           isSelected ? "bg-green-200" : ""
         }`}
-        onClick={handleClick} // Call handleClick when the room is clicked
+        onClick={handleClick}
       >
         <div className="container flex flex-col mx-10 ">
           <div className="flex items-start my-5 ">
@@ -28,12 +29,6 @@ function AgencyPackageRoom({
               src="https://cdn.builder.io/api/v1/image/assets/TEMP/792c7ac941d0eed14463449a48a7e8eab3826f850bd35b8183438d15e0b42ad8?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
               alt=""
             />
-
-            {/* <img
-              className="ml-3 w-60 rounded-3xl"
-              src={require(`../../../assets/rooms/${image}`)}
-              alt={roomName}
-            /> */}
 
             <div className="flex flex-col items-start">
               <div className="flex pl-5 text-xl">

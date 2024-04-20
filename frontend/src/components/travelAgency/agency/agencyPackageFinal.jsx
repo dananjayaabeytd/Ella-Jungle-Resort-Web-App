@@ -23,6 +23,7 @@ function AgencyPackageFinal({
   const [fullDays, setFullDays] = useState(0);
   const [packageImage, setPackageImage] = useState(null);
 
+  // * Fetch package details
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
@@ -31,6 +32,7 @@ function AgencyPackageFinal({
         );
         const packageDetails = response.data;
 
+        // * Set package details
         setPackageName(packageDetails.packageName);
         setPackageDescription(packageDetails.packageDescription);
         setPrice(packageDetails.price);
@@ -78,6 +80,7 @@ function AgencyPackageFinal({
       formData.append("published", false);
 
       if (packageId === "null") {
+        // * Create new package
         const response = await axios.post(
           "http://localhost:3005/addAgencyPackage",
           formData,
@@ -94,9 +97,10 @@ function AgencyPackageFinal({
           showConfirmButton: false,
           timer: 1500,
         }).then(() => {
-          window.location = `AgencyMyPackage/${agencyId}`;
+          window.location = `/AgencyMyPackage/${agencyId}`;
         });
       } else {
+        // * Update existing package
         try {
           const updatedPackageData = {
             packageName,
@@ -110,7 +114,7 @@ function AgencyPackageFinal({
             discount,
             price,
             agencyId,
-            published: false, // Assuming you're not updating the published status
+            published: false,
           };
 
           Swal.fire({
@@ -146,23 +150,13 @@ function AgencyPackageFinal({
       console.error("Error creating/updating package:", error);
     }
 
-    console.log("packageName", packageName);
-    console.log("packageImage", packageImageData);
-    console.log("roomId", selectedRoomId);
-    console.log("activityId", selectedActivityId);
-    console.log("transportId", selectedTransportId);
-    console.log("fullDays", fullDays);
-    console.log("packageDescription", packageDescription);
-    console.log("commission", commission);
-    console.log("discount", discount);
-    console.log("price", price);
-    console.log("agencyId", agencyId);
   };
 
   const handleFileChange = (e) => {
     setPackageImage(e.target.files[0]);
   };
 
+  // * Fetch room details
   useEffect(() => {
     const fetchRoomDetails = async () => {
       if (!selectedRoomId) return;
@@ -181,6 +175,7 @@ function AgencyPackageFinal({
     }
   }, [selectedRoomId]);
 
+  // * Fetch activity details
   useEffect(() => {
     const fetchActivityDetails = async () => {
       try {
@@ -198,6 +193,7 @@ function AgencyPackageFinal({
     }
   }, [selectedActivityId]);
 
+  // * Fetch transport details
   useEffect(() => {
     console.log("Fetching transport details...");
     const fetchTransportDetails = async () => {
@@ -217,6 +213,7 @@ function AgencyPackageFinal({
     }
   }, [selectedTransportId]);
 
+  // * Update package price
   const updatePrice = () => {
     const roomPrice = selectedRoom ? selectedRoom.price : 0;
     const activityPrice = selectedActivity ? selectedActivity.price : 0;

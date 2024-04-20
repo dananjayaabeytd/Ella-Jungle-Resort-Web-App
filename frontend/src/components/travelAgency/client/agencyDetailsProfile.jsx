@@ -25,9 +25,10 @@ function AgencyDetailsProfile() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`http://localhost:3005/getAgency/${agencyId}`);
+        const result = await axios.get(
+          `http://localhost:3005/getAgency/${agencyId}`
+        );
         const { data } = result; // Extract data from the result object
-        // Assuming result.data contains all the necessary data
         setAgencyData(data); // Set the agencyData state with the received data
       } catch (error) {
         console.error("Error fetching agency data:", error);
@@ -71,9 +72,7 @@ function AgencyDetailsProfile() {
             <p>{agencyData.description}</p>
           </div>
           <div className="flex gap-5 my-5 ml-5">
-            <a
-              href="{ agencyData.websiteLink}"
-            >
+            <a href="{ agencyData.websiteLink}">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/e554f3583ab683cda87bc919720bac4db0578a18c5a864f04c398686f5e83077?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
                 alt="facebook"

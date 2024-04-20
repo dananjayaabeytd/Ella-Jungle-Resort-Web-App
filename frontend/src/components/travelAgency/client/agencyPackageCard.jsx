@@ -39,8 +39,6 @@ function AgencyPackageCard({
       });
   }, [activityId, roomId]);
 
-  // const imageUrl = packageImage ? `../../../assets/agencyPackageImages/${packageImage}` : `../../../assets/No_Image.png`;
-
   if (packageImage === null) {
     packageImage = "No_Image.png";
   }
@@ -49,10 +47,9 @@ function AgencyPackageCard({
     if (agencyId) {
       window.location = `/agencyPackageBooking/${userId}/${packageId}`;
     } else {
-      window.location = `/AgencyPackageDetails/${packageId}`; 
+      window.location = `/AgencyPackageDetails/${packageId}`;
     }
   };
-  
 
   return (
     <section className="w-full px-5 py-5 bg-gray-200 border border-black border-solid bg-opacity-60 grow rounded-xl max-md:pl-5 max-md:mt-10 max-md:max-w-full">
@@ -76,7 +73,9 @@ function AgencyPackageCard({
 
               <li>Room Type: {roomType} </li>
               <li>
-                {transportId !== "null" ? "Transport Included " : "Transport Not Included"}
+                {transportId !== "null"
+                  ? "Transport Included "
+                  : "Transport Not Included"}
               </li>
 
               <li>{packageDescription}</li>

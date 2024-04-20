@@ -7,7 +7,6 @@ function AgencySentRequestDetails() {
   const { requestId } = useParams();
   const [agencyName, setAgencyName] = useState("");
 
-
   const currentDate = new Date().toISOString();
 
   const [requestData, setRequestData] = useState({
@@ -58,7 +57,7 @@ function AgencySentRequestDetails() {
           AgencyId,
           SentDate,
           Status,
-        });// Fetch agency details using AgencyId
+        }); // Fetch agency details using AgencyId
         const agencyResult = await axios.get(
           `http://localhost:3005/getAgency/${AgencyId}`
         );
@@ -90,7 +89,6 @@ function AgencySentRequestDetails() {
             AgencyId: requestData.AgencyId,
             SentDate: currentDate,
             Status: false,
-            
           });
           Swal.fire("Saved!", "", "success").then(() => {
             window.location = `/AgencySentRequestList/${requestData.UserId}`;
@@ -117,7 +115,9 @@ function AgencySentRequestDetails() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:3005/DeleteRequest/${requestId}`);
+          await axios.delete(
+            `http://localhost:3005/DeleteRequest/${requestId}`
+          );
           Swal.fire({
             title: "Deleted!",
             text: "Your file has been deleted.",
@@ -145,8 +145,9 @@ function AgencySentRequestDetails() {
               <div className="flex flex-col gap-2 mx-20 text-xl">
                 <div className="flex items-start mb-2 ">
                   <label>Agency Name</label>
-                  <h1 className=" text-green-500  ml-[70px] text-2xl">{agencyName}</h1>
-                  
+                  <h1 className=" text-green-500  ml-[70px] text-2xl">
+                    {agencyName}
+                  </h1>
                 </div>
                 <div className="flex items-start mb-2 ">
                   <label>Arrival Date</label>

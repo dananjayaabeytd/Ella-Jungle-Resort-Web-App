@@ -11,7 +11,7 @@ function AgencyPackageActivity({
   showCheckbox,
 }) {
   const handleClick = () => {
-    onSelect(activityId); // Call the onSelect function with the activityId when the activity is clicked
+    onSelect(activityId);
   };
 
   return (
@@ -20,7 +20,7 @@ function AgencyPackageActivity({
         className={`mx-auto bg-white my-5 rounded-3xl border-green-500 border max-w-[800px] ${
           isSelected ? "bg-green-200" : ""
         }`}
-        onClick={handleClick} // Call handleClick when the room is clicked
+        onClick={handleClick}
       >
         <div className="container flex flex-col mx-10 ">
           <div className="flex items-start my-5 ">
@@ -46,7 +46,7 @@ function AgencyPackageActivity({
                     className={`flex items-center w-full p-0 leading-tight transition-all rounded-lg outline-none text-start hover:bg-blue-gray-50 hover:bg-opacity-80 hover:text-blue-gray-900 focus:bg-blue-gray-50 focus:bg-opacity-80 focus:text-blue-gray-900 active:bg-blue-gray-50 active:bg-opacity-80 active:text-blue-gray-900 ${
                       isSelected ? "bg-green-200" : ""
                     }`}
-                    onClick={handleClick} // Clicking anywhere on the row should toggle selection
+                    onClick={handleClick}
                   >
                     <label
                       htmlFor="vertical-list-react"

@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import React from "react";
 
-function AgencyNewRequest({ requestId, arrivalDate, departureDate, sentDate, userId}) {
-  
+function AgencyNewRequest({
+  requestId,
+  arrivalDate,
+  departureDate,
+  sentDate,
+  userId,
+}) {
   const formattedSentDate = () => {
     const date = new Date(sentDate);
     const year = date.getFullYear();
@@ -15,24 +18,24 @@ function AgencyNewRequest({ requestId, arrivalDate, departureDate, sentDate, use
     return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
-
   const handleUpdateClick = (requestId) => {
-    // Navigate to the UpdateEvent component with the event ID as a URL parameter
     window.location = `/AgencyRequestDetails/${requestId}`;
   };
+
   return (
-    
     <div onClick={() => handleUpdateClick(requestId)}>
       <div className="border border-green-300 flex gap-5 justify-between py-2.5 shadow-md bg-gray-300 bg-opacity-30  max-md:flex-wrap max-w-[900px] mx-auto mb-2 rounded-xl">
-          <div className="flex ">
-            <h2 className="ml-5 text-sm font-bold leading-5 text-neutral-800">
+        <div className="flex ">
+          <h2 className="ml-5 text-sm font-bold leading-5 text-neutral-800">
             Yasiru Pahan
           </h2>
         </div>
         <div className="flex ">
-            <div className="flex text-sm ">
-              {/* max 60 chars */}
-              <p className="flex text-gray-600 ml-[-500px]">Arrival Date: {arrivalDate}</p>
+          <div className="flex text-sm ">
+            {/* max 60 chars */}
+            <p className="flex text-gray-600 ml-[-500px]">
+              Arrival Date: {arrivalDate}
+            </p>
             <p className="flex ml-10 text-gray-600">
               Departure Date: {departureDate}
             </p>

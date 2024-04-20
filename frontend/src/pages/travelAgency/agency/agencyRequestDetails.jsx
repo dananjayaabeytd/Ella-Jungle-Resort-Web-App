@@ -5,8 +5,8 @@ import Swal from "sweetalert2";
 
 function AgencyRequestDetails() {
   const { requestId } = useParams();
-  const [clientName, setClientName] = useState("");
-  
+
+  // * set initial state for request data
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
     DepartureDate: "",
@@ -22,10 +22,13 @@ function AgencyRequestDetails() {
     Status: "",
   });
 
+  // * Fetching request data
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get( `http://localhost:3005/getRequestId/${requestId}` );
+        const result = await axios.get(
+          `http://localhost:3005/getRequestId/${requestId}`
+        );
         const {
           ArrivalDate,
           DepartureDate,
@@ -62,8 +65,7 @@ function AgencyRequestDetails() {
     fetchData();
   }, [requestId]);
 
-  console.log("AgencyId:", requestData.AgencyId);
-
+  // * Function to handle accepting request
   const handleAcceptRequest = async () => {
     try {
       const updatedRequest = await axios.put(
@@ -91,9 +93,6 @@ function AgencyRequestDetails() {
     }
   };
 
-  
-  
-
   return (
     <div>
       <div className="flex bg-gray-200 rounded-2xl bg-opacity-60 container my-10  flex-col mx-auto  border border-green-500  max-w-[1000px] ">
@@ -107,8 +106,7 @@ function AgencyRequestDetails() {
               <div className="flex flex-col gap-2 mx-20 text-xl">
                 <div className="flex items-start mb-2 ">
                   <label>Client Name</label>
-                  <h1 className=" text-green-500  ml-[70px] text-2xl">{}</h1>
-                  
+                  <h1 className=" text-green-500  ml-[70px] text-2xl">Hi</h1>
                 </div>
                 <div className="flex items-start mb-2 ">
                   <label>Arrival Date</label>
@@ -187,10 +185,19 @@ function AgencyRequestDetails() {
                     value={requestData.RoomType}
                     readOnly
                   >
-                    <option value="" disabled> Select Room Type</option>
-                    <option value="chalet" disabled>Eco Jungle Chalet</option>
-                    <option value="cottage" disabled>Eco Jungle Cottage</option>
-                    <option value="cabin" disabled>Eco Jungle Cabin</option>
+                    <option value="" disabled>
+                      {" "}
+                      Select Room Type
+                    </option>
+                    <option value="chalet" disabled>
+                      Eco Jungle Chalet
+                    </option>
+                    <option value="cottage" disabled>
+                      Eco Jungle Cottage
+                    </option>
+                    <option value="cabin" disabled>
+                      Eco Jungle Cabin
+                    </option>
                   </select>
                 </div>
               </div>

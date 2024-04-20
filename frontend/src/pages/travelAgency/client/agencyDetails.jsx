@@ -8,8 +8,8 @@ import AgencyPackageCard from "../../../components/travelAgency/client/agencyPac
 function AgencyDetails() {
   const { userId, agencyId } = useParams();
   const [agencyPackages, setAgencyPackages] = useState([]);
-  const [error, setError] = useState(null);
 
+  // * Fetching agency packages
   useEffect(() => {
     const fetchAgencyPackages = async () => {
       try {
@@ -18,17 +18,11 @@ function AgencyDetails() {
         );
         setAgencyPackages(response.data);
       } catch (error) {
-        setError(error);
+        console.error("Error fetching agency packages:", error);
       }
     };
     fetchAgencyPackages();
   }, [agencyId]);
-
-  if (error) {
-    // Handle error here, e.g., display an error message
-    return <div>Error: {error.message}</div>;
-  }
-
 
   return (
     <div>
@@ -49,18 +43,18 @@ function AgencyDetails() {
           <div className="container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
             {agencyPackages.map((agencyPackage) => (
               <AgencyPackageCard
-              key={agencyPackage._id} // This should remain as the key for React's internal use
-              packageId={agencyPackage._id} // Pass the package ID as a different prop
-              packageName={agencyPackage.packageName}
-              packageImage={agencyPackage.packageImage}
-              packageDescription={agencyPackage.packageDescription}
-              price={agencyPackage.price}
-              fullDays={agencyPackage.fullDays}
-              activityId={agencyPackage.activityId}
-              roomId={agencyPackage.roomId}
-              transportId={agencyPackage.transportId}
-              userId={userId}
-              agencyId={agencyId}
+                key={agencyPackage._id} // This should remain as the key for React's internal use
+                packageId={agencyPackage._id} // Pass the package ID as a different prop
+                packageName={agencyPackage.packageName}
+                packageImage={agencyPackage.packageImage}
+                packageDescription={agencyPackage.packageDescription}
+                price={agencyPackage.price}
+                fullDays={agencyPackage.fullDays}
+                activityId={agencyPackage.activityId}
+                roomId={agencyPackage.roomId}
+                transportId={agencyPackage.transportId}
+                userId={userId}
+                agencyId={agencyId}
               />
             ))}
           </div>

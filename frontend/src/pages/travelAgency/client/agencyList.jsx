@@ -13,9 +13,9 @@ function AgencyList() {
   const [filteredAgencies, setFilteredAgencies] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
   const [sortOrderName, setSortOrderName] = useState("asc");
-const [sortOrderRating, setSortOrderRating] = useState("asc");
-  
+  const [sortOrderRating, setSortOrderRating] = useState("asc");
 
+  // * Fetching agencies
   useEffect(() => {
     const fetchAgencies = async () => {
       try {
@@ -31,8 +31,8 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
     fetchAgencies();
   }, []);
 
+  // * Filter agencies based on search query
   useEffect(() => {
-    // Filter agencies based on search query
     const filtered = agencies.filter((agency) =>
       agency.agencyName.toLowerCase().includes(searchQuery.toLowerCase())
     );
@@ -43,10 +43,11 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
     setSearchQuery(event.target.value);
   };
 
+  // * Sort agencies based on the selected sort option and sortOrder
   const handleSortChange = (sortBy) => {
     const newSortOrder = sortOrder === "asc" ? "desc" : "asc";
     setSortOrder(newSortOrder);
-  
+
     // Sort agencies based on the selected sort option and sortOrder
     const sorted = [...filteredAgencies].sort((a, b) => {
       if (sortBy === "name") {
@@ -60,16 +61,12 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
       }
       return 0;
     });
-  
+
     setFilteredAgencies(sorted);
   };
-  
-
-  
 
   return (
     <div>
-
       <div className="relative">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/TEMP/4679ea9add8d1b500755cddc88572db5b5edc0e21c1eb1fca547dd90b914ba02?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
@@ -84,7 +81,6 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
       <div className="flex mt-5 ml-10">
         <div className="container flex-col justify-center mx-auto ">
           {filteredAgencies.map((agency) => {
-            
             console.log("Agency ID:", agency.id);
             console.log("Agency Name:", agency.agencyName);
             console.log("Agency Address:", agency.address);
@@ -113,7 +109,7 @@ const [sortOrderRating, setSortOrderRating] = useState("asc");
         </div>
 
         <div className="flex-1 mr-20">
-        <AgencySearch
+          <AgencySearch
             handleSearchInputChange={handleSearchInputChange}
             handleSortChange={handleSortChange}
             sortOrder={sortOrder}

@@ -8,6 +8,7 @@ function AgencySentRequestList() {
 
   const [requests, setRequests] = useState([]);
 
+  // * Fetch requests by user ID
   useEffect(() => {
     axios
       .get(`http://localhost:3005/getRequestByUser/${userId}`)

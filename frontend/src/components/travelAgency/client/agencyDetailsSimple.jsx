@@ -13,8 +13,6 @@ function AgencyDetailsSimple({
   userId,
   img,
 }) {
-  console.log("Agency ID:", agencyId);
-  console.log("userId:", userId);
 
   const handleDetailsClick = (agencyId, userId) => {
     window.location.href = `/AgencyDetails/${userId}/${agencyId}`;

@@ -17,6 +17,7 @@ function AgencyPackageDetails() {
   const [roomDetails, setRoomDetails] = useState(null);
   const [activityDetails, setActivityDetails] = useState(null);
 
+  // * fetch package details
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
@@ -35,14 +36,13 @@ function AgencyPackageDetails() {
     fetchPackageDetails();
   }, [packageId]);
 
+  // * back button press with reload
   useEffect(() => {
     const handlePopstate = () => {
-      // Reload the page when navigating back
-      window.location.reload();
+      window.location.reload(); // Reload the page when navigating back
     };
 
-    // Add event listener for the popstate event
-    window.addEventListener("popstate", handlePopstate);
+    window.addEventListener("popstate", handlePopstate); // Add event listener for the popstate event
 
     // Clean up event listener when component unmounts
     return () => {
@@ -50,6 +50,7 @@ function AgencyPackageDetails() {
     };
   }, []);
 
+  // * fetch transport details
   const fetchTransportDetails = async (transportId) => {
     try {
       const response = await axios.get(
@@ -61,6 +62,7 @@ function AgencyPackageDetails() {
     }
   };
 
+  // * fetch room details
   const fetchRoomDetails = async (roomId) => {
     try {
       const response = await axios.get(`http://localhost:3005/rooms/${roomId}`);
@@ -70,6 +72,7 @@ function AgencyPackageDetails() {
     }
   };
 
+  // * fetch special activity details
   const fetchActivityDetails = async (activityId) => {
     try {
       const response = await axios.get(
@@ -81,10 +84,12 @@ function AgencyPackageDetails() {
     }
   };
 
+  // * handle update package
   const handleUpdatePackage = () => {
     window.location = `/AgencyCreatePackage/${packageDetails.agencyId}/${packageId}`;
   };
 
+  // * handle delete package
   const handleDeletePackage = async () => {
     // Display confirmation dialog
     Swal.fire({
@@ -122,6 +127,7 @@ function AgencyPackageDetails() {
     });
   };
 
+  // * handle book now
   const handleBookNow = async (e) => {
     e.preventDefault();
     try {
@@ -172,6 +178,7 @@ function AgencyPackageDetails() {
     }
   };
 
+  // * handle publish package
   const handlePublishPackage = async () => {
     try {
       await axios.put(`http://localhost:3005/publishPackage/${packageId}`);
@@ -180,7 +187,7 @@ function AgencyPackageDetails() {
         icon: "success",
         title: "Package Published successfully!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       }).then(() => {
         window.location.reload();
       });
@@ -191,13 +198,14 @@ function AgencyPackageDetails() {
         title: "Oops...",
         text: "Something went wrong!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       }).then(() => {
         window.location.reload();
       });
     }
   };
 
+  // * handle unpublish package
   const handleUnPublishPackage = async () => {
     try {
       await axios.put(`http://localhost:3005/unpublishPackage/${packageId}`);
@@ -206,7 +214,7 @@ function AgencyPackageDetails() {
         icon: "success",
         title: "Package Unpublished successfully!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       }).then(() => {
         window.location.reload();
       });
@@ -217,7 +225,7 @@ function AgencyPackageDetails() {
         title: "Oops...",
         text: "Something went wrong!",
         showConfirmButton: false,
-        timer: 1500
+        timer: 1500,
       }).then(() => {
         window.location.reload();
       });
@@ -235,7 +243,9 @@ function AgencyPackageDetails() {
       {packageDetails ? (
         <div className="container flex mx-auto w-[700px] border border-green-500 min-h-[100px] rounded-2xl bg-white bg-opacity-70">
           <img
-            src={require(`../../../assets/agencyPackageImages/${packageDetails.packageImage}`)}
+            src={require(`../../../assets/agencyPackageImages/${
+              packageDetails.packageImage || "No_Image.png"
+            }`)}
             alt="Package"
             className="mx-8 my-8 border border-green-500 h-[250px] rounded-xl w-[200px]"
           />

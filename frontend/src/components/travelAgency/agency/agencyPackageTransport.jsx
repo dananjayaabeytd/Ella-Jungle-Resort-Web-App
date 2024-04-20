@@ -35,7 +35,9 @@ function AgencyPackageTransport({
             <div className="flex flex-col items-start">
               <div className="flex pl-5 text-xl">
                 <div>
-                  <h1 className="pb-2 text-2xl">Vehicle Type : {vehicleType}</h1>
+                  <h1 className="pb-2 text-2xl">
+                    Vehicle Type : {vehicleType}
+                  </h1>
                   <p className="pb-2">{description}</p>
                   <p className="pb-2">Maximum Passengers : {maxPassengers}</p>
                   <p className="pb-2">Price per Km : {pricePerKm}</p>
