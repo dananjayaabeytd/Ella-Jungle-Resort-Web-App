@@ -3,7 +3,6 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import AgencyDetailsSimple from "../../../components/travelAgency/client/agencyDetailsSimple";
 import AgencySearch from "../../../components/travelAgency/client/agencySearch";
-import bggreen from "../../../assets/bggreen.jpg";
 
 function AgencyList() {
   const { userId } = useParams();
@@ -12,8 +11,6 @@ function AgencyList() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredAgencies, setFilteredAgencies] = useState([]);
   const [sortOrder, setSortOrder] = useState("asc");
-  const [sortOrderName, setSortOrderName] = useState("asc");
-  const [sortOrderRating, setSortOrderRating] = useState("asc");
 
   // * Fetching agencies
   useEffect(() => {

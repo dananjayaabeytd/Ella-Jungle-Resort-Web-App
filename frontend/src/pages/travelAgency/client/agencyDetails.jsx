@@ -16,7 +16,10 @@ function AgencyDetails() {
         const response = await axios.get(
           `http://localhost:3005/getAgencyPackageByAgencyId/${agencyId}`
         );
-        setAgencyPackages(response.data);
+        const sortedPackages = response.data.sort((a, b) =>
+          a.packageName.localeCompare(b.packageName)
+        );
+        setAgencyPackages(sortedPackages);
       } catch (error) {
         console.error("Error fetching agency packages:", error);
       }
@@ -26,21 +29,19 @@ function AgencyDetails() {
 
   return (
     <div>
-      <div className="flex bg-gray-200 rounded-b-2xl bg-opacity-60">
-        <div className="flex ">
+      <div className='flex bg-gray-200 rounded-b-2xl bg-opacity-60'>
+        <div className='flex '>
           <AgencyDetailsProfile agencyId={agencyId} />
         </div>
 
         <AgencyRequestPackage userId={userId} agencyId={agencyId} />
       </div>
       <div>
-        <div className="flex justify-center mt-20 mb-10">
-          <h1 className="flex justify-center text-4xl font-semibold">
-            Our Packages
-          </h1>
+        <div className='flex justify-center mt-20 mb-10'>
+          <h1 className='flex justify-center text-4xl font-semibold'>Our Packages</h1>
         </div>
-        <div className="flex justify-center">
-          <div className="container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]">
+        <div className='flex justify-center'>
+          <div className='container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]'>
             {agencyPackages.map((agencyPackage) => (
               <AgencyPackageCard
                 key={agencyPackage._id} // This should remain as the key for React's internal use
