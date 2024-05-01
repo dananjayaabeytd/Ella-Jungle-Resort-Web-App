@@ -20,12 +20,24 @@ export default function UpdateEvent() {
   const [totalCost, setTotalCost] = useState(""); // Total cost state
   const [isPublic, setIsPublic] = useState(false); // Total cost state
   const [ticketPrice, setTicketPrice] = useState(""); // Total cost state
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
+  const [reservedSlots, setReservedSlots] = useState([]);
+  
   
   const [file, setFile] = useState(null);
 
-  const [formError, setFormError] = useState("");
-
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
+
+  const [formError, setFormError] = useState("");
+  
+  const timeSlots = [
+    { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
+    { id: 'slot2', label: '12pm to 4pm', value: '12:00-16:00' },
+    { id: 'slot3', label: '4pm to 8pm', value: '16:00-20:00' },
+    { id: 'slot4', label: '8pm to 12am', value: '20:00-00:00' },
+  ];
+
+  
 
   const navigate = useNavigate();
 
@@ -35,6 +47,8 @@ export default function UpdateEvent() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
   const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
+  const [showDescription, setShowDescription] = useState(null);
 
   
   useEffect(() => {
@@ -60,6 +74,35 @@ export default function UpdateEvent() {
       setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
     }
   }
+
+
+  
+  const handleTimeSlotChange = (slotId) => {
+    if (selectedTimeSlots.includes(slotId)) {
+      setSelectedTimeSlots(prev => prev.filter(id => id !== slotId));
+    } else {
+      setSelectedTimeSlots(prev => [...prev, slotId]);
+    }
+  };
+
+
+  
+ // Fetch reserved slots for the selected date
+ useEffect(() => {
+  const fetchReservedSlots = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/event/reservedSlots/${updatedEventDate}`);
+      setReservedSlots(response.data.reservedSlots);
+    } catch (error) {
+      console.error("Error fetching reserved slots:", error.message);
+    }
+  };
+
+  if (updatedEventDate) {
+    fetchReservedSlots();
+  }
+}, [updatedEventDate]);
+
 
 
 
@@ -93,13 +136,14 @@ export default function UpdateEvent() {
       setUpdatedEventName(selectedEvent.eventName || "");
       setUpdatedEventCategory(selectedEvent.eventCategory || "");
       setUpdatedEventDate(selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : "");
-      setUpdatedEventTime(selectedEvent.eventTime || "");
+      setUpdatedEventTime(selectedEvent.eventTime || ""); // Preload eventTime
       setUpdatedEventDescription(selectedEvent.eventDescription || "");
       setUpdatedAttendeeCount(selectedEvent.attendeeCount || "");
       setTotalCost(selectedEvent.totalCost || null);
       setIsPublic(selectedEvent.isPublic || false);
       setTicketPrice(selectedEvent.ticketPrice || "");
       setSelectedOptions(selectedEvent.selectedOptions || [].map(id => id.toString()));
+      setSelectedTimeSlots(selectedEvent.selectedTimeSlots || []);
     }
   }, [selectedEvent]);
 
@@ -116,15 +160,23 @@ export default function UpdateEvent() {
         cost += optionCost;
       }
     });
+
+    
+    // Add additional cost for each selected time slot
+    const timeSlotCost = selectedTimeSlots.length * 1000; // Assuming 1000 LKR per slot
+    cost += timeSlotCost;
+
+
     return cost;
   };
 
+
   
-  // Calculate total cost whenever selected options or attendeeCount change
+  // Calculate total cost whenever selected options, selected time slots, or attendee count change
   useEffect(() => {
     const cost = calculateTotalCost();
     setTotalCost(cost);
-  }, [selectedOptions, allOptions, updatedAttendeeCount]);
+  }, [selectedOptions, allOptions, selectedTimeSlots, updatedAttendeeCount]);
 
 
 
@@ -159,30 +211,11 @@ export default function UpdateEvent() {
     }
 
 
-      
-  // Function to format event time to "hh:mm A" format
-  const formatEventTime = (timeString) => {
-    // Split the timeString into hours and minutes
-    const [hours, minutes] = timeString.split(":");
-    // Convert hours to number
-    let parsedHours = parseInt(hours, 10);
-    // Determine AM or PM
-    const suffix = parsedHours >= 12 ? "PM" : "AM";
-    // Adjust for 12-hour format
-    parsedHours = parsedHours % 12 || 12;
-    // Return formatted time
-    return `${parsedHours}:${minutes} ${suffix}`;
-  };
-
-  // Convert eventTime to "hh:mm A" format
-  const formattedEventTime = formatEventTime(updatedEventTime);
-
-
     const formData = new FormData();
     formData.append("eventName", updatedEventName);
     formData.append("eventCategory", updatedEventCategory);
     formData.append("eventDate", updatedEventDate);
-    formData.append("eventTime", formattedEventTime);
+    formData.append("eventTime", updatedEventTime);
     formData.append("eventDescription", updatedEventDescription);
     formData.append("attendeeCount", updatedAttendeeCount);
     formData.append("totalCost", totalCost);
@@ -195,6 +228,17 @@ export default function UpdateEvent() {
   selectedOptions.forEach((optionId) => {
     formData.append("selectedOptions[]", optionId);
   });
+
+  
+   // Append selected time slots excluding reserved slots
+   const selectedTimeSlotsToAppend = selectedTimeSlots.filter(slotId => !reservedSlots.includes(slotId));
+
+   // Append filtered selected time slots
+   selectedTimeSlotsToAppend.forEach(slotId => {
+     formData.append("selectedTimeSlots[]", slotId);
+   });
+
+
 
     try {
       await axios.put(`http://localhost:5000/event/updateEvent/${eventId}`, formData, {
@@ -317,26 +361,50 @@ export default function UpdateEvent() {
 
             <div className="flex">
 
-            {/* Event Date */}
-            <div className="ml-30 text-base font-semibold mt-5">
-                <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
-                <input type="date" placeholder="Event Date" name="eventDate" required value={updatedEventDate}
-                    min={getCurrentDate()} // Set the min attribute to today's date
-                    className="w-full p-1 border-2 border-theme-green rounded text-lg font-lexend form-check"
-                    onChange={(e) => setUpdatedEventDate(e.target.value)}
-                />
+              {/* Event Date */}
+              <div className="ml-30 text-base font-semibold mt-5">
+                  <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
+                  <input type="date" placeholder="Event Date" name="eventDate" required value={updatedEventDate}
+                      min={getCurrentDate()} // Set the min attribute to today's date
+                      className="w-full p-1 border-2 border-theme-green rounded text-lg font-lexend form-check"
+                      onChange={(e) => setUpdatedEventDate(e.target.value)}
+                  />
+              </div>
+
+              {/* Event Time */}
+              <div className="pl-20 text-base font-semibold mt-5">
+                  <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
+                  <input type="time" placeholder="Event Time" name="eventTime" required value={updatedEventTime}
+                      min={getCurrentDate()} // Set the min attribute to today's date
+                      className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+                      onChange={(e) => setUpdatedEventTime(e.target.value)}
+                  />
+              </div>
             </div>
 
-            {/* Event Time */}
-            <div className="pl-20 text-base font-semibold mt-5">
-                <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
-                <input type="time" placeholder="Event Time" name="eventTime" required value={updatedEventTime}
-                    min={getCurrentDate()} // Set the min attribute to today's date
-                    className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                    onChange={(e) => setUpdatedEventTime(e.target.value)}
-                />
+            
+            <div className="ml-30 text-base font-semibold mt-5">
+              <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
+              {timeSlots.map(slot => (
+                <div key={slot.id} className="flex mt-2">
+                  <input
+                    type="checkbox"
+                    id={slot.id}
+                    disabled={reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id)}
+                    checked={selectedTimeSlots.includes(slot.id)}
+                    onChange={() => handleTimeSlotChange(slot.id)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={slot.id} className="ml-2 text-black">{slot.label}</label>
+                  {reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id) && (
+                    <span className="ml-2 text-red-600">This time slot is already reserved</span>
+                  )}
+                </div>
+              ))}
             </div>
-            </div>
+
+
+
 
             {/* Event Description */}
             <div className="ml-30 text-base font-semibold mt-5">
@@ -361,31 +429,41 @@ export default function UpdateEvent() {
 
 
             {/* Event Options */}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-                
-                {categories.map((category, index) => (
-                  <div key={index} className="text-base font-semibold ml-16">
-                    {/* Category Title */}
-                    <p className="mt-5 mb-1 text-lg font-bold text-green-700">{category} Options:-</p>
-                    {/* Options for this category */}
-                    {allOptions.filter((option) => option.optionCategory === category).map((option) => (
-                        <div key={option._id} className="form-check">
-                          <input
-                            type="checkbox"
-                            id={option._id}
-                            name={option.optionName}
-                            checked={selectedOptions.includes(option._id)}
-                            onChange={(e) => handleOptionChange(option._id, e.target.checked)}
-                            className="form-checkbox h-5 w-5 text-green-600 "
-                          />
-                          <label htmlFor={option._id} className="ml-2 text-black">
-                            {option.optionName} - {option.optionPrice} LKR
-                          </label>
-                        </div>
-                      ))}
-                  </div>
-                ))}
+<div className="lg:pl-2 lg:pr-0 sm:px-20 pt-0 grid grid-cols-2 gap-10 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+  {categories.map((category, index) => (
+    <div key={index} className="text-base font-semibold ml-16">
+      {/* Category Title */}
+      <p className="mt-5 mb-1 text-lg font-bold text-green-900">{category} Options:-</p>
+      {/* Options for this category */}
+      {allOptions.filter((option) => option.optionCategory === category).map((option) => (
+        <div key={option._id} className="form-check flex items-center">
+          <input
+            type="checkbox"
+            id={option._id}
+            name={option.optionName}
+            checked={selectedOptions.includes(option._id)}
+            onChange={(e) => handleOptionChange(option._id, e.target.checked)}
+            className="form-checkbox h-5 w-5 text-green-600"
+          />
+          <label
+            htmlFor={option._id}
+            className="ml-2 text-black cursor-pointer relative"
+            onMouseEnter={() => setShowDescription(option._id)}
+            onMouseLeave={() => setShowDescription(null)}
+          >
+            {option.optionName} - {option.optionPrice} LKR
+            {/* Tooltip */}
+            {showDescription === option._id && (
+              <div className="absolute z-10 -top-10 left-36 font-lexend bg-green-600 text-white text-xs rounded shadow p-1 w-48">
+                {option.optionDescription}
               </div>
+            )}
+          </label>
+        </div>
+      ))}
+    </div>
+  ))}
+</div>
 
 
 

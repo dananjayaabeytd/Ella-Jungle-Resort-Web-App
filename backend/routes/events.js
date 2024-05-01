@@ -22,7 +22,7 @@ const upload = multer({ storage: storage });
 
 // Add an event with image
 router.route("/addEvent").post(upload.single("file"), async (req, res) => {
-  const { eventUserId, eventName, eventCategory, eventDate, eventTime, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice } = req.body;
+  const { eventUserId, eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
 
     // Convert selectedOptions to an array of ObjectIds
@@ -39,6 +39,7 @@ router.route("/addEvent").post(upload.single("file"), async (req, res) => {
       eventCategory,
       eventDate,
       eventTime,
+      selectedTimeSlots,
       eventDescription,
       attendeeCount,
       selectedOptions,
@@ -79,7 +80,7 @@ router.route("/getAllEvents").get(async (req, res) => {
 // Update event
 router.route("/updateEvent/:id").put(upload.single("file"), async (req, res) => {
   let eventId = req.params.id;
-  const { eventName, eventCategory, eventDate, eventTime, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice } = req.body;
+  const { eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
   
     // Convert selectedOptions to an array of ObjectIds
@@ -93,6 +94,7 @@ router.route("/updateEvent/:id").put(upload.single("file"), async (req, res) => 
       eventCategory,
       eventDate,
       eventTime,
+      selectedTimeSlots,
       eventDescription,
       attendeeCount,
       selectedOptions,
@@ -171,6 +173,28 @@ router.route("/popUpEvents").get(async (req, res) => {
     res.status(500).send({ status: "Error with fetching events", error: error.message });
   }
 });
+
+
+
+
+// Route to fetch reserved slots for a given date
+router.get('/reservedSlots/:eventDate', async (req, res) => {
+  const eventDate = req.params.eventDate;
+  try {
+    // Find events that match the given date
+    const events = await Event.find({ eventDate });
+
+    // Extract reserved time slots from events
+    const reservedSlots = events.flatMap(event => event.selectedTimeSlots);
+    
+    res.json({ reservedSlots });
+  } catch (error) {
+    console.error("Error fetching reserved slots:", error.message);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
 
 
 module.exports = router;

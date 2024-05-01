@@ -27,6 +27,8 @@ const eventSchema = new Schema({
         required: true
     },
 
+    selectedTimeSlots: [String], // Array of selected time slots
+
     eventDescription: {
         type: String,
         required: true

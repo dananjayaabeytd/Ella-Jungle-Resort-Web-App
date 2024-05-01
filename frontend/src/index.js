@@ -115,7 +115,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/addEvent',
-        element: < AddEvent/>,
+        element: < TestPage/>,
       },
       {
         path: '/updateEvent/:eventId',

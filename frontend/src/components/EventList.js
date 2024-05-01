@@ -64,6 +64,21 @@ export default function EventList() {
       }
     }
   };
+
+
+  // Function to format event time to "hh:mm A" format
+const formatEventTime = (timeString) => {
+  // Split the timeString into hours and minutes
+  const [hours, minutes] = timeString.split(":");
+  // Convert hours to number
+  let parsedHours = parseInt(hours, 10);
+  // Determine AM or PM
+  const suffix = parsedHours >= 12 ? "PM" : "AM";
+  // Adjust for 12-hour format
+  parsedHours = parsedHours % 12 || 12;
+  // Return formatted time
+  return `${parsedHours}:${minutes} ${suffix}`;
+};
   
 
 
@@ -98,7 +113,10 @@ export default function EventList() {
       {/* Cards for each Event */}
       <div className=" px-8 pb-3 justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-x-6  w-full ">
           {/* Cards for this category */}
-          {allEvents.filter(event => event.isPublic === true).map((event) => (
+          {allEvents.filter(event => event.isPublic === true).map((event) => {
+          //Convert eventTime to "hh:mm A" format
+          const formattedEventTime = formatEventTime(event.eventTime);
+          return(
                   <div key={event._id} className="container bg-fixed my-3 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
                     <div className="grid  grid-cols-2 gap-9 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                       <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-64">
@@ -114,7 +132,11 @@ export default function EventList() {
 
             <div className="flex justify-between">
               <p className="text-base font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</p>
-              <p className="text-base font-bold text-green-600 pr-9">{event.eventTime}</p>
+              
+          
+          
+
+              <p className="text-base font-bold text-green-600 pr-9">{formattedEventTime}</p>
             </div>
             
   
@@ -138,7 +160,7 @@ export default function EventList() {
         </div>  
                       </div>
                   </div>
-              ))}
+              )})}
       </div>
 
 

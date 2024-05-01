@@ -64,6 +64,23 @@ export default function MyEvents() {
       }
     }
   };
+
+
+  
+  // Function to format event time to "hh:mm A" format
+const formatEventTime = (timeString) => {
+  // Split the timeString into hours and minutes
+  const [hours, minutes] = timeString.split(":");
+  // Convert hours to number
+  let parsedHours = parseInt(hours, 10);
+  // Determine AM or PM
+  const suffix = parsedHours >= 12 ? "PM" : "AM";
+  // Adjust for 12-hour format
+  parsedHours = parsedHours % 12 || 12;
+  // Return formatted time
+  return `${parsedHours}:${minutes} ${suffix}`;
+};
+  
   
 
 
@@ -93,7 +110,10 @@ export default function MyEvents() {
   
       {/* Your scrolling content */}
       {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.filter(event => event.eventUserId === user._id).map((event) => (
+        {allEvents.filter(event => event.eventUserId === user._id).map((event) => {
+        //Convert eventTime to "hh:mm A" format
+        const formattedEventTime = formatEventTime(event.eventTime);
+        return(
       <div key={event._id} className="container bg-fixed my-5 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 
       
@@ -112,7 +132,7 @@ export default function MyEvents() {
 
             <div className="flex justify-between mt-2">
               <p className="text-xl font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</p>
-              <p className="text-xl font-bold text-green-600 pr-12">{event.eventTime}</p>
+              <p className="text-xl font-bold text-green-600 pr-12">{formattedEventTime}</p>
             </div>
   
             {/* Event Description with McLaren font */}
@@ -143,7 +163,7 @@ export default function MyEvents() {
       </div>
       
     </div>
-    ))}
+    )})}
     {/* Scrolling content End*/}
   
       

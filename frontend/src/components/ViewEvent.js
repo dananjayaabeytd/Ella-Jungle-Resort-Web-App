@@ -121,6 +121,25 @@ export default function ViewEvent() {
   const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
 
 
+  
+  // Function to format event time to "hh:mm A" format
+const formatEventTime = (timeString) => {
+  // Split the timeString into hours and minutes
+  const [hours, minutes] = timeString.split(":");
+  // Convert hours to number
+  let parsedHours = parseInt(hours, 10);
+  // Determine AM or PM
+  const suffix = parsedHours >= 12 ? "PM" : "AM";
+  // Adjust for 12-hour format
+  parsedHours = parsedHours % 12 || 12;
+  // Return formatted time
+  return `${parsedHours}:${minutes} ${suffix}`;
+};
+
+//Convert eventTime to "hh:mm A" format
+const formattedEventTime = formatEventTime(selectedEvent.eventTime);
+
+
 
   return (
     <div className="relative min-h-screen">
@@ -168,7 +187,7 @@ export default function ViewEvent() {
                 
                 <div className="flex justify-between mt-2 px-20">
                 <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
-                <div className=" text-2xl font-bold text-green-600 text-center ">{selectedEvent.eventTime}</div>
+                <div className=" text-2xl font-bold text-green-600 text-center ">{formattedEventTime}</div>
                 </div>
 
     
@@ -183,7 +202,8 @@ export default function ViewEvent() {
 
             {/*Options Loop*/}
             <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
-              {categories.map((category, index) => (
+              {categories.map((category, index) => 
+              (
                       <div key={index} className="text-base font-semibold ml-16">
                         {/* Category Title */}
                         <p className="mb-1 block text-lg font-mclaren text-green-800">{category} Options:-</p>

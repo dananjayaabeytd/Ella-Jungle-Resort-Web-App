@@ -20,6 +20,9 @@ export default function AddEvent() {
   const [file, setFile] = useState(null);
   const [allOptions, setAllOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [selectedTimeSlots, setSelectedTimeSlots] = useState([]);
+  const [reservedSlots, setReservedSlots] = useState([]);
+  
   
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -30,6 +33,14 @@ export default function AddEvent() {
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   const [formError, setFormError] = useState("");
+
+  const timeSlots = [
+    { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
+    { id: 'slot2', label: '12pm to 4pm', value: '12:00-16:00' },
+    { id: 'slot3', label: '4pm to 8pm', value: '16:00-20:00' },
+    { id: 'slot4', label: '8pm to 12am', value: '20:00-00:00' },
+  ];
+  
 
   const navigate = useNavigate();
 
@@ -47,6 +58,7 @@ export default function AddEvent() {
     getOptions();
   }, []);
 
+
   function handleOptionChange(optionId, checked) {
     if (checked) {
       setSelectedOptions(prevSelectedOptions => [...prevSelectedOptions, optionId]);
@@ -55,6 +67,35 @@ export default function AddEvent() {
     }
   }
 
+
+  const handleTimeSlotChange = (slotId) => {
+    if (selectedTimeSlots.includes(slotId)) {
+      setSelectedTimeSlots(prev => prev.filter(id => id !== slotId));
+    } else {
+      setSelectedTimeSlots(prev => [...prev, slotId]);
+    }
+  };
+  
+
+
+ // Fetch reserved slots for the selected date
+ useEffect(() => {
+  const fetchReservedSlots = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/event/reservedSlots/${eventDate}`);
+      setReservedSlots(response.data.reservedSlots);
+    } catch (error) {
+      console.error("Error fetching reserved slots:", error.message);
+    }
+  };
+
+  if (eventDate) {
+    fetchReservedSlots();
+  }
+}, [eventDate]);
+
+
+  
   
   // Function to calculate total cost
   const calculateTotalCost = () => {
@@ -67,15 +108,22 @@ export default function AddEvent() {
         cost += optionCost;
       }
     });
+
+    
+    // Add additional cost for each selected time slot
+    const timeSlotCost = selectedTimeSlots.length * 1000; // Assuming 1000 LKR per slot
+    cost += timeSlotCost;
+
+
     return cost;
   };
 
   
-  // Calculate total cost whenever selected options or attendeeCount change
+  // Calculate total cost whenever selected options, selected time slots, or attendee count change
   useEffect(() => {
     const cost = calculateTotalCost();
     setTotalCost(cost);
-  }, [selectedOptions, allOptions, attendeeCount]);
+  }, [selectedOptions, allOptions, selectedTimeSlots, attendeeCount]);
 
 
   // Function to handle form submission
@@ -110,17 +158,13 @@ export default function AddEvent() {
       return;
     }
 
-       // Convert eventTime to "hh:mm A" format
-  const formattedEventTime = formatEventTime(eventTime);
-
-
 
     const formData = new FormData();
     formData.append("eventUserId", user._id); // Append user ID
     formData.append("eventName", eventName);
     formData.append("eventCategory", eventCategory);
     formData.append("eventDate", eventDate);
-    formData.append("eventTime", formattedEventTime);
+    formData.append("eventTime", eventTime);
     formData.append("eventDescription", eventDescription);
     formData.append("attendeeCount", attendeeCount);
     formData.append("totalCost", totalCost);
@@ -132,6 +176,16 @@ export default function AddEvent() {
     selectedOptions.forEach((optionId) => {
       formData.append("selectedOptions[]", optionId);
     });
+
+    // Append selected time slots excluding reserved slots
+    const selectedTimeSlotsToAppend = selectedTimeSlots.filter(slotId => !reservedSlots.includes(slotId));
+
+    // Append filtered selected time slots
+    selectedTimeSlotsToAppend.forEach(slotId => {
+      formData.append("selectedTimeSlots[]", slotId);
+    });
+
+
 
     axios.post("http://localhost:5000/event/addEvent", formData, {
         headers: {
@@ -147,6 +201,8 @@ export default function AddEvent() {
         setEventName("");
         setEventCategory("");
         setEventDate("");
+        setEventTime("");
+        setSelectedTimeSlots([]);
         setEventDescription("");
         setSelectedOptions([]);
         setTotalCost(0);
@@ -188,20 +244,6 @@ export default function AddEvent() {
   };
 
  
-// Function to format event time to "hh:mm A" format
-const formatEventTime = (timeString) => {
-  // Split the timeString into hours and minutes
-  const [hours, minutes] = timeString.split(":");
-  // Convert hours to number
-  let parsedHours = parseInt(hours, 10);
-  // Determine AM or PM
-  const suffix = parsedHours >= 12 ? "PM" : "AM";
-  // Adjust for 12-hour format
-  parsedHours = parsedHours % 12 || 12;
-  // Return formatted time
-  return `${parsedHours}:${minutes} ${suffix}`;
-};
-
 
   // Function to validate event name
   const validateEventName = (name) => {
@@ -291,13 +333,35 @@ const formatEventTime = (timeString) => {
             <div className="pl-20 text-base font-semibold mt-5">
                 <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
                 <input type="time" placeholder="Event Time" name="eventTime" required value={eventTime}
-                    min={getCurrentDate()} // Set the min attribute to today's date
                     className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                     onChange={(e) => setEventTime(e.target.value)}
                 />
             </div>
 
             </div>
+
+
+            <div className="ml-30 text-base font-semibold mt-5">
+              <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
+              {timeSlots.map(slot => (
+                <div key={slot.id} className="flex mt-2">
+                  <input
+                    type="checkbox"
+                    id={slot.id}
+                    disabled={reservedSlots.includes(slot.id)}
+                    checked={selectedTimeSlots.includes(slot.id)}
+                    onChange={() => handleTimeSlotChange(slot.id)}
+                    className="form-checkbox h-5 w-5 text-green-600"
+                  />
+                  <label htmlFor={slot.id} className="ml-2 text-black">{slot.label}</label>
+                  {reservedSlots.includes(slot.id) && (
+              <span className="ml-2 text-red-600">This time slot is already reserved</span>
+            )}
+                </div>
+              ))}
+            </div>
+
+
 
             {/* Event Description */}    
             <div className="ml-30 text-base font-semibold mt-5">
@@ -451,7 +515,7 @@ const formatEventTime = (timeString) => {
           message={popupMessage}
           onClose={() => {
             setIsPopupOpen(false);
-            navigate("/events");
+            navigate("/myEvents");
           }}
           type={popupType}
         />
