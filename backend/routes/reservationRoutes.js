@@ -22,9 +22,9 @@ router.post('/booking', async (req, res) => {
 router.get('/available-rooms', async (req, res) => {
     try {
         const { roomcheckIn, roomcheckOut, roomType } = req.query;
-        console.log('Check-in:', roomcheckIn);
-        console.log('Check-out:', roomcheckOut);
-        console.log('Room type:', roomType);
+        //console.log('Check-in:', roomcheckIn);
+        //console.log('Check-out:', roomcheckOut);
+        //console.log('Room type:', roomType);
 
         const bookedRoomIds = await getBookedRooms(roomcheckIn,roomcheckOut);
         console.log('Booked room IDs:', bookedRoomIds);
@@ -33,7 +33,7 @@ router.get('/available-rooms', async (req, res) => {
             roomType: roomType,
             _id: { $nin: bookedRoomIds }
         });
-        console.log('Available rooms:', availableRooms);
+        //console.log('Available rooms:', availableRooms);
 
         res.status(200).send(availableRooms);
     } catch (error) {
@@ -56,6 +56,17 @@ const getBookedRooms = async (roomcheckIn, roomcheckOut) => {
 router.get('/bookings', async (req, res) => {
     try {
         const reservations = await Reservation.find();
+        res.status(200).send(reservations);
+    } catch (error) {
+        res.status(400).send(error);
+    }
+});
+
+//Route to get user reservations
+router.get('/myReservations/:id', async (req, res) => {
+    try {
+        const reservations = await Reservation.find({ userID: req.params.id });
+        console.log(reservations);
         res.status(200).send(reservations);
     } catch (error) {
         res.status(400).send(error);

@@ -1,8 +1,27 @@
+import Hero from './components/Hero';
+import Heromid from './components/Heromid';
+import { BookingCardsContainer } from './components/Cardpack';
+import { FAQsection } from './components/FAQ';
+import topleft from '../../assets/topleft.png'
+import LatestFeedbacks from './components/FEEDBACK'
 
 function HomePage() {
+  const backgroundStyle = {
+    position: 'absolute',
+    top: -140,
+    left: -40,
+    width: '1000px', 
+    height: '790px',
+    zIndex: -1,
+  };
   return (
-    <div>
-      <h1 class="text-4xl text-red-600 font-bold">This is Home Page</h1>
+    <div style={{ position: 'relative' }}>
+      <img src={topleft} alt="Top Left Background" style={backgroundStyle} />
+      <Hero />
+      <Heromid />
+      <BookingCardsContainer />
+      <FAQsection />
+      <LatestFeedbacks />
     </div>
   );
 }
