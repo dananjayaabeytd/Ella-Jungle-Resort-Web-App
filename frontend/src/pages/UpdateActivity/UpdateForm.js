@@ -71,8 +71,25 @@ function UpdateForm() {
      //alert(err.message);
      console.error(err.message);
    });
+};
+
+
+const handleNameChange=(e)=>{
+  const value = e.target.value.replace(/[^A-Za-z ]/gi, "");
+  setName(value);
 }
 
+
+const handleDistanceChange=(e)=>{
+  const value = Math.max(0,parseFloat(e.target.value));
+  setDistance(value);
+}
+
+
+const handlePriceChange=(e)=>{
+  const value = Math.max(0,parseFloat(e.target.value));
+  setPrice(value);
+}
 
 
 
@@ -90,7 +107,7 @@ return (
           id="name"
           className="mt-2 rounded-lg bg-white h-[50px] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
         />
 
 
@@ -106,22 +123,22 @@ return (
 
         <label htmlFor="distance" className="mt-8 text-white">Distance</label>
         <input
-          type="text"
+          type="number"
           id="distance"
           className="mt-2 rounded-lg bg-white h-[50px] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
           value={distance}
-          onChange={(e) => setDistance(e.target.value)}
+          onChange={handleDistanceChange}
         />
 
 
 
         <label htmlFor="price" className="mt-8 text-white">Price</label>
         <input
-          type="text"
+          type="number"
           id="price"
           className="mt-2 rounded-lg bg-white h-[50px] px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={handlePriceChange}
         />
 
 

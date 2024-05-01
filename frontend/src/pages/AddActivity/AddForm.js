@@ -13,6 +13,8 @@ const AddForm = () => {
   const [distance, setDistance] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const navigate = useNavigate(); // Use useNavigate hook for navigation
 
 
@@ -25,13 +27,13 @@ const AddForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
 
 
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("distance", price);
+    formData.append("distance", distance);
     formData.append("price", price);
     formData.append("image", image);
 
@@ -50,12 +52,33 @@ const AddForm = () => {
 
     } catch (error) {
       console.error(error);
-      alert("Error adding special activity");
-    }
+      setError("Error adding special activity");
+  } finally {
+      setIsLoading(false);
+  }
   };
 
+//handle name input to only enter letters
+const handleNameChange=(e)=>{
+  const value = e.target.value.replace(/[^A-Za-z ]/gi, "");
+  setName(value);
+}
 
 
+
+//prevet entereing negative values for distance input
+const handleDistanceChange=(e)=>{
+  const value = Math.max(0,parseFloat(e.target.value));
+  setDistance(value);
+}
+
+
+
+//prevent entering negative values for the price
+const handlePriceChnage=(e)=>{
+  const value= Math.max(0,parseFloat(e.target.value));
+  setPrice(value);
+}
 
 
   return (
@@ -63,6 +86,10 @@ const AddForm = () => {
       <div className="bg-green-600 bg-opacity-50 flex items-center justify-center w-full max-w-[600px] rounded-xl py-14 px-11 text-xl font-extrabold text-black shadow-lg shadow-black">
         <form className="flex flex-col w-full" onSubmit={handleSubmit}>
           <h2 className="self-center text-3xl text-white mb-8">Add a Special Activity</h2>
+          
+          {isLoading && <p>Loading...</p>}
+                    {error && <p>Error: {error}</p>}
+
 
           <div>
             <label htmlFor="image" className="mt-4">Image</label><br />
@@ -74,7 +101,7 @@ const AddForm = () => {
           <div>
             <label htmlFor="name" className="mt-4">Name</label><br />
             <input type="text" id="name" className="mt-2 rounded-3xl bg-zinc-300 h-[47px] font-normal px-5 py-1 text-sm w-full"
-              value={name} onChange={(e) => setName(e.target.value)} required />
+              value={name} onChange={handleNameChange} required />
           </div>
 
           <br />
@@ -90,7 +117,7 @@ const AddForm = () => {
           <div>
              <label htmlFor="distance" className="mt-8">Distance(km)</label><br />
              <input type="number" id="distance" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1"
-             value={distance} onChange={(e) => setDistance(parseFloat(e.target.value))} required />
+             value={distance} onChange={handleDistanceChange} required />
           </div>
 
           <br />
@@ -98,7 +125,7 @@ const AddForm = () => {
           <div>
             <label htmlFor="price" className="mt-8">Price Per Person (LKR)</label><br />
             <input type="number" id="price" className="mt-2 rounded-3xl bg-zinc-300 h-[50px] font-normal px-5 py-1"
-              value={price} onChange={(e) => setPrice(parseFloat(e.target.value))} required />
+              value={price} onChange={handlePriceChnage} required />
           </div>
 
 

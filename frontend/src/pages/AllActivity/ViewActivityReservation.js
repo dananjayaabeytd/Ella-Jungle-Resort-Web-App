@@ -9,13 +9,13 @@ const Table = ({ activityReservations }) => (
     <table className="table-auto w-full">
 
         <thead className="bg-green-600">
-            <tr>
-                <th className="px-4 py-2">Activity ID</th>
-                <th className="px-4 py-2">Guest ID</th>
-                <th className="px-4 py-2">Activity Name</th>
-                <th className="px-4 py-2">No. of People</th>
-                <th className="px-4 py-2">Activity Price</th>
-                <th className="px-4 py-2">Total Price</th>
+            <tr >
+                <th className="px-4 py-2 border-r border-black">Activity ID</th>
+                <th className="px-4 py-2 border-r border-black">Guest ID</th>
+                <th className="px-4 py-2 border-r border-black">Activity Name</th>
+                <th className="px-4 py-2 border-r border-black">No. of People</th>
+                <th className="px-4 py-2 border-r border-black">Activity Price</th>
+                <th className="px-4 py-2 border-r border-black">Total Price</th>
             </tr>
         </thead>
 
@@ -67,7 +67,7 @@ export default function ViewActivityReservation() {
     });
 
 
-    
+
 
     // Render the component JSX
     return (
