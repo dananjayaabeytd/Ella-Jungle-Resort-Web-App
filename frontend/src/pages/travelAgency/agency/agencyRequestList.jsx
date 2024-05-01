@@ -20,8 +20,9 @@ function AgencyRequestList() {
   }, [agencyId]);
 
   // * Filter requests based on status
-  const newRequests = requests.filter((request) => !request.Status);
-  const oldRequests = requests.filter((request) => request.Status);
+  const acceptedRequests = requests.filter((request) => request.Status === "accepted");
+  const rejectedRequests = requests.filter((request) => request.Status === "rejected");
+  const pendingRequests = requests.filter((request) => request.Status === "pending");
 
   return (
     <div className="flex flex-col">
@@ -32,7 +33,7 @@ function AgencyRequestList() {
         <div className="container mx-auto">
           <h2 className="my-5 ml-10 text-xl font-medium">Accepted Requests</h2>
           <div className="container px-[10px] flex-col flex">
-            {newRequests.map((request) => {
+            {acceptedRequests.map((request) => {
               return (
                 <AgencyNewRequest
                   key={request._id}
@@ -48,9 +49,27 @@ function AgencyRequestList() {
         </div>
 
         <div className="container mx-auto mt-[50px] mb-10">
-          <h2 className="mb-5 ml-10 text-xl font-medium">Old Requests</h2>
+          <h2 className="mb-5 ml-10 text-xl font-medium">Pending Requests</h2>
           <div className="container px-[10px] flex-col flex">
-            {oldRequests.map((request) => {
+            {pendingRequests.map((request) => {
+              return (
+                <AgencyNewRequest
+                  key={request._id}
+                  requestId={request._id}
+                  arrivalDate={request.ArrivalDate}
+                  departureDate={request.DepartureDate}
+                  sentDate={request.SentDate}
+                  userId={request.UserId}
+                />
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="container mx-auto mt-[50px] mb-10">
+          <h2 className="mb-5 ml-10 text-xl font-medium">Rejected Requests</h2>
+          <div className="container px-[10px] flex-col flex">
+            {rejectedRequests.map((request) => {
               return (
                 <AgencyNewRequest
                   key={request._id}

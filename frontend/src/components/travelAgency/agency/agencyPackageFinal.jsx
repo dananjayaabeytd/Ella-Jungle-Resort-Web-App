@@ -52,12 +52,20 @@ function AgencyPackageFinal({
 
   const handleCreateOrUpdatePackage = async () => {
     if (!selectedRoomId) {
-      alert("Please select a room.");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please select a room.",
+      });
       return;
     }
 
     if (!packageName.trim()) {
-      alert("Please enter package name");
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please enter package name!",
+      });
       return;
     }
 
@@ -231,7 +239,7 @@ function AgencyPackageFinal({
 
   return (
     <div>
-      <div>
+      <div className="pointer-events-none">
         {selectedRoom && (
           <AgencyPackageRoom
             roomId={selectedRoom.id}
@@ -292,6 +300,7 @@ function AgencyPackageFinal({
             className="flex  w-[80px] mt-[25px] ml-[60px] border border-green-500 rounded-lg h-[30px] px-3"
             value={fullDays}
             onChange={(e) => setFullDays(Number(e.target.value))}
+            min={0}
           />
         </div>
         <div className="flex">
@@ -301,6 +310,7 @@ function AgencyPackageFinal({
             className="flex  w-[80px] mt-[25px] ml-[67px] border border-green-500 rounded-lg h-[30px] px-3"
             value={discount}
             onChange={(e) => setDiscount(Number(e.target.value))}
+            min={0}
           />
           <h3 className="ml-2 text-xl text-black mt-7"> % </h3>
         </div>
@@ -311,6 +321,7 @@ function AgencyPackageFinal({
             className="flex  w-[80px] mt-[25px] ml-[35px] border border-green-500 rounded-lg h-[30px] px-3"
             value={commission}
             onChange={(e) => setCommission(Number(e.target.value))}
+            min={0}
           />
           <h3 className="ml-2 text-xl text-black mt-7"> % </h3>
         </div>
@@ -322,6 +333,7 @@ function AgencyPackageFinal({
             className="flex  w-[150px] mt-[25px] ml-[50px] border border-green-500 rounded-lg h-[30px] px-3"
             value={price}
             onChange={(e) => setPrice(Number(e.target.value))}
+            min={0}
           />
           <button
             onClick={updatePrice}
@@ -348,18 +360,6 @@ function AgencyPackageFinal({
           {packageId === "null" ? "Create " : "Update "} Package
           <span className="absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease"></span>
         </button>
-      </div>
-      <div>
-        <h1>{packageName}</h1>
-        <h1>{selectedRoomId}</h1>
-        <h1>{selectedActivityId}</h1>
-        <h1>{selectedTransportId}</h1>
-        <h1>{fullDays}</h1>
-        <h1>{packageDescription}</h1>
-        <h1>{commission}</h1>
-        <h1>{discount}</h1>
-        <h1>{price}</h1>
-        <h1>{agencyId}</h1>
       </div>
     </div>
   );

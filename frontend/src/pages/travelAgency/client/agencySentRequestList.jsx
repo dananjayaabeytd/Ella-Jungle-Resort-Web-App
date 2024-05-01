@@ -20,8 +20,9 @@ function AgencySentRequestList() {
       });
   }, [userId]);
 
-  const acceptedRequests = requests.filter((request) => request.Status);
-  const rejectedRequests = requests.filter((request) => !request.Status);
+  const acceptedRequests = requests.filter((request) => request.Status === "accepted");
+  const rejectedRequests = requests.filter((request) => request.Status === "rejected");
+  const pendingRequests = requests.filter((request) => request.Status === "pending");
 
   return (
     <div className="flex flex-col">
@@ -50,6 +51,24 @@ function AgencySentRequestList() {
 
         <div className="container mx-auto mt-[50px] mb-10">
           <h2 className="my-5 ml-10 text-xl font-medium">Pending Requests</h2>
+          <div className="container px-[10px] flex-col flex">
+            {pendingRequests.map((request) => {
+              return (
+                <AgencySentRequest
+                  requestId={request._id}
+                  RoomType={request.RoomType}
+                  NoOfAdults={request.NoOfAdults}
+                  NoOfChildren={request.NoOfChildren}
+                  sentDate={request.SentDate}
+                  AgencyId={request.AgencyId}
+                />
+              );
+            })}
+          </div>
+        </div>
+        
+        <div className="container mx-auto mt-[50px] mb-10">
+          <h2 className="my-5 ml-10 text-xl font-medium">Rejected Requests</h2>
           <div className="container px-[10px] flex-col flex">
             {rejectedRequests.map((request) => {
               return (

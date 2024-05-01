@@ -22,7 +22,11 @@ const roomSchema = new mongoose.Schema({
     },
     price: {
         type:Number  
-    }
+    },
+    available: {
+        type:Boolean,
+        default: true
+    },
 });
 
 //create and export room model

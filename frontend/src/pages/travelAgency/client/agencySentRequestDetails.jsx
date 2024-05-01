@@ -88,7 +88,7 @@ function AgencySentRequestDetails() {
             UserId: requestData.UserId,
             AgencyId: requestData.AgencyId,
             SentDate: currentDate,
-            Status: false,
+            Status: "pending",
           });
           Swal.fire("Saved!", "", "success").then(() => {
             window.location = `/AgencySentRequestList/${requestData.UserId}`;
@@ -120,7 +120,7 @@ function AgencySentRequestDetails() {
           );
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "Your request has been deleted.",
             icon: "success",
           });
           window.location = `/AgencySentRequestList/${requestData.UserId}`;

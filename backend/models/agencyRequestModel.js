@@ -48,7 +48,7 @@ const AgencyRequestSchema = new Schema({
         required: true
     },
     Status: {
-        type: Boolean,
+        type: String,
         required: false
     }
     

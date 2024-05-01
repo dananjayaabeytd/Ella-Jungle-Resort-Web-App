@@ -52,7 +52,6 @@ function AgencyDetailsProfile() {
           <div className="flex pl-5 text-xl">
             <div>
               <p className="pb-4">Reg No:</p>
-              <p className="pb-4">Licence No:</p>
               <p className="pb-4">Address:</p>
               <p className="pb-4">Telephone:</p>
               <p className="pb-4">Email:</p>
@@ -60,7 +59,6 @@ function AgencyDetailsProfile() {
               <StarRating />
             </div>
             <div className="ml-10">
-              <p className="pb-4"></p>
               <p className="pb-4">{agencyData.businessRegistrationNumber}</p>
               <p className="pb-4"> {agencyData.address}</p>
               <p className="pb-4">{agencyData.mobile}</p>
@@ -72,14 +70,14 @@ function AgencyDetailsProfile() {
             <p>{agencyData.description}</p>
           </div>
           <div className="flex gap-5 my-5 ml-5">
-            <a href="{ agencyData.websiteLink}">
+            <a href={agencyData.websiteLink}>
               <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/e554f3583ab683cda87bc919720bac4db0578a18c5a864f04c398686f5e83077?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
                 alt="facebook"
                 className=" max-w-[50px]"
               />
             </a>
-            <a href="facebook.com">
+            <a href="www.facebook.com">
               <img
                 src="https://cdn.builder.io/api/v1/image/assets/TEMP/24d3dc882006ce9cc71830a0bc085fc2352963a4639e40d3c5695fdea8b352ac?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
                 alt="facebook"

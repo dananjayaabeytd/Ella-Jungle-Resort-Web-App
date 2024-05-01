@@ -40,15 +40,11 @@ function AgencyNewRequest({
               Departure Date: {departureDate}
             </p>
           </div>
-          <div className="flex gap-5 ">
+          <div className="flex gap-5 pr-5">
             <p className="" name="message sent date">
               {formattedSentDate()}
             </p>
-            <img
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/4c9b973415e6ba1bace812d7c55154ed12ed535485ab212fb6c71cbe83671982?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
-              alt="IconScout feature icon 2"
-              className="w-5 shrink-0 aspect-square"
-            />
+            
           </div>
         </div>
       </div>
