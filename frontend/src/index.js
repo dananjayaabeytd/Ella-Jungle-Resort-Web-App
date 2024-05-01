@@ -115,7 +115,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/addEvent',
-        element: < TestPage/>,
+        element: < AddEvent/>,
       },
       {
         path: '/updateEvent/:eventId',
@@ -131,7 +131,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/viewEvent/:eventId',
-        element: < ViewEvent/>,
+        element: < TestPage/>,
       },
       {
         path: '/updateOption/:optionId',

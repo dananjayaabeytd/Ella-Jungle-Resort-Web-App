@@ -33,6 +33,7 @@ export default function AddEvent() {
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   const [formError, setFormError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const timeSlots = [
     { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
@@ -254,7 +255,20 @@ export default function AddEvent() {
     return true;
   };
 
-  
+  const handleEventTimeChange = (e) => {
+    const selectedTime = e.target.value;
+    const selectedHour = parseInt(selectedTime.split(":")[0], 10);
+
+    // Check if the selected hour is between 8 and 21 (8 AM to 9 PM)
+    if (selectedHour >= 8 && selectedHour <= 21) {
+      setEventTime(selectedTime);
+      setErrorMessage(""); // Clear error message if time is within range
+    } else {
+      // Reset the event time if it falls outside the allowed range
+      setEventTime("");
+      setErrorMessage("Please select a time between 8 AM and 10 PM.");
+    }
+  };
   
 
 
@@ -331,14 +345,23 @@ export default function AddEvent() {
 
             {/* Event Time */}
             <div className="pl-20 text-base font-semibold mt-5">
-                <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
-                <input type="time" placeholder="Event Time" name="eventTime" required value={eventTime}
-                    className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                    onChange={(e) => setEventTime(e.target.value)}
-                />
+      <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">
+        Event Time
+      </label>
+      <input
+        type="time"
+        placeholder="Event Time"
+        name="eventTime"
+        required
+        value={eventTime}
+        className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+        onChange={handleEventTimeChange}
+      />
+      
+    </div>
             </div>
-
-            </div>
+            
+            {errorMessage && <span className="text-red-600 pl-60 text-base font-semibold mt-5">{errorMessage}</span>}
 
 
             <div className="ml-30 text-base font-semibold mt-5">
@@ -355,8 +378,8 @@ export default function AddEvent() {
                   />
                   <label htmlFor={slot.id} className="ml-2 text-black">{slot.label}</label>
                   {reservedSlots.includes(slot.id) && (
-              <span className="ml-2 text-red-600">This time slot is already reserved</span>
-            )}
+                    <span className="ml-2 text-red-600">This time slot is already reserved</span>
+                  )}
                 </div>
               ))}
             </div>

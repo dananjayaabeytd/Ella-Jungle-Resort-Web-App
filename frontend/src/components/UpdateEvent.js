@@ -230,12 +230,14 @@ export default function UpdateEvent() {
   });
 
   
-   // Append selected time slots excluding reserved slots
-   const selectedTimeSlotsToAppend = selectedTimeSlots.filter(slotId => !reservedSlots.includes(slotId));
+    // Append selected time slots excluding reserved slots, unless they belong to the current event
+    const selectedTimeSlotsToAppend = selectedTimeSlots.filter(slotId =>
+      !reservedSlots.includes(slotId) || selectedEvent.selectedTimeSlots.includes(slotId)
+    );
 
    // Append filtered selected time slots
-   selectedTimeSlotsToAppend.forEach(slotId => {
-     formData.append("selectedTimeSlots[]", slotId);
+    selectedTimeSlotsToAppend.forEach(slotId => {
+      formData.append("selectedTimeSlots[]", slotId);
    });
 
 

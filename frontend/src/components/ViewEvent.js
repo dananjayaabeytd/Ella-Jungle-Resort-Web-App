@@ -206,7 +206,7 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
               (
                       <div key={index} className="text-base font-semibold ml-16">
                         {/* Category Title */}
-                        <p className="mb-1 block text-lg font-mclaren text-green-800">{category} Options:-</p>
+                        <p className="mb-1 block text-lg font-mclaren text-green-800">{category}:-</p>
                         {/* Options for this category */}
                         {allOptions.filter((option) => option.optionCategory === category).map((option) => (
                             <div key={option._id} className="form-check">
