@@ -131,7 +131,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/viewEvent/:eventId',
-        element: < TestPage/>,
+        element: < ViewEvent/>,
       },
       {
         path: '/updateOption/:optionId',

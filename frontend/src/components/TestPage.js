@@ -1,333 +1,121 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useSelector } from 'react-redux'; // Import useSelector
-import { useParams } from "react-router-dom";
-import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
-import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
-import bggreen from '../assets/bggreen.jpg'; // Import the image
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
+import { useSelector } from 'react-redux';
+import bggreen from '../assets/bggreen.jpg';
+import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import ConfirmDeletion from './ConfirmDeletion';
+import CustomPopup from './CustomPopup';
 import EventHeader from './EventHeader';
 
-export default function ViewEvent() {
-    const pdfRef = useRef();
+export default function EventList() {
+  const [allEvents, setEvents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
-    const [selectedEvent, setSelectedEvent] = useState(null);
-    const { eventId } = useParams(); // Get the eventId from URL params
-
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [allOptions, setAllOptions] = useState([]);
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedEventId, setSelectedEventId] = useState(null);
- 
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [popupMessage, setPopupMessage] = useState('');
-    const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
-
-    const downloadPDF = () => {
-    const input = pdfRef.current;
-    html2canvas(input, {
-        scale: 2, // Increasing the scale factor to enhance quality
-        useCORS: true, // Ensures that images hosted on different origins can be loaded correctly
-    }).then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');      
-        const pdf = new jsPDF('p', 'mm', 'a4');        
-        const pdfWidth = pdf.internal.pageSize.getWidth();       
-        const pdfHeight = pdf.internal.pageSize.getHeight();        
-        const imgWidth = canvas.width / 2; // Adjust the width to account for the scale
-        const imgHeight = canvas.height / 2; // Adjust the height to account for the scale
-        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-        const imgX = (pdfWidth - imgWidth * ratio) / 2; // Center the image
-        const imgY = 10;
-        pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-        pdf.save('eventDetails.pdf');
-    });
-};
-
-
-  const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
+  const user = useSelector(state => state.auth.userInfo);
   const navigate = useNavigate();
 
-  
-    useEffect(() => {
-        // Fetch all options when the component mounts
-        function getOptions() {
-          axios.get("http://localhost:5000/option/allOptions")
-            .then((res) => {
-              setAllOptions(res.data);
-            })
-            .catch((err) => {
-              alert(err.message);
-            });
-        }
-        getOptions();
-      }, []);
-    
-
-     
-    useEffect(() => {
-        // Fetch event data based on eventId when the component mounts
-        async function getEventDetails() {
-        try {
-            const response = await axios.get(`http://localhost:5000/event/getSelectedEvent/${eventId}`);
-            setSelectedEvent(response.data.event);
-            console.log("Fetched Event Details Successfully");
-
-
-            const eventSelectedOptions = response.data.event.selectedOptions || [];
-            setSelectedOptions(eventSelectedOptions.map(id => id.toString())); // Ensuring IDs are strings for comparison
-
-        
-        } catch (error) {
-            console.error("Error fetching event data:", error.message);
-            alert("Error fetching event data. Please try again.");
-        }
+  useEffect(() => {
+    function getEvents() {
+      axios.get("http://localhost:5000/event/getAllEvents")
+      .then((res) => {
+        setEvents(res.data);
+        setSearchResults(res.data);
+      }).catch((err) => {
+        alert(err.message);
+      });
     }
 
-    getEventDetails();
-  }, [eventId]);
+    getEvents();
+  }, []);
 
-  
+  // Function to handle search query change
+const handleSearchInputChange = (e) => {
+  const query = e.target.value.toLowerCase();
+  setSearchQuery(query);
 
-  const confirmDelete = async () => {
-    if (selectedEventId) {
-      try {
-        await axios.delete(`http://localhost:5000/event/deleteEvent/${selectedEventId}`);
-        setIsModalOpen(false); // Close the modal
-        // Custom success notification
-        setPopupMessage("Event Deleted Successfully!");
-        setPopupType('info');
-        setIsPopupOpen(true);
-
-
-      } catch (error) {
-        console.error("Error deleting event:", error.message);
-        // Custom success notification
-        setPopupMessage("Error deleting event. Please try again!");
-        setPopupType('error');
-        setIsPopupOpen(true);
-      }
-    }
-  };
-  
-
-  
-  if (!selectedEvent) {
-    return <div>Loading...</div>;
+  if (query.length > 0) {
+    const filteredEvents = allEvents.filter(event =>
+      event.eventName.toLowerCase().includes(query) ||
+      event.eventDate.includes(query) ||
+      event.eventCategory.toLowerCase().includes(query)
+    );
+    setSearchResults(filteredEvents);
+  } else {
+    setSearchResults(allEvents);
   }
-
-
-  // Get unique categories
-  const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
-
-
-  // Function to determine if a category has any selected options
-const hasSelectedOptions = (category) => {
-  const optionsInCategory = allOptions.filter(option => option.optionCategory === category);
-  return optionsInCategory.some(option => selectedOptions.includes(option._id.toString()));
 };
 
-  
+
+
   // Function to format event time to "hh:mm A" format
-const formatEventTime = (timeString) => {
-  // Split the timeString into hours and minutes
-  const [hours, minutes] = timeString.split(":");
-  // Convert hours to number
-  let parsedHours = parseInt(hours, 10);
-  // Determine AM or PM
-  const suffix = parsedHours >= 12 ? "PM" : "AM";
-  // Adjust for 12-hour format
-  parsedHours = parsedHours % 12 || 12;
-  // Return formatted time
-  return `${parsedHours}:${minutes} ${suffix}`;
-};
-
-//Convert eventTime to "hh:mm A" format
-const formattedEventTime = formatEventTime(selectedEvent.eventTime);
-
-
+  const formatEventTime = (timeString) => {
+    const [hours, minutes] = timeString.split(":");
+    let parsedHours = parseInt(hours, 10);
+    const suffix = parsedHours >= 12 ? "PM" : "AM";
+    parsedHours = parsedHours % 12 || 12;
+    return `${parsedHours}:${minutes} ${suffix}`;
+  };
 
   return (
     <div className="relative min-h-screen">
-    {/* Background Image */}
-    <div
-      className="absolute inset-0 z-0 bg-fixed"
-      style={{
-        backgroundImage: `url(${bggreen})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-      
-    >
-  </div>
+      <div
+        className="absolute inset-0 z-0 bg-fixed"
+        style={{
+          backgroundImage: `url(${bggreen})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      ></div>
 
-     
-    
-    {/* Content Wrapper */}
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
-            {/* Call Header */}
-    <EventHeader/>
-  
-      {/* Your scrolling content */}
-      
-      <div className="container bg-fixed my-10 max-w-5xl mx-auto p-5  rounded-3xl overflow-auto bg-gray-50 bg-opacity-50 shadow-2xl shadow-theme-green border-8 border-double border-theme-green">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+        <EventHeader />
 
-      
-  
-        <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
-            {/* Event Details */}
-            <div className="container shadow-md rounded-3xl overflow-hidden w-full h-96 flex items-center justify-center">
-                <img className="w-full h-full object-fill" src={`http://localhost:5000/Images/${selectedEvent.eventImage}`} 
-                />
+        {/* Search bar */}
+<div className="mb-4 flex">
+  <input
+    type="text"
+    placeholder="Search by name, date, or category..."
+    value={searchQuery}
+    onChange={handleSearchInputChange}
+    className="border border-gray-400 px-4 py-2 rounded-l-lg "
+  />
+  <p className="bg-theme-green text-white px-4 py-2 rounded-r-lg font-mclaren">Search</p>
+</div>
+
+
+        {/* Event cards */}
+        <div className="px-8 pb-3 justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-x-6  w-full ">
+          {searchResults.map(event => (
+            <div key={event._id} className="container bg-fixed my-3 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
+              <div className="grid  grid-cols-2 gap-9 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
+                <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-64">
+                  <img className="w-full h-full object-fill mt-3" src={`http://localhost:5000/Images/${event.eventImage}`} alt="Event" />
+                </div>
+                <div className="px-0 py-4">
+                  <h1 className="text-xl font-bold text-green-800 font-inika">{event.eventName}</h1>
+                  <h6 className="text-xs text-gray-600 font-lexend">Ella Jungle Resort</h6>
+                  <div className="flex justify-between">
+                    <p className="text-base font-bold text-blue-600">{event.eventDate ? event.eventDate.substr(0, 10) : ""}</p>
+                    <p className="text-base font-bold text-green-600 pr-9">{formatEventTime(event.eventTime)}</p>
+                  </div>
+                  <div className=" mt-1 max-h-24">
+                    <p className="text-sm font-mclaren">{event.eventDescription}</p>
+                  </div>
+                  <div className="mt-6 flex justify-center items-center">
+                    <div className="mt-0 flex justify-center items-center">
+                      <Link to={`/buyEventTicket/${event._id}`} className=" mr-5 text-white text-sm font-mclaren px-4 py-1 bg-blue-500 hover:bg-blue-800    rounded-3xl"> Buy Ticket</Link>
+                    </div>
+                    <Link to={`/viewEvent/${event._id}`} className=" text-white text-sm font-mclaren px-10 py-1  bg-theme-green hover:bg-green-800 rounded-3xl"> View </Link>
+                  </div>
+                </div>
+              </div>
             </div>
+          ))}
         </div>
-
-            <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1" ref={pdfRef}>
-
-            <div >
-                {/* Event Name with Inika font */}
-                <h1 className="text-4xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
-                
-                {/* Event Date with Lexend font */}
-                <h6 className="text-base text-gray-600 font-lexend text-center mt-1">Ella Jungle Resort</h6>
-                
-                <div className="flex justify-between mt-2 px-20">
-                <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
-                <div className=" text-2xl font-bold text-green-600 text-center ">{formattedEventTime}</div>
-                </div>
-
-    
-                {/* Event Description with McLaren font */}
-                <div className="p-des mt-2 max-h-24">
-                <p className="text-lg font-mclaren text-center">{selectedEvent.eventDescription}</p>
-
-                <p className="text-lg font-lexend font-bold text-center mt-3">Expected Attendees Count : {selectedEvent.attendeeCount}</p>
-                </div>
-            </div>
-
-
-            {/*Options Loop*/}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
-             {/* Filter and display only the categories that have selected options */}
-          {categories.filter(category => hasSelectedOptions(category)).map((category, index) => (
-                      <div key={index} className="text-base font-semibold ml-16">
-                        {/* Category Title */}
-                        <p className="mb-1 block text-lg font-mclaren text-green-800">{category}:-</p>
-                        {/* Options for this category */}
-              {allOptions.filter((option) => option.optionCategory === category && selectedOptions.includes(option._id.toString())).map((option) => (
-                            <div key={option._id} className="form-check">
-                              <input readOnly type="checkbox" id={option._id} name={option.optionName}
-                                checked={selectedOptions.includes(option._id)}
-                                className="form-checkbox h-4 w-4 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
-                              />
-                              <label htmlFor={option._id} className="ml-2 text-base text-black">
-                                {option.optionName}
-                              </label>
-                            </div>
-                          ))}
-                      </div>
-                    ))}
-            </div> 
-            {/*Options Loop Ends Here*/}
-            
-
-            <div className="">
-          {/* Display Total Cost of Public events for only Admins and the users who own the event*/}
-            {selectedEvent.isPublic && (user.isAdmin || selectedEvent.eventUserId === user.userId) && (
-            
-              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
-            
-          )}
-
-          {/* Display Total Cost of private events for all users */}
-          {!selectedEvent.isPublic && (
-              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
-          )}
-      
       </div>
 
-          {/* Display ticket price for public events */}
-          {selectedEvent.isPublic && (
-            <p className="mt-3 text-lg font-semibold font-mclaren text-green-900">Grab Your Tickets Now for only <span className="text-red-800">{selectedEvent.ticketPrice} LKR !!</span> Enjoy the Moment</p>
-          )}
-          
-
-            <div className="font-semibold">
-            <p className="text-lg text-green-80"></p>
-          </div>
-
-
-
-        </div>
-
-        <div className="mb-2">
-                  
-            
-            <div className="mt-0 flex justify-center items-center">
-             {/* Using Link component for View button */}
-              <Link to={`/buyEventTicket/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> Buy Ticket</Link>   
-            </div>   
-
-            {(user.isAdmin || selectedEvent.eventUserId === user.userId) && (
-                <div className="mt-8 mx-48 mb-8 flex justify-between items-center">
-                    {/* Using Link component for View button */}
-                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-lexend px-4 py-1  bg-theme-green hover:bg-green-800 rounded-xl"> Update </Link>
-
-                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-black hover:bg-gray-800 rounded-xl" 
-                    onClick={downloadPDF}>
-                        Download Report
-                    </button>
-
-                    
-                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-red-500 hover:bg-red-800 rounded-xl" 
-                    onClick={() => {
-                      setSelectedEventId(selectedEvent._id);
-                      setIsModalOpen(true);
-                    }}
-                    >
-                        Delete
-                    </button>
-                </div>  
-                )}
-
-                
-        </div>  
-
-       
     </div>
-    {/* Scrolling content End*/}
-
-        
-      {/* Use the Confirm Deletion Modal here */}
-      <ConfirmDeletion
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={confirmDelete}
-      />
-
-      {/* Your component structure */}
-      <CustomPopup
-        isOpen={isPopupOpen}
-        message={popupMessage}
-        onClose={() => {
-          setIsPopupOpen(false);
-          setIsModalOpen(false); // Close the modal
-          if (selectedEvent.isPublic) {
-            navigate("/events");
-          } else {
-            navigate("/myEvents");
-          }
-        }}
-        type={popupType}
-      />
-      
-    
-    </div>
-  </div>
   )
 }
-
-

@@ -28,21 +28,24 @@ export default function ViewEvent() {
     const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
 
     const downloadPDF = () => {
-        const input = pdfRef.current;
-        html2canvas(input).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');      
-            const pdf = new jsPDF('p', 'mm', 'a4', true);        
-            const pdfWidth = pdf.internal.pageSize.getWidth();       
-            const pdfHeight = pdf.internal.pageSize.getHeight();        
-            const imgWidth = canvas.width;
-            const imgHeight = canvas.height;   
-            const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
-            const imgX = (pdfWidth - imgWidth * ratio);
-            const imgY = 10;
-            pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-            pdf.save('eventDetails.pdf');
-        });
-        };
+    const input = pdfRef.current;
+    html2canvas(input, {
+        scale: 2, // Increasing the scale factor to enhance quality
+        useCORS: true, // Ensures that images hosted on different origins can be loaded correctly
+    }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');      
+        const pdf = new jsPDF('p', 'mm', 'a4');        
+        const pdfWidth = pdf.internal.pageSize.getWidth();       
+        const pdfHeight = pdf.internal.pageSize.getHeight();        
+        const imgWidth = canvas.width / 2; // Adjust the width to account for the scale
+        const imgHeight = canvas.height / 2; // Adjust the height to account for the scale
+        const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+        const imgX = (pdfWidth - imgWidth * ratio) / 2; // Center the image
+        const imgY = 10;
+        pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+        pdf.save('eventDetails.pdf');
+    });
+};
 
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
@@ -120,6 +123,12 @@ export default function ViewEvent() {
   // Get unique categories
   const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
 
+
+  // Function to determine if a category has any selected options
+const hasSelectedOptions = (category) => {
+  const optionsInCategory = allOptions.filter(option => option.optionCategory === category);
+  return optionsInCategory.some(option => selectedOptions.includes(option._id.toString()));
+};
 
   
   // Function to format event time to "hh:mm A" format
@@ -202,13 +211,13 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
 
             {/*Options Loop*/}
             <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
-              {categories.map((category, index) => 
-              (
+             {/* Filter and display only the categories that have selected options */}
+          {categories.filter(category => hasSelectedOptions(category)).map((category, index) => (
                       <div key={index} className="text-base font-semibold ml-16">
                         {/* Category Title */}
                         <p className="mb-1 block text-lg font-mclaren text-green-800">{category}:-</p>
                         {/* Options for this category */}
-                        {allOptions.filter((option) => option.optionCategory === category).map((option) => (
+              {allOptions.filter((option) => option.optionCategory === category && selectedOptions.includes(option._id.toString())).map((option) => (
                             <div key={option._id} className="form-check">
                               <input readOnly type="checkbox" id={option._id} name={option.optionName}
                                 checked={selectedOptions.includes(option._id)}
