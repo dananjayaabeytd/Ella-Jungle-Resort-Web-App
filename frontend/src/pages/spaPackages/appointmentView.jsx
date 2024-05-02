@@ -127,7 +127,7 @@ const Appointments = () => {
         const tableColumn = ["NIC", "Name", "Address", "Contact Number", "Appointment Date", "Appointment Type", "Total Price"];
         const tableRows = filteredAppointments.map(appointment => [
             appointment.NIC,
-            `${appointment.firstName} ${appointment.lastName}`,
+            `${appointment.firstName} `,
             appointment.address,
             appointment.contactNumber,
             new Date(appointment.appointmentDate).toLocaleString(),
@@ -137,6 +137,11 @@ const Appointments = () => {
 
         doc.autoTable({ head: [tableColumn], body: tableRows });
         doc.save('appointments.pdf');
+    };
+
+    const handleEditClick = (appointmentId) => {
+        // Your edit logic goes here
+        console.log('Edit clicked for appointment ID:', appointmentId);
     };
 
     return (
@@ -169,14 +174,15 @@ const Appointments = () => {
                                 {filteredAppointments.map((appointment) => (
                                     <TableRow key={appointment._id}>
                                         <TableCell>{appointment.NIC}</TableCell>
-                                        <TableCell>{`${appointment.firstName} ${appointment.lastName}`}</TableCell>
+                                        <TableCell>{`${appointment.firstName}`}</TableCell>
                                         <TableCell>{appointment.address}</TableCell>
                                         <TableCell>{appointment.contactNumber}</TableCell>
                                         <TableCell>{new Date(appointment.appointmentDate).toLocaleString()}</TableCell>
                                         <TableCell>{appointment.appointmentType}</TableCell>
                                         <TableCell>${appointment.totalPrice}</TableCell>
                                         <TableCell>
-                                            <ActionButton bgColor="#256F46" onClick={() => handleDeleteClick(appointment._id)}>Delete</ActionButton>
+                                            <ActionButton bgColor="#256F46" onClick={() => handleEditClick(appointment._id)}>Edit</ActionButton>
+                                            <ActionButton bgColor="#737272" onClick={() => handleDeleteClick(appointment._id)}>Delete</ActionButton>
                                         </TableCell>
                                     </TableRow>
                                 ))}

@@ -30,6 +30,14 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-color: #EDFCE3;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
 `;
 
 const FormGroup = styled.div`
@@ -89,13 +97,14 @@ const SubmitButton = styled.button`
 `;
 
 const MyAppointmentsButton = styled.button`
-    background-color: #04b89d;
+    background-color: #4CAF50;
     color: #fff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
     font-size: 1rem;
     cursor: pointer;
+    box-shadow: 0 0 10px #0B0C0B;
     transition: background-color 0.3s ease;
 
     &:hover {
@@ -183,6 +192,28 @@ const Appointment = () => {
                 icon: 'error',
                 title: 'Oops...',
                 text: 'Please fill out all required fields.',
+            });
+            return;
+        }
+
+        // Validate contact number
+        const contactNumberPattern = /^[0-9]{10}$/;
+        if (!contactNumberPattern.test(formData.contactNumber)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter a valid contact number with 10 digits!',
+            });
+            return;
+        }
+
+        // Validate NIC
+        const NICPattern = /^[a-zA-Z0-9]*$/;
+        if (!NICPattern.test(formData.NIC)) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Please enter a valid NIC with only letters and numbers!',
             });
             return;
         }

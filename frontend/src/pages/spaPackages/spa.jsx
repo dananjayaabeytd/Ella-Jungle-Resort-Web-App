@@ -176,7 +176,7 @@ const Spa = () => {
                 <button
                     onClick={handleAddNewPackage}
                     style={{
-                        backgroundColor: '#04b89d',
+                        backgroundColor: '#4CAF50',
                         color: '#fff',
                         padding: '10px 20px',
                         borderRadius: '5px',
@@ -326,7 +326,7 @@ const Spa = () => {
         <div key={spaPackage._id} style={{
             width: 'calc(50% - 20px)',
             maxWidth: '400px',
-            backgroundColor: '#f8f9fa',
+            backgroundColor: '#EDFCE3',
             padding: '15px',
             margin: '10px',
             borderRadius: '8px',
@@ -335,7 +335,7 @@ const Spa = () => {
             position: 'relative'
         }}>
             <div style={{
-                backgroundColor: '#039186',
+                backgroundColor: '#4CAF50',
                 color: '#fff',
                 fontSize: '20px',
                 fontWeight: 'bold',
