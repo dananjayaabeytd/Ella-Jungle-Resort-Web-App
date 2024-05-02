@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import emailjs from "@emailjs/browser";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
 
 function AgencySendRequest() {
   const { userId, agencyId } = useParams();
   console.log("User ID:", userId);
+
+  const [agencyName, setAgencyName] = useState("");
+  const [userName, setUserName] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [contactNo, setContactNo] = useState("");
+  const [email, setEmail] = useState("");
 
   const [formData, setFormData] = useState({
     ArrivalDate: "",
@@ -29,6 +36,29 @@ function AgencySendRequest() {
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
+
+    const serviceId = "ITP_Project";
+    const templateId = "ITP_Agency_Request";
+    const publicKey = "mosump2O3-rWJQmt7";
+
+    const emailParams = {
+      agencyName: "Test Agency",
+      userName: "Yasiru",
+      checkIn: formData.ArrivalDate,
+      contactNo: "0123456789",
+    };
+
+    emailjs.send(serviceId, templateId, emailParams, publicKey)
+      .then((response) => {
+        console.log("Email sent successfully!", response.status, response.text);
+        setAgencyName("");
+        setUserName("");
+        setCheckIn("");
+        setContactNo("");
+      })
+      .catch((error) => {
+        console.error("Email could not be sent!", error);
+      });
 
     const currentDate = new Date().toISOString(); // Get the current date
     const noOfChildren = formData.NoOfChildren ? formData.NoOfChildren : 0;
