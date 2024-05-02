@@ -3,6 +3,7 @@ import Heromid from './components/Heromid';
 import { BookingCardsContainer } from './components/Cardpack';
 import { FAQsection } from './components/FAQ';
 import topleft from '../../assets/topleft.png'
+import LatestFeedbacks from './components/FEEDBACK'
 
 function HomePage() {
   const backgroundStyle = {
@@ -20,6 +21,7 @@ function HomePage() {
       <Heromid />
       <BookingCardsContainer />
       <FAQsection />
+      <LatestFeedbacks />
     </div>
   );
 }

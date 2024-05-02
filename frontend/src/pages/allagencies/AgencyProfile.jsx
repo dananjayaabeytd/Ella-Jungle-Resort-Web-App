@@ -10,9 +10,12 @@ const AgencyDetails = () => {
   const { id } = useParams();
   const [agency, setAgency] = useState(null);
   const { userInfo } = useSelector(state => state.auth);
+  const user = useSelector(state => state.auth.userInfo);
 
-  if (userInfo.isAdmin == null) {
-    userInfo.isAdmin = false;
+  // Create a new object with isAdmin property set to false if it doesn't exist
+  const updatedUserInfo = { ...userInfo };
+  if (updatedUserInfo.isAdmin == null) {
+    updatedUserInfo.isAdmin = false;
   }
 
   useEffect(() => {
@@ -65,7 +68,18 @@ const AgencyDetails = () => {
               size='lg'
               className='mb-4 text-4xl font-bold text-center'
             >
-              {agency.agencyName}
+              {agency.agencyName}{' '}
+              <Link to={`/uniqueagency/${agency._id}`}>
+                <Button className='bg-blue-600 mx-[5px]'>Feedbacks</Button>
+              </Link>
+
+              {user && !user.isAdmin && (
+                <div>
+                  <Link to={`/addagencyfeedback/${agency._id}`}>
+                    <Button className='bg-blue-600'>Give Feedback</Button>
+                  </Link>
+                </div>
+              )}
             </Typography>
             <div className='grid grid-cols-2 gap-2'>
               <div>
