@@ -19,7 +19,7 @@ const CustomPopup = ({ isOpen, message, onClose, type = 'info' }) => {
             onClick={onClose}
             className="bg-white text-black font-inika px-4 py-1 rounded hover:bg-gray-200"
           >
-            Close
+            Ok
           </button>
         </div>
       </div>

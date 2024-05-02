@@ -112,7 +112,7 @@ export default function UpdateEvent() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
+        <div className="container my-10 max-w-3xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
               Update Event
@@ -122,7 +122,7 @@ export default function UpdateEvent() {
           <form className="mt-3" onSubmit={handleUpdate}>
 
             {/* Option Category */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionCategory">Option Category</label>
               <select
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
@@ -143,7 +143,7 @@ export default function UpdateEvent() {
 
 
             {/* Option Name */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionName">Option Name</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="text" placeholder="Enter Name" name="optionName" value={updatedOptionName}
@@ -153,7 +153,7 @@ export default function UpdateEvent() {
 
 
             {/* Option Description */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionDescription">Option Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="optionDescription"
                 value={updatedOptionDescription}
@@ -165,7 +165,7 @@ export default function UpdateEvent() {
 
           {/* Price per Person */}
             <div className="pt-6">
-              <label htmlFor="perPerson" className="flex items-center font-bold text-lg text-green-900 font-lexend">
+              <label htmlFor="perPerson" className="px-12 flex items-center font-bold text-lg text-green-900 font-lexend">
                 <input
                   type="checkbox"
                   id="perPerson"
@@ -173,14 +173,18 @@ export default function UpdateEvent() {
                   checked={updatedPerPerson === true}
                   onChange={(e) => setUpdatedPerPerson(e.target.checked)}
                   className="form-checkbox h-5 w-5 text-green-600"
-                />
-                <span className="ml-2 text-black">Per Person - The price is determined per one person</span>
+                /> 
+                <span className="flex items-center ml-2 text-black"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-1">
+  <path fillRule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z" clipRule="evenodd" />
+</svg>
+
+ Per Person - The price is determined per one person</span>
               </label>
             </div>
 
 
             {/* Option Price */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="number" placeholder="Enter Price" name="optionPrice" value={updatedOptionPrice}
@@ -189,7 +193,7 @@ export default function UpdateEvent() {
             </div>
 
             {/* Image Upload */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="file"> Option Image </label>
               <input type="file" id="file" name="file" accept="image/*"
                 onChange={(e) => setFile(e.target.files[0])}
@@ -199,9 +203,15 @@ export default function UpdateEvent() {
 
 
             <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Update Option </button>
+              <button className="flex items-center bg-green-700 text-white text-lg px-3 py-2 border border-green-700 rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg> Update </button>
 
-              <Link to={`/allOptions`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
+              <Link to={`/allOptions`} className="ml-16 flex items-center bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>Cancel </Link>
             </div>
 
           </form>

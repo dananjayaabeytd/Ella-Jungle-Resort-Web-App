@@ -330,7 +330,7 @@ export default function UpdateEvent() {
           <form className="mt-3" encType="multipart/form-data" onSubmit={handleUpdate}>
 
             {/* Event Name */}
-            <div className="ml-30 text-base font-semibold mt-5 ">
+            <div className="px-12 text-base font-semibold mt-5 ">
               <label className="block font-bold text-xl text-green-700" htmlFor="eventName">Event Name</label>
               <input type="text" placeholder="Enter Name" name="eventName" required value={updatedEventName}
                 className="w-full p-1  rounded text-lg font-lexend form-check border-2 border-theme-green"
@@ -345,7 +345,7 @@ export default function UpdateEvent() {
 
 
             {/* Event Category */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-700" htmlFor="eventCategory">Event Category</label>
               <select placeholder="Select Category" name="eventCategory" id="eventCategory" value={updatedEventCategory}
                 className="w-full p-1  rounded text-lg font-lexend form-check border-2 border-theme-green"
@@ -362,9 +362,9 @@ export default function UpdateEvent() {
             </div>
 
             <div className="flex">
-
+            <div className="px-12 ">
               {/* Event Date */}
-              <div className="ml-30 text-base font-semibold mt-5">
+              <div className="text-base font-semibold mt-5">
                   <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
                   <input type="date" placeholder="Event Date" name="eventDate" required value={updatedEventDate}
                       min={getCurrentDate()} // Set the min attribute to today's date
@@ -374,7 +374,7 @@ export default function UpdateEvent() {
               </div>
 
               {/* Event Time */}
-              <div className="pl-20 text-base font-semibold mt-5">
+              <div className=" text-base font-semibold mt-5">
                   <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
                   <input type="time" placeholder="Event Time" name="eventTime" required value={updatedEventTime}
                       min={getCurrentDate()} // Set the min attribute to today's date
@@ -382,10 +382,9 @@ export default function UpdateEvent() {
                       onChange={(e) => setUpdatedEventTime(e.target.value)}
                   />
               </div>
-            </div>
+              </div>
 
-            
-            <div className="ml-30 text-base font-semibold mt-5">
+              <div className="pl-40 text-base font-semibold mt-5">
               <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
               {timeSlots.map(slot => (
                 <div key={slot.id} className="flex mt-2">
@@ -404,12 +403,16 @@ export default function UpdateEvent() {
                 </div>
               ))}
             </div>
+            </div>
+
+            
+            
 
 
 
 
             {/* Event Description */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="eventDescription"
                 value={updatedEventDescription}
@@ -420,7 +423,7 @@ export default function UpdateEvent() {
 
 
             {/* Attendee Count*/}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="updatedAttendeeCount">Attendee Count</label>
               <input type="number" placeholder="Enter Attendee Count" name="updatedAttendeeCount" required value={updatedAttendeeCount}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
@@ -470,7 +473,7 @@ export default function UpdateEvent() {
 
 
             {/* Display total cost */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
             </div>
 
@@ -512,8 +515,8 @@ export default function UpdateEvent() {
                     
             {/* Ticket Price - Only displayed if isPublic is true */}
               {isPublic === true && (
-                  <div className="ml-30  text-base font-semibold mt-4 flex justify">
-                      <label className="block font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price</label>
+                  <div className="text-base font-semibold mt-4 flex justify">
+                      <label className="block font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price : </label>
                       <input required className=" p-1 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
                           type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice}
                           onChange={(e) => setTicketPrice(e.target.value)}
@@ -529,7 +532,7 @@ export default function UpdateEvent() {
 
 
             {/* Image Upload */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-700" htmlFor="file">
                 Event Image
               </label>
@@ -550,9 +553,15 @@ export default function UpdateEvent() {
 
 
             <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Update Event </button>
+              <button className="flex justify-center bg-green-700 text-white text-lg px-3 py-2 border border-green-800 rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>Update </button>
 
-              <Link to={`/viewEvent/${eventId}`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
+              <Link to={`/viewEvent/${eventId}`} className="ml-16 flex justify-center bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg> Cancel </Link>
             </div>
           </form>
         </div>

@@ -57,16 +57,3 @@ app.listen(port, () => console.log(`Server started on port ${port}`));
 
 
 
-
-
-//VilanIN
-
-
-//Here when URL is searched as http://Localhost:5000/event, the 'events.js' file in routes folder is executed
-
-
-
-//Here when URL is searched as http://Localhost:5000/option, the 'options.js' file in routes folder is executed
-
-
-//VilanOUT

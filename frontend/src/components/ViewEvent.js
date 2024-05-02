@@ -194,9 +194,16 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
                 {/* Event Date with Lexend font */}
                 <h6 className="text-base text-gray-600 font-lexend text-center mt-1">Ella Jungle Resort</h6>
                 
-                <div className="flex justify-between mt-2 px-20">
-                <div className="text-2xl font-bold text-blue-600 text-center">{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
-                <div className=" text-2xl font-bold text-green-600 text-center ">{formattedEventTime}</div>
+                <div className="flex justify-between mt-2 px-16">
+                <div className="flex items-center text-2xl font-bold text-blue-600 text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                </svg>{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
+
+                <div className="flex items-center text-2xl font-bold text-green-600 text-center ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>{formattedEventTime}</div>
                 </div>
 
     
@@ -268,26 +275,39 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
             
             <div className="mt-0 flex justify-center items-center">
              {/* Using Link component for View button */}
-              <Link to={`/buyEventTicket/${selectedEvent._id}`} className=" text-white text-xl font-mclaren px-4 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl"> Buy Ticket</Link>   
+              <Link to={`/buyEventTicket/${selectedEvent._id}`} className="flex items-center text-white text-xl font-mclaren px-2 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg> Buy Ticket</Link>   
             </div>   
 
             {(user.isAdmin || selectedEvent.eventUserId === user.userId) && (
                 <div className="mt-8 mx-48 mb-8 flex justify-between items-center">
                     {/* Using Link component for View button */}
-                    <Link to={`/updateEvent/${selectedEvent._id}`} className=" text-white text-xl font-lexend px-4 py-1  bg-theme-green hover:bg-green-800 rounded-xl"> Update </Link>
+                    <Link to={`/updateEvent/${selectedEvent._id}`} className="flex items-center text-white text-xl font-lexend px-2 py-1  bg-theme-green hover:bg-green-800 rounded-xl"> 
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+              </svg>Update </Link>
 
-                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-black hover:bg-gray-800 rounded-xl" 
+                    <button className="flex items-center text-white text-xl font-lexend px-2 py-1  bg-black hover:bg-gray-800 rounded-xl" 
                     onClick={downloadPDF}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+</svg>
+
                         Download Report
                     </button>
 
                     
-                    <button className=" text-white text-xl font-lexend px-4 py-1  bg-red-500 hover:bg-red-800 rounded-xl" 
+                    <button className="flex items-center text-white text-xl font-lexend px-3 py-1  bg-red-500 hover:bg-red-800 rounded-xl" 
                     onClick={() => {
                       setSelectedEventId(selectedEvent._id);
                       setIsModalOpen(true);
                     }}
                     >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+              <path strokeLinecap="round" strokeLinejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+            </svg>
                         Delete
                     </button>
                 </div>  

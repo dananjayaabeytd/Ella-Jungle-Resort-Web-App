@@ -81,7 +81,7 @@ export default function AddOption() {
       {/* Content Wrapper */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
 
-        <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
+        <div className="container my-10 max-w-3xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-green-400 rounded-[50px] overflow-auto font-lexend opacity-80">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
               Add Option
@@ -92,7 +92,7 @@ export default function AddOption() {
 
 
             {/* Option Category */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionCategory">Option Category</label>
               <select
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
@@ -113,7 +113,7 @@ export default function AddOption() {
 
 
             {/* Option Name */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionName">Option Name</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="text" placeholder="Enter Name" name="optionName" value={optionName}
@@ -124,7 +124,7 @@ export default function AddOption() {
 
 
             {/* Event Description */}    
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionDescription">Option Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="optionDescription" required value={optionDescription}
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
@@ -134,7 +134,7 @@ export default function AddOption() {
             
             
             {/* Price per Person */}
-            <div className="pt-6">
+            <div className="pt-6 px-12">
               <label htmlFor="perPerson" className="flex items-center font-bold text-lg text-green-900 font-lexend">
                 <input
                   type="checkbox"
@@ -150,7 +150,7 @@ export default function AddOption() {
 
 
             {/* Option Price */}
-            <div className="ml-30 text-base font-semibold mt-2">
+            <div className="px-12 text-base font-semibold mt-2">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
               <input required className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="number" placeholder="Enter Price" name="optionPrice" value={optionPrice}
@@ -160,7 +160,7 @@ export default function AddOption() {
 
 
             {/* Event Image */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="file"> Option Image </label>
               <input type="file" id="file" name="file" accept="image/*" required
                 className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -170,9 +170,15 @@ export default function AddOption() {
 
 
             <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Submit </button>
+              <button className="flex items-center bg-green-700 text-white text-lg px-5 py-2 border border-green-800 rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> 
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg> Add </button>
 
-              <Link to={`/allOptions`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"   > Cancel </Link>
+              <Link to={`/allOptions`} className="ml-16 flex items-center bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg> Cancel </Link>
             </div>
           </form>
         </div>

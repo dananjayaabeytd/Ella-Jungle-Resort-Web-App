@@ -292,7 +292,7 @@ export default function AddEvent() {
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
         <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-theme-green rounded-[50px] overflow-auto font-lexend opacity-80 border border-theme-green">
           <div className="text-5xl font-extrabold ...">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black justify-center">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black">
               Add Event
             </span>
           </div>
@@ -300,7 +300,7 @@ export default function AddEvent() {
           <form className="mt-3" encType="multipart/form-data" onSubmit={sendData}>
 
             {/* Event Name */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventName">Event Name</label>
               <input type="text" placeholder="Enter Name" name="eventName" required value={eventName}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
@@ -316,7 +316,7 @@ export default function AddEvent() {
             
 
             {/* Event Category */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800"  htmlFor="eventCategory">Event Category</label>
               <select placeholder="Select Category" name="eventCategory" required id="eventCategory" value={eventCategory}
                 onChange={(e) => setEventCategory(e.target.value)}
@@ -332,8 +332,9 @@ export default function AddEvent() {
             </div>
 
       <div className="flex ">
+        <div className="px-12 ">
             {/* Event Date */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="text-base font-semibold mt-5">
                 <label className="block font-bold text-xl text-green-800" htmlFor="eventDate">Event Date</label>
                 <input type="date" placeholder="Event Date" name="eventDate" required value={eventDate}
                     min={getCurrentDate()} // Set the min attribute to today's date
@@ -344,7 +345,7 @@ export default function AddEvent() {
 
 
             {/* Event Time */}
-            <div className="pl-20 text-base font-semibold mt-5">
+            <div className=" text-base font-semibold mt-5">
       <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">
         Event Time
       </label>
@@ -357,14 +358,11 @@ export default function AddEvent() {
         className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
         onChange={handleEventTimeChange}
       />
+      </div>
       
     </div>
-            </div>
-            
-            {errorMessage && <span className="text-red-600 pl-60 text-base font-semibold mt-5">{errorMessage}</span>}
 
-
-            <div className="ml-30 text-base font-semibold mt-5">
+    <div className="pl-40 text-base font-semibold mt-5">
               <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
               {timeSlots.map(slot => (
                 <div key={slot.id} className="flex mt-2">
@@ -384,10 +382,16 @@ export default function AddEvent() {
               ))}
             </div>
 
+            </div>
+            
+            {errorMessage && <span className="text-red-600 pl-12 text-base font-semibold mt-5">{errorMessage}</span>}
+
+
+           
 
 
             {/* Event Description */}    
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="eventDescription" required value={eventDescription}
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
@@ -399,7 +403,7 @@ export default function AddEvent() {
             
             
             {/* Attendee Count*/}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="attendeeCount">Attendee Count</label>
               <input type="number" placeholder="Enter Attendee Count" name="attendeeCount" required value={attendeeCount}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
@@ -447,7 +451,7 @@ export default function AddEvent() {
 </div>
 
 
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
             </div>
 
@@ -492,9 +496,12 @@ export default function AddEvent() {
                     
             {/* Ticket Price - Only displayed if isPublic is true */}
               {isPublic === true && (
-                  <div className="ml-30  text-base font-semibold mt-4 flex justify">
-                      <label className="block font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price</label>
-                      <input required className=" p-1 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
+                  <div className="  text-base font-semibold mt-4 flex justify">
+                      <label className="flex items-center font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z" />
+</svg>
+</label>
+                      <input required className=" p-0 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
                           type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice}
                           onChange={(e) => setTicketPrice(e.target.value)}
                           
@@ -507,7 +514,7 @@ export default function AddEvent() {
             </div>
 
             {/* Event Image */}
-            <div className="ml-30 text-base font-semibold mt-5">
+            <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="file">
                 Event Image
               </label>
@@ -524,10 +531,18 @@ export default function AddEvent() {
               </div>
             )}
 
-            <div className="flex justify-center mt-5">
-              <button className="bg-green-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit"> Submit </button>
+            <div className="flex justify-center mt-5 ">
+              <button className="flex items-center bg-green-700 text-white text-lg px-4 py-2 border border-green-800 rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+</svg>
+ Book </button>
 
-              <Link to={`/events`} className="ml-5 bg-red-700 text-white text-lg px-6 py-2 border border-black rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button"> Cancel </Link>
+              <Link to={`/events`} className="flex items-center ml-24 bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+              Cancel </Link>
             </div>
           </form>
         </div>
