@@ -23,7 +23,15 @@
     "react-to-print": "^2.15.1",
     "react-toastify": "^10.0.5",
     "sweetalert2": "^11.10.6",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "sweetalert": "^2.1.2",
+    "styled-components": "^6.1.8",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "react-datepicker": "^6.6.0"
   },
   "scripts": {
     "start": "react-scripts start",

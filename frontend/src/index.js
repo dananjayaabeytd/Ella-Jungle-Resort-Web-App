@@ -52,6 +52,13 @@ import ReservationActivity from './pages/ReservationActivity/ReservationActivity
 import ConfirmReservation from './pages/ConfirmReservation/ConfirmReservation';
 import ViewActivityReservation from './pages/AllActivity/ViewActivityReservation';
 
+
+//Sathma
+import Spa from './pages/spaPackages/spa';
+import SpaUser from './pages/spaPackages/spaUser';
+import AppointmentView from './pages/spaPackages/appointmentView';
+import SpaUserList from './pages/spaPackages/spaUserList';
+
 import store from './store';
 import { Provider } from 'react-redux';
 
@@ -198,6 +205,10 @@ const router = createBrowserRouter([
         element: <MyReservation />,
       },
 
+
+
+
+
       //Sayuni
       {
         path: '/activity',
@@ -226,6 +237,24 @@ const router = createBrowserRouter([
       {
         path: '/activity/allActivityReservation',
         element: <ViewActivityReservation />,
+      },
+
+
+      //Sathma
+      {
+        path: '/spa',
+        element: <Spa />,
+      },{
+        path: '/spaUser',
+        element: <SpaUser />,
+      },
+      {
+        path: '/appointmentView',
+        element: <AppointmentView />,
+      },
+      {
+        path: '/spaUserList',
+        element: <SpaUserList />,
       },
     ],
   },

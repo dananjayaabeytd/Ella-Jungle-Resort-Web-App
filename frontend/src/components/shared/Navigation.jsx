@@ -54,12 +54,14 @@ function NavList() {
         color='blue-gray'
         className='p-1 font-medium'
       >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Blocks
-        </a>
+        <Link to='/spaUserList'>
+          <a
+            href='#'
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Spa
+          </a>
+        </Link>
       </Typography>
       <Typography
         as='li'

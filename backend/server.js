@@ -4,15 +4,27 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db.js');
 const cookieParser = require('cookie-parser');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
+
+//Dananjaya
 const userRoutes = require('./routes/userRoutes.js');
 const agencyRoutes = require('./routes/agencyRoutes.js');
+
+//Ishara
 const feedbackRoutes = require('./routes/feedbackRoutes.js')
 const faqRoutes = require('./routes/faqRoutes.js')
 const agencyfeedbackRoutes = require('./routes/agencyfeedbackRoutes.js');
+
+//Dushan
 const roomRoutes = require('./routes/Rooms');
 const reservationRoutes = require('./routes/reservationRoutes');
+
+//Sayuni
 const specialActivityRouter = require("./routes/SpecialActivity.js");
 const reservationRouter = require("./routes/ActivityReservationRoutes.js");
+
+//Sathma
+const spaPackageRoutes = require('./routes/spaRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes'); // Import appointment routes
 
 
 dotenv.config();
@@ -51,6 +63,11 @@ app.use('/reservation', reservationRoutes);
 //Sayuni
 app.use("/SpecialActivity",specialActivityRouter);
 app.use("/ActivityReservation",reservationRouter);
+
+
+//Sathma
+app.use('/api/spa-packages', spaPackageRoutes);
+app.use('/api/appointments', appointmentRoutes); 
 
 
 

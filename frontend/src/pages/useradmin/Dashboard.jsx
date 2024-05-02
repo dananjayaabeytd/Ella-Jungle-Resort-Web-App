@@ -34,6 +34,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Health and Safety Management'
+          path='/spa'
           link='https://www.fitness-world.in/wp-content/uploads/2022/01/5-Reasons-Why-Your-Residential-Building-Needs-a-Professional-Gym-Banner-1200x620.jpg'
         />
         <CardDefault
