@@ -11,6 +11,9 @@ const faqRoutes = require('./routes/faqRoutes.js')
 const agencyfeedbackRoutes = require('./routes/agencyfeedbackRoutes.js');
 const roomRoutes = require('./routes/Rooms');
 const reservationRoutes = require('./routes/reservationRoutes');
+const specialActivityRouter = require("./routes/SpecialActivity.js");
+const reservationRouter = require("./routes/ActivityReservationRoutes.js");
+
 
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -43,6 +46,11 @@ app.use('/api/agencyfeedbacks',agencyfeedbackRoutes);
 //Dushan
 app.use('/residence', roomRoutes);
 app.use('/reservation', reservationRoutes);
+
+
+//Sayuni
+app.use("/SpecialActivity",specialActivityRouter);
+app.use("/ActivityReservation",reservationRouter);
 
 
 

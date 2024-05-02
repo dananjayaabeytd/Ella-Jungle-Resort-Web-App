@@ -67,12 +67,14 @@ function NavList() {
         color='blue-gray'
         className='p-1 font-medium'
       >
-        <a
-          href='#'
-          className='flex items-center font-bold transition-colors hover:text-green-500'
-        >
-          Docs
-        </a>
+        <Link to='/activity/home'>
+          <a
+            href='#'
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Activities
+          </a>
+        </Link>
       </Typography>
     </ul>
   );

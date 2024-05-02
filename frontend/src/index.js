@@ -19,8 +19,6 @@ import Dashboard from './pages/useradmin/Dashboard';
 import { UserUpdate } from './pages/useradmin/components/UpdateUser';
 import PrivateRoute from './PrivateRoute';
 
-
-
 //Ishara
 import AddFeedback from './pages/feedback/components/AddFeedback';
 import AllFeedback from './pages/feedback/components/AllFeedback';
@@ -34,7 +32,6 @@ import AddagencyFeedback from './pages/agencyfeedback/components/Addagencyfeedba
 import Uniqueuserfeedback from './pages/agencyfeedback/components/Uniqueuserfeedbacks';
 import Uniqueagencyfeedback from './pages/agencyfeedback/components/Uniqueagencyfeedbacks';
 
-
 //Dushan
 import ResidenceHome from './pages/Residence-homepage/Residence-homepage';
 import Residencebooking from './pages/Residence-booking-page/residencebooking';
@@ -46,10 +43,14 @@ import ReservationForm from './pages/Residence-booking-page/Residence-booking-co
 import ReservationPage from './pages/Reservation-management/reservationPage';
 import MyReservation from './pages/Residence-booking-page/Residence-booking-components/myReservation';
 
-
-
-
-
+//Sayuni
+import AddForm from './pages/AddActivity/AddForm';
+import UpdateForm from './pages/UpdateActivity/UpdateForm';
+import ViewActivity from './pages/AllActivity/ViewActivity';
+import HomeActivity from './pages/HomeActivity/HomeActivity';
+import ReservationActivity from './pages/ReservationActivity/ReservationActivity';
+import ConfirmReservation from './pages/ConfirmReservation/ConfirmReservation';
+import ViewActivityReservation from './pages/AllActivity/ViewActivityReservation';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -71,7 +72,7 @@ const router = createBrowserRouter([
             element: <Login />,
           },
           {
-            path: '/sign-in/reset', 
+            path: '/sign-in/reset',
             element: <ResetPwd />,
           },
         ],
@@ -86,7 +87,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/all',
-        element: <PrivateRoute component={MembersTable}/>,
+        element: <PrivateRoute component={MembersTable} />,
       },
       {
         path: '/profile',
@@ -136,69 +137,96 @@ const router = createBrowserRouter([
       },
       {
         path: '/myfaq',
-        element: <Faq />
+        element: <Faq />,
       },
       {
         path: '/updatefeedback',
-        element: <UpdateFeedback />
+        element: <UpdateFeedback />,
       },
       {
         path: '/updatefaq',
-        element: <UpdateFaq />
+        element: <UpdateFaq />,
       },
       {
         path: '/addagencyfeedback/:agencyId',
-        element: <AddagencyFeedback />
+        element: <AddagencyFeedback />,
       },
       {
         path: '/myagencyfeedback',
-        element: <Uniqueuserfeedback />
+        element: <Uniqueuserfeedback />,
       },
       {
         path: '/uniqueagency/:id',
-        element: <Uniqueagencyfeedback />
+        element: <Uniqueagencyfeedback />,
       },
-
-
 
       //Dushan
       {
         path: '/residenceHome',
-        element: <ResidenceHome/>
+        element: <ResidenceHome />,
       },
       {
         path: '/residenceBooking',
-        element: <Residencebooking/>
+        element: <Residencebooking />,
       },
       {
         path: '/AddRoom',
-        element: <AddRooms/>
+        element: <AddRooms />,
       },
       {
         path: '/RoomPage',
-        element: <RoomPage/>
+        element: <RoomPage />,
       },
       {
         path: '/UpdateRoom/:id',
-        element: <UpdateRoomForm/>
+        element: <UpdateRoomForm />,
       },
       {
         path: '/Available',
-        element: <AvailableRooms/>
+        element: <AvailableRooms />,
       },
       {
         path: '/Booking/:id',
-        element: <ReservationForm/>
+        element: <ReservationForm />,
       },
       {
         path: '/allReservations',
-        element: <ReservationPage/>
+        element: <ReservationPage />,
       },
       {
         path: '/myReservations/:id',
-        element: <MyReservation/>
-      }
-     
+        element: <MyReservation />,
+      },
+
+      //Sayuni
+      {
+        path: '/activity',
+        element: <ViewActivity />,
+      },
+      {
+        path: '/activity/add',
+        element: <AddForm />,
+      },
+      {
+        path: '/activity/update/:id',
+        element: <UpdateForm />,
+      },
+      {
+        path: '/activity/home',
+        element: <HomeActivity />,
+      },
+      {
+        path: '/activity/apply/:id',
+        element: <ReservationActivity />,
+      },
+      {
+        path: '/activity/confirmactivity/:id',
+        element: <ConfirmReservation />,
+      },
+      {
+        path: '/activity/allActivityReservation',
+        element: <ViewActivityReservation />,
+      },
     ],
   },
 ]);

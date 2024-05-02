@@ -38,6 +38,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Special Activity Management'
+          path='/activity'
           link='https://images.healthshots.com/healthshots/en/uploads/2023/07/20143449/hiking.jpg'
         />
       </div>
