@@ -42,6 +42,7 @@ import AvailableRooms from './pages/Residence-booking-page/Residence-booking-com
 import ReservationForm from './pages/Residence-booking-page/Residence-booking-components/Bookingform';
 import ReservationPage from './pages/Reservation-management/reservationPage';
 import MyReservation from './pages/Residence-booking-page/Residence-booking-components/myReservation';
+import ResidenceAdmin from './pages/Residence-admin/residenceAdmin';
 
 //Sayuni
 import AddForm from './pages/AddActivity/AddForm';
@@ -61,6 +62,7 @@ import SpaUserList from './pages/spaPackages/spaUserList';
 
 import store from './store';
 import { Provider } from 'react-redux';
+
 
 const router = createBrowserRouter([
   {
@@ -203,6 +205,10 @@ const router = createBrowserRouter([
       {
         path: '/myReservations/:id',
         element: <MyReservation />,
+      },
+      {
+        path: '/residenceAdmin',
+        element: <ResidenceAdmin/>
       },
 
 
