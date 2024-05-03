@@ -6,7 +6,7 @@ const AvailableRooms = () => {
     const [allRooms, setAllRooms] = useState([]);
     const [roomcheckIn, setCheckIn] = useState('');
     const [roomcheckOut, setCheckOut] = useState('');
-    const [roomType, setRoomType] = useState('');
+    const [roomType, setRoomType] = useState('chalet'); // Set default room type to 'chalet'
     const [currentPage, setCurrentPage] = useState(1);
     const [roomsPerPage] = useState(8);
 
@@ -44,21 +44,21 @@ const AvailableRooms = () => {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className='flex flex-row justify-center space-x-4 pb-10'>
-                <label  className='mt-2 font-bold '>Check-in:</label>
+                <label className='mt-2 font-bold'>Check-in:</label>
                 <input
                     type="date"
                     value={roomcheckIn}
                     onChange={e => setCheckIn(e.target.value)}
                     className='py-2 px-20  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 />
-                 <label className='mt-2 font-bold pl-10'>Check-out:</label>
+                <label className='mt-2 font-bold pl-10'>Check-out:</label>
                 <input
                     type="date"
                     value={roomcheckOut}
                     onChange={e => setCheckOut(e.target.value)}
                     className='py-2 px-20 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'
                 />
-                 <label className='mt-2 font-bold pl-10'>Room-Type</label>
+                <label className='mt-2 font-bold pl-10'>Room-Type</label>
                 <select
                     value={roomType}
                     onChange={e => setRoomType(e.target.value)}
