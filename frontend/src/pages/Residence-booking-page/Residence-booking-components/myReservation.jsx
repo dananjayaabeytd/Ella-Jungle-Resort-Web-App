@@ -17,6 +17,8 @@ const MyReservation = () => {
       }
     };
 
+   
+
     const fetchRooms = async () => {
       try {
         const response = await axios.get('/residence/rooms');
@@ -30,10 +32,14 @@ const MyReservation = () => {
     fetchRooms();
   }, []);
 
+  const formatDate = (dateString) => {
+    return dateString.substring(0, 10); // Extract first 10 characters (YYYY-MM-DD)
+};
+
   return (
     <div className="container mx-auto my-10">
       <h1 className="text-center font-bold text-3xl my-20">My Reservations</h1>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center mr-10">
         {reservations.map(reservation => {
           // Filter reservations based on user ID
           if (reservation.userID !== userInfo._id) return null;
@@ -62,10 +68,10 @@ const MyReservation = () => {
                 <p  className="font-bold pb-2">Price: {room.price}</p>
                 
                 <label htmlFor="checkIn"> Check In : </label>
-                <p   className="font-bold pb-2">{reservation.checkIn}</p>
+                <p   className="font-bold pb-2">{formatDate(reservation.checkIn)}</p>
 
                 <label htmlFor="checkOut"> Check Out : </label>
-                <p  className="font-bold pb-2">{reservation.checkOut}</p>
+                <p  className="font-bold pb-2">{formatDate(reservation.checkOut)}</p>
               </div>
             </div>
           );
