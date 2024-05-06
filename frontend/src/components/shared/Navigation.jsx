@@ -48,6 +48,22 @@ function NavList() {
           </a>
         </Link>
       </Typography>
+
+      <Typography
+        as='li'
+        variant='small'
+        color='blue-gray'
+        className='p-1 font-medium'
+      >
+        <Link to='/packagesHome'>
+          <a
+            href='#'
+            className='flex items-center font-bold transition-colors hover:text-green-500'
+          >
+            Packages
+          </a>
+        </Link>
+      </Typography>
       <Typography
         as='li'
         variant='small'
