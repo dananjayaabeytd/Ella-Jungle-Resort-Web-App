@@ -12,6 +12,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Hotel Packages Management'
+          path='/add'
           link='https://media.istockphoto.com/id/1160947136/photo/couple-relax-on-the-beach-enjoy-beautiful-sea-on-the-tropical-island.jpg?s=612x612&w=0&k=20&c=WJWEH22TFinjI0edzblfH-Nw0cdBfPX5LV8EMvs8Quo='
         />
         <CardDefault
@@ -20,7 +21,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Residence Management'
-          path='/'
+          path='/residenceAdmin'
           link='https://media.istockphoto.com/id/1390233984/photo/modern-luxury-bedroom.jpg?s=612x612&w=0&k=20&c=po91poqYoQTbHUpO1LD1HcxCFZVpRG-loAMWZT7YRe4='
         />
         <CardDefault

@@ -19,6 +19,20 @@ import Dashboard from './pages/useradmin/Dashboard';
 import { UserUpdate } from './pages/useradmin/components/UpdateUser';
 import PrivateRoute from './PrivateRoute';
 
+
+//Deanne
+import PackagesHomePage from './pages/hotel packages/packages home/home.page';
+import PackagesPage from './pages/hotel packages/all packages/hotel.packages';
+import PackageAdd from './pages/hotel packages/add packages/add.package.page';
+import PackageTable from './pages/hotel packages/packages_display_admin/packages.table.page';
+import Custompackage from './pages/hotel packages/custom packages/Custompackage';
+import DisplayCutomPackages from './pages/hotel packages/custom packages/Show';
+import HotelBookingForm from './pages/hotel packages/booking packages/hotel_booking/hotel.booking';
+import CustomBookingForm from './pages/hotel packages/booking packages/custom_booking/custom.booking';
+import CustomBookingDisplay from './pages/hotel packages/booking packages/custom_booking/CustomBookingDisplay';
+import HotelBookingDisplay from './pages/hotel packages/booking packages/hotel_booking/HotelBookingDisplay';
+
+
 //Ishara
 import AddFeedback from './pages/feedback/components/AddFeedback';
 import AllFeedback from './pages/feedback/components/AllFeedback';
@@ -42,6 +56,7 @@ import AvailableRooms from './pages/Residence-booking-page/Residence-booking-com
 import ReservationForm from './pages/Residence-booking-page/Residence-booking-components/Bookingform';
 import ReservationPage from './pages/Reservation-management/reservationPage';
 import MyReservation from './pages/Residence-booking-page/Residence-booking-components/myReservation';
+import ResidenceAdmin from './pages/Residence-admin/residenceAdmin';
 
 //Sayuni
 import AddForm from './pages/AddActivity/AddForm';
@@ -61,6 +76,7 @@ import SpaUserList from './pages/spaPackages/spaUserList';
 
 import store from './store';
 import { Provider } from 'react-redux';
+
 
 const router = createBrowserRouter([
   {
@@ -119,6 +135,57 @@ const router = createBrowserRouter([
       {
         path: 'updateuser/:id',
         element: <UserUpdate />,
+      },
+
+      //Deanne
+      {
+        path: '/hotel/:id/:price',
+        element: <HotelBookingForm />,
+      },
+      {
+        path: '/hotelbookingdisplay',
+        element: <HotelBookingDisplay />,
+      },
+
+      {
+        path: '/cus/:id/:price',
+        element: <CustomBookingForm />,
+      },
+      {
+        path: '/cusbokingdisplay',
+        element: <CustomBookingDisplay />,
+      },
+
+      {
+        path: '/packagesHome',
+        element: <PackagesHomePage/>,
+      },
+      {
+        path: '/customcreated',
+        element: <DisplayCutomPackages />,
+      },
+
+      {
+        path: '/custom_1',
+        element: <Custompackage />,
+      },
+
+      {
+        path: '/packages',
+        element: <PackagesPage />,
+      },
+     
+      {
+        path: '/add',
+        element: <PackageAdd />,
+      },
+      {
+        path: '/table',
+        element: <PackageTable />,
+      },
+      {
+        path: '/update',
+        element: <updatePack />,
       },
 
       //Ishara
@@ -203,6 +270,10 @@ const router = createBrowserRouter([
       {
         path: '/myReservations/:id',
         element: <MyReservation />,
+      },
+      {
+        path: '/residenceAdmin',
+        element: <ResidenceAdmin/>
       },
 
 
