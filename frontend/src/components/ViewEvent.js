@@ -27,6 +27,14 @@ export default function ViewEvent() {
     const [popupMessage, setPopupMessage] = useState('');
     const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
 
+    const timeSlots = [
+      { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
+      { id: 'slot2', label: '12pm to 4pm', value: '12:00-16:00' },
+      { id: 'slot3', label: '4pm to 8pm', value: '16:00-20:00' },
+      { id: 'slot4', label: '8pm to 12am', value: '20:00-00:00' },
+    ];
+
+
     const downloadPDF = () => {
     const input = pdfRef.current;
     html2canvas(input, {
@@ -191,8 +199,12 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
                 {/* Event Name with Inika font */}
                 <h1 className="text-4xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
                 
+                <div className="flex justify-between mt-1 px-16">
                 {/* Event Date with Lexend font */}
-                <h6 className="text-base text-gray-600 font-lexend text-center mt-1">Ella Jungle Resort</h6>
+                <h6 className="text-base text-gray-600 font-lexend text-center ">Ella Jungle Resort</h6>
+                <h6 className="text-base text-gray-600 font-lexend text-center">{selectedEvent.eventCategory}</h6>
+
+                </div>
                 
                 <div className="flex justify-between mt-2 px-16">
                 <div className="flex items-center text-2xl font-bold text-blue-600 text-center">
@@ -216,8 +228,30 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
             </div>
 
 
-            {/*Options Loop*/}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">             
+            
+          <div className="ml-16">
+            <p className="block font-bold text-lg text-green-800 ml-48">Time Slots :-</p>
+              {timeSlots.map(slot => (
+                selectedEvent.selectedTimeSlots.includes(slot.id) && ( // Check if the slot is selected
+                  <div key={slot.id} className="text-base font-semibold ml-48">
+                    <input
+                      readOnly
+                      type="checkbox"
+                      id={slot.id}
+                      checked={true} // Always checked since it's a selected slot
+                      className="form-checkbox h-4 w-4 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-blue-600 checked:border-transparent checked:border-2"
+                    />
+                    <label htmlFor={slot.id} className="ml-2 text-base text-black">{slot.label}</label>
+                  </div>
+                )
+              ))}
+              </div>
+
+
+            {/* Options Loop */}
+            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">  
+             
+
              {/* Filter and display only the categories that have selected options */}
           {categories.filter(category => hasSelectedOptions(category)).map((category, index) => (
                       <div key={index} className="text-base font-semibold ml-16">
@@ -254,13 +288,13 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
               <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
           )}
       
-      </div>
+
 
           {/* Display ticket price for public events */}
           {selectedEvent.isPublic && (
             <p className="mt-3 text-lg font-semibold font-mclaren text-green-900">Grab Your Tickets Now for only <span className="text-red-800">{selectedEvent.ticketPrice} LKR !!</span> Enjoy the Moment</p>
           )}
-          
+      </div>
 
             <div className="font-semibold">
             <p className="text-lg text-green-80"></p>

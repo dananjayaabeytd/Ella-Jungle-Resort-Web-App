@@ -37,6 +37,11 @@ export default function UpdateEvent() {
     { id: 'slot4', label: '8pm to 12am', value: '20:00-00:00' },
   ];
 
+  // Get current date and time
+  const currentDate = new Date();
+  const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+
   
 
   const navigate = useNavigate();
@@ -222,6 +227,8 @@ export default function UpdateEvent() {
     formData.append("isPublic", isPublic);
     formData.append("ticketPrice", ticketPrice);
     formData.append("file", file);
+    formData.append("eventBookingDate", currentDate);
+    formData.append("eventBookingTime", formattedTime);
 
     
   // Append selected option IDs
@@ -385,24 +392,24 @@ export default function UpdateEvent() {
               </div>
 
               <div className="pl-40 text-base font-semibold mt-5">
-              <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
-              {timeSlots.map(slot => (
-                <div key={slot.id} className="flex mt-2">
-                  <input
-                    type="checkbox"
-                    id={slot.id}
-                    disabled={reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id)}
-                    checked={selectedTimeSlots.includes(slot.id)}
-                    onChange={() => handleTimeSlotChange(slot.id)}
-                    className="form-checkbox h-5 w-5 text-green-600"
-                  />
-                  <label htmlFor={slot.id} className="ml-2 text-black">{slot.label}</label>
-                  {reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id) && (
-                    <span className="ml-2 text-red-600">This time slot is already reserved</span>
-                  )}
-                </div>
-              ))}
-            </div>
+                <p className="block font-bold text-xl text-green-800 mb-3">Select Time Slots:</p>
+                {timeSlots.map(slot => (
+                  <div key={slot.id} className="flex mt-2">
+                    <input
+                      type="checkbox"
+                      id={slot.id}
+                      disabled={reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id)}
+                      checked={selectedTimeSlots.includes(slot.id)}
+                      onChange={() => handleTimeSlotChange(slot.id)}
+                      className="form-checkbox h-5 w-5 text-green-600"
+                    />
+                    <label htmlFor={slot.id} className="ml-2 text-black">{slot.label}</label>
+                    {reservedSlots.includes(slot.id) && !selectedEvent.selectedTimeSlots.includes(slot.id) && (
+                      <span className="ml-2 text-red-600">This time slot is already reserved</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
 
             

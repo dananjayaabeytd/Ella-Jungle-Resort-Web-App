@@ -4,22 +4,19 @@ import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
-import wedding1 from '../assets/wedding1.jpg';
-import birthday1 from '../assets/birthday1.jpg';
-import birthday2 from '../assets/birthday2.jpg';
-import flora4 from '../assets/flora4.jpg';
-import meet1 from '../assets/meet1.jpg';
+import pic0 from '../assets/flora4.jpg';
+import pic1 from '../assets/wedding1.jpg';
+import pic2 from '../assets/birthday1.jpg';
+import pic3 from '../assets/feast1.jpg';
+import pic4 from '../assets/christmas5.jpg';
+import pic5 from '../assets/wedding8.jpg';
+import pic6 from '../assets/halloween1.jpg';
 import EventHeader from './EventHeader';
 
 
 
 
 export default function EventHome() {
-
-    const { eventId } = useParams(); // Get the eventId from URL params
-
-    const [selectedOptions, setSelectedOptions] = useState([]);
-    const [allOptions, setAllOptions] = useState([]);
 
     const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
@@ -67,21 +64,6 @@ export default function EventHome() {
 
 // Assuming events is an array of event objects
 const currentEvent = futureEvents[currentEventIndex];
-
-  
-    useEffect(() => {
-        // Fetch all options when the component mounts
-        function getOptions() {
-          axios.get("http://localhost:5000/option/allOptions")
-            .then((res) => {
-              setAllOptions(res.data);
-            })
-            .catch((err) => {
-              alert(err.message);
-            });
-        }
-        getOptions();
-      }, []);
     
 
       
@@ -107,7 +89,7 @@ const currentEvent = futureEvents[currentEventIndex];
       {/* Your scrolling content */}
       
       <div className="container bg-fixed my-5  mx-auto px-20  rounded-3xl overflow-auto bg-gray-50 bg-opacity-50 shadow-2xl shadow-theme-green " style={{
-            backgroundImage: `url(${flora4})`,
+            backgroundImage: `url(${pic0})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
       }}>
@@ -151,7 +133,7 @@ const currentEvent = futureEvents[currentEventIndex];
             {/*One Card */}               
             <div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
                 style={{
-                    backgroundImage: `url(${wedding1})`,
+                    backgroundImage: `url(${pic1})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
@@ -173,7 +155,7 @@ const currentEvent = futureEvents[currentEventIndex];
             {/*One Card */}               
             <div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
                 style={{
-                    backgroundImage: `url(${birthday1})`,
+                    backgroundImage: `url(${pic2})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
@@ -198,7 +180,7 @@ const currentEvent = futureEvents[currentEventIndex];
             {/*One Card */}               
             <div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
                 style={{
-                    backgroundImage: `url(${meet1})`,
+                    backgroundImage: `url(${pic3})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                 }}
@@ -206,18 +188,91 @@ const currentEvent = futureEvents[currentEventIndex];
             {/* <img className="w-full" src={christmas1} alt="test" /> */}
                 <div className="px-4 py-4 bg-secondary-green  opacity-85 m-2 mt-56 mb-4 rounded-xl">
                     <div className="font-bold text-xl pb-2">
-                        <p className="text-base font-bold text-green-800 font-inika text-center">From Planning to Execution - All Your Event Needs in One Place</p></div>
-                        <p className="text-sm font-mclaren text-center">Smooth event management, whether you're planning a large wedding, a birthday party, a social event, or a business conference</p>
+                        <p className="text-base font-bold text-green-800 font-inika text-center">Tailored Solutions for Your Vision and Budget</p></div>
+                        <p className="text-sm font-mclaren text-center">Explore customizable options designed to fit your unique preferences and budget requirements, with event experience tailored to your needs.</p>
                 </div>
 
             </div>
             {/*One Card Ends*/}   
-                
 
-            
 
         </div>
         {/*Cards end here */}
+
+
+
+
+         {/*Cards are wrapped here */}
+         <div className=" flex  p-2 items-center justify-between">
+
+{/*One Card */}               
+<div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
+    style={{
+        backgroundImage: `url(${pic4})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    }}
+>
+{/* <img className="w-full" src={christmas1} alt="test" /> */}
+    <div className="px-4 py-4 bg-secondary-green  opacity-85 m-2 mt-56 mb-4 rounded-xl">
+        <div className="font-bold text-xl pb-2">
+            <p className="text-base font-bold text-green-800 font-inika text-center">
+                From Planning to Execution - All Your Event Needs in One Place
+                </p>
+        </div>
+            <p className="text-sm font-mclaren text-center">Smooth event management, whether you're planning a large wedding, a birthday party, a social event, or a business conference</p>
+    </div>
+
+</div>
+{/*One Card Ends*/}   
+
+
+{/*One Card */}               
+<div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
+    style={{
+        backgroundImage: `url(${pic5})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    }}
+>
+{/* <img className="w-full" src={christmas1} alt="test" /> */}
+    <div className="px-4 py-4 bg-secondary-green opacity-85 m-2 mt-4 mb-56 rounded-xl">
+        <div className="font-bold text-xl pb-2">
+            <p className="text-base font-bold text-green-800 font-inika text-center">
+            Monitor Your Expenses Every Step of the Way as You Plan Your Dream Event
+            </p>
+        </div>
+        
+        <p className="text-sm font-mclaren text-center">
+        Enjoy financial transparency as you plan your event, monitoring expenses effortlessly. Enjoy complete financial transparency and control
+        </p>
+    </div>
+
+</div>
+{/*One Card Ends*/}   
+
+
+{/*One Card */}               
+<div className="bg-white max-w-md px-5 m-8 rounded-3xl overflow-hidden shadow-2xl hover:scale-up-110 " 
+    style={{
+        backgroundImage: `url(${pic6})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+    }}
+>
+{/* <img className="w-full" src={christmas1} alt="test" /> */}
+    <div className="px-4 py-4 bg-secondary-green  opacity-85 m-2 mt-56 mb-4 rounded-xl">
+        <div className="font-bold text-xl pb-2">
+            <p className="text-base font-bold text-green-800 font-inika text-center">From Planning to Execution - All Your Event Needs in One Place</p></div>
+            <p className="text-sm font-mclaren text-center">Smooth event management, whether you're planning a large wedding, a birthday party, a social event, or a business conference</p>
+    </div>
+
+</div>
+{/*One Card Ends*/}   
+
+
+</div>
+{/*Cards end here */}
 
 
         
@@ -230,7 +285,9 @@ const currentEvent = futureEvents[currentEventIndex];
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}>
+                   
                     <div className="mx-16 my-14 text-center items-center bg-gray-500 opacity-70 rounded-3xl border-8 border-black border-double">
+                    <Link to={`/viewEvent/${currentEvent._id}`}>
                       <h3 className="leading-6 text-2xl font-bold text-gray-950 font-inika pt-4 mx-8">{currentEvent.eventName}</h3>
                       <div className="px-7 py-1 pt-2">
                         <p className="text-base font-mclaren text-black">
@@ -249,6 +306,9 @@ const currentEvent = futureEvents[currentEventIndex];
                     <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
                   </svg>Ella Jungle Resort</p>
                       </div>
+
+                      </Link>
+
                       <div className="items-center px-4 pb-5 mt-3 flex justify-between mx-6">
 
                       <button className="flex items-center px-4 py-2 font-mclaren bg-black text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
@@ -263,9 +323,6 @@ const currentEvent = futureEvents[currentEventIndex];
                         </svg>
                         Buy </Link>
 
-
-                       
-
                         <button 
                         className="flex items-center px-4 py-2 font-mclaren bg-black text-white text-base font-medium rounded-lg w-24 shadow-sm hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50" 
                         onClick={handleCloseModal}>
@@ -277,15 +334,16 @@ const currentEvent = futureEvents[currentEventIndex];
                       
 
                     </div>
+                    
                   </div>
                 </div>
               )}
               {/* Pop-up Ends Here */}
 
-
+              
         
     </div>
-
+  
     
   </div>
   )

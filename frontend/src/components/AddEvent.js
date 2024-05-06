@@ -41,6 +41,10 @@ export default function AddEvent() {
     { id: 'slot3', label: '4pm to 8pm', value: '16:00-20:00' },
     { id: 'slot4', label: '8pm to 12am', value: '20:00-00:00' },
   ];
+
+      // Get current date and time
+      const currentDate = new Date();
+      const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   
 
   const navigate = useNavigate();
@@ -172,6 +176,9 @@ export default function AddEvent() {
     formData.append("isPublic", isPublic);
     formData.append("ticketPrice", ticketPrice);
     formData.append("file", file);
+    formData.append("eventBookingDate", currentDate);
+    formData.append("eventBookingTime", formattedTime);
+
 
     // Append selected option IDs
     selectedOptions.forEach((optionId) => {
@@ -293,7 +300,7 @@ export default function AddEvent() {
         <div className="container my-10 max-w-4xl mx-auto p-10 bg-secondary-green shadow-2xl shadow-theme-green rounded-[50px] overflow-auto font-lexend opacity-80 border border-theme-green">
           <div className="text-5xl font-extrabold ...">
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-800 to-black">
-              Add Event
+              Book Event
             </span>
           </div>
           
@@ -538,7 +545,7 @@ export default function AddEvent() {
 </svg>
  Book </button>
 
-              <Link to={`/events`} className="flex items-center ml-24 bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button">
+              <Link to={`/myEvents`} className="flex items-center ml-24 bg-red-700 text-white text-lg px-3 py-2 border border-red-800 rounded-full cursor-pointer font-bold hover:bg-red-400 hover:border-red-950" type="button">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
                 <path strokeLinecap="round" strokeLinejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>

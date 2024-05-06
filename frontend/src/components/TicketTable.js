@@ -43,7 +43,6 @@ const TicketTable = () => {
   
     {/* Content Wrapper */}
     <div className="relative z-10 flex flex-col items-center  min-h-screen">
-    <EventHeader/>
 
             
   
@@ -65,19 +64,23 @@ const TicketTable = () => {
             </tr>
           </thead>
           <tbody>
-            {user.isAdmin && tickets.map((ticket) => (
-              <tr key={ticket._id} className="border-b border-gray-200 hover:bg-green-50 hover:opacity-50 ">
-                <td className="px-5 py-2">{ticket.eventName}</td>
-                <td className="px-5 py-2">{ticket.ticketUserName}</td>
-                <td className="px-5 py-2">{ticket.ticketUserEmail}</td>
-                <td className="px-5 py-2">{ticket.ticketUserMobile}</td>
-                <td className="px-5 py-2">{ticket.ticketCount}</td>
-                <td className="px-5 py-2">{ticket.totalTicketCost}</td>
-                <td className="px-5 py-2">{ticket.ticketBuyingDate? ticket.ticketBuyingDate.substr(0, 10) : ""}</td>
-                <td className="px-5 py-2">{ticket.ticketBuyingTime}</td>
-              </tr>
-            ))}
-          </tbody>
+  {tickets.map((ticket) => (
+    // Check if the user is an admin or the ticket belongs to the user
+    (user.isAdmin || ticket.ticketUserId === user._id) && (
+      <tr key={ticket._id} className="border-b border-gray-200 hover:bg-green-50 hover:opacity-50 ">
+        <td className="px-5 py-2">{ticket.eventName}</td>
+        <td className="px-5 py-2">{ticket.ticketUserName}</td>
+        <td className="px-5 py-2">{ticket.ticketUserEmail}</td>
+        <td className="px-5 py-2">{ticket.ticketUserMobile}</td>
+        <td className="px-5 py-2">{ticket.ticketCount}</td>
+        <td className="px-5 py-2">{ticket.totalTicketCost}</td>
+        <td className="px-5 py-2">{ticket.ticketBuyingDate ? ticket.ticketBuyingDate.substr(0, 10) : ""}</td>
+        <td className="px-5 py-2">{ticket.ticketBuyingTime}</td>
+      </tr>
+    )
+  ))}
+</tbody>
+
         </table>
       </div>
 

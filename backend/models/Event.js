@@ -56,7 +56,17 @@ const eventSchema = new Schema({
 
     eventImage: {
         type: String, // Store the filename or image URL
-    }
+    },
+
+    eventBookingDate: {
+        type: Date,
+    },
+
+    eventBookingTime: {
+        type: String,
+    },
+
+
 });
 
 const Event = mongoose.model("Event", eventSchema);
