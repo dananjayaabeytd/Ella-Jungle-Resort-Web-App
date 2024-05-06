@@ -24,7 +24,7 @@ import { useSelector } from 'react-redux';
     <button
       onClick={() => window.location.href = `/myReservations/${userInfo._id}`}
       className="ml-10 text-1xl mt-20 rounded-full bg-white bg-opacity-30 text-cyan-500 font-bold py-2 px-4 hover:bg-opacity-70 hover:text-black transition duration-300 ease-in-out"
-    >My Reservations 
+    >My Reservations!
     </button>
         </div>
       </div>
