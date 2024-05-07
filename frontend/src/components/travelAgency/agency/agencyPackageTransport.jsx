@@ -13,7 +13,11 @@ function AgencyPackageTransport({
   showCheckbox,
 }) {
   const handleClick = () => {
-    onSelect(transportId); // Call the onSelect function with the transportId when the transport is clicked
+    if (isSelected) {
+      onSelect(null);
+    } else {
+      onSelect(transportId);
+    }
   };
 
   return (

@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 
 function AgencyRequestDetails() {
   const { requestId } = useParams();
-
+  const [userData, setUserData] = useState({}); // [1] Define state for user data
   // * set initial state for request data
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
@@ -26,7 +26,7 @@ function AgencyRequestDetails() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`http://localhost:3005/getRequestId/${requestId}`);
+        const result = await axios.get(`/getRequestId/${requestId}`);
         const {
           ArrivalDate,
           DepartureDate,
@@ -63,10 +63,24 @@ function AgencyRequestDetails() {
     fetchData();
   }, [requestId]);
 
+  //fetch user data
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const result = await axios.get(`http://localhost:5000/api/users/specific/${requestData.UserId}`);
+        setUserData(result.data);
+        console.log("User data:", result.data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+    fetchUserData();
+  }, [requestData.UserId]);
+
   // * Function to handle accepting request
   const handleAcceptRequest = async () => {
     try {
-      const updatedRequest = await axios.put(`http://localhost:3005/UpdateRequest/${requestId}`, {
+      const updatedRequest = await axios.put(`http://localhost:5000/UpdateRequest/${requestId}`, {
         ...requestData,
         UserId: requestData.UserId,
         AgencyId: requestData.AgencyId,
@@ -79,12 +93,36 @@ function AgencyRequestDetails() {
           showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location = `/AgencyRequestList/${requestData.AgencyId}`;
+            window.location = `/agencyHome/`;
           }
         });
       }
     } catch (error) {
       console.error("Error accepting request:", error);
+    }
+  };
+
+  const handleRejectRequest = async () => {
+    try {
+      const updatedRequest = await axios.put(`http://localhost:5000/UpdateRequest/${requestId}`, {
+        ...requestData,
+        UserId: requestData.UserId,
+        AgencyId: requestData.AgencyId,
+        Status: "rejected",
+      });
+      if (updatedRequest.data.message === "Request Updated") {
+        Swal.fire({
+          icon: "success",
+          title: "Request Rejected!",
+          showConfirmButton: true,
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location = `/agencyHome/`;
+          }
+        });
+      }
+    } catch (error) {
+      console.error("Error rejecting request:", error);
     }
   };
 
@@ -101,7 +139,7 @@ function AgencyRequestDetails() {
               <div className='flex flex-col gap-2 mx-20 text-xl'>
                 <div className='flex items-start mb-2 '>
                   <label>Client Name</label>
-                  <h1 className=' text-green-500  ml-[70px] text-2xl'>Hi</h1>
+                  <h1 className=' text-green-500  ml-[70px] text-2xl'>{userData.name}</h1>
                 </div>
                 <div className='flex items-start mb-2 '>
                   <label>Arrival Date</label>
@@ -219,6 +257,15 @@ function AgencyRequestDetails() {
                   onClick={handleAcceptRequest}
                 >
                   Accept Request
+                  <span className='absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease'></span>
+                </button>
+                <button
+                  id='spRequest'
+                  className='border border-gray-300 mx-20 mb-10 w-[200px] h-10 bg-red-500 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-red-500 hover:to-red-400 hover:ring-2 hover:ring-offset-2 hover:ring-red-400 transition-all ease-out duration-300'
+                  type='button' // Change type to button to prevent form submission
+                  onClick={handleRejectRequest}
+                >
+                  Reject Request
                   <span className='absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease'></span>
                 </button>
               </div>

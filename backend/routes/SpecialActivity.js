@@ -18,9 +18,11 @@ const storage = multer.diskStorage({
   });
 
 
-
 // Multer instance
 const upload = multer({ storage: storage }).single('image');
+
+
+
 
 
 
@@ -41,7 +43,7 @@ router.post("/add", (req, res) => {
 
 
       // File upload successful, continue with adding the activity
-      const { name, description, price } = req.body;
+      const { name, description, distance, price } = req.body;
       const image = req.file ? req.file.filename : ""; // If no file uploaded, set empty string
   
 
@@ -51,6 +53,7 @@ router.post("/add", (req, res) => {
           name,
           image,
           description,
+          distance,
           price,
         });
 
@@ -70,7 +73,7 @@ router.post("/add", (req, res) => {
 
 
 //to view all the values added
-router.route("/getAllActivities").get((req,res)=>{
+router.route("/").get((req,res)=>{
     SpecialActivity.find().then((SpecialActivity)=>{
         res.json(SpecialActivity)
     }).catch((err)=>{
@@ -89,13 +92,14 @@ router.route("/update/:id").put(async(req,res)=>{
     let userId = req.params.id;
     
     //fetching the newly updated data in destructive format
-    const{name,image,description,price}=req.body;
+    const{name,image,description,distance,price}=req.body;
 
     //creating an object to update the data
     const updateSpecialActivity={
         name,
         image,
         description,
+        distance,
         price
     };
     
@@ -155,6 +159,8 @@ router.route("/get/:id").get(async(req,res)=>{
 });
 
 
+
+
 //to view all the activities added in home page for guests
 router.route("/home").get((req,res)=>{
   SpecialActivity.find().then((SpecialActivity)=>{
@@ -163,6 +169,8 @@ router.route("/home").get((req,res)=>{
       console.log(err)
   })
 })
+
+
 
 //to retreive data of a one activity for reservation
 router.route("/apply/:id").get(async(req,res)=>{
@@ -180,20 +188,6 @@ router.route("/apply/:id").get(async(req,res)=>{
   }
 });
 
-
-//get a activity by activity id
-router.get('/getActivityById/:id', async (req, res) => {
-    try {
-      const activity = await SpecialActivity.findById(req.params.id);
-      if (!activity) {
-        return res.status(404).send({ error: 'Activity not found' });
-      }
-      res.status(200).send(activity);
-    } catch (error) {
-      res.status(500).send(error);
-    }
-  } 
-);
 
 
 

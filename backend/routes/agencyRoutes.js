@@ -1,113 +1,46 @@
-const router = require("express").Router();
-const Agency = require("../models/agencyModel");
-const multer = require("multer");
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const {
+  addAgency,
+  allAgency,
+  updateAgency,
+  deleteAgency,
+  specificAgency,
+  getAgencyByRepresenterMail
+} = require('../controllers/agencyController');
 
-
-storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../frontend/src/assets/agencyImages/");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, '../frontend/src/assets/')
   },
-  filename: function (req, file, cb) {
-    cb(null, `${Date.now()}_${file.originalname}`);
-  }
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + "_" + Date.now() + path.extname(file.originalname));
+  },
 });
 
-const upload = multer({ storage }).single("img");
-
-
-
-
-// Insert new agency
-router.post("/add", async (req, res) => {
-  try {
-    const {
-      agencyName,
-      address,
-      img,
-      mobile,
-      businessRegistrationNumber,
-      representerMail,
-      businessMail,
-      fax,
-      taxIdNumber,
-      description,
-      websiteLink,
-      rating,
-      agentId,
-    } = req.body;
-
-    const newAgency = new Agency({
-      agencyName,
-      address,
-      img,
-      mobile,
-      businessRegistrationNumber,
-      representerMail,
-      businessMail,
-      fax,
-      taxIdNumber,
-      description,
-      websiteLink,
-      rating,
-      agentId,
-    });
-
-    await newAgency.save();
-    res.json("Agency added");
-  } catch (err) {
-    console.error("Error adding agency:", err);
-    res.status(400).json({ error: err.message });
-  }
+const upload = multer({ 
+  storage: storage
 });
 
-// Read all agencies
-router.route("/getAllAgencies").get((req, res) => {
-  Agency.find()
-    .then((agencies) => {
-      res.json(
-        agencies.map((agency) => ({
-          id: agency._id,
-          agencyName: agency.agencyName,
-          address: agency.address,
-          img: agency.img,
-          mobile: agency.mobile,
-          businessRegistrationNumber: agency.businessRegistrationNumber,
-          representerMail: agency.representerMail,
-          businessMail: agency.businessMail,
-          fax: agency.fax,
-          taxIdNumber: agency.taxIdNumber,
-          description: agency.description,
-          websiteLink: agency.websiteLink,
-          rating: agency.rating,
-          agentId: agency.agentId,
-        }))
-      );
-    })
-    .catch((err) => {
-      console.error("Error fetching agencies:", err); 
-      res.status(500).json({ status: "Error fetching agencies", error: err.message });
-    });
-});
+// POST /api/agencies/add
+router.post('/add', upload.single("img"), addAgency);
 
-// Update agency
-router.route("/update/:id").put((req, res) => {
-  Agency.findByIdAndUpdate(req.params.id, req.body)
-    .then(() => res.json("Agency updated"))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+// GET /api/agencies
+router.get('/', allAgency);
 
-// Delete agency
-router.route("/delete/:id").delete((req, res) => {
-  Agency.findByIdAndDelete(req.params.id)
-    .then(() => res.json("Agency deleted"))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+// PUT /api/agencies/update/:id
+router.put('/update/:id', updateAgency);
 
-// Get specific agency
-router.route("/getAgency/:id").get((req, res) => {
-  Agency.findById(req.params.id)
-    .then((agency) => res.json(agency))
-    .catch((err) => res.status(400).json("Error: " + err));
-});
+// DELETE /api/agencies/delete/:id
+router.delete('/delete/:id', deleteAgency);
+
+// GET /api/agencies/get/:id
+router.get('/get/:id', specificAgency);
+
+// Get specific agency by representer mail
+router.get("/getByRepresenterMail/:representerMail", getAgencyByRepresenterMail)
+
 
 module.exports = router;

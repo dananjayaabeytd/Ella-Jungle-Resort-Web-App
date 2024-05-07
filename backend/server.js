@@ -1,55 +1,125 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const dotenv = require("dotenv");
-const app = express();
-require("dotenv").config();
+const path = require('path');
+const express = require('express');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db.js');
+const cookieParser = require('cookie-parser');
+const { notFound, errorHandler } = require('./middleware/errorMiddleware.js');
 
-const PORT = process.env.PORT || 3005;
+//Dananjaya
+const userRoutes = require('./routes/userRoutes.js');
+const agencyRoutes = require('./routes/agencyRoutes.js');
 
-app.use(cors());
-app.use(bodyParser.json());
+//Deanne
+const hotelPackagesRouter = require('./routes/hotel_packages');
+const Custom_packages_Router = require('./routes/custom_packages');
+const Custom_packages_booking_Router = require('./routes/custom_bookingRoute');
+const Hotel_packages_booking_Router = require('./routes/hotel_bookingRoute');
 
-const URL = process.env.MONGODB_URL;
+//Ishara
+const feedbackRoutes = require('./routes/feedbackRoutes.js')
+const faqRoutes = require('./routes/faqRoutes.js')
+const agencyfeedbackRoutes = require('./routes/agencyfeedbackRoutes.js');
 
-mongoose.connect(URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+//Dushan
+const roomRoutes = require('./routes/Rooms');
+const reservationRoutes = require('./routes/reservationRoutes');
 
-const connection = mongoose.connection;
-connection.once("open", () => {
-  console.log("MongoDB connection success!");
-});
+//Sayuni
+const specialActivityRouter = require("./routes/SpecialActivity.js");
+const reservationRouter = require("./routes/ActivityReservationRoutes.js");
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+//Sathma
+const spaPackageRoutes = require('./routes/spaRoutes');
+const appointmentRoutes = require('./routes/appointmentRoutes'); // Import appointment routes
 
+//Yasiru
 const AgencyRequestRouter = require("./routes/agencyRequestRoutes");
-app.use("/", AgencyRequestRouter);
-
-const AgencyRouter = require("./routes/agencyRoutes");
-app.use("/", AgencyRouter);
-
-const RoomRouter = require("./routes/Rooms");
-app.use("/", RoomRouter);
-
-const ReservationRouter = require("./routes/reservationRoutes");
-app.use("/", ReservationRouter);
-
 const TransportRouter = require("./routes/transportRoutes");
-app.use("/", TransportRouter);
-
-const SpecialActivityRouter = require("./routes/SpecialActivity");
-app.use("/", SpecialActivityRouter);
-
-const ActivityReservationRouter = require("./routes/activityReservationRoutes");
-app.use("/", ActivityReservationRouter);
-
 const AgencyPackagesRouter = require("./routes/agencyPackagesRoutes");
-app.use("/", AgencyPackagesRouter);
-
 const AgencyPackageReservationRouter = require("./routes/agencyPackageReservationRoutes");
+
+//Vilan
+const eventRouter = require("./routes/events.js");
+const optionRouter = require("./routes/options.js");
+const ticketRouter = require("./routes/tickets.js");
+
+
+dotenv.config();
+const port = process.env.PORT || 5000;
+connectDB();
+const cors = require('cors');
+const app = express();
+
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
+
+// Enable CORS
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.set("view engine", "ejs");
+
+app.use(cookieParser());
+
+//Dananjaya
+app.use('/api/users', userRoutes);
+app.use('/api/agencies', agencyRoutes);
+
+
+//Deanne
+app.use('/hotelbooking', Hotel_packages_booking_Router);
+app.use('/custombooking', Custom_packages_booking_Router);
+app.use('/custom_packages', Custom_packages_Router);
+app.use('/hotel_packages', hotelPackagesRouter);
+
+
+//Ishara
+app.use('/api/feedbacks',feedbackRoutes); 
+app.use('/api/faq',faqRoutes);  
+app.use('/api/agencyfeedbacks',agencyfeedbackRoutes); 
+
+
+//Dushan
+app.use('/residence', roomRoutes);
+app.use('/reservation', reservationRoutes);
+
+
+//Sayuni
+app.use("/SpecialActivity",specialActivityRouter);
+app.use("/ActivityReservation",reservationRouter);
+
+
+//Sathma
+app.use('/api/spa-packages', spaPackageRoutes);
+app.use('/api/appointments', appointmentRoutes); 
+
+//Yasiru
+app.use("/", AgencyRequestRouter);
+app.use("/", TransportRouter);
+app.use("/", AgencyPackagesRouter);
 app.use("/", AgencyPackageReservationRouter);
+
+//Vilan
+app.use ("/event", eventRouter);
+app.use ("/option", optionRouter);
+app.use ("/ticket", ticketRouter);
+app.use(express.static('public'))
+
+
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(path.resolve(__dirname, 'frontend', 'dist', 'index.html'))
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.render('index'); // Render index.ejs
+  });
+}
+
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(port, () => console.log(`Server started on port ${port}`));

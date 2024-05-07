@@ -6,6 +6,10 @@ const reservationSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    userID : {
+        type:String,
+        required:true
+    },
 
     fullName : {
         type:String,

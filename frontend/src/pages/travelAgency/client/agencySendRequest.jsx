@@ -1,19 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import emailjs from "@emailjs/browser";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
+import { useSelector } from "react-redux";
 
 function AgencySendRequest() {
-  const { userId, agencyId } = useParams();
-  console.log("User ID:", userId);
+  const { agencyId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo._id;
 
   const [agencyName, setAgencyName] = useState("");
   const [userName, setUserName] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [contactNo, setContactNo] = useState("");
-  const [email, setEmail] = useState("");
+  const [agencyEmail, setAgencyEmail] = useState("");
+  
 
   const [formData, setFormData] = useState({
     ArrivalDate: "",
@@ -29,11 +32,30 @@ function AgencySendRequest() {
     Status: "pending",
   });
 
+  const [agency, setAgency] = useState({});
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // fetch agency details
+  //* Fetching agency by representer mail
+  useEffect(() => {
+    const fetchAgencyById = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/agencies/get/${agencyId}`
+        );
+        setAgency(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAgencyById();
+  }, [agencyId]);
+
+  
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
 
@@ -42,19 +64,22 @@ function AgencySendRequest() {
     const publicKey = "mosump2O3-rWJQmt7";
 
     const emailParams = {
-      agencyName: "Test Agency",
-      userName: "Yasiru",
+      agencyName: agency.agencyName,
+      userName: userInfo.name,
       checkIn: formData.ArrivalDate,
-      contactNo: "0123456789",
+      contactNo: userInfo.mobile,
+      agencyEmail: agency.businessMail,
     };
 
-    emailjs.send(serviceId, templateId, emailParams, publicKey)
+    emailjs
+      .send(serviceId, templateId, emailParams, publicKey)
       .then((response) => {
         console.log("Email sent successfully!", response.status, response.text);
         setAgencyName("");
         setUserName("");
         setCheckIn("");
         setContactNo("");
+        setAgencyEmail("");
       })
       .catch((error) => {
         console.error("Email could not be sent!", error);
@@ -70,7 +95,7 @@ function AgencySendRequest() {
     };
 
     try {
-      const response = await axios.post("http://localhost:3005/AgencyNewRequest", updatedFormData);
+      const response = await axios.post("/AgencyNewRequest", updatedFormData);
       Swal.fire({
         icon: "success",
         title: "Your request has been sent successfully!",
@@ -107,6 +132,20 @@ function AgencySendRequest() {
       });
     }
   };
+
+  useEffect(() => {
+  if (formData.ArrivalDate && formData.DepartureDate) {
+    
+    const arrivalDate = new Date(formData.ArrivalDate);
+    const departureDate = new Date(formData.DepartureDate);
+    
+    const diffTime = Math.abs(departureDate - arrivalDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    setFormData({ ...formData, NoOfDays: diffDays });
+  }
+}, [formData.ArrivalDate, formData.DepartureDate]);
+
 
   return (
     <div>
@@ -160,9 +199,10 @@ function AgencySendRequest() {
                     onChange={handleChange}
                     min='0' // Add min attribute to disallow negative numbers
                     required
+                    readOnly
                   />
                 </div>
-                <div className='flex items-start mb-2'>
+                {/* <div className='flex items-start mb-2'>
                   <label>Number of Nights</label>
                   <input
                     type='number'
@@ -174,7 +214,7 @@ function AgencySendRequest() {
                     min='0' // Add min attribute to disallow negative numbers
                     required
                   />
-                </div>
+                </div> */}
                 <div className='flex items-start mb-2'>
                   <label>Number of Adults</label>
                   <input

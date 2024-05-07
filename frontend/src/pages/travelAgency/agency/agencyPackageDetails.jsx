@@ -21,7 +21,7 @@ function AgencyPackageDetails() {
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/getAgencyPackageById/${packageId}`);
+        const response = await axios.get(`/getAgencyPackageById/${packageId}`);
         setPackageDetails(response.data);
         fetchTransportDetails(response.data.transportId);
         fetchRoomDetails(response.data.roomId);
@@ -51,7 +51,7 @@ function AgencyPackageDetails() {
   // * fetch transport details
   const fetchTransportDetails = async (transportId) => {
     try {
-      const response = await axios.get(`http://localhost:3005/getTransportById/${transportId}`);
+      const response = await axios.get(`http://localhost:5000/getTransportById/${transportId}`);
       setTransportDetails(response.data.transport);
     } catch (error) {
       console.error("Error fetching transport details:", error);
@@ -61,7 +61,7 @@ function AgencyPackageDetails() {
   // * fetch room details
   const fetchRoomDetails = async (roomId) => {
     try {
-      const response = await axios.get(`http://localhost:3005/rooms/${roomId}`);
+      const response = await axios.get(`http://localhost:5000/residence/rooms/${roomId}`);
       setRoomDetails(response.data); // Assuming the response contains the entire room object
     } catch (error) {
       console.error("Error fetching room details:", error);
@@ -71,7 +71,7 @@ function AgencyPackageDetails() {
   // * fetch special activity details
   const fetchActivityDetails = async (activityId) => {
     try {
-      const response = await axios.get(`http://localhost:3005/get/${activityId}`);
+      const response = await axios.get(`http://localhost:5000/SpecialActivity/get/${activityId}`);
       setActivityDetails(response.data.specialActivity); // Assuming the activity object is nested under 'specialActivity'
     } catch (error) {
       console.error("Error fetching activity details:", error);
@@ -97,7 +97,7 @@ function AgencyPackageDetails() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:3005/deleteAgencyPackage/${packageId}`);
+          await axios.delete(`http://localhost:5000/deleteAgencyPackage/${packageId}`);
           window.location = `/AgencyMyPackage/${packageDetails.agencyId}`;
           Swal.fire({
             title: "Deleted!",
@@ -122,7 +122,7 @@ function AgencyPackageDetails() {
   const handleBookNow = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3005/addAgencyPackageReservation", {
+      const response = await axios.post("http://localhost:5000/addAgencyPackageReservation", {
         packageId: packageId,
         userId: "userId",
         fullName: fullName,
@@ -169,7 +169,7 @@ function AgencyPackageDetails() {
   // * handle publish package
   const handlePublishPackage = async () => {
     try {
-      await axios.put(`http://localhost:3005/publishPackage/${packageId}`);
+      await axios.put(`http://localhost:5000/publishPackage/${packageId}`);
       console.log("Package published successfully");
       Swal.fire({
         icon: "success",
@@ -196,7 +196,7 @@ function AgencyPackageDetails() {
   // * handle unpublish package
   const handleUnPublishPackage = async () => {
     try {
-      await axios.put(`http://localhost:3005/unpublishPackage/${packageId}`);
+      await axios.put(`http://localhost:5000/unpublishPackage/${packageId}`);
       console.log("Package unpublished successfully");
       Swal.fire({
         icon: "success",

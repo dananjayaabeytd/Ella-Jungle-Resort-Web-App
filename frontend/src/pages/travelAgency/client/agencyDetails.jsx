@@ -4,9 +4,14 @@ import { useParams } from "react-router-dom";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
 import AgencyRequestPackage from "../../../components/travelAgency/client/agencyRequestPackage";
 import AgencyPackageCard from "../../../components/travelAgency/client/agencyPackageCard";
+import { useSelector } from "react-redux";
+import bg from "../../../assets/agencyBackground/agencybg5.png";
+
 
 function AgencyDetails() {
-  const { userId, agencyId } = useParams();
+  const { agencyId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo._id;
   const [agencyPackages, setAgencyPackages] = useState([]);
 
   // * Fetching agency packages
@@ -14,7 +19,7 @@ function AgencyDetails() {
     const fetchAgencyPackages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/getAgencyPackageByAgencyId/${agencyId}`
+          `/getAgencyPackageByAgencyId/${agencyId}`
         );
         const sortedPackages = response.data.sort((a, b) =>
           a.packageName.localeCompare(b.packageName)
@@ -28,21 +33,28 @@ function AgencyDetails() {
   }, [agencyId]);
 
   return (
-    <div>
-      <div className='flex bg-gray-200 rounded-b-2xl bg-opacity-60'>
+    <div
+      style={{
+        backgroundImage: `url("${bg}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed", // Add this line
+      }}>
+      <div className='flex bg-gray-300 bg-opacity-50 rounded-b-2xl'>
         <div className='flex '>
           <AgencyDetailsProfile agencyId={agencyId} />
         </div>
 
-        <AgencyRequestPackage userId={userId} agencyId={agencyId} />
+        <AgencyRequestPackage agencyId={agencyId} />
       </div>
       <div>
         <div className='flex justify-center mt-20 mb-10'>
           <h1 className='flex justify-center text-4xl font-semibold'>Our Packages</h1>
         </div>
-        <div className='flex justify-center'>
+        <div className='flex justify-center mb-5'>
           <div className='container grid flex-col self-center justify-center grid-cols-2 gap-[50px] max-w-[1200px]'>
             {agencyPackages.map((agencyPackage) => (
+              console.log(agencyPackage),
               <AgencyPackageCard
                 key={agencyPackage._id} // This should remain as the key for React's internal use
                 packageId={agencyPackage._id} // Pass the package ID as a different prop
@@ -54,7 +66,6 @@ function AgencyDetails() {
                 activityId={agencyPackage.activityId}
                 roomId={agencyPackage.roomId}
                 transportId={agencyPackage.transportId}
-                userId={userId}
                 agencyId={agencyId}
               />
             ))}

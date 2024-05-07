@@ -13,9 +13,6 @@ Router.route("/getAllAgencyPackageReservations").get((req, res) => {
 Router.route("/addAgencyPackageReservation").post((req, res) => {
   const packageId = req.body.packageId;
   const userId = req.body.userId;
-  const fullName = req.body.fullName;
-  const email = req.body.email;
-  const contactNumber = req.body.contactNumber;
   const reservationDate = Date.parse(req.body.reservationDate);
   const checkIn = Date.parse(req.body.checkIn);
   const checkOut = Date.parse(req.body.checkOut);
@@ -27,9 +24,6 @@ Router.route("/addAgencyPackageReservation").post((req, res) => {
   const newAgencyPackageReservation = new AgencyPackageReservation({
     packageId,
     userId,
-    fullName,
-    email,
-    contactNumber,
     reservationDate,
     checkIn,
     checkOut,
@@ -60,9 +54,6 @@ Router.route("/updateAgencyPackageReservation/:reservationId").post((req, res) =
       .then((agencyPackageReservation) => {
         agencyPackageReservation.packageId = req.body.packageId;
         agencyPackageReservation.userId = req.body.userId;
-        agencyPackageReservation.fullName = req.body.fullName;
-        agencyPackageReservation.email = req.body.email;
-        agencyPackageReservation.contactNumber = req.body.contactNumber;
         agencyPackageReservation.reservationDate = Date.parse(req.body.reservationDate);
         agencyPackageReservation.checkIn = Date.parse(req.body.checkIn);
         agencyPackageReservation.checkOut = Date.parse(req.body.checkOut);

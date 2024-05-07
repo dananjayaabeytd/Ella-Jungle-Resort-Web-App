@@ -37,7 +37,7 @@ function AgencyCreatePackage() {
     const fetchPackageDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/getAgencyPackageById/${packageId}`
+          `/getAgencyPackageById/${packageId}`
         );
         const packageDetails = response.data;
 
@@ -57,7 +57,7 @@ function AgencyCreatePackage() {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get("http://localhost:3005/rooms");
+        const response = await axios.get("http://localhost:5000/residence/rooms");
         setRooms(response.data);
       } catch (error) {
         console.error("Error fetching rooms:", error);
@@ -72,7 +72,7 @@ function AgencyCreatePackage() {
     const fetchActivities = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/getAllActivities"
+          "http://localhost:5000/SpecialActivity/home"
         );
         setActivities(response.data);
       } catch (error) {
@@ -88,7 +88,7 @@ function AgencyCreatePackage() {
     const fetchTransports = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3005/getAllTransports"
+          "http://localhost:5000/getAllTransports"
         );
         console.log("Transports response:", response.data);
         if (Array.isArray(response.data.transports)) {

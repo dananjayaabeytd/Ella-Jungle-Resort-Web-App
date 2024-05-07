@@ -11,7 +11,13 @@ function AgencyPackageRoom({
   showCheckbox,
 }) {
   const handleClick = () => {
-    onSelect(roomId);
+    if (isSelected) {
+      // If the room is already selected, deselect it
+      onSelect(null);
+    } else {
+      // If the room is not selected, select it
+      onSelect(roomId);
+    }
   };
 
   return (
@@ -34,8 +40,8 @@ function AgencyPackageRoom({
               <div className="flex pl-5 text-xl">
                 <div>
                   <h1 className="pb-2 text-2xl">{roomName}</h1>
-                  <p className="pb-2">{description}</p>
-                  <p className="pb-2">LKR {price}.00</p>
+                  <p className="pb-2 max-w-[550px]" >{description} </p>
+                  <p className="pb-2" >LKR {price}.00</p>
                 </div>
               </div>
             </div>

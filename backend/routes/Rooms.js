@@ -47,8 +47,8 @@ router.post('/upload', (req, res) => {
 // Route to create a new room
 router.post('/rooms', async (req, res) => {
   try {
-    const { roomName, roomType, maxCount, description, price, image,available } = req.body;
-    const room = new Room({ roomName, roomType, maxCount, description, price, image, available });
+    const { roomName, roomType, maxCount, description, price, image } = req.body;
+    const room = new Room({ roomName, roomType, maxCount, description, price, image });
     await room.save();
     res.status(201).send(room);
   } catch (error) {

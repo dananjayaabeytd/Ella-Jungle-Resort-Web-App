@@ -14,7 +14,7 @@ function AgencyRequestPackage() {
           <button
             className=" w-[200px] h-10 border border-gray-400 bg-green-400 mt-5 rounded-full text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300"
             onClick={() => {
-              window.location.href = `/AgencySendRequest/${userId}/${agencyId}`;
+              window.location.href = `/AgencySendRequest/${agencyId}`;
             }}
           >
             Send a Request

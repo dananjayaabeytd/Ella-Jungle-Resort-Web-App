@@ -23,6 +23,21 @@ const reservationSchema = new Schema({
         required:true
     },
 
+    noOfPeople:{
+        type:Number,
+        required:true
+    },
+
+    activityPrice:{
+        type:Number,
+        required:true
+    },
+
+    totalPrice:{
+        type:Number,
+        required:false
+    }
+
    
 })
 

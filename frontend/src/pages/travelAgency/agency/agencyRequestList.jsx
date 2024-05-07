@@ -3,21 +3,24 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import AgencyNewRequest from "../../../components/travelAgency/agency/agencyNewRequest";
 
-function AgencyRequestList() {
-  const { agencyId } = useParams();
+function AgencyRequestList({agencyId}) {
   const [requests, setRequests] = useState([]);
 
   // * Fetching requests
   useEffect(() => {
     axios
-      .get(`http://localhost:3005/getRequestsByAgency/${agencyId}`)
+      .get(`http://localhost:5000/getRequestsByAgency/${agencyId}`)
       .then((response) => {
         setRequests(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching requests:", error);
       });
   }, [agencyId]);
+
+  console.log(requests);
+
 
   // * Filter requests based on status
   const acceptedRequests = requests.filter((request) => request.Status === "accepted");

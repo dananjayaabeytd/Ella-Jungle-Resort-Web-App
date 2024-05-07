@@ -3,9 +3,12 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import AgencyDetailsSimple from "../../../components/travelAgency/client/agencyDetailsSimple";
 import AgencySearch from "../../../components/travelAgency/client/agencySearch";
+import { useSelector } from "react-redux";
+import bg from "../../../assets/agencyBackground/agencybg5.png";
 
 function AgencyList() {
-  const { userId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo?._id;
 
   const [agencies, setAgencies] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -16,9 +19,7 @@ function AgencyList() {
   useEffect(() => {
     const fetchAgencies = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3005/getAllAgencies"
-        );
+        const response = await axios.get("http://localhost:5000/api/agencies/");
         setAgencies(response.data);
       } catch (error) {
         console.error("Error fetching agencies:", error);
@@ -52,9 +53,7 @@ function AgencyList() {
           ? a.agencyName.localeCompare(b.agencyName)
           : b.agencyName.localeCompare(a.agencyName);
       } else if (sortBy === "rating") {
-        return newSortOrder === "asc"
-          ? a.rating - b.rating
-          : b.rating - a.rating;
+        return newSortOrder === "asc" ? a.rating - b.rating : b.rating - a.rating;
       }
       return 0;
     });
@@ -63,49 +62,45 @@ function AgencyList() {
   };
 
   return (
-    <div>
-      <div className="relative">
+    <div
+      style={{
+        backgroundImage: `url("${bg}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed", // Add this line
+      }}
+    >
+      <div className='relative'>
         <img
-          src="https://cdn.builder.io/api/v1/image/assets/TEMP/4679ea9add8d1b500755cddc88572db5b5edc0e21c1eb1fca547dd90b914ba02?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
-          alt="Travel Agents"
-          className="w-full"
+          src='https://cdn.builder.io/api/v1/image/assets/TEMP/4679ea9add8d1b500755cddc88572db5b5edc0e21c1eb1fca547dd90b914ba02?apiKey=bd6dc691d3624fe581379f78a6e48c90&'
+          alt='Travel Agents'
+          className='w-full'
         />
-        <div className="absolute bottom-0 left-0 w-full text-center text-white">
-          <h1 className="pb-5 text-6xl">Travel Agents</h1>
+        <div className='absolute bottom-0 left-0 w-full text-center text-white'>
+          <h1 className='pb-5 text-6xl'>Travel Agencies</h1>
         </div>
       </div>
 
-      <div className="flex mt-5 ml-10">
-        <div className="container flex-col justify-center mx-auto ">
+      <div className='flex mt-5 ml-10'>
+        <div className='container flex-col justify-center ml-20'>
           {filteredAgencies.map((agency) => {
-            console.log("Agency ID:", agency.id);
-            console.log("Agency Name:", agency.agencyName);
-            console.log("Agency Address:", agency.address);
-            console.log("Agency Mobile:", agency.mobile);
-            console.log("Agency Business Mail:", agency.businessMail);
-            console.log("Agency Fax:", agency.fax);
-            console.log("Agency Rating:", agency.rating);
-            console.log("Client ID", userId);
-            console.log("Agency Image:", agency.img);
-
             return (
               <AgencyDetailsSimple
-                key={agency.id}
-                agencyId={agency.id}
+                key={agency._id}
+                agencyId={agency._id}
                 agencyName={agency.agencyName}
                 businessRegistrationNumber={agency.businessRegistrationNumber}
                 address={agency.address}
                 mobile={agency.mobile}
                 businessMail={agency.businessMail}
                 rating={agency.rating}
-                userId={userId} // Pass userId here
                 img={agency.img}
               />
             );
           })}
         </div>
 
-        <div className="flex-1 mr-20">
+        <div className='flex-1 mr-20'>
           <AgencySearch
             handleSearchInputChange={handleSearchInputChange}
             handleSortChange={handleSortChange}

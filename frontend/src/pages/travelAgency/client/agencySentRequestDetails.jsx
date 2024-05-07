@@ -28,7 +28,7 @@ function AgencySentRequestDetails() {
     const fetchData = async () => {
       try {
         const result = await axios.get(
-          `http://localhost:3005/getRequestId/${requestId}`
+          `/getRequestId/${requestId}`
         );
         const {
           ArrivalDate,
@@ -59,7 +59,7 @@ function AgencySentRequestDetails() {
           Status,
         }); // Fetch agency details using AgencyId
         const agencyResult = await axios.get(
-          `http://localhost:3005/getAgency/${AgencyId}`
+          `http://localhost:5000/api/agencies/get/${AgencyId}`
         );
         const { agencyName } = agencyResult.data; // Assuming the response contains the agencyName
         setAgencyName(agencyName);
@@ -82,7 +82,7 @@ function AgencySentRequestDetails() {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.put(`http://localhost:3005/UpdateRequest/${requestId}`, {
+          await axios.put(`/UpdateRequest/${requestId}`, {
             ...requestData,
 
             UserId: requestData.UserId,
@@ -91,7 +91,7 @@ function AgencySentRequestDetails() {
             Status: "pending",
           });
           Swal.fire("Saved!", "", "success").then(() => {
-            window.location = `/AgencySentRequestList/${requestData.UserId}`;
+            window.location = `/profile`;
           });
         } catch (error) {
           console.error("Error updating request:", error);
@@ -116,14 +116,14 @@ function AgencySentRequestDetails() {
       if (result.isConfirmed) {
         try {
           await axios.delete(
-            `http://localhost:3005/DeleteRequest/${requestId}`
+            `http://localhost:5000/DeleteRequest/${requestId}`
           );
           Swal.fire({
             title: "Deleted!",
             text: "Your request has been deleted.",
             icon: "success",
           });
-          window.location = `/AgencySentRequestList/${requestData.UserId}`;
+          window.location = `/profile`;
         } catch (error) {
           console.error("Error deleting request:", error);
           alert("Error deleting request");
@@ -155,7 +155,7 @@ function AgencySentRequestDetails() {
                     type="date"
                     id="arrivalDate"
                     name="ArrivalDate"
-                    className="ml-[90px] rounded-lg border border-green-500"
+                    className="ml-[90px] rounded-lg border border-green-500 pl-3"
                     value={requestData.ArrivalDate}
                     onChange={(e) =>
                       setRequestData({
@@ -169,7 +169,7 @@ function AgencySentRequestDetails() {
                   <label>Departure Date</label>
                   <input
                     type="date"
-                    className="ml-[58px] rounded-lg border border-green-500 "
+                    className="ml-[58px] rounded-lg border border-green-500 pl-3 "
                     id="departureDate"
                     name="DepartureDate"
                     value={requestData.DepartureDate}
@@ -185,7 +185,7 @@ function AgencySentRequestDetails() {
                   <label>Number of Days</label>
                   <input
                     type="number"
-                    className="ml-[51px] w-20 rounded-lg border border-green-500"
+                    className="ml-[51px] w-16 rounded-lg border border-green-500 pl-3"
                     id="noOfDays"
                     name="NoOfDays"
                     value={requestData.NoOfDays}
@@ -201,7 +201,7 @@ function AgencySentRequestDetails() {
                   <label>Number of Nights</label>
                   <input
                     type="number"
-                    className="ml-[40px] w-20 rounded-lg border border-green-500"
+                    className="ml-[40px] w-16 rounded-lg border border-green-500  pl-3"
                     id="noOfNights"
                     name="NoOfNights"
                     value={requestData.NoOfNights}
@@ -217,7 +217,7 @@ function AgencySentRequestDetails() {
                   <label>Number of Adults</label>
                   <input
                     type="number"
-                    className="ml-[42px] w-20 rounded-lg border border-green-500"
+                    className="ml-[42px] w-16 rounded-lg border border-green-500  pl-3"
                     id="noOfAdults"
                     name="NoOfAdults"
                     value={requestData.NoOfAdults}
@@ -233,7 +233,7 @@ function AgencySentRequestDetails() {
                   <label>Number of Children</label>
                   <input
                     type="number"
-                    className="w-20 ml-[22px] rounded-lg border border-green-500"
+                    className="w-16 ml-[22px] rounded-lg border border-green-500  pl-3"
                     id="noOfChildren"
                     name="NoOfChildren"
                     value={requestData.NoOfChildren}
@@ -277,7 +277,7 @@ function AgencySentRequestDetails() {
               </div>
               <div>
                 <textarea
-                  className="w-[750px] max-h-[100px] h-[100px] border-green-500 border rounded-lg"
+                  className="w-[750px] max-h-[100px] h-[100px] border-green-500 border rounded-lg pt-3 pl-5"
                   name="RequestDescription"
                   id="RequestDescription"
                   value={requestData.RequestDescription}

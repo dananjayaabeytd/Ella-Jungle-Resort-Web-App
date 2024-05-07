@@ -3,17 +3,17 @@ import { Input, initTWE } from "tw-elements";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { useSelector } from "react-redux";
 
 // Initialize the tw-elements library
 initTWE({ Input });
 
 function AgencyPackageBooking() {
-  const { userId, packageId } = useParams();
+  const { packageId } = useParams();
+  const { userInfo } = useSelector((state) => state.auth);
+  const userId = userInfo._id;
   const navigate = useNavigate();
   const [packageDetails, setPackageDetails] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
   const [checkInDate, setCheckInDate] = useState("");
   const [checkOutDate, setCheckOutDate] = useState("");
   const [adults, setAdults] = useState(1);
@@ -31,7 +31,7 @@ function AgencyPackageBooking() {
   useEffect(() => {
     const fetchPackageDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:3005/getAgencyPackageById/${packageId}`);
+        const response = await axios.get(`/getAgencyPackageById/${packageId}`);
 
         setPackageDetails(response.data);
         const agencyId = response.data.agencyId; // Extract the agencyId from the fetched package details
@@ -44,33 +44,13 @@ function AgencyPackageBooking() {
     fetchPackageDetails();
   }, [packageId]);
 
-  // * Fetching user details
-  // useEffect(() => {
-  //   const fetchUserDetails = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:3005/getUserDetails/${userId}`);
-  //       const userData = response.data;
-  //       setFullName(userData.fullName);
-  //       setEmail(userData.email);
-  //       setContactNumber(userData.contactNumber);
-  //     } catch (error) {
-  //       console.error("Error fetching user details:", error);
-  //     }
-  //   };
-
-  //   fetchUserDetails();
-  // }, [userId]);
-
   // * Handle booking
   const handleBookNow = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3005/addAgencyPackageReservation", {
+      const response = await axios.post("http://localhost:5000/addAgencyPackageReservation", {
         packageId: packageId,
         userId: userId,
-        fullName: fullName,
-        email: email,
-        contactNumber: contactNumber,
         reservationDate: new Date(),
         checkIn: checkInDate,
         checkOut: checkOutDate,
@@ -84,14 +64,14 @@ function AgencyPackageBooking() {
       // Check if the response is successful
       if (response.status === 200) {
         // Update room reservation
-        await axios.post("http://localhost:3005/booking", {
-          roomID: packageDetails.roomID,
-          fullName: fullName,
-          email: email,
-          contactNumber: contactNumber,
-          checkIn: checkInDate,
-          checkOut: checkOutDate,
-        });
+        // await axios.post("/reservation/booking", {
+        //   roomID: packageDetails.roomID,
+        //   fullName: userInfo.name,
+        //   email: userInfo.email,
+        //   contactNumber: userInfo.number,
+        //   checkIn: checkInDate,
+        //   checkOut: checkOutDate,
+        // });
 
         Swal.fire({
           icon: "success",
@@ -100,7 +80,7 @@ function AgencyPackageBooking() {
           timer: 1500,
         }).then(() => {
           // Navigate to the AgencyDetails page
-          navigate(`/AgencyDetails/${userId}/${agencyId}`);
+          navigate(`/AgencyDetails/${agencyId}`);
         });
       } else {
         Swal.fire({
@@ -125,43 +105,13 @@ function AgencyPackageBooking() {
         <h1 className='flex mx-auto text-4xl'>Enter Your Details</h1>
       </div>
 
-      <div className='flex justify-center w-[600px] rounded-xl mx-auto border border-green-500 min-h-10 bg-gray-400 bg-opacity-10'>
+      <div className='flex justify-center w-[600px] mb-5 rounded-xl mx-auto border border-green-500 min-h-10 bg-gray-400 bg-opacity-10'>
         <form className='w-[400px]'>
           {packageDetails && (
             <>
               <h1 className='text-2xl text-black mt-7'>
                 Package Name: {packageDetails.packageName}
               </h1>
-              <div className='my-5 '>
-                <label className='block text-xl font-medium text-gray-700'>Full Name</label>
-                <input
-                  type='text'
-                  className='border border-green-500  min-h-[auto] w-[400px] rounded-xl border-1  px-3 py-[0.32rem]'
-                  placeholder='Enter Name'
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                />
-              </div>
-              <div className='my-3 '>
-                <label className='block text-xl font-medium text-gray-700 '>Email</label>
-                <input
-                  type='email'
-                  className='border border-green-500 w-[400px] min-h-[auto]  rounded-xl border-1  px-3 py-[0.32rem]'
-                  placeholder='Enter Email'
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-              <div className='my-3 '>
-                <label className='block text-xl font-medium text-gray-700'>Contact Number</label>
-                <input
-                  type='text'
-                  className='border border-green-500  min-h-[auto] w-[400px] rounded-xl border-1  px-3 py-[0.32rem]'
-                  placeholder='Enter Date'
-                  value={contactNumber}
-                  onChange={(e) => setContactNumber(e.target.value)}
-                />
-              </div>
 
               <div className='flex '>
                 <div className='my-3 '>
@@ -171,7 +121,7 @@ function AgencyPackageBooking() {
                     className='border border-green-500  min-h-[auto] w-[180px] rounded-xl border-1  px-3 py-[0.32rem]'
                     placeholder='Enter Date'
                     onChange={(e) => setCheckInDate(e.target.value)}
-                    min={new Date().toISOString().split('T')[0]}
+                    min={new Date().toISOString().split("T")[0]}
                   />
                 </div>
                 <div className='my-3 ml-10'>

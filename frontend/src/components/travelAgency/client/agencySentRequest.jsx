@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function AgencySentRequest({
+  key,
   requestId,
   RoomType,
   NoOfAdults,
@@ -11,13 +12,14 @@ function AgencySentRequest({
 }) {
   const [formattedSentDate, setFormattedSentDate] = useState("");
   const [AgencyName, setAgencyName] = useState("");
+  console.log(AgencyId);
 
   // * Fetch agency name
   useEffect(() => {
     const fetchAgencyName = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3005/getAgency/${AgencyId}`
+          `http://localhost:5000/api/agencies/get/${AgencyId}`
         );
         setAgencyName(response.data.agencyName || "");
       } catch (error) {

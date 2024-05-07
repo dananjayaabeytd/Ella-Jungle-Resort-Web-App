@@ -10,8 +10,15 @@ function AgencyPackageActivity({
   onSelect,
   showCheckbox,
 }) {
+  
   const handleClick = () => {
-    onSelect(activityId);
+    if (isSelected) {
+      // If the room is already selected, deselect it
+      onSelect(null);
+    } else {
+      // If the room is not selected, select it
+      onSelect(activityId);
+    }
   };
 
   return (
