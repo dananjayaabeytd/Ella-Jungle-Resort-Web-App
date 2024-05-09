@@ -28,18 +28,6 @@ const TicketTable = () => {
   return (
     <div className="relative min-h-screen">
       
-    {/* Background Image */}
-    <div
-      className="absolute inset-0 z-0 bg-fixed"
-      style={{
-        backgroundImage: `url(${bggreen})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    ></div>
-
-    
-    
   
     {/* Content Wrapper */}
     <div className="relative z-10 flex flex-col items-center  min-h-screen">
@@ -48,7 +36,7 @@ const TicketTable = () => {
   
       {/* Your scrolling content */}
       {/* {allEvents && allEvents.map((event) => ( */}
-      <h2 className="text-2xl font-bold text-green-800 mb-4">Ticket Details</h2>
+      <h2 className="text-2xl font-bold text-green-800 mt-10 mb-4">Ticket Details</h2>
       <div className="shadow-2xl shadow-theme-green rounded-3xl overflow-hidden">
         <table className="min-w-full leading-normal opacity-80 bg-white">
           <thead className="font-bold text-left text-green-800 bg-green-100 rounded-t-3xl">
@@ -66,7 +54,7 @@ const TicketTable = () => {
           <tbody>
   {tickets.map((ticket) => (
     // Check if the user is an admin or the ticket belongs to the user
-    (user.isAdmin || ticket.ticketUserId === user._id) && (
+    (user?.isAdmin || ticket.ticketUserId === user?._id) && (
       <tr key={ticket._id} className="border-b border-gray-200 hover:bg-green-50 hover:opacity-50 ">
         <td className="px-5 py-2">{ticket.eventName}</td>
         <td className="px-5 py-2">{ticket.ticketUserName}</td>
@@ -78,6 +66,7 @@ const TicketTable = () => {
         <td className="px-5 py-2">{ticket.ticketBuyingTime}</td>
       </tr>
     )
+    
   ))}
 </tbody>
 
@@ -91,8 +80,9 @@ const TicketTable = () => {
     
     </div>
      {/* Content Wrapper Ends Here*/}
+     
   </div>
-  )
+  );
 }
 
 export default TicketTable;

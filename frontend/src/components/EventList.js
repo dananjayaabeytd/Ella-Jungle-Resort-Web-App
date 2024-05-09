@@ -20,13 +20,15 @@ export default function EventList() {
     function getEvents() {
       axios.get("http://localhost:5000/event/getAllEvents")
       .then((res) => {
-        setEvents(res.data);
-        setSearchResults(res.data);
+        // Filter the response data to include only public events
+        const publicEvents = res.data.filter(event => event.isPublic);
+        setEvents(publicEvents);
+        setSearchResults(publicEvents);
       }).catch((err) => {
         alert(err.message);
       });
     }
-
+  
     getEvents();
   }, []);
 
@@ -84,7 +86,7 @@ const shareEventViaWhatsApp = (eventId) => {
         }}
       ></div>
 
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+      <div className="relative z-10 flex flex-col items-center min-h-screen">
         <EventHeader />
 
         {/* Search bar */}

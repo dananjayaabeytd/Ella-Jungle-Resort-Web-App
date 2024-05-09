@@ -1,5 +1,6 @@
 import React from 'react';
 import heroimg from '../../../assets/hero.jpg';
+import {Link} from 'react-router-dom'
 
 function Hero() {
   return (
@@ -15,14 +16,14 @@ function Hero() {
             </p>
 
             <div className='flex flex-col items-start space-y-3 sm:space-x-4 sm:space-y-0 sm:items-center sm:flex-row'>
-              <a
-                href='#'
+              <Link
+                to='/sign-in/'
                 target='_blank'
                 rel='noopener'
                 className='px-8 py-4 text-lg font-medium text-center text-white bg-green-600 rounded-md'
               >
                 Get Started
-              </a>
+              </Link>
             </div>
           </div>
         </div>

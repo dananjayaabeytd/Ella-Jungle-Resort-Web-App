@@ -14,10 +14,10 @@ import {
       <Card className="w-full max-w-[26rem] shadow-lg">
         <CardHeader floated={false} color="blue-gray">
           <img
-            src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+            src="https://q-xx.bstatic.com/xdata/images/hotel/max500/136946710.jpg?k=e049e839dd9016359e96521de331d73d4dcd8727af9699f9a320776938bd4009&o="
             alt="ui/ux review check"
           />
-          <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
+          <div className="absolute inset-0 w-full h-full to-bg-black-10 bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
           <IconButton
             size="sm"
             color="red"
@@ -28,16 +28,16 @@ import {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              className="h-6 w-6"
+              className="w-6 h-6"
             >
               <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z" />
             </svg>
           </IconButton>
         </CardHeader>
         <CardBody>
-          <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <Typography variant="h5" color="blue-gray" className="font-medium">
-              Wooden House, Florida
+            Eco Jungle Cottage
             </Typography>
             <Typography
               color="blue-gray"
@@ -62,14 +62,14 @@ import {
             Enter a freshly updated and thoughtfully furnished peaceful home
             surrounded by ancient trees, stone walls, and open meadows.
           </Typography>
-          <div className="group mt-8 inline-flex flex-wrap items-center gap-3">
+          <div className="inline-flex flex-wrap items-center gap-3 mt-8 group">
             <Tooltip content="$129 per night">
               <span className="cursor-pointer rounded-full border border-gray-900/5 bg-gray-900/5 p-3 text-gray-900 transition-colors hover:border-gray-900/10 hover:bg-gray-900/10 hover:!opacity-100 group-hover:opacity-70">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-5 w-5"
+                  className="w-5 h-5"
                 >
                   <path d="M12 7.5a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
                   <path
@@ -87,7 +87,7 @@ import {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-5 w-5"
+                  className="w-5 h-5"
                 >
                   <path
                     fillRule="evenodd"
@@ -103,7 +103,7 @@ import {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-5 w-5"
+                  className="w-5 h-5"
                 >
                   <path d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
                   <path d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
@@ -116,7 +116,7 @@ import {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-5 w-5"
+                  className="w-5 h-5"
                 >
                   <path d="M19.5 6h-15v9h15V6z" />
                   <path
@@ -133,7 +133,7 @@ import {
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
                   fill="currentColor"
-                  className="h-5 w-5"
+                  className="w-5 h-5"
                 >
                   <path
                     fillRule="evenodd"
@@ -151,7 +151,7 @@ import {
           </div>
         </CardBody>
         <CardFooter className="pt-3">
-          <Button size="lg" fullWidth={true}>
+          <Button className='bg-green-500'size="lg" fullWidth={true}>
             Reserve
           </Button>
         </CardFooter>

@@ -76,7 +76,7 @@ function MembersTable() {
         if (selectedTab === 'user') return !user.isAdmin;
         return false;
       }).filter(user =>
-        user.name.toLowerCase().includes(searchTerm.toLowerCase())
+        user.createdAt.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : [];
 
@@ -163,8 +163,7 @@ function MembersTable() {
                       <div className='flex items-center gap-3'>
                         <Avatar
                           src={
-                            img ||
-                            'https://docs.material-tailwind.com/img/face-2.jpg'
+                            img? img:'https://docs.material-tailwind.com/img/face-2.jpg'
                           }
                           alt={name}
                           size='sm'

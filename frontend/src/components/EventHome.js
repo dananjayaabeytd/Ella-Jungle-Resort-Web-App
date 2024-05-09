@@ -5,9 +5,9 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import bggreen from '../assets/bggreen.jpg'; // Import the image
 import pic0 from '../assets/flora4.jpg';
-import pic1 from '../assets/wedding1.jpg';
-import pic2 from '../assets/birthday1.jpg';
-import pic3 from '../assets/feast1.jpg';
+import pic1 from '../assets/wedding7.jpg';
+import pic2 from '../assets/birthday3.jpg';
+import pic3 from '../assets/feast6.jpg';
 import pic4 from '../assets/christmas5.jpg';
 import pic5 from '../assets/wedding8.jpg';
 import pic6 from '../assets/halloween1.jpg';
@@ -217,10 +217,10 @@ const currentEvent = futureEvents[currentEventIndex];
     <div className="px-4 py-4 bg-secondary-green  opacity-85 m-2 mt-56 mb-4 rounded-xl">
         <div className="font-bold text-xl pb-2">
             <p className="text-base font-bold text-green-800 font-inika text-center">
-                From Planning to Execution - All Your Event Needs in One Place
+            Share Event Details Easily with Friends and Family
                 </p>
         </div>
-            <p className="text-sm font-mclaren text-center">Smooth event management, whether you're planning a large wedding, a birthday party, a social event, or a business conference</p>
+            <p className="text-sm font-mclaren text-center"> Share the Excitement Effortlessly: Easily Spread the Word About Your Event Details with Friends and Family via WhatsApp.</p>
     </div>
 
 </div>
@@ -263,8 +263,8 @@ const currentEvent = futureEvents[currentEventIndex];
 {/* <img className="w-full" src={christmas1} alt="test" /> */}
     <div className="px-4 py-4 bg-secondary-green  opacity-85 m-2 mt-56 mb-4 rounded-xl">
         <div className="font-bold text-xl pb-2">
-            <p className="text-base font-bold text-green-800 font-inika text-center">From Planning to Execution - All Your Event Needs in One Place</p></div>
-            <p className="text-sm font-mclaren text-center">Smooth event management, whether you're planning a large wedding, a birthday party, a social event, or a business conference</p>
+            <p className="text-base font-bold text-green-800 font-inika text-center">Group Discounts Available: Save on Spots for Five or More</p></div>
+            <p className="text-sm font-mclaren text-center">Unlock Exclusive Group Discounts: Secure Your Spots for the Ultimate Event Experience and Enjoy Special Savings for Groups of Five or More</p>
     </div>
 
 </div>

@@ -44,7 +44,32 @@ function SignUpPage() {
   }, [navigate, userInfo]);
 
   const submitHandler = async e => {
-    e.preventDefault();
+    e.preventDefault(); 
+
+    if(!name){
+      toast.error('Name is required for the profile');
+      return;
+    }
+
+    if (!/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (!/^\d{10}$/.test(mobile)) {
+      toast.error('Mobile number must be a valid 10-digit number');
+      return;
+    }
+
+    if (userType === '') {
+      toast.error('Please select a user type');
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error('Password must be at least 6 characters long');
+      return;
+    }
 
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
@@ -143,7 +168,6 @@ function SignUpPage() {
 
             <div class='relative h-11 w-full min-w-[200px]'>
               <input
-                type='email'
                 placeholder='Enter email'
                 value={email}
                 onChange={e => setEmail(e.target.value)}

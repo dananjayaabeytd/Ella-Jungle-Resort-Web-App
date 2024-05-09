@@ -12,6 +12,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Hotel Packages Management'
+          path='/add'
           link='https://media.istockphoto.com/id/1160947136/photo/couple-relax-on-the-beach-enjoy-beautiful-sea-on-the-tropical-island.jpg?s=612x612&w=0&k=20&c=WJWEH22TFinjI0edzblfH-Nw0cdBfPX5LV8EMvs8Quo='
         />
         <CardDefault
@@ -20,6 +21,7 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Residence Management'
+          path='/residenceAdmin'
           link='https://media.istockphoto.com/id/1390233984/photo/modern-luxury-bedroom.jpg?s=612x612&w=0&k=20&c=po91poqYoQTbHUpO1LD1HcxCFZVpRG-loAMWZT7YRe4='
         />
         <CardDefault
@@ -34,10 +36,12 @@ export default function Dashboard() {
         />
         <CardDefault
           name='Health and Safety Management'
+          path='/spa'
           link='https://www.fitness-world.in/wp-content/uploads/2022/01/5-Reasons-Why-Your-Residential-Building-Needs-a-Professional-Gym-Banner-1200x620.jpg'
         />
         <CardDefault
           name='Special Activity Management'
+          path='/activity'
           link='https://images.healthshots.com/healthshots/en/uploads/2023/07/20143449/hiking.jpg'
         />
       </div>

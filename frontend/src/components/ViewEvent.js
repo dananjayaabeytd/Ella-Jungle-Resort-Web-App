@@ -181,65 +181,65 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
   
       {/* Your scrolling content */}
       
-      <div className="container bg-fixed my-10 max-w-5xl mx-auto p-5  rounded-3xl overflow-auto bg-gray-50 bg-opacity-50 shadow-2xl shadow-theme-green border-8 border-double border-theme-green">
+      <div className="container max-w-5xl p-5 mx-auto my-10 overflow-auto bg-fixed bg-opacity-50 border-8 border-double shadow-2xl rounded-3xl bg-gray-50 shadow-theme-green border-theme-green">
 
       
   
-        <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
+        <div className="grid grid-cols-1 gap-10 pt-4 lg:px-40 sm:px-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1">
             {/* Event Details */}
-            <div className="container shadow-md rounded-3xl overflow-hidden w-full h-96 flex items-center justify-center">
-                <img className="w-full h-full object-fill" src={`http://localhost:5000/Images/${selectedEvent.eventImage}`} 
+            <div className="container flex items-center justify-center w-full overflow-hidden shadow-md rounded-3xl h-96">
+                <img className="object-fill w-full h-full" src={`http://localhost:5000/Images/${selectedEvent.eventImage}`} 
                 />
             </div>
         </div>
 
-            <div className="lg:px-40 sm:px-10 pt-4 grid grid-cols-1 gap-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1" ref={pdfRef}>
+            <div className="grid grid-cols-1 gap-10 pt-4 lg:px-40 sm:px-10 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1" ref={pdfRef}>
 
             <div >
                 {/* Event Name with Inika font */}
-                <h1 className="text-4xl font-bold text-green-800 font-inika text-center">{selectedEvent.eventName}</h1>
+                <h1 className="text-4xl font-bold text-center text-green-800 font-inika">{selectedEvent.eventName}</h1>
                 
-                <div className="flex justify-between mt-1 px-16">
+                <div className="flex justify-between px-16 mt-1">
                 {/* Event Date with Lexend font */}
-                <h6 className="text-base text-gray-600 font-lexend text-center ">Ella Jungle Resort</h6>
-                <h6 className="text-base text-gray-600 font-lexend text-center">{selectedEvent.eventCategory}</h6>
+                <h6 className="text-base text-center text-gray-600 font-lexend ">Ella Jungle Resort</h6>
+                <h6 className="text-base text-center text-gray-600 font-lexend">{selectedEvent.eventCategory}</h6>
 
                 </div>
                 
-                <div className="flex justify-between mt-2 px-16">
-                <div className="flex items-center text-2xl font-bold text-blue-600 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <div className="flex justify-between px-16 mt-2">
+                <div className="flex items-center text-2xl font-bold text-center text-blue-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mr-1 w-7 h-7">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
                 </svg>{selectedEvent.eventDate ? selectedEvent.eventDate.substr(0, 10) : ""}</div>
 
-                <div className="flex items-center text-2xl font-bold text-green-600 text-center ">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+                <div className="flex items-center text-2xl font-bold text-center text-green-600 ">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mr-1 w-7 h-7">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>{formattedEventTime}</div>
                 </div>
 
     
                 {/* Event Description with McLaren font */}
-                <div className="p-des mt-2 max-h-24">
-                <p className="text-lg font-mclaren text-center">{selectedEvent.eventDescription}</p>
+                <div className="mt-2 p-des max-h-24">
+                <p className="text-lg text-center font-mclaren">{selectedEvent.eventDescription}</p>
 
-                <p className="text-lg font-lexend font-bold text-center mt-3">Expected Attendees Count : {selectedEvent.attendeeCount}</p>
+                <p className="mt-3 text-lg font-bold text-center font-lexend">Expected Attendees Count : {selectedEvent.attendeeCount}</p>
                 </div>
             </div>
 
 
             
           <div className="ml-16">
-            <p className="block font-bold text-lg text-green-800 ml-48">Time Slots :-</p>
+            <p className="block ml-48 text-lg font-bold text-green-800">Time Slots :-</p>
               {timeSlots.map(slot => (
                 selectedEvent.selectedTimeSlots.includes(slot.id) && ( // Check if the slot is selected
-                  <div key={slot.id} className="text-base font-semibold ml-48">
+                  <div key={slot.id} className="ml-48 text-base font-semibold">
                     <input
                       readOnly
                       type="checkbox"
                       id={slot.id}
                       checked={true} // Always checked since it's a selected slot
-                      className="form-checkbox h-4 w-4 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-blue-600 checked:border-transparent checked:border-2"
+                      className="w-4 h-4 border border-gray-300 rounded-md appearance-none form-checkbox focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-blue-600 checked:border-transparent checked:border-2"
                     />
                     <label htmlFor={slot.id} className="ml-2 text-base text-black">{slot.label}</label>
                   </div>
@@ -249,20 +249,20 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
 
 
             {/* Options Loop */}
-            <div className="lg:pl-2 lg:pr-0 sm:px-20 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">  
+            <div className="grid grid-cols-2 gap-6 lg:pl-2 lg:pr-0 sm:px-20 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">  
              
 
              {/* Filter and display only the categories that have selected options */}
           {categories.filter(category => hasSelectedOptions(category)).map((category, index) => (
-                      <div key={index} className="text-base font-semibold ml-16">
+                      <div key={index} className="ml-16 text-base font-semibold">
                         {/* Category Title */}
-                        <p className="mb-1 block text-lg font-mclaren text-green-800">{category}:-</p>
+                        <p className="block mb-1 text-lg text-green-800 font-mclaren">{category}:-</p>
                         {/* Options for this category */}
               {allOptions.filter((option) => option.optionCategory === category && selectedOptions.includes(option._id.toString())).map((option) => (
                             <div key={option._id} className="form-check">
                               <input readOnly type="checkbox" id={option._id} name={option.optionName}
                                 checked={selectedOptions.includes(option._id)}
-                                className="form-checkbox h-4 w-4 appearance-none rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
+                                className="w-4 h-4 border border-gray-300 rounded-md appearance-none form-checkbox focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent checked:bg-theme-green checked:border-transparent checked:border-2"
                               />
                               <label htmlFor={option._id} className="ml-2 text-base text-black">
                                 {option.optionName}
@@ -277,22 +277,22 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
 
             <div className="">
           {/* Display Total Cost of Public events for only Admins and the users who own the event*/}
-            {selectedEvent.isPublic && (user.isAdmin || selectedEvent.eventUserId === user.userId) && (
+            {selectedEvent.isPublic && (user?.isAdmin || selectedEvent.eventUserId === user?.userId) && (
             
-              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
+              <p className="block text-xl font-bold text-center text-black">Total Cost: {selectedEvent.totalCost} LKR</p>
             
           )}
 
           {/* Display Total Cost of private events for all users */}
           {!selectedEvent.isPublic && (
-              <p className="block font-bold text-xl text-black text-center">Total Cost: {selectedEvent.totalCost} LKR</p>
+              <p className="block text-xl font-bold text-center text-black">Total Cost: {selectedEvent.totalCost} LKR</p>
           )}
       
 
 
           {/* Display ticket price for public events */}
           {selectedEvent.isPublic && (
-            <p className="mt-3 text-lg font-semibold font-mclaren text-green-900">Grab Your Tickets Now for only <span className="text-red-800">{selectedEvent.ticketPrice} LKR !!</span> Enjoy the Moment</p>
+            <p className="mt-3 text-lg font-semibold text-green-900 font-mclaren">Grab Your Tickets Now for only <span className="text-red-800">{selectedEvent.ticketPrice} LKR !!</span> Enjoy the Moment</p>
           )}
       </div>
 
@@ -307,23 +307,23 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
         <div className="mb-2">
                   
             
-            <div className="mt-0 flex justify-center items-center">
+            <div className="flex items-center justify-center mt-0">
              {/* Using Link component for View button */}
-              <Link to={`/buyEventTicket/${selectedEvent._id}`} className="flex items-center text-white text-xl font-mclaren px-2 py-1  bg-blue-500 hover:bg-blue-800 rounded-3xl">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 mr-1">
+              <Link to={`/buyEventTicket/${selectedEvent._id}`} className="flex items-center px-2 py-1 text-xl text-white bg-blue-500 font-mclaren hover:bg-blue-800 rounded-3xl">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="mr-1 w-7 h-7">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg> Buy Ticket</Link>   
             </div>   
 
-            {(user.isAdmin || selectedEvent.eventUserId === user.userId) && (
-                <div className="mt-8 mx-48 mb-8 flex justify-between items-center">
+            {(user?.isAdmin || selectedEvent.eventUserId === user?._id) && (
+                <div className="flex items-center justify-between mx-48 mt-8 mb-8">
                     {/* Using Link component for View button */}
-                    <Link to={`/updateEvent/${selectedEvent._id}`} className="flex items-center text-white text-xl font-lexend px-2 py-1  bg-theme-green hover:bg-green-800 rounded-xl"> 
+                    <Link to={`/updateEvent/${selectedEvent._id}`} className="flex items-center px-2 py-1 text-xl text-white font-lexend bg-theme-green hover:bg-green-800 rounded-xl"> 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
               </svg>Update </Link>
 
-                    <button className="flex items-center text-white text-xl font-lexend px-2 py-1  bg-black hover:bg-gray-800 rounded-xl" 
+                    <button className="flex items-center px-2 py-1 text-xl text-white bg-black font-lexend hover:bg-gray-800 rounded-xl" 
                     onClick={downloadPDF}>
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -333,7 +333,7 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
                     </button>
 
                     
-                    <button className="flex items-center text-white text-xl font-lexend px-3 py-1  bg-red-500 hover:bg-red-800 rounded-xl" 
+                    <button className="flex items-center px-3 py-1 text-xl text-white bg-red-500 font-lexend hover:bg-red-800 rounded-xl" 
                     onClick={() => {
                       setSelectedEventId(selectedEvent._id);
                       setIsModalOpen(true);

@@ -58,6 +58,7 @@ export default function OptionList() {
     const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
 
     return (
+      
         <div className="relative min-h-screen">
             {/* Background Image */}
             <div
@@ -74,7 +75,7 @@ export default function OptionList() {
               {/* Call Header */}
               <EventHeader/>
 
-              {user.isAdmin && (
+              {user?.isAdmin && (
             <Link to="/addOption" className="flex items-center ml-5 mb-6 mt-2 text-white text-xl font-mclaren px-2 py-1 bg-blue-500 hover:bg-blue-800 rounded-3xl">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -117,7 +118,7 @@ export default function OptionList() {
                                             </div>
                                             
 
-                                            {user.isAdmin && (
+                                            {user?.isAdmin && (
                                               <div className="mb-4 mt-1 flex justify-center items-center">
                                                 {/* Using Link component for Update button */}
                                                 <Link

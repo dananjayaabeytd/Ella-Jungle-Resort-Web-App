@@ -7,6 +7,7 @@ import {
   DialogFooter,
 } from '@material-tailwind/react';
 import axios from 'axios';
+import {toast} from 'react-toastify'
 
 export function DialogCustomAnimation({ id, onUserDeleted, name }) {
   const [open, setOpen] = React.useState(false);
@@ -17,7 +18,8 @@ export function DialogCustomAnimation({ id, onUserDeleted, name }) {
     try {
       console.log('Deleting user with ID:', id); // Add this line for debug
       await axios.delete(`http://localhost:5000/api/users/${id}`);
-      console.log('User deleted successfully'); // Add this line for debug
+      console.log('User deleted successfully');
+      toast.success('User deleted successfully') // Add this line for debug
       // After successful deletion, call the callback function
       if (onUserDeleted) {
         onUserDeleted();

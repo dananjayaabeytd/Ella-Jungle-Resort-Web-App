@@ -2,54 +2,89 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import back from '../../assets/back.png';
 
 function AgencyRegister() {
+  const { userInfo } = useSelector(state => state.auth);
+  const RepEmail = userInfo.email
+  
   const [agencyName, setAgencyName] = useState('');
   const [address, setAddress] = useState('');
-  const [img, setImg] = useState('');
   const [mobile, setMobile] = useState('');
-  const [businessRegistrationNumber, setBusinessRegistrationNumber] =
-    useState('');
-  const [representerMail, setRepresenterMail] = useState('');
+  const [businessRegistrationNumber, setBusinessRegistrationNumber] = useState('');
+  const [representerMail, setRepresenterMail] = useState(RepEmail);
   const [businessMail, setBusinessMail] = useState('');
   const [fax, setFax] = useState('');
   const [taxIdNumber, setTaxIdNumber] = useState('');
   const [description, setDescription] = useState('');
   const [websiteLink, setWebsiteLink] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const navigate = useNavigate();
 
-  const navigate = useNavigate
+  
 
-  const handleSubmit = e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newAgency = {
-      agencyName,
-      address,
-      img,
-      mobile,
-      businessRegistrationNumber,
-      representerMail,
-      businessMail,
-      fax,
-      taxIdNumber,
-      description,
-      websiteLink,
-    };
+    if(!agencyName) {
+      toast.error("Agency Name is Required")
+      return;
+    }
 
-    axios
-      .post('http://localhost:5000/api/agencies/add', newAgency)
-      .then(() => {
-        toast.success('Form submitted successfully!');
-      })
-      .catch(err => {
-        alert(err);
+    if (!/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(representerMail)) {
+      toast.error('Please enter a valid Representer email address');
+      return;
+    }
+
+    if (!/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(businessMail)) {
+      toast.error('Please enter a valid Business email address');
+      return;
+    }
+
+    if (!/^\d{10}$/.test(mobile)) {
+      toast.error('Mobile number must be a valid 10-digit number');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('agencyName', agencyName);
+    formData.append('address', address);
+    formData.append('mobile', mobile);
+    formData.append('businessRegistrationNumber', businessRegistrationNumber);
+    formData.append('representerMail', representerMail);
+    formData.append('businessMail', businessMail);
+    formData.append('fax', fax);
+    formData.append('taxIdNumber', taxIdNumber);
+    formData.append('description', description);
+    formData.append('websiteLink', websiteLink);
+    formData.append('img', imageFile);
+
+    try {
+      await axios.post('http://localhost:5000/api/agencies/add', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-
-
-      navigate('/agency')
+      toast.success('Form submitted successfully!');
+      navigate('/agency');
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      alert('Error submitting form');
+    }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+  };
+
+
   return (
+    <div
+      className='flex items-center justify-center h-[1350px] mt-[-325px]'
+      style={{ backgroundImage: `url(${back})`, backgroundSize: 'cover' }}
+    >
     <div className='flex items-center justify-center h-screen '>
       <form
         onSubmit={handleSubmit}
@@ -72,6 +107,7 @@ function AgencyRegister() {
               placeholder='Representer Mail'
               value={representerMail}
               onChange={e => setRepresenterMail(e.target.value)}
+              readOnly
             />
           </div>
           <div>
@@ -151,14 +187,13 @@ function AgencyRegister() {
           </div>
 
           <div>
-            <input
-              className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
-              type='text'
-              placeholder='image'
-              value={img}
-              onChange={e => setImg(e.target.value)}
-            />
-          </div>
+          <input
+            className='w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline'
+            type='file'
+            onChange={handleImageChange}
+          />
+          <button type='button'>Select an Image</button>
+        </div>
         </div>
         <button
           className='w-full px-4 py-2 mt-4 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline'
@@ -166,16 +201,9 @@ function AgencyRegister() {
         >
           Register Agency
         </button>
-        <p className='mt-2 text-sm text-center'>
-          Already have an account?{' '}
-          <Link
-            to='/sign-in'
-            className='font-medium text-green-500 hover:text-green-800'
-          >
-            Sign In
-          </Link>
-        </p>
+
       </form>
+    </div>
     </div>
   );
 }

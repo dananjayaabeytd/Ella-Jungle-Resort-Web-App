@@ -6,13 +6,18 @@ import { DeleteAgency } from './components/DeleteAgency';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
+const images = require.context('../../assets', false, /\.(png|jpe?g|svg)$/);
+
 const AgencyDetails = () => {
   const { id } = useParams();
   const [agency, setAgency] = useState(null);
   const { userInfo } = useSelector(state => state.auth);
+  const user = useSelector(state => state.auth.userInfo);
 
-  if (userInfo.isAdmin == null) {
-    userInfo.isAdmin = false;
+  // Create a new object with isAdmin property set to false if it doesn't exist
+  const updatedUserInfo = { ...userInfo };
+  if (updatedUserInfo.isAdmin == null) {
+    updatedUserInfo.isAdmin = false;
   }
 
   useEffect(() => {
@@ -34,6 +39,12 @@ const AgencyDetails = () => {
     return <div>Loading...</div>;
   }
 
+  // Get the image file name from the agency data
+  const imageName = agency.img;
+
+  // Use the images object to get the image source
+  const Agencyimage = images(`./${imageName}`);
+
   return (
     <div className='relative'>
       <section
@@ -41,7 +52,11 @@ const AgencyDetails = () => {
         style={{ zIndex: 1, overflow: 'hidden' }}
       >
         <img
-          src='https://images.unsplash.com/photo-1564613469739-c78f970f9c17?q=80&w=2047&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+          src={
+            Agencyimage
+              ? Agencyimage
+              : 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
+          }
           alt='Section Image'
           className='object-cover h-full border-white shadow-sm rounded-xl shadow-gray-900 w-[100px]'
           style={{ width: '100%' }}
@@ -65,7 +80,17 @@ const AgencyDetails = () => {
               size='lg'
               className='mb-4 text-4xl font-bold text-center'
             >
-              {agency.agencyName}
+              {agency.agencyName}{' '}
+              <Link to={`/uniqueagency/${agency._id}`}>
+                <Button className='bg-blue-600 mx-[5px]'>Feedbacks</Button>
+              </Link>
+              {user && !user.isAdmin && (
+                <div>
+                  <Link to={`/addagencyfeedback/${agency._id}`}>
+                    <Button className='bg-blue-600'>Give Feedback</Button>
+                  </Link>
+                </div>
+              )}
             </Typography>
             <div className='grid grid-cols-2 gap-2'>
               <div>

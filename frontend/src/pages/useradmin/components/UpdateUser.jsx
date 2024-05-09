@@ -45,6 +45,21 @@ export function UserUpdate() {
   const handleSubmit = e => {
     e.preventDefault();
 
+    if (!/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
+    if (!(userType === 'Guest' || userType === 'Travel Agent')) {
+      toast.error('User Type should be Guest or Travel Agent');
+      return
+    }
+
+    if (!/^\d{10}$/.test(mobile)) {
+      toast.error('Mobile number must be a valid 10-digit number');
+      return;
+    }
+
     const updatedUser = {
       name,
       email,
@@ -96,7 +111,6 @@ export function UserUpdate() {
         />
         <label>Email</label>
         <input
-          type='email'
           placeholder='Email'
           value={email}
           onChange={e => setEmail(e.target.value)}

@@ -87,27 +87,12 @@ const formatEventTime = (timeString) => {
   return (
     <div className="relative min-h-screen">
       
-    {/* Background Image */}
-    <div
-      className="absolute inset-0 z-0 bg-fixed"
-      style={{
-        backgroundImage: `url(${bggreen})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      }}
-    ></div>
-
-   
-
-    
-    
-  
     {/* Content Wrapper */}
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+    <div className="relative z-10 flex flex-col items-center min-h-screen">
       {/* Call Header */}
    
       <div>
-    {user.isAdmin && (
+    {user?.isAdmin && (
             <h1 to="/addOption" className="flex items-center ml-5 mb-2  text-black font-bold text-4xl ">
               All Events
             </h1>
