@@ -436,7 +436,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/updateOption/:optionId',
-        element: < TestPage/>,
+        element: < UpdateOption/>,
       },
       {
         path: '/test',
