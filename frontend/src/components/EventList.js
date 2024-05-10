@@ -12,6 +12,7 @@ export default function EventList() {
   const [allEvents, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
   const user = useSelector(state => state.auth.userInfo);
   const navigate = useNavigate();
@@ -50,6 +51,37 @@ const handleSearchInputChange = (e) => {
 };
 
 
+// Function to handle category filter
+const handleCategoryFilter = (category) => {
+    // Check if the category is already selected
+    const index = selectedCategories.indexOf(category);
+    if (index === -1) {
+      // If not selected, add it to the array
+      setSelectedCategories([...selectedCategories, category]);
+    } else {
+      // If already selected, remove it from the array
+      setSelectedCategories(selectedCategories.filter(cat => cat !== category));
+    }
+  };
+
+  useEffect(() => {
+    // Filter events based on selected categories
+    if (selectedCategories.length === 0) {
+      // If no categories selected, show all events
+      setSearchResults(allEvents);
+    } else {
+      // If categories selected, filter events
+      const filteredEvents = allEvents.filter(event =>
+        selectedCategories.includes(event.eventCategory.toLowerCase())
+      );
+      setSearchResults(filteredEvents);
+    }
+  }, [selectedCategories, allEvents]);
+
+    // List of categories available for filtering
+    const categories = ["Christmas", "Halloween", "NewYear"];
+
+
 
   // Function to format event time to "hh:mm A" format
   const formatEventTime = (timeString) => {
@@ -72,6 +104,12 @@ const shareEventViaWhatsApp = (eventId) => {
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
   }
 };
+
+
+// Sort events by event booking date in descending order
+const sortedEvents = [...searchResults].sort((a, b) => {
+  return new Date(a.eventDate) - new Date(b.eventDate);
+});
 
 
 
@@ -102,12 +140,31 @@ const shareEventViaWhatsApp = (eventId) => {
   <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
 </svg>
  Search</p>
+
+
+{/* Category filter */}
+<div className="ml-40">
+  {categories.map(category => (
+    <button
+      key={category}
+      className={`bg-theme-green text-white px-4 py-2 rounded-md mr-2 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+      onClick={() => handleCategoryFilter(category.toLowerCase())}
+    >
+      {category}
+    </button>
+  ))}
 </div>
+
+</div>
+
+
+
 
 
         {/* Event cards */}
         <div className="px-8 pb-3 justify-between grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-1 xl:grid-cols-2 gap-x-6  w-full ">
-          {searchResults.map(event => (
+          
+          {sortedEvents.map(event => (
             <div key={event._id} className="container bg-fixed my-3 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
               <div className="grid  grid-cols-2 gap-9 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2">
                 <div className="container shadow-md rounded-3xl overflow-hidden w-full max-h-64">

@@ -22,6 +22,11 @@ const TicketTable = () => {
   
       fetchTickets();
     }, []);
+
+    // Sort events by event booking date in descending order
+const sortedTickets = [...tickets].sort((a, b) => {
+  return new Date(b.ticketBuyingDate) - new Date(a.ticketBuyingDate);
+});
   
 
 
@@ -52,7 +57,7 @@ const TicketTable = () => {
             </tr>
           </thead>
           <tbody>
-  {tickets.map((ticket) => (
+  {sortedTickets.map((ticket) => (
     // Check if the user is an admin or the ticket belongs to the user
     (user?.isAdmin || ticket.ticketUserId === user?._id) && (
       <tr key={ticket._id} className="border-b border-gray-200 hover:bg-green-50 hover:opacity-50 ">

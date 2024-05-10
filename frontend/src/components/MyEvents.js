@@ -80,6 +80,12 @@ const formatEventTime = (timeString) => {
   // Return formatted time
   return `${parsedHours}:${minutes} ${suffix}`;
 };
+
+
+// Sort events by event booking date in descending order
+const sortedEvents = [...allEvents].sort((a, b) => {
+  return new Date(b.eventBookingDate) - new Date(a.eventBookingDate);
+});
   
   
 
@@ -101,7 +107,7 @@ const formatEventTime = (timeString) => {
     
   
     {/* Content Wrapper */}
-    <div className="relative z-10 flex flex-col items-center justify-center min-h-screen">
+    <div className="relative z-10 flex flex-col items-center min-h-screen">
       {/* Call Header */}
     <EventHeader/>
    
@@ -109,10 +115,13 @@ const formatEventTime = (timeString) => {
             
   
       {/* Your scrolling content */}
+      
       {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.filter(event => event.eventUserId === user._id).map((event) => {
+        {sortedEvents.filter(event => event.eventUserId === user._id).map((event) => {
         //Convert eventTime to "hh:mm A" format
         const formattedEventTime = formatEventTime(event.eventTime);
+
+
         return(
       <div key={event._id} className="container bg-fixed my-5 max-w-5xl mx-auto p-5 bg-white bg-opacity-50 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 

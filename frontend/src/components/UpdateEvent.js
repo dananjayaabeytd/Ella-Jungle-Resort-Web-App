@@ -29,6 +29,8 @@ export default function UpdateEvent() {
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
   const [formError, setFormError] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({});
   
   const timeSlots = [
     { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
@@ -40,9 +42,6 @@ export default function UpdateEvent() {
   // Get current date and time
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-
-  
 
   const navigate = useNavigate();
 
@@ -78,6 +77,15 @@ export default function UpdateEvent() {
     } else {
       setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
     }
+
+    // Check if the updated selected options meet the validation criteria
+  if (selectedOptions.length < 2) {
+    // If less than or equal to 3 options are selected, update the state and set an error message
+    setErrors((prevErrors) => ({ ...prevErrors, selectedOptions: 'At least 3 options should be selected' }));
+} else {
+// If more than 3 options are selected, update the state and clear any error message
+setErrors((prevErrors) => ({ ...prevErrors, selectedOptions: '' }));
+}
   }
 
 
@@ -185,6 +193,65 @@ export default function UpdateEvent() {
 
 
 
+  function validateInput(name, value) {
+    switch (name) {
+        case 'updatedEventName':
+            if (!value) return "Event name is required";
+            if (value.length < 20) return "Event name must be at least 20 characters long";
+            if (!validateEventName(value)) {
+                return "Event name should not exceed 10 words";
+            }
+            return "";
+        case 'selectedOptions':
+            if (selectedOptions.length < 3) {
+                setErrors("At least 3 options should be selected");
+              }
+            return "";
+        case 'updatedEventDescription':
+            if (!value) return "Event Description is required";
+            if (value.length < 80) return "Description must be at least 80 characters long";
+            return "";
+        case 'updatedAttendeeCount':
+            if (!value) return "Attendee Count should be entered";
+            if (value < 0) return "You can't add negative values";
+            if (value < 5) return "Attendee count should be at least 5";
+            return "";
+        case 'ticketPrice':
+            if (!value) return "Please enter the Ticket Price";
+            if (value < 100) return "Ticket Price should exceed 100 LKR";
+            return "";
+        default:
+            return "";
+    }
+}
+
+function handleInputChange(e) {
+    const { name, value } = e.target;
+    setErrors({
+        ...errors,
+        [name]: validateInput(name, value)
+    });
+    switch (name) {
+        case 'updatedEventName':
+            setUpdatedEventName(value);
+            break;
+        case 'updatedEventDescription':
+            setUpdatedEventDescription(value);
+            break;
+        case 'updatedAttendeeCount':
+            setUpdatedAttendeeCount(value);
+            break;
+        case 'ticketPrice':
+            setTicketPrice(value);
+            break;
+        default:
+            break;
+    }
+}
+
+
+
+
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
@@ -192,28 +259,35 @@ export default function UpdateEvent() {
 
     // Check if all fields are filled
     if (!updatedEventName || !updatedEventCategory || !updatedEventDate || !updatedEventDescription || selectedOptions.length === 0) {
-      setFormError("Please Fill All ");
-      return;
+        setFormError("Please Fill All ");
+        return;
+      }
+  
+  
+      if (!selectedTimeSlots.length > 0) {
+        setFormError("Please Select at least One Time Slot");
+        return;
+      }else if (selectedOptions.length < 3) {
+        setFormError("You must select at least 3 Options");
+        return;````````````````````````````````````
+      }else{
+        setFormError("");
+      }
+
+    const validationErrors = Object.keys(errors).reduce((acc, key) => {
+        const error = validateInput(key, eval(key));
+        if (error) acc[key] = error;
+        return acc;
+    }, {});
+
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
     }
 
-    // Check if Event Name exceeds 10 words
-    if (!validateEventName(updatedEventName)) {
-      setFormError("Event Name Should Not Exceed 10 Words");
-      return;
-    }
+
+
     
-    // Check if user has selected at least 3 options
-    if (selectedOptions.length < 3) {
-      setFormError("Please Select at least Three Options");
-      return;
-    }
-
-
-    // Check if user has selected at least 3 options
-    if (updatedAttendeeCount < 10) {
-      setFormError("Expected attendees count should not be less than 10");
-      return;
-    }
 
 
     const formData = new FormData();
@@ -338,16 +412,12 @@ export default function UpdateEvent() {
 
             {/* Event Name */}
             <div className="px-12 text-base font-semibold mt-5 ">
-              <label className="block font-bold text-xl text-green-700" htmlFor="eventName">Event Name</label>
-              <input type="text" placeholder="Enter Name" name="eventName" required value={updatedEventName}
+              <label className="block font-bold text-xl text-green-700" htmlFor="updatedEventName">Event Name</label>
+              <input type="text" placeholder="Enter Name" name="updatedEventName" required value={updatedEventName}
                 className="w-full p-1  rounded text-lg font-lexend form-check border-2 border-theme-green"
-                onChange={(e) => {
-                  setUpdatedEventName(e.target.value);
-                  if (formError) {
-                    setFormError("");
-                  }
-                }}
+                onChange={handleInputChange}
               />
+              {errors.updatedEventName && <div className="text-red-600">{errors.updatedEventName}</div>}
             </div>
 
 
@@ -420,12 +490,13 @@ export default function UpdateEvent() {
 
             {/* Event Description */}
             <div className="px-12 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
-              <textarea cols="50" rows="8" placeholder="Enter Description" name="eventDescription"
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedEventDescription">Event Description</label>
+              <textarea cols="50" rows="8" placeholder="Enter Description" name="updatedEventDescription"
                 value={updatedEventDescription}
                 className="h-24 w-full p-1 border-2 border-theme-green rounded text-lg font-lexend"
-                onChange={(e) => setUpdatedEventDescription(e.target.value)}
+                onChange={handleInputChange}
               ></textarea>
+              {errors.updatedEventDescription && <div className="text-red-600">{errors.updatedEventDescription}</div>}
             </div>
 
 
@@ -434,8 +505,9 @@ export default function UpdateEvent() {
               <label className="block font-bold text-xl text-green-800" htmlFor="updatedAttendeeCount">Attendee Count</label>
               <input type="number" placeholder="Enter Attendee Count" name="updatedAttendeeCount" required value={updatedAttendeeCount}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                onChange={(e) => setUpdatedAttendeeCount(e.target.value)}
+                onChange={handleInputChange}
               />
+              {errors.updatedAttendeeCount && <div className="text-red-600">{errors.updatedAttendeeCount}</div>}
             </div>
 
 
@@ -481,6 +553,7 @@ export default function UpdateEvent() {
 
             {/* Display total cost */}
             <div className="px-12 text-base font-semibold mt-5">
+            {errors.selectedOptions && (<div className="text-red-600 mb-3">{errors.selectedOptions}</div>)}
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
             </div>
 
@@ -526,12 +599,14 @@ export default function UpdateEvent() {
                       <label className="block font-bold text-xl text-green-800 " htmlFor="ticketPrice">Ticket Price : </label>
                       <input required className=" p-1 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
                           type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice}
-                          onChange={(e) => setTicketPrice(e.target.value)}
+                          onChange={handleInputChange}
                           
                       />
                       <label className="block font-bold text-xl text-green-800 felx" htmlFor="ticketPrice">LKR</label>
                   </div>
+                  
               )}    
+              {errors.ticketPrice && <div className="text-red-600">{errors.ticketPrice}</div>}
                     </div>
                 </div>
             </div>
@@ -552,7 +627,7 @@ export default function UpdateEvent() {
             
             {/* Display form errors */}
             {formError && (
-              <div className="ml-30  text-xl font-inika mt-3 text-red-600">
+              <div className="ml-12 font-semibold text-xl font-lexend mt-3 text-red-600">
                 <p>{formError}</p>
               </div>
             )}

@@ -19,8 +19,12 @@ export default function BuyEventTicket() {
     const [ticketUserMobile, setTicketUserMobile] = useState("");  
     const [ticketCount, setTicketCount] = useState(1);  
     const [totalTicketCost, setTotalTicketCost] = useState("");  
-    const [formError, setFormError] = useState(null); // State for form error message
+    const [errors, setErrors] = useState({});
     
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [popupMessage, setPopupMessage] = useState('');
+    const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
+
     // Get current date and time
   const currentDate = new Date();
   const formattedTime = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -38,7 +42,6 @@ export default function BuyEventTicket() {
         const response = await axios.get(`http://localhost:5000/event/getSelectedEvent/${eventId}`);
         setSelectedEvent(response.data.event);
         
-        console.log("Fetched Event Details Successfully");
       } catch (error) {
         console.error("Error fetching event data:", error.message);
         alert("Error fetching event data. Please try again.");
@@ -47,6 +50,53 @@ export default function BuyEventTicket() {
 
     getEventDetails();
   }, [eventId]);
+
+  
+  function validateInput(name, value) {
+    switch (name) {
+        case 'ticketUserName':
+            if (!value) return "User name is required";
+            if (value.length < 3) return "User name must be at least 3 characters long";
+            return "";
+        case 'ticketUserEmail':
+            if (!value) return "Email is required";
+            if (!/\S+@\S+\.\S+/.test(value)) return "Email address is invalid";
+            return "";
+        case 'ticketUserMobile':
+            if (!value) return "Mobile number is required";
+            if (!/^\d{10}$/.test(value)) return "Mobile number must be 10 digits";
+            return "";
+        case 'ticketCount':
+            if (value < 1) return "At least one ticket must be purchased";
+            return "";
+        default:
+            return "";
+    }
+}
+
+function handleInputChange(e) {
+    const { name, value } = e.target;
+    setErrors({
+        ...errors,
+        [name]: validateInput(name, value)
+    });
+    switch (name) {
+        case 'ticketUserName':
+            setTicketUserName(value);
+            break;
+        case 'ticketUserEmail':
+            setTicketUserEmail(value);
+            break;
+        case 'ticketUserMobile':
+            setTicketUserMobile(value);
+            break;
+        case 'ticketCount':
+            setTicketCount(value);
+            break;
+        default:
+            break;
+    }
+}
 
   
 
@@ -77,18 +127,15 @@ export default function BuyEventTicket() {
   function sendData(e) {
     e.preventDefault();
 
-    
+    const validationErrors = Object.keys(errors).reduce((acc, key) => {
+        const error = validateInput(key, eval(key));
+        if (error) acc[key] = error;
+        return acc;
+    }, {});
 
-    // Check if ticket count is 0
-    if (ticketCount == 0) {
-      setFormError("ERROR : Ticket count cannot be 0.");
-      return;
-    }
-
-    // Check if all fields are filled
-    if (!ticketUserName || !ticketUserEmail || !ticketUserMobile || !ticketCount) {
-      setFormError("ERROR : All Fields Should be Filled");
-      return;
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
     }
 
     const newTicket = {
@@ -106,7 +153,11 @@ export default function BuyEventTicket() {
 
       axios.post("http://localhost:5000/ticket/buyTicket", newTicket)
       .then(() => {
-          alert("Ticket Bought");
+          // Custom success notification
+         setPopupMessage("Ticket Purchased successfully!");
+         setPopupType('info');
+         setIsPopupOpen(true);
+
         //Resetting inout fields
           setTicketUserName("");
           setTicketUserEmail("");
@@ -117,6 +168,10 @@ export default function BuyEventTicket() {
           navigate(`/viewEvent/${eventId}`);
       }).catch((err) => {
           alert(err);
+          // Custom success notification
+          setPopupMessage("Error Purchasing Ticket. Please try again.");
+          setPopupType('error');
+          setIsPopupOpen(true);
       })
   }
 
@@ -167,8 +222,9 @@ export default function BuyEventTicket() {
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketUserName">User Name</label>
         <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
           type="text" placeholder="Enter Name" name="ticketUserName" value={ticketUserName}
-          onChange={(e) => setTicketUserName(e.target.value)}
+          onChange={handleInputChange}
         />
+        {errors.ticketUserName && <div className="text-red-600">{errors.ticketUserName}</div>}
       </div>
 
       {/* User Email */}
@@ -176,8 +232,9 @@ export default function BuyEventTicket() {
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketUserEmail">User Email</label>
         <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
           type="text" placeholder="Enter Email" name="ticketUserEmail" value={ticketUserEmail}
-          onChange={(e) => setTicketUserEmail(e.target.value)}
+          onChange={handleInputChange}
         />
+        {errors.ticketUserEmail && <div className="text-red-600">{errors.ticketUserEmail}</div>}
       </div>
 
 
@@ -186,8 +243,9 @@ export default function BuyEventTicket() {
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketUserMobile">User Mobile</label>
         <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
           type="text" placeholder="Enter Mobile" name="ticketUserMobile" value={ticketUserMobile}
-          onChange={(e) =>  setTicketUserMobile(e.target.value)}
+          onChange={handleInputChange}
         />
+        {errors.ticketUserMobile && <div className="text-red-600">{errors.ticketUserMobile}</div>}
       </div>
 
 
@@ -195,16 +253,19 @@ export default function BuyEventTicket() {
       <div className="ml-30 text-base font-semibold mt-5 flex">
         <label className="block font-bold text-xl text-green-800" htmlFor="ticketCount">Ticket Count : </label>
         <input className="w-20 p-0 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
-          type="number" placeholder="Enter Count" name="ticketCount" value={ticketCount}
-          onChange={(e) =>  setTicketCount(e.target.value)}
+          type="number" placeholder="Count" name="ticketCount" value={ticketCount}
+          min="1"
+          onChange={handleInputChange}
         />
+        
         {selectedEvent && (
           <label className="ml-56 block font-bold text-lg text-green-900 font-mclaren" htmlFor="ticketCount">Ticket Price : {selectedEvent.ticketPrice} LKR</label>
         )}
-        
 
-       
       </div>
+
+
+      {errors.ticketCount && <div className="text-red-600 text-base font-semibold flex">{errors.ticketCount}</div>}
       
       <div className="flex"> 
        <p className="block font-bold text-lg text-green-900 font-mclaren">
@@ -219,11 +280,6 @@ export default function BuyEventTicket() {
       <div className="ml-30 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-black">Total Cost: {totalTicketCost} LKR</label>
             </div>
-
-            {/* Form error message */}
-            {formError && (
-              <div className="ml-30 text-base font-mclaren font-semibold mt-3 text-red-600">{formError}</div>
-            )}
 
 
       <center>
@@ -242,6 +298,17 @@ export default function BuyEventTicket() {
       </center>
     </form>
   </div>
+
+  {/* Your component structure */}
+  <CustomPopup
+          isOpen={isPopupOpen}
+          message={popupMessage}
+          onClose={() => {
+            setIsPopupOpen(false);
+            navigate("/allOptions");
+          }}
+          type={popupType}
+        />
 </div>
 </div>
 

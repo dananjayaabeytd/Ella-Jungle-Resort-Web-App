@@ -21,6 +21,10 @@ export default function AllEvents() {
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,6 +70,56 @@ export default function AllEvents() {
   };
 
 
+  // Function to handle search query change
+const handleSearchInputChange = (e) => {
+    const query = e.target.value.toLowerCase();
+    setSearchQuery(query);
+  
+    if (query.length > 0) {
+      const filteredEvents = allEvents.filter(event =>
+        event.eventName.toLowerCase().includes(query) ||
+        event.eventDate.includes(query) ||
+        event.eventCategory.toLowerCase().includes(query)
+      );
+      setSearchResults(filteredEvents);
+    } else {
+      setSearchResults(allEvents);
+    }
+  };
+  
+  
+  // Function to handle category filter
+  const handleCategoryFilter = (category) => {
+      // Check if the category is already selected
+      const index = selectedCategories.indexOf(category);
+      if (index === -1) {
+        // If not selected, add it to the array
+        setSelectedCategories([...selectedCategories, category]);
+      } else {
+        // If already selected, remove it from the array
+        setSelectedCategories(selectedCategories.filter(cat => cat !== category));
+      }
+    };
+  
+    useEffect(() => {
+      // Filter events based on selected categories
+      if (selectedCategories.length === 0) {
+        // If no categories selected, show all events
+        setSearchResults(allEvents);
+      } else {
+        // If categories selected, filter events
+        const filteredEvents = allEvents.filter(event =>
+          selectedCategories.includes(event.eventCategory.toLowerCase())
+        );
+        setSearchResults(filteredEvents);
+      }
+    }, [selectedCategories, allEvents]);
+  
+      // List of categories available for filtering
+      const categories = ["Wedding", "Birthday", "Christmas", "Halloween", "NewYear"];
+
+
+
   
   // Function to format event time to "hh:mm A" format
 const formatEventTime = (timeString) => {
@@ -81,6 +135,11 @@ const formatEventTime = (timeString) => {
   return `${parsedHours}:${minutes} ${suffix}`;
 };
   
+
+// Sort events by event booking date in descending order
+const sortedEvents = [...searchResults].sort((a, b) => {
+    return new Date(b.eventBookingDate) - new Date(a.eventBookingDate);
+  });
   
 
 
@@ -98,13 +157,44 @@ const formatEventTime = (timeString) => {
             </h1>
               )}
     </div>
-            
+
+
+    
+            {/* Search bar */}
+<div className="mb-4 flex">
+  <input
+    type="text"
+    placeholder="Search by name, date, or category..."
+    value={searchQuery}
+    onChange={handleSearchInputChange}
+    className="border border-gray-400 px-4 py-2 rounded-l-lg "
+  />
+  <p className="flex items-center bg-theme-green text-white px-2 py-2 rounded-r-lg font-mclaren"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+</svg>
+ Search</p>
+
+
+{/* Category filter */}
+<div className="ml-40">
+  {categories.map(category => (
+    <button
+      key={category}
+      className={`bg-theme-green text-white px-4 py-2 rounded-md mr-2 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+      onClick={() => handleCategoryFilter(category.toLowerCase())}
+    >
+      {category}
+    </button>
+  ))}
+</div>
+
+</div>
   
       {/* Your scrolling content */}
-      {/* {allEvents && allEvents.map((event) => ( */}
-        {allEvents.map((event) => {
+      {sortedEvents.map((event) => {
         //Convert eventTime to "hh:mm A" format
         const formattedEventTime = formatEventTime(event.eventTime);
+
         return(
       <div key={event._id} className="container bg-fixed my-0 max-w-5xl mx-auto px-5 bg-white bg-opacity-70 shadow-2xl shadow-theme-green rounded-3xl overflow-auto border-2 border-green-700">
 

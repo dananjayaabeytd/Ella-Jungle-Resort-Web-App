@@ -34,6 +34,7 @@ export default function AddEvent() {
 
   const [formError, setFormError] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [errors, setErrors] = useState({});
 
   const timeSlots = [
     { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
@@ -65,12 +66,27 @@ export default function AddEvent() {
 
 
   function handleOptionChange(optionId, checked) {
+    
+    
     if (checked) {
       setSelectedOptions(prevSelectedOptions => [...prevSelectedOptions, optionId]);
     } else {
       setSelectedOptions(prevSelectedOptions => prevSelectedOptions.filter(id => id !== optionId));
     }
+    
+
+    // Check if the updated selected options meet the validation criteria
+  if (selectedOptions.length < 2) {
+        // If less than or equal to 3 options are selected, update the state and set an error message
+        setErrors((prevErrors) => ({ ...prevErrors, selectedOptions: 'At least 3 options should be selected' }));
+  } else {
+    // If more than 3 options are selected, update the state and clear any error message
+    setErrors((prevErrors) => ({ ...prevErrors, selectedOptions: '' }));
   }
+
+    
+  }
+
 
 
   const handleTimeSlotChange = (slotId) => {
@@ -79,6 +95,7 @@ export default function AddEvent() {
     } else {
       setSelectedTimeSlots(prev => [...prev, slotId]);
     }
+    
   };
   
 
@@ -131,36 +148,93 @@ export default function AddEvent() {
   }, [selectedOptions, allOptions, selectedTimeSlots, attendeeCount]);
 
 
+  function validateInput(name, value) {
+    switch (name) {
+        case 'eventName':
+            if (!value) return "Event name is required";
+            if (value.length < 20) return "Event name must be at least 20 characters long";
+            if (!validateEventName(value)) {
+                return "Event name should not exceed 10 words";
+            }
+            return "";
+        case 'selectedOptions':
+            if (selectedOptions.length < 3) {
+                setErrors("At least 3 options should be selected");
+              }
+            return "";
+        case 'eventDescription':
+            if (!value) return "Event Description is required";
+            if (value.length < 80) return "Description must be at least 80 characters long";
+            return "";
+        case 'attendeeCount':
+            if (!value) return "Attendee Count should be entered";
+            if (value < 0) return "You can't add negative values";
+            if (value < 5) return "Attendee count should be at least 5";
+            return "";
+        case 'ticketPrice':
+            if (!value) return "Please enter the Ticket Price";
+            if (value < 100) return "Ticket Price should exceed 100 LKR";
+            return "";
+        default:
+            return "";
+    }
+}
+
+function handleInputChange(e) {
+    const { name, value } = e.target;
+    setErrors({
+        ...errors,
+        [name]: validateInput(name, value)
+    });
+    switch (name) {
+        case 'eventName':
+            setEventName(value);
+            break;
+        case 'eventDescription':
+            setEventDescription(value);
+            break;
+        case 'attendeeCount':
+            setAttendeeCount(value);
+            break;
+        case 'ticketPrice':
+            setTicketPrice(value);
+            break;
+        default:
+            break;
+    }
+}
+
   // Function to handle form submission
   function sendData(e) {
     e.preventDefault();
 
 
-
-
-    // Check if all fields are filled
-    if (!eventName || !eventCategory || !eventDate || !eventDescription || attendeeCount == 0 || selectedOptions.length === 0) {
-        setFormError("Please Fill all fields ");
-        return;
-      }
-
-    // Check if Event Name exceeds 10 words
-    if (!validateEventName(eventName)) {
-        setFormError("Event Name Should Not Exceed 10 Words");
-        return;
-    }
-    
-    // Check if user has selected at least 3 options
-    if (selectedOptions.length < 3) {
-        setFormError("Please Select at least Three Options");
-        return;
-      }
-
-
-       // Check if user has selected at least 3 options
-    if (attendeeCount < 10) {
-      setFormError("Expected attendees count should not be less than 10");
+     // Check if all fields are filled
+     if (!eventName || !eventCategory || !eventDate || !eventDescription || attendeeCount == 0 || selectedOptions.length === 0) {
+      setFormError("Please Fill all fields ");
       return;
+    }
+
+    if (!selectedTimeSlots.length > 0) {
+      setFormError("Please Select at least One Time Slot");
+      return;
+    }else if (selectedOptions.length < 3) {
+      setFormError("You must select at least 3 Options");
+      return;
+    }else{
+      setFormError("");
+    }
+
+
+    const validationErrors = Object.keys(errors).reduce((acc, key) => {
+        const error = validateInput(key, eval(key));
+        if (error) acc[key] = error;
+        return acc;
+    }, {});
+
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
     }
 
 
@@ -311,13 +385,9 @@ export default function AddEvent() {
               <label className="block font-bold text-xl text-green-800" htmlFor="eventName">Event Name</label>
               <input type="text" placeholder="Enter Name" name="eventName" required value={eventName}
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                onChange={(e) => {
-                  setEventName(e.target.value);
-                  if (formError) {
-                    setFormError("");
-                  }
-                }}
+                onChange={handleInputChange}
               />
+              {errors.eventName && <div className="text-red-600">{errors.eventName}</div>}
             </div>
 
             
@@ -402,9 +472,10 @@ export default function AddEvent() {
               <label className="block font-bold text-xl text-green-800" htmlFor="eventDescription">Event Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="eventDescription" required value={eventDescription}
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-                onChange={(e) => setEventDescription(e.target.value)}
+                onChange={handleInputChange}
               > 
               </textarea>
+              {errors.eventDescription && <div className="text-red-600">{errors.eventDescription}</div>}
             </div>
 
             
@@ -413,9 +484,10 @@ export default function AddEvent() {
             <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="attendeeCount">Attendee Count</label>
               <input type="number" placeholder="Enter Attendee Count" name="attendeeCount" required value={attendeeCount}
-                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                onChange={(e) => setAttendeeCount(e.target.value)}
+                className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check" min="5"
+                onChange={handleInputChange}
               />
+              {errors.attendeeCount && <div className="text-red-600">{errors.attendeeCount}</div>}
             </div>
 
 
@@ -455,10 +527,11 @@ export default function AddEvent() {
       ))}
     </div>
   ))}
+
+
 </div>
-
-
             <div className="px-12 text-base font-semibold mt-5">
+            {errors.selectedOptions && (<div className="text-red-600 mb-3">{errors.selectedOptions}</div>)}
               <label className="block font-bold text-xl text-black">Total Cost: {totalCost} LKR</label>
             </div>
 
@@ -509,13 +582,16 @@ export default function AddEvent() {
 </svg>
 </label>
                       <input required className=" p-0 ml-4 border border-gray-200 rounded text-lg font-lexend form-check"
-                          type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice}
-                          onChange={(e) => setTicketPrice(e.target.value)}
+                          type="number" placeholder="Enter Price" name="ticketPrice" value={ticketPrice} min="0"
+                          onChange={handleInputChange}
                           
                       />
                       <label className="block font-bold text-xl text-green-800 felx" htmlFor="ticketPrice">LKR</label>
+                      
                   </div>
-              )}    
+                  
+              )}   
+              {errors.ticketPrice && <div className="text-red-600">{errors.ticketPrice}</div>} 
                     </div>
                 </div>
             </div>
@@ -533,10 +609,13 @@ export default function AddEvent() {
 
             {/* Display form errors */}
             {formError && (
-              <div className="ml-30 font-semibold text-xl font-lexend mt-3 text-red-600">
+              <div className="ml-12 font-semibold text-xl font-lexend mt-3 text-red-600">
                 <p>{formError}</p>
               </div>
             )}
+
+
+            
 
             <div className="flex justify-center mt-5 ">
               <button className="flex items-center bg-green-700 text-white text-lg px-4 py-2 border border-green-800 rounded-full cursor-pointer font-bold hover:bg-green-400 hover:border-green-950" type="submit" name="submit" id="submit">

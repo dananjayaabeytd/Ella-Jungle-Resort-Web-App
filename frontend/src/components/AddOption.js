@@ -24,12 +24,26 @@ export default function AddOption() {
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
+  const [errors, setErrors] = useState({});
+
   const navigate = useNavigate();
 
 
   // Function to handle form submission
   function sendData(e) {
     e.preventDefault();
+
+    const validationErrors = Object.keys(errors).reduce((acc, key) => {
+        const error = validateInput(key, eval(key));
+        if (error) acc[key] = error;
+        return acc;
+    }, {});
+
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+    }
+
     const formData = new FormData();
     formData.append("optionCategory", optionCategory);
     formData.append("optionName", optionName);
@@ -64,6 +78,53 @@ export default function AddOption() {
         setIsPopupOpen(true);
       });
   }
+
+
+  function validateInput(name, value) {
+    switch (name) {
+        case 'optionCategory':
+            if (!value) return "Option Category is required";
+            return "";
+        case 'optionName':
+            if (!value) return "Option Name is required";
+            return "";
+        case 'optionDescription':
+            if (!value) return "optionDescription is required";
+            if (value.length < 50) return "Description must be at least 50 characters long";
+            return "";
+        case 'optionPrice':
+            if (!value) return "Option Price should be entered";
+            if (value < 0) return "You can't add negative values";
+            return "";
+        default:
+            return "";
+    }
+}
+
+
+function handleInputChange(e) {
+    const { name, value } = e.target;
+    setErrors({
+        ...errors,
+        [name]: validateInput(name, value)
+    });
+    switch (name) {
+        case 'optionCategory':
+            setOptionCategory(value);
+            break;
+        case 'optionName':
+            setOptionName(value);
+            break;
+        case 'optionDescription':
+            setOptionDescription(value);
+            break;
+        case 'optionPrice':
+            setOptionPrice(value);
+            break;
+        default:
+            break;
+    }
+}
 
   
   return (
@@ -100,7 +161,7 @@ export default function AddOption() {
                 name="optionCategory"
                 id="optionCategory"
                 value={optionCategory}
-                onChange={(e) => setOptionCategory(e.target.value)}
+                onChange={handleInputChange}
               >
                 <option value="" disabled className="text-gray-500">Select Category</option>
                 <option value="Decoration">Decoration</option>
@@ -109,6 +170,7 @@ export default function AddOption() {
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
               </select>
+              {errors.optionCategory && <div className="text-red-600">{errors.optionCategory}</div>}
             </div>
 
 
@@ -117,8 +179,9 @@ export default function AddOption() {
               <label className="block font-bold text-xl text-green-800" htmlFor="optionName">Option Name</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 type="text" placeholder="Enter Name" name="optionName" value={optionName}
-                onChange={(e) => setOptionName(e.target.value)}
+                onChange={handleInputChange}
               />
+              {errors.optionName && <div className="text-red-600">{errors.optionName}</div>}
             </div>
 
 
@@ -128,8 +191,9 @@ export default function AddOption() {
               <label className="block font-bold text-xl text-green-800" htmlFor="optionDescription">Option Description</label>
               <textarea cols="50" rows="8" placeholder="Enter Description" name="optionDescription" required value={optionDescription}
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-                onChange={(e) => setOptionDescription(e.target.value)}
+                onChange={handleInputChange}
               > </textarea>
+              {errors.optionDescription && <div className="text-red-600">{errors.optionDescription}</div>}
             </div>
             
             
@@ -153,9 +217,10 @@ export default function AddOption() {
             <div className="px-12 text-base font-semibold mt-2">
               <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
               <input required className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                type="number" placeholder="Enter Price" name="optionPrice" value={optionPrice}
-                onChange={(e) =>  setOptionPrice(e.target.value)}
+                type="number" placeholder="Enter Price" name="optionPrice" value={optionPrice} min="1"
+                onChange={handleInputChange}
               />
+              {errors.optionPrice && <div className="text-red-600">{errors.optionPrice}</div>}
             </div>
 
 

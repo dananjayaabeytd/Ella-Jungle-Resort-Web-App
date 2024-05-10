@@ -27,6 +27,8 @@ export default function UpdateEvent() {
 
   const user = useSelector(state => state.auth.userInfo); // `userInfo` may be null or contain `isAdmin`
 
+  const [errors, setErrors] = useState({});
+
 
 
   useEffect(() => {
@@ -64,6 +66,19 @@ export default function UpdateEvent() {
 
   const handleUpdate = async (e) => {
     e.preventDefault(); // Prevent the default form submission
+
+    const validationErrors = Object.keys(errors).reduce((acc, key) => {
+        const error = validateInput(key, eval(key));
+        if (error) acc[key] = error;
+        return acc;
+    }, {});
+
+    if (Object.keys(validationErrors).length > 0) {
+        setErrors(validationErrors);
+        return;
+    }
+
+
     const formData = new FormData();
     formData.append("optionName", updatedOptionName);
     formData.append("optionCategory", updatedOptionCategory);
@@ -92,6 +107,54 @@ export default function UpdateEvent() {
       setIsPopupOpen(true);
     }
   };
+
+
+  function validateInput(name, value) {
+    switch (name) {
+        case 'updatedOptionCategory':
+            if (!value) return "Option Category is required";
+            return "";
+        case 'updatedOptionName':
+            if (!value) return "Option Name is required";
+            return "";
+        case 'updatedOptionDescription':
+            if (!value) return "optionDescription is required";
+            if (value.length < 50) return "Description must be at least 50 characters long";
+            return "";
+        case 'updatedOptionPrice':
+            if (!value) return "Option Price should be entered";
+            if (value < 0) return "You can't add negative values";
+            return "";
+        default:
+            return "";
+    }
+}
+
+
+function handleInputChange(e) {
+    const { name, value } = e.target;
+    setErrors({
+        ...errors,
+        [name]: validateInput(name, value)
+    });
+    switch (name) {
+        case 'updatedOptionCategory':
+            setUpdatedOptionCategory(value);
+            break;
+        case 'updatedOptionName':
+            setUpdatedOptionName(value);
+            break;
+        case 'updatedOptionDescription':
+            setUpdatedOptionDescription(value);
+            break;
+        case 'updatedOptionPrice':
+            setUpdatedOptionPrice(value);
+            break;
+        default:
+            break;
+    }
+}
+
 
   if (!selectedOption) {
     return <div>Loading...</div>;
@@ -123,12 +186,12 @@ export default function UpdateEvent() {
 
             {/* Option Category */}
             <div className="px-12 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="optionCategory">Option Category</label>
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedOptionCategory">Option Category</label>
               <select
                 className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
                 placeholder="Select Category"
-                name="optionCategory"
-                id="optionCategory"
+                name="updatedOptionCategory"
+                id="updatedOptionCategory"
                 value={updatedOptionCategory} 
                 onChange={(e) => setUpdatedOptionCategory(e.target.value)}
               >
@@ -139,27 +202,30 @@ export default function UpdateEvent() {
                 <option value="Photography">Photography</option>
                 <option value="Other">Other</option>
               </select>
+              {errors.updatedOptionCategory && <div className="text-red-600">{errors.updatedOptionCategory}</div>}
             </div>
 
 
             {/* Option Name */}
             <div className="px-12 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="optionName">Option Name</label>
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedOptionName">Option Name</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                type="text" placeholder="Enter Name" name="optionName" value={updatedOptionName}
-                onChange={(e) => setUpdatedOptionName(e.target.value)}
+                type="text" placeholder="Enter Name" name="updatedOptionName" value={updatedOptionName}
+                onChange={handleInputChange}
               />
+              {errors.updatedOptionName && <div className="text-red-600">{errors.updatedOptionName}</div>}
             </div>
 
 
             {/* Option Description */}
             <div className="px-12 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="optionDescription">Option Description</label>
-              <textarea cols="50" rows="8" placeholder="Enter Description" name="optionDescription"
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedOptionDescription">Option Description</label>
+              <textarea cols="50" rows="8" placeholder="Enter Description" name="updatedOptionDescription"
                 value={updatedOptionDescription}
                 className="h-24 w-full p-1 border border-gray-200 rounded text-lg font-lexend"
-                onChange={(e) => setUpdatedOptionDescription(e.target.value)}
+                onChange={handleInputChange}
               ></textarea>
+              {errors.updatedOptionDescription && <div className="text-red-600">{errors.updatedOptionDescription}</div>}
             </div>
 
 
@@ -185,17 +251,18 @@ export default function UpdateEvent() {
 
             {/* Option Price */}
             <div className="px-12 text-base font-semibold mt-5">
-              <label className="block font-bold text-xl text-green-800" htmlFor="optionPrice">Option Price</label>
+              <label className="block font-bold text-xl text-green-800" htmlFor="updatedOptionPrice">Option Price</label>
               <input className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                type="number" placeholder="Enter Price" name="optionPrice" value={updatedOptionPrice}
-                onChange={(e) => setUpdatedOptionPrice(e.target.value)}
+                type="number" placeholder="Enter Price" name="updatedOptionPrice" value={updatedOptionPrice}
+                onChange={handleInputChange}
               />
+              {errors.updatedOptionPrice && <div className="text-red-600">{errors.updatedOptionPrice}</div>}
             </div>
 
             {/* Image Upload */}
             <div className="px-12 text-base font-semibold mt-5">
               <label className="block font-bold text-xl text-green-800" htmlFor="file"> Option Image </label>
-              <input type="file" id="file" name="file" accept="image/*"
+              <input type="file" id="file" name="file" accept="image/*" required
                 onChange={(e) => setFile(e.target.files[0])}
                 className="w-full p-2 border border-gray-200 rounded-lg text-lg font-lexend focus:outline-none focus:ring-2 focus:ring-green-500"
               />
