@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux';
-import bggreen from '../assets/bggreen.jpg';
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
-import ConfirmDeletion from './ConfirmDeletion';
-import CustomPopup from './CustomPopup';
-import EventHeader from './EventHeader';
+import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function EventList() {
   const [allEvents, setEvents] = useState([]);
@@ -100,7 +100,7 @@ const shareEventViaWhatsApp = (eventId) => {
   if (event) {
     const eventLink = `${window.location.origin}/viewEvent/${eventId}`;
     const formattedEventDate = event.eventDate ? event.eventDate.substr(0, 10) : "";
-    const message = `Check out this event at Ella Jungle Resort:\nLink: ${eventLink}\n\n${event.eventName}\n${event.eventDescription}\nOn ${formattedEventDate}, starting at ${formatEventTime(event.eventTime)}\n`;
+    const message = `Check out this event at Ella Jungle Resort:\nLink: *${eventLink}*\n\n*${event.eventName}*\n${event.eventDescription}\n*On ${formattedEventDate}, starting at ${formatEventTime(event.eventTime)}*\n`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
   }
 };
@@ -147,7 +147,9 @@ const sortedEvents = [...searchResults].sort((a, b) => {
   {categories.map(category => (
     <button
       key={category}
-      className={`bg-theme-green text-white px-4 py-2 rounded-md mr-2 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+      className={`text-white px-4 py-2 rounded-md mr-2 font-mclaren ${
+        selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'
+      }`}
       onClick={() => handleCategoryFilter(category.toLowerCase())}
     >
       {category}

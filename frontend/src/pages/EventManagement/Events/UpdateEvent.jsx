@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
-import bggreen from '../assets/bggreen.jpg'; // Import the image
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function UpdateEvent() {
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -210,6 +210,7 @@ setErrors((prevErrors) => ({ ...prevErrors, selectedOptions: '' }));
         case 'updatedEventDescription':
             if (!value) return "Event Description is required";
             if (value.length < 80) return "Description must be at least 80 characters long";
+            if (value.length > 200) return "Description is too long";
             return "";
         case 'updatedAttendeeCount':
             if (!value) return "Attendee Count should be entered";
@@ -387,6 +388,22 @@ function handleInputChange(e) {
     const categories = [...new Set(allOptions.map((option) => option.optionCategory))];
 
 
+    const handleEventTimeChange = (e) => {
+      const selectedTime = e.target.value;
+      const selectedHour = parseInt(selectedTime.split(":")[0], 10);
+  
+      // Check if the selected hour is between 8 and 21 (8 AM to 9 PM)
+      if (selectedHour >= 8 && selectedHour <= 21) {
+        setUpdatedEventTime(selectedTime);
+        setErrorMessage(""); // Clear error message if time is within range
+      } else {
+        // Reset the event time if it falls outside the allowed range
+        setUpdatedEventTime("");
+        setErrorMessage("Please select a time between 8 AM and 10 PM.");
+      }
+    };
+
+
 
   return (
     <div className="relative min-h-screen">
@@ -439,26 +456,30 @@ function handleInputChange(e) {
             </div>
 
             <div className="flex">
-            <div className="px-12 ">
-              {/* Event Date */}
-              <div className="text-base font-semibold mt-5">
-                  <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
-                  <input type="date" placeholder="Event Date" name="eventDate" required value={updatedEventDate}
-                      min={getCurrentDate()} // Set the min attribute to today's date
-                      className="w-full p-1 border-2 border-theme-green rounded text-lg font-lexend form-check"
-                      onChange={(e) => setUpdatedEventDate(e.target.value)}
-                  />
-              </div>
+              <div className="px-12 ">
+                {/* Event Date */}
+                <div className="text-base font-semibold mt-5">
+                    <label className="block font-bold text-xl text-green-700" htmlFor="eventDate">Event Date</label>
+                    <input type="date" placeholder="Event Date" name="eventDate" required value={updatedEventDate}
+                        min={getCurrentDate()} // Set the min attribute to today's date
+                        className="w-full p-1 border-2 border-theme-green rounded text-lg font-lexend form-check"
+                        onChange={(e) => setUpdatedEventDate(e.target.value)}
+                    />
+                </div>
 
-              {/* Event Time */}
-              <div className=" text-base font-semibold mt-5">
-                  <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">Event Time</label>
-                  <input type="time" placeholder="Event Time" name="eventTime" required value={updatedEventTime}
-                      min={getCurrentDate()} // Set the min attribute to today's date
+                {/* Event Time */}
+                <div className=" text-base font-semibold mt-5">
+                    <label className="block font-bold text-xl text-green-800" htmlFor="updatedEventTime">Event Time</label>
+                    <input 
+                      type="time"
+                      placeholder="Event Time"
+                      name="updatedEventTime"
+                      required
+                      value={updatedEventTime}
                       className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-                      onChange={(e) => setUpdatedEventTime(e.target.value)}
-                  />
-              </div>
+                        onChange={handleEventTimeChange}
+                    />
+                </div>
               </div>
 
               <div className="pl-40 text-base font-semibold mt-5">
@@ -481,6 +502,9 @@ function handleInputChange(e) {
                 ))}
               </div>
             </div>
+
+
+            {errorMessage && <span className="text-red-600 pl-12 text-base font-semibold mt-5">{errorMessage}</span>}
 
             
             

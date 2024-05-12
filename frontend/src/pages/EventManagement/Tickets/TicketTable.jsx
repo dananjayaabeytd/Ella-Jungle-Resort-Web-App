@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
-import bggreen from '../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import EventHeader from './EventHeader';
+import EventHeader from '../Components/EventHeader';
 
 const TicketTable = () => {
     const [tickets, setTickets] = useState([]);

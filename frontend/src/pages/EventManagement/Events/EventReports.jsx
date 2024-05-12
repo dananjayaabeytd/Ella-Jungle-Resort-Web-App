@@ -1,9 +1,9 @@
 import React from "react";
-import TicketTable from "./TicketTable";
-import EventHeader from "./EventHeader";
+import TicketTable from "../Tickets/TicketTable";
+import EventHeader from "../Components/EventHeader";
 import AllEvents from "./AllEvents";
 import { useSelector } from "react-redux"; // Import useSelector
-import bggreen from '../assets/bggreen.jpg';
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 
 export default function EventReports() {
   const user = useSelector((state) => state.auth.userInfo); // userInfo may be null or contain `isAdmin

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
-import bggreen from '../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function AllEvents() {
 
@@ -180,7 +180,8 @@ const sortedEvents = [...searchResults].sort((a, b) => {
   {categories.map(category => (
     <button
       key={category}
-      className={`bg-theme-green text-white px-4 py-2 rounded-md mr-2 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+      className={` text-white px-4 py-2 rounded-md mr-2 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+      
       onClick={() => handleCategoryFilter(category.toLowerCase())}
     >
       {category}

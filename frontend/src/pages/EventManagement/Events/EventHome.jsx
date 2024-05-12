@@ -3,17 +3,15 @@ import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import bggreen from '../assets/bggreen.jpg'; // Import the image
-import pic0 from '../assets/flora4.jpg';
-import pic1 from '../assets/wedding7.jpg';
-import pic2 from '../assets/birthday3.jpg';
-import pic3 from '../assets/feast6.jpg';
-import pic4 from '../assets/christmas5.jpg';
-import pic5 from '../assets/wedding8.jpg';
-import pic6 from '../assets/halloween1.jpg';
-import EventHeader from './EventHeader';
-
-
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import pic0 from '../../../assets/flora4.jpg';
+import pic1 from '../../../assets/wedding7.jpg';
+import pic2 from '../../../assets/birthday3.jpg';
+import pic3 from '../../../assets/feast6.jpg';
+import pic4 from '../../../assets/christmas5.jpg';
+import pic5 from '../../../assets/wedding8.jpg';
+import pic6 from '../../../assets/halloween1.jpg';
+import EventHeader from "../Components/EventHeader";
 
 
 export default function EventHome() {
@@ -79,6 +77,7 @@ const currentEvent = futureEvents[currentEventIndex];
         backgroundPosition: 'center',
       }}
     ></div>
+    
   
   
     {/* Content Wrapper */}

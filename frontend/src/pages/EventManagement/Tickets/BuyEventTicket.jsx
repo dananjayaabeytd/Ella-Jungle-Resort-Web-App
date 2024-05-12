@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import bggreen from '../assets/bggreen.jpg'; // Import the image
+
 
 import axios from "axios"   //axios for making HTTP requests
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
-
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function BuyEventTicket() {
     const { eventId } = useParams(); // Get the eventId from URL params

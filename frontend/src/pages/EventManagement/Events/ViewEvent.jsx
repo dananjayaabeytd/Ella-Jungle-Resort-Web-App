@@ -6,10 +6,10 @@ import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import bggreen from '../assets/bggreen.jpg'; // Import the image
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function ViewEvent() {
     const pdfRef = useRef();

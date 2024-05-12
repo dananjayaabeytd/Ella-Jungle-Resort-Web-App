@@ -88,20 +88,22 @@ import AgencyHome from "./pages/travelAgency/agency/agencyHome";
 import AgencyPackageDetails from "./pages/travelAgency/agency/agencyPackageDetails";
 
 
-//Vilan
-import EventHeader from './components/EventHeader';
-import AddEvent from "./components/AddEvent"
-import EventList from "./components/EventList"
-import UpdateEvent from "./components/UpdateEvent"
-import AddOption from "./components/AddOption"
-import OptionList from "./components/OptionList"
-import ViewEvent from "./components/ViewEvent"
-import EventHome from "./components/EventHome"
-import UpdateOption from "./components/UpdateOption"
-import MyEvents from "./components/MyEvents"
-import BuyEventTicket from "./components/BuyEventTicket"
-import EventReports from "./components/EventReports"
-import TestPage from "./components/TestPage"
+//Vilan Edited
+import EventHeader from './pages/EventManagement/Components/EventHeader';
+import AddEvent from './pages/EventManagement/Events/AddEvent'
+import EventList from './pages/EventManagement/Events/EventList'
+import UpdateEvent from './pages/EventManagement/Events/UpdateEvent'
+import AddOption from './pages/EventManagement/Options/AddOption'
+import OptionList from './pages/EventManagement/Options/OptionList'
+import ViewEvent from './pages/EventManagement/Events/ViewEvent'
+import EventHome from './pages/EventManagement/Events/EventHome'
+import UpdateOption from './pages/EventManagement/Options/UpdateOption'
+import MyEvents from './pages/EventManagement/Events/MyEvents'
+import BuyEventTicket from './pages/EventManagement/Tickets/BuyEventTicket'
+import EventReports from './pages/EventManagement/Events/EventReports'
+import TestPage from './pages/EventManagement/Components/TestPage'
+
+
 
 import store from './store';
 import { Provider } from 'react-redux';

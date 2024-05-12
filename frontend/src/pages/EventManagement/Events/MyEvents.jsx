@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
-import bggreen from '../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component // Import the modal component
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function MyEvents() {
 

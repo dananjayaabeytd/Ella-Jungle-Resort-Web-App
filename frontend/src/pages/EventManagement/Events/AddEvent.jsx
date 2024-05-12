@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import bggreen from '../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
 import axios from "axios"; // axios for making HTTP requests
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useNavigate } from 'react-router-dom'; // for programmatic navigation
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function AddEvent() {
   const [eventName, setEventName] = useState("");
@@ -165,6 +165,7 @@ export default function AddEvent() {
         case 'eventDescription':
             if (!value) return "Event Description is required";
             if (value.length < 80) return "Description must be at least 80 characters long";
+            if (value.length > 200) return "Description is too long";
             return "";
         case 'attendeeCount':
             if (!value) return "Attendee Count should be entered";
@@ -423,19 +424,19 @@ function handleInputChange(e) {
 
             {/* Event Time */}
             <div className=" text-base font-semibold mt-5">
-      <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">
-        Event Time
-      </label>
-      <input
-        type="time"
-        placeholder="Event Time"
-        name="eventTime"
-        required
-        value={eventTime}
-        className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
-        onChange={handleEventTimeChange}
-      />
-      </div>
+            <label className="block font-bold text-xl text-green-800" htmlFor="eventTime">
+              Event Time
+            </label>
+            <input
+              type="time"
+              placeholder="Event Time"
+              name="eventTime"
+              required
+              value={eventTime}
+              className="w-full p-1 border border-gray-200 rounded text-lg font-lexend form-check"
+              onChange={handleEventTimeChange}
+            />
+            </div>
       
     </div>
 

@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
 import { Link } from "react-router-dom";
-import bggreen from '../assets/bggreen.jpg'; // Import the image
-import ConfirmDeletion from './ConfirmDeletion'; // Import the modal component
-import CustomPopup from './CustomPopup'; // Import the modal component
-import EventHeader from './EventHeader';
+import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+
+import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component // Import the modal component
+import CustomPopup from '../Components/CustomPopup'; // Import the modal component
+import EventHeader from "../Components/EventHeader";
 
 export default function OptionList() {
   const [allOptions, setOptions] = useState([]);
@@ -100,7 +101,7 @@ export default function OptionList() {
           {categories.map(category => (
             <button
               key={category}
-              className={`bg-theme-green text-white px-4 py-2 rounded-md mx-6 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
+              className={` text-white px-4 py-2 rounded-md mx-6 font-mclaren ${selectedCategories.includes(category.toLowerCase()) ? 'bg-green-900' : 'bg-theme-green'}`}
               onClick={() => handleCategoryFilter(category.toLowerCase())}
             >
               {category}
