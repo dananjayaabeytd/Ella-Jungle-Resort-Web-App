@@ -101,7 +101,10 @@ import UpdateOption from './pages/EventManagement/Options/UpdateOption'
 import MyEvents from './pages/EventManagement/Events/MyEvents'
 import BuyEventTicket from './pages/EventManagement/Tickets/BuyEventTicket'
 import EventReports from './pages/EventManagement/Events/EventReports'
+import EventAvailableRooms from './pages/EventManagement/Events/EventAvailableRooms'
+import EventRoomBooking from './pages/EventManagement/Events/EventRoomBooking'
 import TestPage from './pages/EventManagement/Components/TestPage'
+
 
 
 
@@ -455,7 +458,15 @@ const router = createBrowserRouter([
       {
         path: '/eventReports',
         element: < EventReports/>,
-      }
+      },
+      {
+        path: '/availableRooms/:eventId',
+        element: < EventAvailableRooms/>,
+      },
+      {
+        path: '/reservationForm/:id/:eventId',
+        element: < EventRoomBooking/>,
+      },
     ],
   },
 ]);

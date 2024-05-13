@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-
-
 import axios from "axios"   //axios for making HTTP requests
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import bggreen from '../../../assets/bggreen.jpg'; // Import the image
@@ -165,7 +163,7 @@ function handleInputChange(e) {
           setTicketCount("");
           setTotalTicketCost("");
 
-          navigate(`/viewEvent/${eventId}`);
+          
       }).catch((err) => {
           alert(err);
           // Custom success notification
@@ -305,7 +303,7 @@ function handleInputChange(e) {
           message={popupMessage}
           onClose={() => {
             setIsPopupOpen(false);
-            navigate("/allOptions");
+            navigate(`/viewEvent/${eventId}`);
           }}
           type={popupType}
         />

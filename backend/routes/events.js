@@ -19,7 +19,6 @@ const upload = multer({ storage: storage });
 
 
 
-
 // Add an event with image
 router.route("/addEvent").post(upload.single("file"), async (req, res) => {
   const { eventUserId, eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice, eventBookingDate, eventBookingTime } = req.body;
@@ -61,8 +60,6 @@ router.route("/addEvent").post(upload.single("file"), async (req, res) => {
 
 
 
-
-
 // Get all events
 router.route("/getAllEvents").get(async (req, res) => {
   try {
@@ -76,13 +73,10 @@ router.route("/getAllEvents").get(async (req, res) => {
 
 
 
-
-
-
 // Update event
 router.route("/updateEvent/:id").put(upload.single("file"), async (req, res) => {
   let eventId = req.params.id;
-  const { eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice, eventBookingDate, eventBookingTime } = req.body;
+  const { eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice, eventBookingDate, eventBookingTime, eventRoomReservationId } = req.body;
   const eventImage = req.file ? req.file.filename : ""; // Check if file exists
   
     // Convert selectedOptions to an array of ObjectIds
@@ -105,8 +99,8 @@ router.route("/updateEvent/:id").put(upload.single("file"), async (req, res) => 
       ticketPrice,
       eventImage,
       eventBookingDate,
-      eventBookingTime
-      
+      eventBookingTime,
+      eventRoomReservationId
     };
 
     const updatedEvent = await Event.findByIdAndUpdate(eventId, updateEvent, { new: true });
@@ -119,7 +113,40 @@ router.route("/updateEvent/:id").put(upload.single("file"), async (req, res) => 
 
 
 
+// Update event
+router.route("/updateEventReservation/:id").put(upload.single("file"), async (req, res) => {
+  let eventId = req.params.id;
+  const { eventName, eventCategory, eventDate, eventTime, selectedTimeSlots, eventDescription, attendeeCount, totalCost, isPublic, ticketPrice, eventBookingDate, eventBookingTime, eventRoomReservationId } = req.body;
+  // const eventImage = req.file ? req.file.filename : ""; // Check if file exists
+  // Convert selectedOptions to an array of ObjectIds
+    let selectedOptions = [];
+    if (req.body.selectedOptions && req.body.selectedOptions.length > 0) {
+      selectedOptions = req.body.selectedOptions;
+    }
+  try {
+    const updateEvent = {
+      eventName,
+      eventCategory,
+      eventDate,
+      eventTime,
+      selectedTimeSlots,
+      eventDescription,
+      attendeeCount,
+      totalCost,
+      isPublic,
+      ticketPrice,
+      eventBookingDate,
+      eventBookingTime,
+      eventRoomReservationId
+    };
 
+    const updatedEvent = await Event.findByIdAndUpdate(eventId, updateEvent, { new: true });
+    res.status(200).send({ status: "Event Updated", event: updatedEvent });
+  } catch (error) {
+    console.error("Error updating event:", error.message);
+    res.status(500).send({ status: "Error with updating event", error: error.message });
+  }
+});
 
 
 

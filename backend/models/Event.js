@@ -66,27 +66,13 @@ const eventSchema = new Schema({
         type: String,
     },
 
+    eventRoomReservationId: {
+        type: String,
+    },
+
 
 });
 
 const Event = mongoose.model("Event", eventSchema);
 
 module.exports = Event;
-
-
-// selectedOptions: [{
-//     type: Schema.Types.ObjectId,
-//     ref: Option, // Reference to the Option model
-//   }],
-
-
-// decorationPreferences: {
-//     minimalistChecked: {
-//       type: Boolean,
-//       default: false,
-//     },
-//     elegantChecked: {
-//       type: Boolean,
-//       default: false,
-//     }
-// },
