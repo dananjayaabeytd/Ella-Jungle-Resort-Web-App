@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TotalEarningsSpecialActivity = () => {
+const TotalEarningsSpa = () => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
     const fetchReservations = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/finance/allSpecialActivityReservations");
+        const response = await axios.get("http://localhost:5000/api/finance/allSpaAppointments");
         const reservations = response.data;
         const totalEarnings = reservations.reduce((acc, reservation) => acc + reservation.totalPrice, 0);
         setTotalAmount(totalEarnings);
@@ -21,7 +21,7 @@ const TotalEarningsSpecialActivity = () => {
 
   return (
     <div>
-      <h2>Total Earnings from Special Activities</h2>
+      <h2>Total Earnings from Spa</h2>
       <p>Total Amount: Rs.{totalAmount.toFixed(2)}</p>
     </div>
   );
@@ -29,4 +29,4 @@ const TotalEarningsSpecialActivity = () => {
 
 
 
-export default TotalEarningsSpecialActivity;
+export default TotalEarningsSpa;
