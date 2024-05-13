@@ -28,6 +28,8 @@ export default function ViewEvent() {
     const [popupMessage, setPopupMessage] = useState('');
     const [popupType, setPopupType] = useState('info'); // 'info' or 'error'
 
+    const [isDeleting, setIsDeleting] = useState(false);
+
     const timeSlots = [
       { id: 'slot1', label: '8am to 12pm', value: '08:00-12:00' },
       { id: 'slot2', label: '12pm to 4pm', value: '12:00-16:00' },
@@ -156,6 +158,26 @@ const formatEventTime = (timeString) => {
 
 //Convert eventTime to "hh:mm A" format
 const formattedEventTime = formatEventTime(selectedEvent.eventTime);
+
+
+
+const handleDeleteReservation = async () => {
+  try {
+    // Delete reservation from Reservation model
+    await axios.delete(`/reservation/deleteReservation/${selectedEvent.eventRoomReservationId}`);
+    
+    // Delete reservation from Event model
+    await axios.put(`http://localhost:5000/event/updateEventReservation/${selectedEvent._id}`, { eventRoomReservationId: null });
+
+    // Refresh the page
+    window.location.reload();
+
+    // Set state to indicate successful deletion
+    setIsDeleting(true);
+  } catch (error) {
+    console.error('Error deleting reservation:', error);
+  }
+};
 
 
 
@@ -308,6 +330,8 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
               <div>
               {/* Conditional rendering of MyReservation */}
                 <EventRoomView eventRoomReservationId={selectedEvent?.eventRoomReservationId}/>
+
+                
             </div>
             )}
 
@@ -316,14 +340,20 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
             <div></div>
 
         </div>
+
+        
     </div>
 
 
         {/* Button to open the Available Rooms component */}
-        {(user?.isAdmin || selectedEvent.eventUserId === user?._id) && (
-      <div className="flex mt-5 ml-24">
+{(user?.isAdmin || selectedEvent.eventUserId === user?._id) && (
+  <div>
+    {selectedEvent.eventRoomReservationId ? (
+      // If eventRoomReservationId exists, render the button to update reservation
+      <>
+      <div className="flex items-center justify-between mx-48 mt-1 mb-8">
         <button
-          className="flex items-center bg-blue-700 text-white text-lg px-4 py-2 border border-blue-800 rounded-full cursor-pointer font-bold hover:bg-blue-400 hover:border-green-950"
+          className="flex items-center px-2 py-1 text-sm text-white bg-green-500 font-mclaren hover:bg-green-700 rounded-3xl"
           onClick={() => navigate(`/availableRooms/${selectedEvent._id}`)}
         >
           <svg
@@ -340,21 +370,43 @@ const formattedEventTime = formatEventTime(selectedEvent.eventTime);
               d="M5 13l4 4L19 7"
             />
           </svg>
+          Update Reservation
+        </button>
+        <button className="flex items-center mr-8 px-3 py-1 text-sm text-white bg-red-500 font-lexend hover:bg-red-800 rounded-xl" onClick={handleDeleteReservation} disabled={isDeleting}>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+</svg>
+
+                  {isDeleting ? 'Removing...' : 'Remove Reservation'}
+                </button>
+                </div>
+      </>
+    ) : (
+      // If eventRoomReservationId does not exist, render the button to reserve room
+      <>
+      <div className="flex items-center justify-between mx-56 mt-1 mb-8">
+        <button
+          className="flex items-center px-2 py-1 text-sm text-white bg-blue-700 font-mclaren hover:bg-blue-900 rounded-3xl"
+          onClick={() => navigate(`/availableRooms/${selectedEvent._id}`)}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 mr-1">
+  <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+</svg>
+
           Reserve Room
         </button>
         <p className="items-center justify-center mt-2 ml-5">
-          Click Reserve button, if you want to reserve a room for the event
+          Click if you want to reserve a room for the event
         </p>
-      </div>
-      )}
+        </div>
+      </>
+    )}
+  </div>
+)}
+
+
 
         <div className="mb-2">
-
-
-          
-
-                  
-            
             <div className="flex items-center justify-center mt-0">
              {/* Using Link component for View button */}
               <Link to={`/buyEventTicket/${selectedEvent._id}`} className="flex items-center px-2 py-1 text-xl text-white bg-blue-500 font-mclaren hover:bg-blue-800 rounded-3xl">
