@@ -1,3 +1,4 @@
+import TotalEarningsHotelPkgBooking from "./TotalEarningsHotelPackages";
 import TotalEarningsSpa from "./TotalEarningsSpa";
 import TotalEarningsSpecialActivity from "./TotalEarningsSpecialActivity";
 import React from 'react';
@@ -9,7 +10,7 @@ const FinanceReport = () => {
       <h1>Finance Report</h1>
       <TotalEarningsSpecialActivity />
       <TotalEarningsSpa />
-      
+      <TotalEarningsHotelPkgBooking />
     </div>
   );
 };

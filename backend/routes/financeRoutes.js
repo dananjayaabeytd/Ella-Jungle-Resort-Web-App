@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const Reservation = require("../models/ActivityReservation");
 const SpaReservation = require("../models/appointment");
+const hotelPackageBooking = require("../models/Hotel_Package_booking");
 
 // Route to fetch all Special Activity reservations
 router.route("/allSpecialActivityReservations").get((req, res) => {
@@ -22,7 +23,19 @@ router.route("/allSpaAppointments").get((req, res) => {
       })
       .catch((err) => {
         console.error(err);
-        res.status(500).json({ error: "An error occurred while fetching reservations" });
+        res.status(500).json({ error: "An error occurred while fetching appointments" });
+      });
+  });
+
+  //route to fetch all hotel package booking
+router.route("/allHotelPackageBooking").get((req, res) => {
+    hotelPackageBooking.find()
+      .then((booking) => {
+        res.json(booking);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: "An error occurred while fetching bookings" });
       });
   });
 
