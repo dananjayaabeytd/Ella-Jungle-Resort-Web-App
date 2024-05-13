@@ -15,6 +15,5 @@ router.route("/allSpecialActivityReservations").get((req, res) => {
 });
 
 
-//route to fetch all spa appointments
 
 module.exports = router;
