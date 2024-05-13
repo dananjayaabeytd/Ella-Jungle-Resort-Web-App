@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import CustomPopup from '../Components/CustomPopup'; // Import the modal component
 import EventHeader from "../Components/EventHeader";
+import emailjs from "@emailjs/browser"
 
 export default function BuyEventTicket() {
     const { eventId } = useParams(); // Get the eventId from URL params
@@ -135,6 +136,31 @@ function handleInputChange(e) {
         setErrors(validationErrors);
         return;
     }
+
+    const serviceId = "service_jzrxksn";
+    const templateId = "template_85g2ken";
+    const publicKey = "ui-N53tzWkbbLQ0md";
+
+
+    const emailParams = {
+      ticketUserEmail: ticketUserEmail,
+      ticketUserName: ticketUserName,
+      ticketCount: ticketCount,
+      eventName: selectedEvent?.eventName,
+      totalTicketCost: totalTicketCost,
+      ticketBuyingDate: currentDate,
+      ticketBuyingTime: formattedTime,
+    };
+
+
+  emailjs
+        .send(serviceId, templateId, emailParams, publicKey)
+        .then((response) => {
+          console.log("Email sent successfully!", response.status, response.text);
+        })
+        .catch((error) => {
+          console.error("Email could not be sent!", error);
+        });
 
     const newTicket = {
         eventId,
