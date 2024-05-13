@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const TotalEarnings = () => {
+const TotalEarningsSpecialActivity = () => {
   const [totalAmount, setTotalAmount] = useState(0);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ const TotalEarnings = () => {
 
 
 
-export default TotalEarnings;
+export default TotalEarningsSpecialActivity;

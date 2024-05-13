@@ -45,7 +45,8 @@ import UpdateFaq from './pages/faq/components/UpdateFaq';
 import AddagencyFeedback from './pages/agencyfeedback/components/Addagencyfeedback';
 import Uniqueuserfeedback from './pages/agencyfeedback/components/Uniqueuserfeedbacks';
 import Uniqueagencyfeedback from './pages/agencyfeedback/components/Uniqueagencyfeedbacks';
-import TotalaEarnings from './pages/finance/TotalEarnings';
+//ishara finance
+import FinanceReport from './pages/finance/IncomeReport';
 
 //Dushan
 import ResidenceHome from './pages/Residence-homepage/Residence-homepage';
@@ -235,8 +236,8 @@ const router = createBrowserRouter([
         element: <Uniqueagencyfeedback />,
       },
       {
-        path: '/profit',
-        element: <TotalaEarnings />,
+        path: '/financereport',
+        element: <FinanceReport />,
       },
 
       //Dushan
