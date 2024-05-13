@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
 import { Link } from "react-router-dom";
-import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/eventImages/bggreen.jpg'; // Import the image
 
 import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component // Import the modal component
 import CustomPopup from '../Components/CustomPopup'; // Import the modal component

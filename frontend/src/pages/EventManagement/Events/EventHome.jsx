@@ -3,14 +3,14 @@ import axios from "axios";
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
-import bggreen from '../../../assets/bggreen.jpg'; // Import the image
-import pic0 from '../../../assets/flora4.jpg';
-import pic1 from '../../../assets/wedding7.jpg';
-import pic2 from '../../../assets/birthday3.jpg';
-import pic3 from '../../../assets/feast6.jpg';
-import pic4 from '../../../assets/christmas5.jpg';
-import pic5 from '../../../assets/wedding8.jpg';
-import pic6 from '../../../assets/halloween1.jpg';
+import bggreen from '../../../assets/eventImages/bggreen.jpg'; // Import the image
+import pic0 from '../../../assets/eventImages/flora4.jpg';
+import pic1 from '../../../assets/eventImages/wedding7.jpg';
+import pic2 from '../../../assets/eventImages/birthday3.jpg';
+import pic3 from '../../../assets/eventImages/feast6.jpg';
+import pic4 from '../../../assets/eventImages/christmas5.jpg';
+import pic5 from '../../../assets/eventImages/wedding8.jpg';
+import pic6 from '../../../assets/eventImages/halloween1.jpg';
 import EventHeader from "../Components/EventHeader";
 
 

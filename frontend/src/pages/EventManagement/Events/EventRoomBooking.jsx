@@ -56,13 +56,13 @@ function EventRoomBooking() {
         const eventRoomReservationId = eventData.event.eventRoomReservationId;
         console.log(eventRoomReservationId)
         // try{
-          if (eventRoomReservationId) {
-            // Delete the reservation
-            await axios.delete(`/reservation/deleteReservation/${eventRoomReservationId}`);
-            console.log('Reservation deleted successfully');
-          } else {
-              console.log('No reservation found in the event data');
-          }
+          // if (eventRoomReservationId) {
+          //   // Delete the reservation
+          //   await axios.delete(`/reservation/deleteReservation/${eventRoomReservationId}`);
+          //   console.log('Reservation deleted successfully');
+          // } else {
+          //     console.log('No reservation found in the event data');
+          // }
         // } catch (error) {
         //     console.error("Error deleting previous reservation:", error.message);
         //   }

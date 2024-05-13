@@ -76,25 +76,25 @@ router.get('/myReservations/:id', async (req, res) => {
 
 
 
-//Vilan
-// Route to delete a reservation by ID
-router.delete('/deleteReservation/:id', async (req, res) => {
-    try {
-        const reservationId = req.params.id;
-        // Attempt to find and delete the reservation
-        const deletedReservation = await Reservation.findByIdAndDelete(reservationId);
-        if (!deletedReservation) {
-            // If reservation is not found, send 404 response
-            return res.status(404).send({ status: "Reservation not found" });
-        }
-        // If reservation is found and deleted successfully, send 200 response with deleted reservation data
-        res.status(200).send({ status: "Reservation deleted", reservation: deletedReservation });
-    } catch (error) {
-        // If any error occurs during the process, send 500 response with error message
-        console.error('Error deleting reservation:', error.message);
-        res.status(500).send({ status: "Error deleting reservation", error: error.message });
-    }
-});
+// //Vilan
+// // Route to delete a reservation by ID
+// router.delete('/deleteReservation/:id', async (req, res) => {
+//     try {
+//         const reservationId = req.params.id;
+//         // Attempt to find and delete the reservation
+//         const deletedReservation = await Reservation.findByIdAndDelete(reservationId);
+//         if (!deletedReservation) {
+//             // If reservation is not found, send 404 response
+//             return res.status(404).send({ status: "Reservation not found" });
+//         }
+//         // If reservation is found and deleted successfully, send 200 response with deleted reservation data
+//         res.status(200).send({ status: "Reservation deleted", reservation: deletedReservation });
+//     } catch (error) {
+//         // If any error occurs during the process, send 500 response with error message
+//         console.error('Error deleting reservation:', error.message);
+//         res.status(500).send({ status: "Error deleting reservation", error: error.message });
+//     }
+// });
 
 
 

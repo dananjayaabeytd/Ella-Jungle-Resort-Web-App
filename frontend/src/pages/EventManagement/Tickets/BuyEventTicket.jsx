@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios"   //axios for making HTTP requests
 import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
-import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/eventImages/bggreen.jpg'; // Import the image
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom

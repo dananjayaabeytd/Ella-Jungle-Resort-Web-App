@@ -6,7 +6,7 @@ import {useNavigate} from 'react-router-dom'    //for programmatic navigation.
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/eventImages/bggreen.jpg'; // Import the image
 import ConfirmDeletion from '../Components/ConfirmDeletion'; // Import the modal component
 import CustomPopup from '../Components/CustomPopup'; // Import the modal component
 import EventHeader from "../Components/EventHeader";
@@ -351,7 +351,7 @@ const handleDeleteReservation = async () => {
     {selectedEvent.eventRoomReservationId ? (
       // If eventRoomReservationId exists, render the button to update reservation
       <>
-      <div className="flex items-center justify-between mx-48 mt-1 mb-8">
+      {/* <div className="flex items-center justify-between mx-48 mt-1 mb-8">
         <button
           className="flex items-center px-2 py-1 text-sm text-white bg-green-500 font-mclaren hover:bg-green-700 rounded-3xl"
           onClick={() => navigate(`/availableRooms/${selectedEvent._id}`)}
@@ -379,7 +379,7 @@ const handleDeleteReservation = async () => {
 
                   {isDeleting ? 'Removing...' : 'Remove Reservation'}
                 </button>
-                </div>
+                </div> */}
       </>
     ) : (
       // If eventRoomReservationId does not exist, render the button to reserve room

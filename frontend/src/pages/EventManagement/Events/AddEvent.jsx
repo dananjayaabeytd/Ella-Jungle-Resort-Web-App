@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import bggreen from '../../../assets/bggreen.jpg'; // Import the image
+import bggreen from '../../../assets/eventImages/bggreen.jpg'; // Import the image
 import axios from "axios"; // axios for making HTTP requests
 import { useSelector } from 'react-redux'; // Import useSelector
 import { useNavigate } from 'react-router-dom'; // for programmatic navigation
