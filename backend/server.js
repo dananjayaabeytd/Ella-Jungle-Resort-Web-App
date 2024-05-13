@@ -19,6 +19,7 @@ const Hotel_packages_booking_Router = require('./routes/hotel_bookingRoute');
 const feedbackRoutes = require('./routes/feedbackRoutes.js')
 const faqRoutes = require('./routes/faqRoutes.js')
 const agencyfeedbackRoutes = require('./routes/agencyfeedbackRoutes.js');
+const financeRoutes = require('./routes/financeRoutes.js')
 
 //Dushan
 const roomRoutes = require('./routes/Rooms');
@@ -66,6 +67,7 @@ app.use('/hotel_packages', hotelPackagesRouter);
 app.use('/api/feedbacks',feedbackRoutes); 
 app.use('/api/faq',faqRoutes);  
 app.use('/api/agencyfeedbacks',agencyfeedbackRoutes); 
+app.use('/api/finance',financeRoutes)
 
 
 //Dushan
