@@ -20,9 +20,9 @@ const TotalEarningsCustomPkgBooking = () => {
   }, []);
 
   return (
-    <div>
-      <h2>Total Earnings from Custom Package Bookings</h2>
-      <p>Total Amount: Rs.{totalAmount.toFixed(2)}</p>
+    <div className="bg-white">
+      <h2 className="text-xl font-semibold mb-4">Total Earnings from Custom Package Bookings</h2>
+      <p className="text-lg">Total Amount: Rs.{totalAmount.toFixed(2)}</p>
     </div>
   );
 };
