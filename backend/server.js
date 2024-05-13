@@ -20,6 +20,7 @@ const feedbackRoutes = require('./routes/feedbackRoutes.js')
 const faqRoutes = require('./routes/faqRoutes.js')
 const agencyfeedbackRoutes = require('./routes/agencyfeedbackRoutes.js');
 const financeRoutes = require('./routes/financeRoutes.js')
+const roomfeedbackRoutes = require('./routes/roomfeedbackRoutes.js')
 
 //Dushan
 const roomRoutes = require('./routes/Rooms');
@@ -68,6 +69,7 @@ app.use('/api/feedbacks',feedbackRoutes);
 app.use('/api/faq',faqRoutes);  
 app.use('/api/agencyfeedbacks',agencyfeedbackRoutes); 
 app.use('/api/finance',financeRoutes)
+app.use('/api/roomfeedbacks',roomfeedbackRoutes)
 
 
 //Dushan

@@ -45,6 +45,9 @@ import UpdateFaq from './pages/faq/components/UpdateFaq';
 import AddagencyFeedback from './pages/agencyfeedback/components/Addagencyfeedback';
 import Uniqueuserfeedback from './pages/agencyfeedback/components/Uniqueuserfeedbacks';
 import Uniqueagencyfeedback from './pages/agencyfeedback/components/Uniqueagencyfeedbacks';
+import AddroomFeedback from './pages/roomfeedback/AddRoomFeedback';
+import AllRoomFeedback from './pages/roomfeedback/AllRoomFeedback';
+import MyRoomFeedback from './pages/roomfeedback/MyRoomFeedback';
 //ishara finance
 import FinanceReport from './pages/finance/IncomeReport';
 
@@ -239,6 +242,19 @@ const router = createBrowserRouter([
         path: '/financereport',
         element: <FinanceReport />,
       },
+      {
+        path: '/addroomfeedback',
+        element: <AddroomFeedback />,
+      },
+      {
+        path: '/allroomfeedback',
+        element: <AllRoomFeedback />,
+      },
+      {
+        path: '/myroomfeedback',
+        element: <MyRoomFeedback />,
+      },
+
 
       //Dushan
       {
