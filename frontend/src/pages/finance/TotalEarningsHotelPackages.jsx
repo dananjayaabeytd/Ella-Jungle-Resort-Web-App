@@ -22,7 +22,7 @@ const TotalEarningsHotelPkgBooking = () => {
   return (
     <div className="bg-white">
       <h2 className="text-xl font-semibold mb-4">Total Earnings from Hotel Package Bookings</h2>
-      <p className="text-lg">Total Amount: Rs.{totalAmount.toFixed(2)}</p>
+      <p className="text-lg" id="hotelPackageAmount">Total Amount: Rs.{totalAmount.toFixed(2)}</p>
     </div>
   );
 };

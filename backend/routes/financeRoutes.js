@@ -28,6 +28,25 @@ router.route("/allSpaAppointments").get((req, res) => {
       });
   });
 
+
+// Route to fetch all spa appointments, optionally filtered by date
+router.route("/spaAppointments").get(async (req, res) => {
+  const { date } = req.query;
+  try {
+    console.log('Date:', date);
+    let query = {};
+    if (date) {
+      query.appointmentDate = { $gte: new Date(date), $lt: new Date(date + 'T23:59:59') };
+    }
+    console.log('Query:', query);
+    const appointments = await SpaReservation.find(query);
+    res.json(appointments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred while fetching appointments" });
+  }
+});
+
   //route to fetch all hotel package booking
 router.route("/allHotelPackageBooking").get((req, res) => {
     hotelPackageBooking.find()
