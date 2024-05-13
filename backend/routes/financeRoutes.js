@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Reservation = require("../models/ActivityReservation");
 const SpaReservation = require("../models/appointment");
 const hotelPackageBooking = require("../models/Hotel_Package_booking");
+const customPackageBooking = require("../models/Custom_package_booking");
 
 // Route to fetch all Special Activity reservations
 router.route("/allSpecialActivityReservations").get((req, res) => {
@@ -30,6 +31,19 @@ router.route("/allSpaAppointments").get((req, res) => {
   //route to fetch all hotel package booking
 router.route("/allHotelPackageBooking").get((req, res) => {
     hotelPackageBooking.find()
+      .then((booking) => {
+        res.json(booking);
+      })
+      .catch((err) => {
+        console.error(err);
+        res.status(500).json({ error: "An error occurred while fetching bookings" });
+      });
+  });
+
+
+    //route to fetch all Custom_package_booking
+router.route("/allCustomPackageBooking").get((req, res) => {
+    customPackageBooking.find()
       .then((booking) => {
         res.json(booking);
       })

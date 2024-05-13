@@ -1,3 +1,4 @@
+import TotalEarningsCustomPkgBooking from "./TotalEarningsCustomPkgBooking";
 import TotalEarningsHotelPkgBooking from "./TotalEarningsHotelPackages";
 import TotalEarningsSpa from "./TotalEarningsSpa";
 import TotalEarningsSpecialActivity from "./TotalEarningsSpecialActivity";
@@ -11,6 +12,7 @@ const FinanceReport = () => {
       <TotalEarningsSpecialActivity />
       <TotalEarningsSpa />
       <TotalEarningsHotelPkgBooking />
+      <TotalEarningsCustomPkgBooking />
     </div>
   );
 };
