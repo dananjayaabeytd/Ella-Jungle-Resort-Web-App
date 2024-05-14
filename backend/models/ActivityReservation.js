@@ -39,6 +39,9 @@ const reservationSchema = new Schema({
     }
 
    
+},
+{
+    timestamps: true,
 })
 
 

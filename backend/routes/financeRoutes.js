@@ -16,6 +16,26 @@ router.route("/allSpecialActivityReservations").get((req, res) => {
     });
 });
 
+// Route to fetch all special activity reservations, optionally filtered by date
+router.route("/specialActivityReservations").get(async (req, res) => {
+  const { date } = req.query;
+  try {
+    let query = {};
+    if (date) {
+      // Filter reservations by createdAt date
+      query.createdAt = {
+        $gte: new Date(date),
+        $lt: new Date(new Date(date).setDate(new Date(date).getDate() + 1))
+      };
+    }
+    const reservations = await Reservation.find(query);
+    res.json(reservations);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "An error occurred while fetching reservations" });
+  }
+});
+
 //route to fetch all spa appointments
 router.route("/allSpaAppointments").get((req, res) => {
     SpaReservation.find()
