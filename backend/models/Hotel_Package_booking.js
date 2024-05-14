@@ -36,7 +36,11 @@ const hotel_bookingSchema = new Schema({
         required: true
     },
     // You can add more fields as needed
-});
+},
+{
+    timestamps: true,
+}
+);
 
 const Hotel_Package_booking = mongoose.model("Hotel_Package_booking", hotel_bookingSchema);
 

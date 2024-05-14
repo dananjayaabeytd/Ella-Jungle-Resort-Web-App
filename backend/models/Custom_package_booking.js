@@ -35,6 +35,9 @@ const custom_bookingSchema = new Schema({
         type: Date,
         required: true
     }
+},
+{
+    timestamps: true,
 });
 
 const Custom_package_booking = mongoose.model("Custom_package_booking", custom_bookingSchema);
