@@ -27,8 +27,8 @@ function AgencySentRequestList() {
 
   return (
     <div className='flex flex-col'>
-      <h1 className='flex justify-center my-10 ml-2 text-4xl'>Sent Request List</h1>
-      <div className='container mx-auto flex w-[1000px] border-black border flex-col rounded-xl'>
+      <h1 className='flex justify-center my-10 ml-2 text-4xl'>Sent Package Requests</h1>
+      <div className='container mx-auto flex w-[1000px] border-black border flex-col rounded-xl bg-gray-400 bg-opacity-30 mb-10'>
         <div className='container mx-auto'>
           <h2 className='my-5 ml-10 text-xl font-medium'>Accepted Requests</h2>
           <div className='container px-[10px] flex-col flex'>

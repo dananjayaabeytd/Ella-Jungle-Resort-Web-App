@@ -3,7 +3,7 @@ import axios from "axios";
 import AgencyPackageCard from "../../../components/travelAgency/client/agencyPackageCard";
 import AgencyPackageSearch from "../../../components/travelAgency/agency/agencyPackageSearch";
 import { useSelector } from "react-redux";
-import AgencyRequestList from "../agency/agencyRequestList"
+import AgencyRequestList from "../agency/agencyRequestList";
 
 function AgencyMyPackage() {
   const [agencyPackages, setAgencyPackages] = useState([]);
@@ -64,40 +64,43 @@ function AgencyMyPackage() {
     setSortOrder(newSortOrder);
   };
 
+  
+
   return (
     <div>
-      <div className='flex flex-col justify-center mt-20 mb-10'>
-        <div>
+      <div className='flex flex-col justify-center mb-10'>
+        <div className=''>
           <h1 className='flex justify-center text-4xl font-semibold'>My Packages</h1>
 
-          <div className='flex justify-between mx-auto mt-10 mb-5 max-w-[800px]'>
-            <AgencyPackageSearch
-              handleSearchInputChange={handleSearchInputChange}
-              handleSortChange={handleSortChange}
-              sortOrder={sortOrder}
-            />
-            <section className='flex mx-auto mt-2'>
-              <div className='mx-auto mt-[50px]'>
-                <section className=' w-[200px] my-auto text-xl bg-green-500 rounded-xl bg-opacity-20 mx-auto border border-green-500 '>
-                  <p className='mt-4 ml-4 text-black '>Add new package</p>
-                  <div className='flex m-auto my-3 max-md:px-5'>
-                    <button
-                      className='w-[100px] mx-auto h-10 bg-green-500 rounded-full border-gray-400 border  text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-green-500 hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300'
-                      onClick={() => {
-                        window.location.href = `/AgencyCreatePackage/${agencyId}/null`;
-                      }}
-                    >
-                      Add
-                      <span className='absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease'></span>
-                    </button>
-                  </div>
-                </section>
-              </div>
-            </section>
+          <div className='flex flex-col'>
+            <div className='flex justify-center mx-auto mt-10 mb-5 max-w-[800px]'>
+              <AgencyPackageSearch
+                handleSearchInputChange={handleSearchInputChange}
+                handleSortChange={handleSortChange}
+                sortOrder={sortOrder}
+              />
+            </div>
+
+            <div className=''>
+              <section className='w-[200px] text-xl bg-[#56ff9a] rounded-xl bg-opacity-20 mx-auto border border-green-500'>
+                <p className='mt-4 ml-4 text-black'>Add new package</p>
+                <div className='flex m-auto my-3 max-md:px-5'>
+                  <button
+                    className='w-[100px] mx-auto h-10 bg-[#16a34ad9] rounded-full border-gray-400 border text-white text-lg font-semibold relative overflow-hidden group hover:bg-gradient-to-r hover:from-[#16a34ad9] hover:to-green-400 hover:ring-2 hover:ring-offset-2 hover:ring-green-400 transition-all ease-out duration-300'
+                    onClick={() => {
+                      window.location.href = `/AgencyCreatePackage/${agencyId}/null`;
+                    }}
+                  >
+                    Add
+                    <span className='absolute right-0 w-8 h-32 -mt-12 transition-all duration-1000 transform translate-x-12 bg-white opacity-20 rotate-12 group-hover:-translate-x-40 ease'></span>
+                  </button>
+                </div>
+              </section>
+            </div>
           </div>
         </div>
 
-        <h1 className='flex mt-20 ml-40 text-2xl font-semibold'>Published Packages</h1>
+        <h1 className='flex mt-5 ml-40 text-2xl font-semibold'>Published Packages</h1>
 
         <div className='container grid flex-col self-center mt-10 justify-center grid-cols-2 gap-[50px] max-w-[1200px]'>
           {filteredPublishedPackages
@@ -152,11 +155,10 @@ function AgencyMyPackage() {
             ))}
         </div>
       </div>
+      
       <div>
         <AgencyRequestList agencyId={agencyId} />
-        
       </div>
-      
     </div>
   );
 }

@@ -5,6 +5,7 @@ import AgencyPackageActivity from "../../../components/travelAgency/agency/agenc
 import AgencyPackageTransport from "../../../components/travelAgency/agency/agencyPackageTransport";
 import { useParams } from "react-router-dom";
 import AgencyPackageFinal from "../../../components/travelAgency/agency/agencyPackageFinal";
+import AgencyBgImg from "../../../assets/agencyBackground/agencybg5.png";
 
 function AgencyCreatePackage() {
   const { agencyId, packageId } = useParams();
@@ -173,7 +174,14 @@ function AgencyCreatePackage() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        backgroundImage: `url("${AgencyBgImg}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <div className="container w-[900px] mx-auto border border-green-500 my-10 rounded-2xl bg-gray-100">
         <div className="container w-full mx-auto">
           <div className="sm:hidden">

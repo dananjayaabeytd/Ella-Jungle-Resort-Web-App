@@ -3,6 +3,7 @@ import { Ripple, Input, initTWE } from "tw-elements";
 
 function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
   const [isSticky, setIsSticky] = useState(false);
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     initTWE({ Ripple, Input });
@@ -20,6 +21,8 @@ function AgentSearch({ handleSearchInputChange, handleSortChange, sortOrder }) {
     // Cleanup the event listener
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  
 
   return (
     <section

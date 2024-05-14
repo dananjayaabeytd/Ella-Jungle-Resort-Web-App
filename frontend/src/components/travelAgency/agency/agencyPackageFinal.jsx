@@ -13,14 +13,14 @@ function AgencyPackageFinal({
   packageId,
 }) {
   const [selectedRoom, setSelectedRoom] = useState(null);
-  const [selectedActivity, setSelectedActivity] = useState();
+  const [selectedActivity, setSelectedActivity] = useState(null);
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [packageName, setPackageName] = useState("");
   const [packageDescription, setPackageDescription] = useState("");
-  const [price, setPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [commission, setCommission] = useState(0);
-  const [fullDays, setFullDays] = useState(0);
+  const [price, setPrice] = useState();
+  const [discount, setDiscount] = useState();
+  const [commission, setCommission] = useState();
+  const [fullDays, setFullDays] = useState(1);
   const [packageImage, setPackageImage] = useState(null);
 
   // * Fetch package details
@@ -38,6 +38,7 @@ function AgencyPackageFinal({
         setCommission(packageDetails.commission);
         setFullDays(packageDetails.fullDays);
         setPackageImage(packageDetails.packageImage || "No_Image.png");
+        updatePrice();
       } catch (error) {
         console.error("Error fetching package details:", error);
       }
@@ -72,7 +73,9 @@ function AgencyPackageFinal({
     try {
       const formData = new FormData();
       formData.append("packageName", packageName);
-      formData.append("packageImage", packageImageData);
+      if (packageImage !== null) {
+        formData.append("packageImage", packageImageData);
+      }
       formData.append("roomId", selectedRoomId);
       formData.append("activityId", selectedActivityId || null);
       formData.append("transportId", selectedTransportId || null);
@@ -112,9 +115,10 @@ function AgencyPackageFinal({
             });
             return;
           }
+          
           const updatedPackageData = {
             packageName,
-            packageImage: packageImageData,
+            packageImage: packageImageData || "No_Image.png",
             roomId: selectedRoomId,
             activityId: selectedActivityId || null,
             transportId: selectedTransportId || null,
@@ -185,13 +189,11 @@ function AgencyPackageFinal({
   // * Fetch activity details
   useEffect(() => {
     const fetchActivityDetails = async () => {
-      if (!selectedActivityId) return;
       try {
         const response = await axios.get(
           `http://localhost:5000/SpecialActivity/get/${selectedActivityId}`
         );
         setSelectedActivity(response.data);
-        console.log("hiiiii", response.data);
       } catch (error) {
         console.error("Error fetching activity details:", error);
       }
@@ -202,17 +204,13 @@ function AgencyPackageFinal({
     }
   }, [selectedActivityId]);
 
-  console.log(selectedActivityId);
-
   // * Fetch transport details
   useEffect(() => {
-    console.log("Fetching transport details...");
     const fetchTransportDetails = async () => {
       try {
         const response = await axios.get(
           `http://localhost:5000/getTransportById/${selectedTransportId}`
         );
-        console.log("Transport details response:", response.data);
         setSelectedTransport(response.data.transport);
       } catch (error) {
         console.error("Error fetching transport details:", error);
@@ -226,44 +224,56 @@ function AgencyPackageFinal({
 
   // * Update package price
   const updatePrice = () => {
+    let packagePrice = 0;
+
+    // Calculate room price
     const roomPrice = selectedRoom ? selectedRoom.price : 0;
-    const activityPrice = selectedActivity ? selectedActivity.price : 0;
-    const transportPrice = selectedTransport ? selectedTransport.pricePerKm : 0;
+    packagePrice += roomPrice;
 
-    const packagePrice = roomPrice + activityPrice + transportPrice;
+    // Calculate activity price
+    const activityPrice = selectedActivity ? selectedActivity.specialActivity.price : 0;
+    packagePrice += activityPrice;
 
+    // Calculate transport price
+    const transportPrice = selectedTransport
+      ? selectedTransport.pricePerKm * selectedActivity.specialActivity.distance
+      : 0;
+    packagePrice += transportPrice;
+
+    // Calculate final price considering commission and discount
     const commissionValue = (commission / 100) * packagePrice;
     const discountValue = (discount / 100) * packagePrice;
-
     const finalPrice = (packagePrice + commissionValue - discountValue) * fullDays;
 
     setPrice(finalPrice);
   };
 
-  console.log(selectedActivity);
-
   return (
     <div>
       <div className='pointer-events-none'>
-        {selectedRoom && (
-          <AgencyPackageRoom
-            roomId={selectedRoom.id}
-            roomName={selectedRoom.roomName}
-            image={selectedRoom.image}
-            description={selectedRoom.description}
-            price={selectedRoom.price}
-          />
-        )}
+        {selectedRoom &&
+          (console.log("selectedRoom", selectedRoom),
+          (
+            <AgencyPackageRoom
+              roomId={selectedRoom.id}
+              roomName={selectedRoom.roomName}
+              image={selectedRoom.image}
+              description={selectedRoom.description}
+              price={selectedRoom.price}
+            />
+          ))}
 
-        {selectedActivity && (
-          <AgencyPackageActivity
-            activityId={selectedActivity._id}
-            activityImage={selectedActivity.image}
-            activityName={selectedActivity.name}
-            description={selectedActivity.description}
-            price={selectedActivity.price}
-          />
-        )}
+        {selectedActivity &&
+          (console.log("selectedActivity", selectedActivity),
+          (
+            <AgencyPackageActivity
+              activityId={selectedActivity?.specialActivity._id}
+              activityImage={selectedActivity?.specialActivity.image}
+              activityName={selectedActivity?.specialActivity.name}
+              description={selectedActivity?.specialActivity.description}
+              price={selectedActivity?.specialActivity.price}
+            />
+          ))}
 
         {selectedTransport && selectedTransport._id && (
           <AgencyPackageTransport
@@ -279,7 +289,7 @@ function AgencyPackageFinal({
 
       <div className='container w-[800px] border border-green-500 mx-auto rounded-xl mb-3 bg-green-400 bg-opacity-20'>
         <div className='flex'>
-          <h3 className='ml-20 text-xl text-black mt-7'>Name of Package : </h3>
+          <h3 className='ml-20 text-xl text-black mt-7'> Package Name : </h3>
           <input
             type='text'
             value={packageName}
@@ -289,7 +299,7 @@ function AgencyPackageFinal({
           />
         </div>
         <div className='flex'>
-          <h3 className='ml-20 text-xl text-black mt-7'>Image of Package:</h3>
+          <h3 className='ml-20 text-xl text-black mt-7'> Package Image :</h3>
           <input
             className='flex m-0  w-[300px] mt-[25px] ml-[28px] border-green-500 rounded-lg h-[30px] border bg-white bg-clip-padding px-3 py-[0.32rem] text-xs font-normal text-surface transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:me-3 file:cursor-pointer file:overflow-hidden file:rounded-none file:border-0 file:border-e file:border-solid file:border-inherit file:bg-transparent file:px-3 file:py-[0.32rem] file:text-surface focus:border-green-500 focus:text-gray-700 focus:shadow-inset focus:outline-none'
             id='formFileSm'
@@ -304,8 +314,11 @@ function AgencyPackageFinal({
             type='number'
             className='flex  w-[80px] mt-[25px] ml-[60px] border border-green-500 rounded-lg h-[30px] px-3'
             value={fullDays}
-            onChange={(e) => setFullDays(Number(e.target.value))}
-            min={0}
+            onChange={(e) => {
+              setFullDays(Number(e.target.value));
+              updatePrice();
+            }}
+            min={1}
           />
         </div>
         <div className='flex'>
@@ -314,7 +327,10 @@ function AgencyPackageFinal({
             type='number'
             className='flex  w-[80px] mt-[25px] ml-[67px] border border-green-500 rounded-lg h-[30px] px-3'
             value={discount}
-            onChange={(e) => setDiscount(Number(e.target.value))}
+            onChange={(e) => {
+              setDiscount(Number(e.target.value));
+              updatePrice(); // Call updatePrice when discount changes
+            }}
             min={0}
           />
           <h3 className='ml-2 text-xl text-black mt-7'> % </h3>
@@ -325,7 +341,10 @@ function AgencyPackageFinal({
             type='number'
             className='flex  w-[80px] mt-[25px] ml-[35px] border border-green-500 rounded-lg h-[30px] px-3'
             value={commission}
-            onChange={(e) => setCommission(Number(e.target.value))}
+            onChange={(e) => {
+              setCommission(Number(e.target.value));
+              updatePrice(); // Call updatePrice when commission changes
+            }}
             min={0}
           />
           <h3 className='ml-2 text-xl text-black mt-7'> % </h3>
@@ -337,15 +356,12 @@ function AgencyPackageFinal({
             type='number'
             className='flex  w-[150px] mt-[25px] ml-[50px] border border-green-500 rounded-lg h-[30px] px-3'
             value={price}
-            onChange={(e) => setPrice(Number(e.target.value))}
+            onChange={(e) => {
+              setPrice(Number(e.target.value));
+              updatePrice(); // Call updatePrice when price changes
+            }}
             min={0}
           />
-          <button
-            onClick={updatePrice}
-            className='px-2 ml-2 text-xs text-black bg-green-300 border border-gray-400 rounded-xl mt-7'
-          >
-            Update price
-          </button>
         </div>
 
         <div className=''>

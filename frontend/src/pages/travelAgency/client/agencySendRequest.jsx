@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import emailjs from "@emailjs/browser";
 import AgencyDetailsProfile from "../../../components/travelAgency/client/agencyDetailsProfile";
 import { useSelector } from "react-redux";
+import AgencyBgImg from "../../../assets/agencyBackground/agencybg5.png";
 
 function AgencySendRequest() {
   const { agencyId } = useParams();
@@ -16,7 +17,11 @@ function AgencySendRequest() {
   const [checkIn, setCheckIn] = useState("");
   const [contactNo, setContactNo] = useState("");
   const [agencyEmail, setAgencyEmail] = useState("");
-  
+  const [agency, setAgency] = useState({});
+
+  const serviceId = "ITP_Project";
+  const templateId = "Agency_Send_Request";
+  const publicKey = "mosump2O3-rWJQmt7";
 
   const [formData, setFormData] = useState({
     ArrivalDate: "",
@@ -32,21 +37,26 @@ function AgencySendRequest() {
     Status: "pending",
   });
 
-  const [agency, setAgency] = useState({});
-  
+  const emailParams = {
+    agencyName: agency.agencyName,
+    userName: userInfo.name,
+    checkIn: formData.ArrivalDate,
+    contactNo: userInfo.mobile,
+    agencyEmail: agency.businessMail,
+  };
+
+  console.log("Email Params:", emailParams);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
   // fetch agency details
-  //* Fetching agency by representer mail
   useEffect(() => {
     const fetchAgencyById = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/api/agencies/get/${agencyId}`
-        );
+        const response = await axios.get(`http://localhost:5000/api/agencies/get/${agencyId}`);
         setAgency(response.data);
       } catch (error) {
         console.error(error);
@@ -55,47 +65,45 @@ function AgencySendRequest() {
     fetchAgencyById();
   }, [agencyId]);
 
-  
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
+    e.preventDefault();
 
-    const serviceId = "ITP_Project";
-    const templateId = "ITP_Agency_Request";
-    const publicKey = "mosump2O3-rWJQmt7";
+    if (!agency.businessMail || agency.businessMail.trim() === "") {
+      console.error("Recipient's email address is empty or invalid.");
+      return;
+    }
 
-    const emailParams = {
-      agencyName: agency.agencyName,
-      userName: userInfo.name,
-      checkIn: formData.ArrivalDate,
-      contactNo: userInfo.mobile,
-      agencyEmail: agency.businessMail,
-    };
-
-    emailjs
-      .send(serviceId, templateId, emailParams, publicKey)
-      .then((response) => {
-        console.log("Email sent successfully!", response.status, response.text);
-        setAgencyName("");
-        setUserName("");
-        setCheckIn("");
-        setContactNo("");
-        setAgencyEmail("");
-      })
-      .catch((error) => {
-        console.error("Email could not be sent!", error);
-      });
-
-    const currentDate = new Date().toISOString(); // Get the current date
+    const currentDate = new Date().toISOString();
     const noOfChildren = formData.NoOfChildren ? formData.NoOfChildren : 0;
+    const description = formData.RequestDescription
+      ? formData.RequestDescription
+      : "No special requests";
+    const NoOfNights = formData.NoOfNights ? formData.NoOfNights : 0;
 
     const updatedFormData = {
       ...formData,
       SentDate: currentDate,
       NoOfChildren: noOfChildren,
+      RequestDescription: description,
+      NoOfNights: NoOfNights,
     };
 
     try {
       const response = await axios.post("/AgencyNewRequest", updatedFormData);
+      emailjs
+        .send(serviceId, templateId, emailParams, publicKey)
+        .then((response) => {
+          console.log("Email sent successfully!", response.status, response.text);
+          setAgencyName("");
+          setUserName("");
+          setCheckIn("");
+          setContactNo("");
+          setAgencyEmail("");
+        })
+        .catch((error) => {
+          console.error("Email could not be sent!", error);
+        });
+        
       Swal.fire({
         icon: "success",
         title: "Your request has been sent successfully!",
@@ -134,49 +142,54 @@ function AgencySendRequest() {
   };
 
   useEffect(() => {
-  if (formData.ArrivalDate && formData.DepartureDate) {
-    
-    const arrivalDate = new Date(formData.ArrivalDate);
-    const departureDate = new Date(formData.DepartureDate);
-    
-    const diffTime = Math.abs(departureDate - arrivalDate);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    
-    setFormData({ ...formData, NoOfDays: diffDays });
-  }
-}, [formData.ArrivalDate, formData.DepartureDate]);
+    if (formData.ArrivalDate && formData.DepartureDate) {
+      const arrivalDate = new Date(formData.ArrivalDate);
+      const departureDate = new Date(formData.DepartureDate);
 
+      const diffTime = Math.abs(departureDate - arrivalDate);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      setFormData({ ...formData, NoOfDays: diffDays });
+    }
+  }, [formData.ArrivalDate, formData.DepartureDate]);
 
   return (
-    <div>
-      <div className='flex bg-gray-200 rounded-b-2xl bg-opacity-60'>
+    <div
+      style={{
+        backgroundImage: `url("${AgencyBgImg}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className='flex bg-white rounded-b-2xl bg-opacity-70'>
         <AgencyDetailsProfile agencyId={agencyId} />
       </div>
 
-      <div className='container my-10 flex flex-col mx-auto bg-gray-400 border border-green-600 bg-opacity-20 max-w-[1000px] rounded-xl'>
+      <div className='container my-10 flex flex-col mx-auto bg-gray-200 border border-green-600 bg-opacity-80 max-w-[800px] rounded-xl'>
         <div className='mt-3 text-2xl text-center'>
-          <h1>Request new reservation</h1>
+          <h1>Request New Reservation</h1>
         </div>
 
         <div className='flex mx-auto mt-10'>
           <form onSubmit={handleSubmit}>
             <div className='flex items-start text-xl font-medium text-gray-900 form-group'>
-              <div className='flex flex-col gap-2 mx-20'>
+              <div className='flex flex-col gap-2 mx-8'>
                 <div className='flex items-start mb-2 '>
-                  <label>Arrival Date</label>
+                  <label>Arrival Date :</label>
                   <input
                     type='date'
                     id='arrivalDate'
                     name='ArrivalDate'
                     value={formData.ArrivalDate}
-                    className='ml-[92px] rounded-lg border border-green-500 text-gray-700 pl-4'
+                    className='ml-[92px] rounded-lg border border-green-500 pl-4'
                     onChange={handleChange}
                     min={new Date().toISOString().split("T")[0]}
                     required
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Departure Date</label>
+                  <label>Departure Date :</label>
                   <input
                     type='date'
                     className='ml-[60px] rounded-lg border border-green-500 pl-4'
@@ -189,7 +202,7 @@ function AgencySendRequest() {
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Number of Days</label>
+                  <label>Number of Days :</label>
                   <input
                     type='number'
                     className='ml-[52px] w-20 rounded-lg border border-green-500 pl-4'
@@ -216,7 +229,7 @@ function AgencySendRequest() {
                   />
                 </div> */}
                 <div className='flex items-start mb-2'>
-                  <label>Number of Adults</label>
+                  <label>Number of Adults :</label>
                   <input
                     type='number'
                     className='ml-[44px] w-20 rounded-lg border border-green-500 pl-4'
@@ -224,12 +237,12 @@ function AgencySendRequest() {
                     name='NoOfAdults'
                     value={formData.NoOfAdults}
                     onChange={handleChange}
-                    min='0' // Add min attribute to disallow negative numbers
+                    min='1' // Add min attribute to disallow negative numbers
                     required
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Number of Children</label>
+                  <label>Number of Children :</label>
                   <input
                     type='number'
                     className='w-20 ml-[24px] rounded-lg border border-green-500 pl-4'
@@ -242,7 +255,7 @@ function AgencySendRequest() {
                 </div>
               </div>
 
-              <div className='flex flex-col mx-20 mt-[-5px] '>
+              <div className='flex flex-col ml-10 mt-[-5px] '>
                 <div className='flex mb-2'>Room Type</div>
                 <div className='relative inline-flex hs-dropdown'>
                   <select
@@ -262,13 +275,13 @@ function AgencySendRequest() {
                 </div>
               </div>
             </div>
-            <div className='flex flex-col mx-20 mt-3'>
+            <div className='flex flex-col mt-3 ml-8'>
               <div className='mb-2 text-xl font-medium text-gray-900'>
                 <label className=''>Special Requests:</label>
               </div>
               <div>
                 <textarea
-                  className='w-[750px] max-h-[100px] h-[100px] border-green-500 border rounded-lg p-2'
+                  className='w-[650px] max-h-[100px] h-[100px] border-green-500 border rounded-lg pl-5 pt-4'
                   name='RequestDescription'
                   value={formData.RequestDescription}
                   onChange={handleChange}

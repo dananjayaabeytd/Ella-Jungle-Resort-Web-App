@@ -32,7 +32,7 @@ function AgencyPackageRoom({
           <div className="flex items-start my-5 ">
             <img
               className="w-40 my-auto border rounded-3xl"
-              src="https://cdn.builder.io/api/v1/image/assets/TEMP/792c7ac941d0eed14463449a48a7e8eab3826f850bd35b8183438d15e0b42ad8?apiKey=bd6dc691d3624fe581379f78a6e48c90&"
+              src={require(`../../../assets/rooms/${image}`)}
               alt=""
             />
 

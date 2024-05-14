@@ -7,6 +7,7 @@ import convertToBase64 from "../../helper/convert";
 import avatar from "../../assets/profile.png";
 import { useNavigate } from "react-router-dom";
 import AgencySentRequestList from '../travelAgency/client/agencySentRequestList';
+import AgencyBgImg from "../../assets/agencyBackground/agencybg5.png";
 
 const Profile = () => {
   const [name, setName] = useState("");
@@ -102,7 +103,12 @@ const Profile = () => {
   };
 
   return (
-    <div>
+    <div style={{
+      backgroundImage: `url("${AgencyBgImg}")`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundAttachment: "fixed",
+    }}>
       <div className='max-w-md p-8 mx-auto mt-10 bg-green-300 rounded-lg shadow-md mb-[20px]'>
         <h1 className='mb-4 text-2xl font-bold text-center'>Update Profile</h1>
 

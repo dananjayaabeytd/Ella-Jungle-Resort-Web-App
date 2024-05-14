@@ -53,7 +53,7 @@ function AgencySentRequest({
   return (
     <div>
       <div onClick={() => handleUpdateClick(requestId)}>
-        <div className="border border-green-300 flex gap-5 justify-between py-2.5 shadow-md bg-gray-300 bg-opacity-30  max-md:flex-wrap max-w-[900px] mx-auto mb-2 rounded-xl">
+        <div className="border border-green-300 flex gap-5 justify-between py-2.5 shadow-md bg-white bg-opacity-80  max-md:flex-wrap max-w-[900px] mx-auto mb-2 rounded-xl">
           <div className="flex ">
             <h2 className="ml-5 text-sm font-bold leading-5 text-neutral-800">
               {AgencyName}

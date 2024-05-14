@@ -8,7 +8,7 @@ function AgencyRequestPackage() {
 
   return (
     <div className="mr-[50px] mt-[100px] ml-28 ">
-      <section className="flex flex-col w-[300px] px-8 py-5 my-auto text-xl bg-green-500 rounded-xl bg-opacity-20 border border-gray-400 ">
+      <section className="flex flex-col w-[300px] px-8 py-5 my-auto text-xl bg-[#63fa9a] rounded-xl bg-opacity-20 border border-gray-400 ">
         <p className="flex justify-center text-black">Request new package</p>
         <div className="flex justify-center">
           <button

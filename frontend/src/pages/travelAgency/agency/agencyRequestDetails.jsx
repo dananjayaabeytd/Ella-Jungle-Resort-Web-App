@@ -2,10 +2,25 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import emailjs from "@emailjs/browser";
+import AgencyBgImg from "../../../assets/agencyBackground/agencybg5.png";
 
 function AgencyRequestDetails() {
   const { requestId } = useParams();
   const [userData, setUserData] = useState({}); // [1] Define state for user data
+  const [agency, setAgency] = useState({});
+
+  const [guestName, setGuestName] = useState("");
+  const [guestEmail, setGuestEmail] = useState("");
+  const [agencyName, setAgencyName] = useState("");
+  const [status, setStatus] = useState("");
+  const [agencyContactNo, setAgencyContactNo] = useState("");
+  const [agencyEmail, setAgencyEmail] = useState("");
+
+  const serviceId = "ITP_Project";
+  const templateId = "Request_Acknowledge";
+  const publicKey = "mosump2O3-rWJQmt7";
+
   // * set initial state for request data
   const [requestData, setRequestData] = useState({
     ArrivalDate: "",
@@ -67,7 +82,9 @@ function AgencyRequestDetails() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const result = await axios.get(`http://localhost:5000/api/users/specific/${requestData.UserId}`);
+        const result = await axios.get(
+          `http://localhost:5000/api/users/specific/${requestData.UserId}`
+        );
         setUserData(result.data);
         console.log("User data:", result.data);
       } catch (error) {
@@ -76,6 +93,21 @@ function AgencyRequestDetails() {
     };
     fetchUserData();
   }, [requestData.UserId]);
+
+  useEffect(() => {
+    const fetchAgencyById = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/agencies/get/${requestData.AgencyId}`
+        );
+        setAgency(response.data);
+        console.log("Agency data:", response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchAgencyById();
+  }, [requestData.AgencyId]);
 
   // * Function to handle accepting request
   const handleAcceptRequest = async () => {
@@ -87,6 +119,32 @@ function AgencyRequestDetails() {
         Status: "accepted",
       });
       if (updatedRequest.data.message === "Request Updated") {
+        setStatus("Accepted");
+
+        const emailParams = {
+          guestName: userData.name,
+          guestEmail: userData.email,
+          agencyName: agency.agencyName,
+          status: "accepted",
+          agencyContactNo: agency.mobile,
+          agencyEmail: agency.businessMail,
+        };
+
+        emailjs
+          .send(serviceId, templateId, emailParams, publicKey)
+          .then((response) => {
+            console.log("Email sent successfully!", response.status, response.text);
+            setGuestName("");
+            setGuestEmail("");
+            setAgencyName("");
+            setAgencyContactNo("");
+            setAgencyEmail("");
+            console.log(emailParams);
+          })
+          .catch((error) => {
+            console.error("Email could not be sent!", error);
+          });
+
         Swal.fire({
           icon: "success",
           title: "Request Accepted!",
@@ -111,6 +169,33 @@ function AgencyRequestDetails() {
         Status: "rejected",
       });
       if (updatedRequest.data.message === "Request Updated") {
+        setStatus("Rejected");
+
+        const emailParams = {
+          guestName: userData.name,
+          guestEmail: userData.email,
+          agencyName: agency.agencyName,
+          status: "rejected",
+          agencyContactNo: agency.mobile,
+          agencyEmail: agency.businessMail,
+        };
+
+        emailjs
+          .send(serviceId, templateId, emailParams, publicKey)
+          .then((response) => {
+            console.log("Email sent successfully!", response.status, response.text);
+            setGuestName("");
+            setGuestEmail("");
+            setAgencyName("");
+
+            setAgencyContactNo("");
+            setAgencyEmail("");
+            console.log(emailParams);
+          })
+          .catch((error) => {
+            console.error("Email could not be sent!", error);
+          });
+
         Swal.fire({
           icon: "success",
           title: "Request Rejected!",
@@ -127,54 +212,63 @@ function AgencyRequestDetails() {
   };
 
   return (
-    <div>
-      <div className='flex bg-gray-200 rounded-2xl bg-opacity-60 container my-10  flex-col mx-auto  border border-green-500  max-w-[1000px] '>
-        <div className='mt-3 text-2xl text-center'>
-          <h1>Received Request</h1>
-        </div>
-
+    <div
+      style={{
+        backgroundImage: `url("${AgencyBgImg}")`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundAttachment: "fixed",
+      }}
+    >
+      <div className='text-4xl font-semibold text-center '>
+        <h1 className='pt-5'>Received Request</h1>
+      </div>
+      <div className='flex bg-gray-200 rounded-2xl bg-opacity-60 container my-10  flex-col mx-auto  border border-green-500  max-w-[800px] '>
         <div className='flex mx-auto mt-10'>
           <form>
             <div className='flex items-start text-xl font-medium text-gray-900 form-group'>
-              <div className='flex flex-col gap-2 mx-20 text-xl'>
+              <div className='flex flex-col gap-2 mx-16 text-xl'>
                 <div className='flex items-start mb-2 '>
-                  <label>Client Name</label>
-                  <h1 className=' text-green-500  ml-[70px] text-2xl'>{userData.name}</h1>
+                  <label>Client Name :</label>
+                  <h1 className=' text-black  ml-[74px] text-2xl'>{userData.name}</h1>
                 </div>
                 <div className='flex items-start mb-2 '>
-                  <label>Arrival Date</label>
+                  <label>Arrival Date :</label>
                   <input
                     type='date'
                     id='arrivalDate'
                     name='ArrivalDate'
-                    className='ml-[92px] rounded-lg border border-green-500 pl-5 w-[160px]'
+                    className='ml-[80px] rounded-lg border border-green-500 pl-5 w-[160px] bg-white'
                     readOnly
                     value={requestData.ArrivalDate}
+                    disabled
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Departure Date</label>
+                  <label>Departure Date :</label>
                   <input
                     type='date'
-                    className='ml-[59px] rounded-lg border border-green-500 pl-5 w-[160px]'
+                    className='ml-[49px] rounded-lg border border-green-500 pl-5 w-[160px] bg-white'
                     id='departureDate'
                     name='DepartureDate'
                     value={requestData.DepartureDate}
                     readOnly
+                    disabled
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Number of Days</label>
+                  <label>No. of Days : </label>
                   <input
                     type='number'
-                    className='ml-[51px] w-16 rounded-lg border border-green-500 pl-5'
+                    className='ml-[81px] w-16 rounded-lg border border-green-500 pl-5 bg-white'
                     id='noOfDays'
                     name='NoOfDays'
                     value={requestData.NoOfDays}
                     readOnly
+                    disabled
                   />
                 </div>
-                <div className='flex items-start mb-2'>
+                {/* <div className='flex items-start mb-2'>
                   <label>Number of Nights</label>
                   <input
                     type='number'
@@ -184,39 +278,42 @@ function AgencyRequestDetails() {
                     value={requestData.NoOfNights}
                     readOnly
                   />
-                </div>
+                </div> */}
                 <div className='flex items-start mb-2'>
-                  <label>Number of Adults</label>
+                  <label>No. of Adults :</label>
                   <input
                     type='number'
-                    className='ml-[42px] w-16 rounded-lg border border-green-500 pl-5'
+                    className='ml-[68px] w-16 rounded-lg border border-green-500 pl-5 bg-white'
                     id='noOfAdults'
                     name='NoOfAdults'
                     value={requestData.NoOfAdults}
                     readOnly
+                    disabled
                   />
                 </div>
                 <div className='flex items-start mb-2'>
-                  <label>Number of Children</label>
+                  <label>No. of Children :</label>
                   <input
                     type='number'
-                    className='w-16 ml-[22px] rounded-lg border border-green-500 pl-5'
+                    className='w-16 ml-[52px] rounded-lg border border-green-500 pl-5 bg-white'
                     id='noOfChildren'
                     name='NoOfChildren'
                     value={requestData.NoOfChildren}
                     readOnly
+                    disabled
                   />
                 </div>
               </div>
 
-              <div className='flex flex-col mx-20 mt-[-5px] text-xl'>
-                <div className='flex '>Room Type</div>
+              <div className='flex flex-col ml-10 text-xl'>
+                <div className='flex '>Room Type :</div>
                 <div className='relative inline-flex hs-dropdown'>
                   <select
-                    className='inline-flex items-center px-4 py-3 text-sm font-medium text-gray-800 bg-white border border-green-500 rounded-lg shadow-sm hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none '
+                    className='inline-flex items-center px-4 py-3 text-sm font-medium text-black bg-white border border-green-500 rounded-lg shadow-sm text hs-dropdown-toggle gap-x-2 hover:bg-gray-50 disabled:pointer-events-none '
                     aria-labelledby='hs-dropdown-default'
                     value={requestData.RoomType}
                     readOnly
+                    disabled
                   >
                     <option value='' disabled>
                       Select Room Type
@@ -234,13 +331,13 @@ function AgencyRequestDetails() {
                 </div>
               </div>
             </div>
-            <div className='flex flex-col mx-20 mt-5 mb-10'>
+            <div className='flex flex-col mx-16 mt-5 mb-10'>
               <div className='mb-2 text-xl font-medium text-gray-900'>
-                <label className='text-xl'>Special Requests:</label>
+                <label className='text-xl'>Special Requests :</label>
               </div>
               <div>
                 <textarea
-                  className='w-[750px] max-h-[100px] h-[100px] border-green-500 border rounded-lg p-5'
+                  className='w-[600px] max-h-[100px] h-[100px] border-green-500 border rounded-lg p-5'
                   name='RequestDescription'
                   id='RequestDescription'
                   value={requestData.RequestDescription}
