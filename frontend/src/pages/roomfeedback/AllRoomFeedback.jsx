@@ -3,6 +3,7 @@ import axios from "axios";
 import { Button } from '@material-tailwind/react';
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
+import DeleteroomFeedback from "./DeleteRoomFeedback";
 
 
 const starStyles = {
@@ -85,7 +86,7 @@ const AllRoomFeedback = () => {
               <div className="mt-4">
                 {renderStarRating(feedback.rating)}
               </div>
-              {/* {userInfo && userInfo.isAdmin && <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />} */}
+              {userInfo && userInfo.isAdmin && <DeleteroomFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />}
             </li>
           ))}
         </ul>

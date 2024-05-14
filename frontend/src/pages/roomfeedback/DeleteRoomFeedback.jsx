@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import { Button } from '@material-tailwind/react';
 
-const deleteroomfeedback = ({ feedbackId, onDeleteFeedback }) => {
+const DeleteroomFeedback = ({ feedbackId, onDeleteFeedback }) => {
 
   const handleDelete = async () => {
     try {
@@ -28,4 +28,4 @@ const deleteroomfeedback = ({ feedbackId, onDeleteFeedback }) => {
   );
 };
 
-export default deleteroomfeedback;
+export default DeleteroomFeedback;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import DeleteroomFeedback from "./DeleteRoomFeedback";
 import { Button } from '@material-tailwind/react';
 import { useSelector } from 'react-redux';
 
@@ -75,9 +75,9 @@ const MyRoomFeedback = () => {
               <div className="mt-4">
                 {renderStarRating(feedback.rating)}
               </div>
-              {/* <div className="flex justify-end space-x-2">
-                <DeleteFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />
-              </div> */}
+              <div className="flex justify-end space-x-2">
+                <DeleteroomFeedback feedbackId={feedback._id} onDeleteFeedback={() => handleDeleteFeedback(feedback._id)} />
+              </div>
             </li>
           ))}
         </ul>
